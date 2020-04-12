@@ -1,7 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Application file because a App.example.js will be delivered
-/src/App.js
+# pxp-ui excludes
+config.js
+/src/*/
+!/src/_*/
+/src/index.js
+
 # dependencies
 /node_modules
 /.pnp
