@@ -1,15 +1,15 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import LoginContainer from '../components/LoginContainer';
-import MainContainer from '../components/MainContainer';
+import LoginContainer from '../components/Login/LoginContainer';
+import MainContainer from '../components/containers/MainContainer';
 import NotFoundPage from '../components/NotFoundPage';
 
 export const history = createBrowserHistory();
 
 
 
-const AppRouter = ({ LoginPage = undefined, InitPage = undefined, Menu = undefined }) => {
+const AppRouter = ({ LoginPage = undefined, InitPage = undefined, Menu = undefined }) => {  
   return(
     <Router history={history}>
       <div>        

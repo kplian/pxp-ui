@@ -5,16 +5,17 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import config from '../../config';
+import config from '../../../config';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import { startLogin } from '../actions/auth';
-import { useDispatch, useSelector } from 'react-redux';
+import { startLogin } from '../../actions/auth';
+import { useSelector } from 'react-redux';
 import { FormHelperText } from '@material-ui/core';
+import { Icon } from '@material-ui/core';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
-export default (props) => {
-  const dispatch = useDispatch();
-  const [open, setOpen] = React.useState(props.open);
+export default (props) => {  
+  const [open] = React.useState(props.open);
   const [login, setLogin] = React.useState(props.login || ''); 
   const [error, setError] = React.useState(''); 
   const [password, setPassword] = React.useState(''); 
@@ -34,8 +35,10 @@ export default (props) => {
       setError('Username and password should not be empty *');
     } else {
       setError('');
-      startLogin({ login, password }).then((resp) => {
-        console.log(resp);
+      startLogin({ login, password }).then((error) => {
+        if (error !== 'success') {
+          setError(error);
+        }
       });
     }    
   };
@@ -43,6 +46,7 @@ export default (props) => {
   const handleReset = () => {
     setLogin('');
     setPassword('');
+    setError('');
   };
 
   const handleClose = () => {
@@ -51,7 +55,8 @@ export default (props) => {
 
   return (     
       <Dialog open={open || sessionDied} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Login to {config.applicationName}</DialogTitle>
+        <DialogTitle id="form-dialog-title">Sign in {config.applicationName}
+        </DialogTitle>
         <DialogContent>            
             <TextField
             autoFocus
@@ -89,18 +94,20 @@ export default (props) => {
             InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <AccountCircle />
+                    <Icon>
+                      <VisibilityOff />
+                    </Icon>
                   </InputAdornment>
                 ),
               }}
             />
-            {error && <FormHelperText error>{error}</FormHelperText>}
+            {error && <FormHelperText error>{error}</FormHelperText>}            
         </DialogContent>        
         <DialogActions>
-            <Button onClick={handleReset} color="primary">
+            <Button variant="outlined" onClick={handleReset} color="primary">
             Reset
             </Button>
-            <Button onClick={handleLogin} color="primary">
+            <Button variant="contained" onClick={handleLogin} color="primary">
             Login
             </Button>
         </DialogActions>

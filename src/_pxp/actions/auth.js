@@ -9,7 +9,12 @@ export const logout = () => ({
     type: 'LOGOUT'    
 });
 export const startLogin = ({ login, password }) => { 
-    return PxpClient.login(login, password);   
+    return PxpClient.login(login, password).then(data => {        
+        if (data.ROOT) {
+            return data.ROOT.detalle.mensaje; 
+        }
+        return 'success';
+    });   
 };
 
 export const startLogout = () => { 
