@@ -11,10 +11,10 @@ const LoginPage = ({ LoginPage:MyLoginPage }) => {
       </Typography>        
     </div>
   );
-  const LoginPage = MyLoginPage || PxpLoginPage;
+  
   return ( 
       <Container maxWidth="sm">
-        <LoginPage />
+        <PxpLoginPage />
         <LoginDialog open={true}/>  
       </Container>
   );

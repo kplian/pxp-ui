@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const MainContainer = ({ InitPage: MyInitPage, Menu: MyMenu }) => {  
+const MainContainer = () => {  
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'), {

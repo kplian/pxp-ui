@@ -1,16 +1,15 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import LoginContainer from '../components/Login/LoginContainer';
+import PxpLoginContainer from '../components/Login/LoginContainer';
 import PxpMainContainer from '../components/containers/MainContainer';
 import NotFoundPage from '../components/NotFoundPage';
 
 export const history = createBrowserHistory();
 
-
-
-const AppRouter = ({ LoginPage = undefined, MainContainer:MyMainContainer = undefined }) => {  
+const AppRouter = ({ LoginContainer:MyLoginContainer = undefined, MainContainer:MyMainContainer = undefined }) => {  
   const MainContainer = MyMainContainer || PxpMainContainer;
+  const LoginContainer = MyLoginContainer || PxpLoginContainer;
   return(
     <Router history={history}>
       <div>        
@@ -18,11 +17,11 @@ const AppRouter = ({ LoginPage = undefined, MainContainer:MyMainContainer = unde
           <Route 
             path="/"  
             exact={true} 
-            render={(props) => <LoginContainer LoginPage={LoginPage} />}
+            render={() => <LoginContainer />}
           />
           <Route 
             path="/main"             
-            render={(props) => <MainContainer />}
+            render={() => <MainContainer />}
           />                  
           <Route component={NotFoundPage} />
         </Switch>

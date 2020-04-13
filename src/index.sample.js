@@ -6,8 +6,9 @@ import PxpClient from 'pxp-client';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Provider } from 'react-redux';
 import AppRouter, { history } from './_pxp/routers/AppRouter';
-import MyLoginPage from './contabilidad/components/MyLoginPage';
-import MyMainContainer from './contabilidad/components/MyMainContainer';
+//You can import custom components here:
+//import MyLoginPage from './contabilidad/components/MyLoginPage';
+//import MyMainContainer from './contabilidad/components/MyMainContainer';
 import { ThemeProvider } from '@material-ui/styles';
 //Here you can import your custom theme
 import theme from './_pxp/themes/blue';
@@ -18,12 +19,22 @@ PxpClient.init( config.host, config.baseUrl, config.mode,
 
 //init store
 const store = configureStore();
-
+/* Customizing login page and main page
 const jsx = (
   <Provider store={store}>
       <CssBaseline />
       <ThemeProvider theme={theme}>
         <AppRouter LoginPage={MyLoginPage} MainContainer={MyMainContainer}/>
+      </ThemeProvider>
+  </Provider>
+); 
+*/
+
+const jsx = (
+  <Provider store={store}>
+      <CssBaseline />
+      <ThemeProvider theme={theme}>
+        <AppRouter />
       </ThemeProvider>
   </Provider>
 ); 
