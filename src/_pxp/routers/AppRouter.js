@@ -9,7 +9,7 @@ export const history = createBrowserHistory();
 
 
 
-const AppRouter = ({ LoginPage = undefined, InitPage = undefined, MainContainer:MyMainContainer = undefined }) => {  
+const AppRouter = ({ LoginPage = undefined, MainContainer:MyMainContainer = undefined }) => {  
   const MainContainer = MyMainContainer || PxpMainContainer;
   return(
     <Router history={history}>
@@ -22,7 +22,7 @@ const AppRouter = ({ LoginPage = undefined, InitPage = undefined, MainContainer:
           />
           <Route 
             path="/main"             
-            render={(props) => <MainContainer Menu={Menu} InitPage={InitPage} />}
+            render={(props) => <MainContainer />}
           />                  
           <Route component={NotFoundPage} />
         </Switch>
