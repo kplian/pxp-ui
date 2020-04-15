@@ -38,8 +38,8 @@ export const startSetMenu = () => {
                 mobile: config.menu.mobile
             }            
         }).then(resp => {                         
-            dispatch(setMenu(resp.data.v_resp_json));
-            dispatch(setRoutes(findRoutes(resp.data.v_resp_json)));
+            dispatch(setMenu(resp.data));            
+            dispatch(setRoutes(findRoutes(resp.data)));
         }); 
     };    
 };
@@ -49,6 +49,7 @@ export const startLogout = () => {
 };
 
 const findRoutes = menu => { 
+    
     const routes = [];
     menu.forEach((menuOption) => {      
       if (menuOption.type === 'hoja') {

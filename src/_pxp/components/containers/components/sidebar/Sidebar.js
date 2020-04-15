@@ -42,8 +42,8 @@ const Sidebar = props => {
   const { open, variant, onClose, className, ...rest } = props;
 
   const classes = useStyles();
-//const pages = useSelector(state => state.auth.menu);
-
+  const pages = useSelector(state => state.auth.menu);
+/*
   const pages = [{
   "icon":"security",
   "text":"SEGURIDAD",
@@ -376,7 +376,7 @@ const Sidebar = props => {
   ],
   "component":""
 }
-];
+];*/
 
   return (
     <Drawer

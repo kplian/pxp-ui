@@ -27,13 +27,13 @@ const AppRouter = ({ LoginContainer:MyLoginContainer = undefined, MainContainer:
             />
             <Route 
               path="/main"             
-              render={() => <MainContainer Page={pages['CONTA__InitPage']}/>}
+              render={() => <MainContainer Page={pages['Example']}/>}
             />            
             {routes.map((route) => {              
               return <Route
                 key={route.id_gui} 
                 path={"/" + route.component}            
-                render={() => <MainContainer Page={pages['PRESU__InitPage']}/>}
+                render={() => <MainContainer Page={pages[route.component]}/>}
               /> ;
             })}                 
             <Route component={NotFoundPage} />

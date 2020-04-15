@@ -20,16 +20,15 @@ PxpClient.init( config.host, config.baseUrl, config.mode,
 
 //init store
 const store = configureStore();
-/*
-const jsx = (
+
+/*const jsx = (
   <Provider store={store}>
       <CssBaseline />
       <ThemeProvider theme={theme}>
         <AppRouter pages={{...contaPages, ...presuPages}}/>
       </ThemeProvider>
   </Provider>
-); 
-*/
+); */
 
 const jsx = (
   <Provider store={store}>
@@ -39,6 +38,7 @@ const jsx = (
       </ThemeProvider>
   </Provider>
 ); 
+
 let hasRendered = false;
 const renderApp = () => {  
   if (!hasRendered) {      
@@ -51,12 +51,16 @@ ReactDOM.render(<div>loading... </div>, document.getElementById('root'));
 PxpClient.onAuthStateChanged(user => {
   if (user) {                
       store.dispatch(login(user.id_usuario)); 
-      store.dispatch(startSetMenu());     
-      renderApp();         
-      if (history.location.pathname === '/') {        
-        //here you can change to your init route
-        history.push('/main'); 
-      }      
+      store.dispatch(startSetMenu()).then(() => {
+        renderApp();         
+        if (history.location.pathname === '/') {        
+          //here you can change to your init route
+          history.push('/main'); 
+          
+        }    
+      });     
+      
+      
   } else {      
       store.dispatch(logout);      
       if (PxpClient.sessionDied) {
