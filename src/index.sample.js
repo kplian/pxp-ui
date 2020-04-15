@@ -15,6 +15,12 @@ import 'typeface-roboto';
 //import presuPages from './presupuestos/components';
 import { startSetMenu, login, logout } from './_pxp/actions/auth';
 
+/**
+ * Style for react-perfect-scrollbar
+ */
+import 'react-perfect-scrollbar/dist/css/styles.css';
+
+
 PxpClient.init( config.host, config.baseUrl, config.mode, 
                 config.port, config.protocol, config.backendRestVersion);
 
