@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer, Hidden, Box } from '@material-ui/core';
@@ -41,7 +42,7 @@ const Sidebar = props => {
   const { open, variant, onClose, className, ...rest } = props;
 
   const classes = useStyles();
-
+//const pages = useSelector(state => state.auth.menu);
 
   const pages = [{
   "icon":"security",

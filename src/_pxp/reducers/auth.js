@@ -3,7 +3,7 @@ export default  (state = { sessionDied: false, menu: [], routes: [] }, action) =
         case 'LOGIN':
             return { ...state, sessionDied: false, uid: action.uid };
         case 'LOGOUT':
-            return { sessionDied: false };  
+            return { sessionDied: false, menu: [], routes: [] };  
         case 'SESSION_DIED':  
             return { ...state, sessionDied: true };
         case 'SET_MENU':  
