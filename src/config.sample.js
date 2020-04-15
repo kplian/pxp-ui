@@ -9,9 +9,9 @@
       backendRestVersion: '2',
       applicationName: 'ERP KPLIAN',
       menu: {
-        system: 'all',//system name(sis_contabilidad), comma separated systems(sis_seguridad,sis_presupuestos), all
-        mobile: true, //mobile flag [true,false]
-        includeSystemRoot: false, // show systems menu [true,false]
+        system: 'SEGU,WF',//system name(sis_contabilidad), comma separated systems(sis_seguridad,sis_presupuestos), all
+        mobile: 0, //mobile flag [true,false]
+        includeSystemRoot: true, // show systems menu [true,false]
         startExpanded: true,
 
         /*customRequest: {

@@ -21,7 +21,6 @@ export default (props) => {
   const [password, setPassword] = React.useState(''); 
   const sessionDied = useSelector(state => state.auth.sessionDied);
 
-
   const onLoginChange = (e) => {
     setLogin(e.target.value);
   };

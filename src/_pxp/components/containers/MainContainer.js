@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const MainContainer = () => {  
+const MainContainer = ({ Page }) => {  
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'), {
@@ -40,7 +40,7 @@ const MainContainer = () => {
   };
 
   const shouldOpenSidebar = isDesktop ? true : openSidebar;
-
+  
   return (
     <div
       className={clsx({
@@ -55,7 +55,7 @@ const MainContainer = () => {
         variant={isDesktop ? 'persistent' : 'temporary'}
       />
       <main className={classes.content}>
-        <p>Not found page</p> 
+        <Page /> 
         <Footer />
       </main>
     </div>
