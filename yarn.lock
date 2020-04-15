@@ -8523,10 +8523,10 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-pxp-client@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/pxp-client/-/pxp-client-1.0.8.tgz#eb9b597be92165db3bfbbddcc545525298a15e1e"
-  integrity sha512-YmKuWmhUQxnaSeGglM+WDS/QIgaixpzo+BEddLPOj0Og4rqPtYY1ItyWIW5yjPi9hHY8eLYDLIBWLeAWlz8DFA==
+pxp-client@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/pxp-client/-/pxp-client-2.0.4.tgz#622b8dc1a1af7706ac36944ff6edcbfd95451b97"
+  integrity sha512-oIoqZODlquaWERG4oS43QERxzrXaQ+MGiaC+GpBaV26s1sa5L2K6cSgqG+apF5PB9QHOT0AXo+yXHK61JqfFRw==
   dependencies:
     crypto-js "^4.0.0"
     uuid "^7.0.1"

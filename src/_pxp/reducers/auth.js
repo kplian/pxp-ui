@@ -1,11 +1,15 @@
-export default  (state = { sessionDied: false }, action) => {    
+export default  (state = { sessionDied: false, menu: [], routes: [] }, action) => {
     switch (action.type) { 
         case 'LOGIN':
-            return { sessionDied: false, uid: action.uid };
+            return { ...state, sessionDied: false, uid: action.uid };
         case 'LOGOUT':
             return { sessionDied: false };  
         case 'SESSION_DIED':  
-            return { sessionDied: true };     
+            return { ...state, sessionDied: true };
+        case 'SET_MENU':  
+            return { ...state, menu: action.menu }; 
+        case 'SET_ROUTES':  
+            return { ...state, routes: action.routes };    
         default:
             return state;            
     }
