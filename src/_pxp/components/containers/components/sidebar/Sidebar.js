@@ -1,16 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
-import { Divider, Drawer, Hidden, Box } from '@material-ui/core';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import PeopleIcon from '@material-ui/icons/People';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import { Divider, Drawer, Box } from '@material-ui/core';
 import Profile from './Profile';
 import SidebarNav from './SideBarNav';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import clsx from 'clsx';
-import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -28,13 +23,13 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(0)
   },
   divider: {
-    backgroundColor: colors.grey[300],
+   //  backgroundColor: '#444755 !important',
   },
   nav: {
     marginBottom: theme.spacing(2)
   },
   boxDrawer: {
-    borderRight: '1px solid' + colors.grey[300],
+   //  borderRight: '1px solid #444755',
   }
 }));
 
@@ -42,7 +37,7 @@ const Sidebar = props => {
   const { open, variant, onClose, className, ...rest } = props;
 
   const classes = useStyles();
-  const pages = useSelector(state => state.auth.menu);
+  const pages = useSelector(state => state.auth.menu) || [];
 /*
   const pages = [{
   "icon":"security",

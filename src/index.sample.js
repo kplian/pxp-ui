@@ -6,9 +6,6 @@ import PxpClient from 'pxp-client';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Provider } from 'react-redux';
 import AppRouter, { history } from './_pxp/routers/AppRouter';
-import { ThemeProvider } from '@material-ui/styles';
-//Here you can import your custom theme
-import theme from './_pxp/themes/blue';
 import 'typeface-roboto';
 
 //import contaPages from './contabilidad/components';
@@ -19,7 +16,8 @@ import { startSetMenu, login, logout } from './_pxp/actions/auth';
  * Style for react-perfect-scrollbar
  */
 import 'react-perfect-scrollbar/dist/css/styles.css';
-
+import { SettingsProvider } from './_pxp/context/SettingsContext';
+import { restoreSettings } from './_pxp/context/settings-store';
 
 PxpClient.init( config.host, config.baseUrl, config.mode, 
                 config.port, config.protocol, config.backendRestVersion);
@@ -35,13 +33,14 @@ const store = configureStore();
       </ThemeProvider>
   </Provider>
 ); */
-
-const jsx = (
+const settings = restoreSettings();
+  
+const jsx =  (
   <Provider store={store}>
+    <SettingsProvider settings={ settings }>
       <CssBaseline />
-      <ThemeProvider theme={theme}>
         <AppRouter />
-      </ThemeProvider>
+    </SettingsProvider>
   </Provider>
 ); 
 
