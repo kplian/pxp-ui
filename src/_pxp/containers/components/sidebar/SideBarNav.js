@@ -3,7 +3,6 @@ import { matchPath, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { List, ListSubheader } from '@material-ui/core';
-import { colors } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 
 
@@ -12,7 +11,7 @@ import NavItem from './NavItem';
 const useStyles = makeStyles(theme => ({
   root: {},
   header: {
-    borderBottom: `1px solid ${ colors.grey[300]}`
+    // borderBottom: '1px solid #444755',
   },
   subheader: {
     lineHeight: '30px',
@@ -32,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SidebarNav = props => {
-  const { menu, pages:components, className, ...rest } = props;   
+  const { menu, pages:components, className } = props;   
   const location = useLocation();
   const classes = useStyles();
 
@@ -41,11 +40,10 @@ const SidebarNav = props => {
     { menu.map(page => {
       let content = null;
       if (page.type === 'carpeta') {       
-        
         content = (
           <List
               key={page.text}
-              className= { classes.header }
+              className= { clsx( classes.header, className ) }
               subheader={(
                 <ListSubheader
                   disableGutters

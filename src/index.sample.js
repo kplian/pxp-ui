@@ -6,9 +6,6 @@ import PxpClient from 'pxp-client';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Provider } from 'react-redux';
 import AppRouter, { history } from './_pxp/routers/AppRouter';
-import { ThemeProvider } from '@material-ui/styles';
-//Here you can import your custom theme
-import theme from './_pxp/themes/blue';
 import 'typeface-roboto';
 import { login } from './_pxp/actions/auth';
 
@@ -17,9 +14,11 @@ import { login } from './_pxp/actions/auth';
  */
 import 'react-perfect-scrollbar/dist/css/styles.css';
 
-import contaPages from './contabilidad/components';
-import presuPages from './presupuestos/components';
-import { startSetMenu, logout } from './_pxp/actions/auth';
+/*import contaPages from './contabilidad/components';
+import presuPages from './presupuestos/components';*/
+import { startSetMenu } from './_pxp/actions/auth';
+import { SettingsProvider } from './_pxp/context/SettingsContext';
+import { restoreSettings } from './_pxp/context/settings-store';
 
 PxpClient.init( config.host, config.baseUrl, config.mode, 
                 config.port, config.protocol, config.backendRestVersion);
@@ -27,12 +26,22 @@ PxpClient.init( config.host, config.baseUrl, config.mode,
 //init store
 const store = configureStore();
 
-const jsx = (
+/*const jsx = (
   <Provider store={store}>
       <CssBaseline />
       <ThemeProvider theme={theme}>
         <AppRouter pages={{...contaPages, ...presuPages}}/>
       </ThemeProvider>
+  </Provider>
+); */
+const settings = restoreSettings();
+  
+const jsx =  (
+  <Provider store={store}>
+    <SettingsProvider settings={ settings }>
+      <CssBaseline />
+        <AppRouter />
+    </SettingsProvider>
   </Provider>
 ); 
 

@@ -7,9 +7,19 @@ import InputIcon from '@material-ui/icons/Input';
 import { startLogout } from '../../actions/auth';
 import { useDispatch } from 'react-redux';
 
+
+import Settings from './Settings';
+
 const useStyles = makeStyles(theme => ({
   root: {
-    boxShadow: 'none'
+    zIndex: theme.zIndex.drawer + 100,
+    ...theme.name === 'LIGHT' ? {
+      boxShadow: 'none',
+      backgroundColor: theme.palette.primary.main
+    } : {},
+    ...theme.name === 'ONE_DARK' ? {
+      backgroundColor: theme.palette.background.default
+    } : {}
   },
   flexGrow: {
     flexGrow: 1
@@ -53,6 +63,7 @@ const Topbar = props => {
                 <NotificationsIcon />
             </Badge>
         </IconButton>
+        <Settings/>   
         <IconButton
             className={classes.signOutButton}
             color="inherit"
@@ -60,7 +71,6 @@ const Topbar = props => {
           >
             <InputIcon />
         </IconButton>
-            
       </Toolbar>
     </AppBar>
   );
