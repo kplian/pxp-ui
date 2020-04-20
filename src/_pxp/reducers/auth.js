@@ -1,4 +1,5 @@
-export default  (state = { sessionDied: false, menu: [], routes: [] }, action) => {
+export default  (state = { sessionDied: false, menu: [], routes: [] }, action) => {    
+    console.log(action.type);
     switch (action.type) { 
         case 'LOGIN':
             return { ...state, sessionDied: false, uid: action.uid };

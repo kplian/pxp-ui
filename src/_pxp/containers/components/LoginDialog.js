@@ -9,7 +9,7 @@ import config from '../../../config';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { startLogin } from '../../actions/auth';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { FormHelperText } from '@material-ui/core';
 import { Icon } from '@material-ui/core';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -20,6 +20,7 @@ export default (props) => {
   const [error, setError] = React.useState(''); 
   const [password, setPassword] = React.useState(''); 
   const sessionDied = useSelector(state => state.auth.sessionDied);
+  const dispatch = useDispatch();
 
   const onLoginChange = (e) => {
     setLogin(e.target.value);
@@ -33,8 +34,10 @@ export default (props) => {
     if (!login || !password) {       
       setError('Username and password should not be empty *');
     } else {
-      setError('');
-      startLogin({ login, password }).then((error) => {
+      setError('');      
+      //startLogin({ login, password });
+      dispatch(startLogin({ login, password })).then((error) => {
+        console.log('dialog', error);
         if (error !== 'success') {
           setError(error);
         }
@@ -53,7 +56,7 @@ export default (props) => {
   }
 
   return (     
-      <Dialog open={open || sessionDied} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={open || sessionDied} onClose={handleClose} aria-labelledby="form-dialog-title">      
         <DialogTitle id="form-dialog-title">Sign in {config.applicationName}
         </DialogTitle>
         <DialogContent>            

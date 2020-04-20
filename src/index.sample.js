@@ -10,16 +10,16 @@ import { ThemeProvider } from '@material-ui/styles';
 //Here you can import your custom theme
 import theme from './_pxp/themes/blue';
 import 'typeface-roboto';
-
-//import contaPages from './contabilidad/components';
-//import presuPages from './presupuestos/components';
-import { startSetMenu, login, logout } from './_pxp/actions/auth';
+import { login } from './_pxp/actions/auth';
 
 /**
  * Style for react-perfect-scrollbar
  */
 import 'react-perfect-scrollbar/dist/css/styles.css';
 
+import contaPages from './contabilidad/components';
+import presuPages from './presupuestos/components';
+import { startSetMenu, logout } from './_pxp/actions/auth';
 
 PxpClient.init( config.host, config.baseUrl, config.mode, 
                 config.port, config.protocol, config.backendRestVersion);
@@ -27,20 +27,11 @@ PxpClient.init( config.host, config.baseUrl, config.mode,
 //init store
 const store = configureStore();
 
-/*const jsx = (
-  <Provider store={store}>
-      <CssBaseline />
-      <ThemeProvider theme={theme}>
-        <AppRouter pages={{...contaPages, ...presuPages}}/>
-      </ThemeProvider>
-  </Provider>
-); */
-
 const jsx = (
   <Provider store={store}>
       <CssBaseline />
       <ThemeProvider theme={theme}>
-        <AppRouter />
+        <AppRouter pages={{...contaPages, ...presuPages}}/>
       </ThemeProvider>
   </Provider>
 ); 
@@ -56,25 +47,17 @@ const renderApp = () => {
 ReactDOM.render(<div>loading... </div>, document.getElementById('root'));
 PxpClient.onAuthStateChanged(user => {
   if (user) {                
-      store.dispatch(login(user.id_usuario)); 
-      store.dispatch(startSetMenu()).then(() => {
-        renderApp();         
-        if (history.location.pathname === '/') {        
-          //here you can change to your init route
-          history.push('/main'); 
-          
-        }    
-      });     
-      
-      
-  } else {      
-      store.dispatch(logout);      
-      if (PxpClient.sessionDied) {
+      console.log('index login', user);      
+      store.dispatch(startSetMenu()).then(() => {        
+        store.dispatch(login(user.id_usuario));
+        renderApp();
+      });
+  } else {  
+    console.log('index logout');  
+    if (PxpClient.sessionDied) {
         store.dispatch({type: 'SESSION_DIED'});        
-      } else {
-        renderApp();        
-        //go back to login page
-        history.push('/');        
+      } else {        
+        renderApp(); 
       }
       
   }

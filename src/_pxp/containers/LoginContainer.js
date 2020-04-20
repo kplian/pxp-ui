@@ -1,9 +1,9 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
-import LoginDialog from './LoginDialog';
 import Typography from '@material-ui/core/Typography';
+import LoginDialog from '../containers/components/LoginDialog';
 
-const LoginPage = ({ LoginPage:MyLoginPage }) => {
+const LoginContainer = () => {
   const PxpLoginPage = () => (
     <div>
       <Typography variant="h1" component="h2" gutterBottom>
@@ -11,13 +11,12 @@ const LoginPage = ({ LoginPage:MyLoginPage }) => {
       </Typography>        
     </div>
   );
-  
   return ( 
       <Container maxWidth="sm">
         <PxpLoginPage />
-        <LoginDialog open={true}/>  
+        <LoginDialog open={true} />  
       </Container>
   );
 };
 
-export default LoginPage;
+export default LoginContainer;
