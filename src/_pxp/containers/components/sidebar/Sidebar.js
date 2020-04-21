@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Sidebar = props => {
-  const { open, variant, onClose, className, pages, ...rest } = props;  
+  const { open, variant, onClose, className, ...rest } = props;  
   const classes = useStyles();
   const menu = useSelector(state => state.auth.menu);
 
@@ -65,8 +65,7 @@ const Sidebar = props => {
             <Divider className={classes.divider} />
             <Box p={2}>
               <SidebarNav
-                className={classes.nav}
-                pages={pages}
+                className={classes.nav}                
                 menu={menu}
               />        
             </Box>

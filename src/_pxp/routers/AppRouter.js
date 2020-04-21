@@ -6,23 +6,22 @@ import PxpMainContainer from '../containers/MainContainer';
 import PxpPublicContainer from '../containers/PublicContainer';
 import NotFoundPage from '../components/NotFoundPage';
 import { useSelector } from 'react-redux';
-import pxpPages from '../lazyImport';
 import AuthPublic from './AuthPublic';
 import AuthPrivate from './AuthPrivate';
 import config from '../../config';
+import usePages from '../hooks/usePages';
 
 export const history = createBrowserHistory();
 
 const AppRouter = ({ LoginContainer: MyLoginContainer = undefined, 
                      MainContainer: MyMainContainer = undefined, 
-                     Publicontainer: MyPublicContainer = undefined,
-                     pages:myPages = {} }) => { 
+                     Publicontainer: MyPublicContainer = undefined }) => { 
 
   const MainContainer = MyMainContainer || PxpMainContainer;
   const LoginContainer = MyLoginContainer || PxpLoginContainer;
   const PublicContainer = MyPublicContainer || PxpPublicContainer;
-  const pages = {...pxpPages, ...myPages};  
   
+  const { pages } = usePages(); 
   const routes = useSelector(state => state.auth.routes);
   const privatePaths = routes.map((route) => pages[route.component].path);
   return(
@@ -51,7 +50,7 @@ const AppRouter = ({ LoginContainer: MyLoginContainer = undefined,
             />  
               
             <Route exact path={privatePaths}> 
-              <MainContainer pages={pages}>
+              <MainContainer>
                 <Switch>        
                 {routes.map((route) => {  
                   const Component = pages[route.component].component;             

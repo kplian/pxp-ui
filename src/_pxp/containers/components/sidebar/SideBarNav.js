@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { List, ListSubheader } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
+import usePages from '../../../hooks/usePages';
 
 
 import NavItem from './NavItem';
@@ -31,9 +32,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SidebarNav = props => {
-  const { menu, pages:components, className } = props;   
+  const { menu, className } = props;   
   const location = useLocation();
   const classes = useStyles();
+  const { pages:components } = usePages(); 
 
   return (
     <div>
