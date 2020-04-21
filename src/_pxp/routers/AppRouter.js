@@ -23,10 +23,14 @@ const AppRouter = ({ LoginContainer: MyLoginContainer = undefined,
   
   const { pages } = usePages(); 
   const routes = useSelector(state => state.auth.routes);
+  routes.forEach(element => {
+    if (!pages[element.component]) {
+      alert(`Does not exists a component for ${element.component} in your pages object. Ensure that your component is lazy loaded from index file`);
+    }
+  });
   const privatePaths = routes.map((route) => pages[route.component].path);
   return(
-    <Router history={history}>
-    {console.log('render routes')}
+    <Router history={history}>    
       <div> 
         <Suspense fallback={<div>Loading...</div>}>       
           <Switch>            
