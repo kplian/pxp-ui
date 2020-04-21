@@ -59,7 +59,7 @@ const MainContainer = ({ children, pages }) => {
         pages={pages}
       />
       <main className={classes.content}>
-        
+        {children}
         <Footer />
       </main>
       <LoginDialog />
