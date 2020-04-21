@@ -6,6 +6,7 @@ import Footer from './components/Footer.js';
 import Topbar from './components/Topbar.js';
 import Sidebar from './components/sidebar/Sidebar.js';
 import LoginDialog from '../containers/components/LoginDialog';
+import Breadcrumbs from '../utils/Breadcrumbs';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,7 +20,10 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 240
   },
   content: {
-    height: '100%'
+    flex: '1 1 auto',
+    height: '100%',
+    width: '100%',
+    padding: 10,
   }
 }));
 
@@ -59,7 +63,7 @@ const MainContainer = ({ children, pages }) => {
         pages={pages}
       />
       <main className={classes.content}>
-        
+        <Breadcrumbs pages={pages}/>
         <Footer />
       </main>
       <LoginDialog />
