@@ -30,7 +30,6 @@ const useStyles = makeStyles(theme => ({
 const MainContainer = ({ children }) => {  
   const classes = useStyles();
   const theme = useTheme();
-  const Page = children;
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'), {
     defaultMatches: true
   });
@@ -62,7 +61,7 @@ const MainContainer = ({ children }) => {
         variant={isDesktop ? 'persistent' : 'temporary'}        
       />
       <main className={classes.content}>
-        <Breadcrumbs pages={pages}/>
+        <Breadcrumbs/>
         {children}
         <Footer />
       </main>

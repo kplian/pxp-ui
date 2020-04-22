@@ -17,6 +17,7 @@ import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import * as _ from 'lodash';
 import { useSelector } from 'react-redux';
 import { history } from '../routers/AppRouter';
+import usePages from '../hooks/usePages';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -77,12 +78,13 @@ function generateNames( pages = [], menu, match ) {
   return results;
 }
 
-function BreadcrumbsPxp({ pages, className, ...rest }) {
+function BreadcrumbsPxp({ className, ...rest }) {
   const classes = useStyles();
   
   const menu = useSelector(state => state.auth.menu);
   // const history = useHistory();
   console.log('history', history);
+  const { pages } = usePages();
   const match = useRouteMatch();
   const breads = generateNames(pages, menu, match);
 
@@ -114,7 +116,7 @@ function BreadcrumbsPxp({ pages, className, ...rest }) {
           variant="h3"
           color="textPrimary"
         >
-            { _.last(breads).text }
+            { breads && _.last(breads).text }
         </Typography>
 
       </Grid>
