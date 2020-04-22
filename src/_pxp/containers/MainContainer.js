@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const MainContainer = ({ children, pages }) => {  
+const MainContainer = ({ children }) => {  
   const classes = useStyles();
   const theme = useTheme();
   const Page = children;
@@ -59,8 +59,7 @@ const MainContainer = ({ children, pages }) => {
       <Sidebar
         onClose={handleSidebarClose}
         open={shouldOpenSidebar}
-        variant={isDesktop ? 'persistent' : 'temporary'}
-        pages={pages}
+        variant={isDesktop ? 'persistent' : 'temporary'}        
       />
       <main className={classes.content}>
         <Breadcrumbs pages={pages}/>
