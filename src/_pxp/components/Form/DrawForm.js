@@ -1,11 +1,10 @@
 import React from 'react';
-import InitValues from '../hooks/InitValues';
+import InitValues from './../../hooks/InitValues';
 import TextFieldPxp from './TextFieldPxp';
 import TextFieldSelectPxp from './TextFieldSelectPxp';
 import AutocompletePxp from './AutocompletePxp';
 import Grid from '@material-ui/core/Grid';
 import { Box, Button } from '@material-ui/core';
-import LoadingScreen from '../../../components/LoadingScreen';
 
 const DrawForm = ({ data, handles }) => {
   //init the draw and the states

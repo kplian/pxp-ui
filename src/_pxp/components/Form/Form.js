@@ -2,15 +2,12 @@ import React, {useState} from 'react';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import DrawForm from './DrawForm';
-import { Box, Button, Card, Container, makeStyles, Paper } from '@material-ui/core';
+import { Box, Button, Card, Container, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import Grid from '@material-ui/core/Grid';
-import Page from '../../../components/Page';
 import Header from './Header'
 import connection from 'pxp-client';
-import LoadingScreen from '../../../components/LoadingScreen';
-import SplashScreen from '../../../components/SplashScreen';
 import { useSnackbar } from 'notistack';
+import LoadingScreen from "../LoadingScreen";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -181,22 +178,18 @@ const Form = ({className, rest, data, dialog = false }) => {
       {
         (dialog)
           ? <DrawForm data={data} handles={handles}/>
-          : <Page
-            className={classes.root}
-            title="test form"
-          >
-            <Container maxWidth={false}>
+          : <Container maxWidth={false}>
               <Header nameForm={nameForm}/>
               <Box mt={3}>
                 <Card
-                  className={clsx(classes.root, className)}
-                  {...rest}
+                    className={clsx(classes.root, className)}
+                    {...rest}
                 >
                   <Box p={2}>
                     <Box
-                      mt={3}
-                      display="flex"
-                      alignItems="center"
+                        mt={3}
+                        display="flex"
+                        alignItems="center"
                     />
                     <DrawForm data={data} handles={handles}/>
                   </Box>
@@ -204,9 +197,8 @@ const Form = ({className, rest, data, dialog = false }) => {
                 </Card>
               </Box>
             </Container>
-          </Page>
       }
-      { loadingScreen && <SplashScreen /> }
+      { loadingScreen && <LoadingScreen /> }
 
 
     </>
