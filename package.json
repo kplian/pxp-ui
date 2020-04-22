@@ -13,7 +13,7 @@
     "history": "^4.10.1",
     "lodash": "^4.17.15",
     "material-design-icons": "^3.0.1",
-    "pxp-client": "file:../pxp-client",
+    "pxp-client": "^2.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-perfect-scrollbar": "^1.5.8",
@@ -22,7 +22,8 @@
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "typeface-roboto": "^0.0.75"
+    "typeface-roboto": "^0.0.75",
+    "yup": "^0.28.3"
   },
   "scripts": {
     "start": "react-scripts start",
