@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -13,16 +14,9 @@ import {
   makeStyles
 } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-
-import PlusCircleIcon from '@material-ui/icons/AddCircleOutline';
-import DownloadIcon from '@material-ui/icons/GetApp';
-import UploadIcon from '@material-ui/icons/Publish';
-// import {
-//   PlusCircle as PlusCircleIcon,
-//   Download as DownloadIcon,
-//   Upload as UploadIcon
-// } from 'react-feather';
+import * as _ from 'lodash';
 import { useSelector } from 'react-redux';
+import { history } from '../routers/AppRouter';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -37,12 +31,61 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+function generateNames( pages = [], menu, match ) {
+
+  const values = _.compact(match.path.split('/'));
+  
+  let matches = [] ,temp= '';
+  values.map( item =>{
+    temp =  temp + '/' + item;
+    matches.push(temp);
+  });
+
+  let results = _.compact(Object.keys(pages).map( key => {
+      if (_.includes(matches,pages[key].path)) {
+        return {...pages[key], name:key };
+      } else {
+        return null;
+      }
+  }));
+
+  // function findByText(data, text) {
+  //   for(var i = 0; i < data.length; i++) {
+  //       if (data[i].component === text) {
+  //           return data[i];
+  //       } else if (data[i].childrens && data[i].childrens.length && typeof data[i].childrens === "object") {
+  //           return findByText(data[i].childrens, text);
+  //       }
+  //   }
+  // }
+
+  function recursiveChild(array) {
+    let arrayAux = [];
+    array.forEach( item => {
+      arrayAux.push(item);
+      if( item.childrens && item.childrens.length > 0 ) {
+        arrayAux.push(...recursiveChild(item.childrens));
+      }
+    });
+    return arrayAux;
+  }
+
+  results = results.map( page => {
+    const item = _.find(recursiveChild(menu), { component: page.name });
+    return { ...page, text: item.text };
+  });
+  return results;
+}
+
 function BreadcrumbsPxp({ pages, className, ...rest }) {
   const classes = useStyles();
+  
   const menu = useSelector(state => state.auth.menu);
+  // const history = useHistory();
+  console.log('history', history);
+  const match = useRouteMatch();
+  const breads = generateNames(pages, menu, match);
 
-    console.log('pages', pages, menu);
-    
   return (
     <Grid
       className={clsx(classes.root, className)}
@@ -56,70 +99,24 @@ function BreadcrumbsPxp({ pages, className, ...rest }) {
           separator={<NavigateNextIcon fontSize="small" />}
           aria-label="breadcrumb"
         >
-          <Link
-            variant="body1"
-            color="inherit"
-            to="/app"
-            component={RouterLink}
-          >
-            Dashboard
-          </Link>
-          <Link
-            variant="body1"
-            color="inherit"
-            to="/app/management"
-            component={RouterLink}
-          >
-            Management
-          </Link>
-          <Typography
-            variant="body1"
-            color="textPrimary"
-          >
-            Customers
-          </Typography>
+          { breads.map( (bread, i) =>(
+              <Link key={ bread.text }
+              variant="body1"
+              color={ i === breads.length - 1 ? "textPrimary" : "inherit"}
+              to={ bread.path }
+              component={RouterLink}
+            >
+              { bread.text }
+            </Link>
+          ))}
         </Breadcrumbs>
         <Typography
           variant="h3"
           color="textPrimary"
         >
-          All Customers
+            { _.last(breads).text }
         </Typography>
-        <Box mt={2}>
-          <Button className={classes.action}>
-            <SvgIcon
-              fontSize="small"
-              className={classes.actionIcon}
-            >
-              <UploadIcon />
-            </SvgIcon>
-            Import
-          </Button>
-          <Button className={classes.action}>
-            <SvgIcon
-              fontSize="small"
-              className={classes.actionIcon}
-            >
-              <DownloadIcon />
-            </SvgIcon>
-            Export
-          </Button>
-        </Box>
-      </Grid>
-      <Grid item>
-        <Button
-          color="secondary"
-          variant="contained"
-          className={classes.action}
-        >
-          <SvgIcon
-            fontSize="small"
-            className={classes.actionIcon}
-          >
-            <PlusCircleIcon />
-          </SvgIcon>
-          New Customer
-        </Button>
+
       </Grid>
     </Grid>
   );

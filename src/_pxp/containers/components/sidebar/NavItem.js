@@ -102,7 +102,6 @@ const NavItem = ({title, icon, href, open: openProp, depth, children, className,
         key={title}
         {...rest}
       >
-      {console.log('render menu:',title)}
         <Button
           className={classes.button}
           onClick={handleOpen}
@@ -139,7 +138,6 @@ const NavItem = ({title, icon, href, open: openProp, depth, children, className,
         key={title}
         {...rest}
       >
-      {console.log('render menu:',title)}
         <Button
           activeClassName={classes.active}
           className={clsx(classes.buttonLeaf, `depth-${depth}`)}

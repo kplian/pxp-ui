@@ -64,6 +64,7 @@ const MainContainer = ({ children, pages }) => {
       />
       <main className={classes.content}>
         <Breadcrumbs pages={pages}/>
+        {children}
         <Footer />
       </main>
       <LoginDialog />

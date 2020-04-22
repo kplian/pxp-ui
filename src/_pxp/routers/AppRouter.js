@@ -24,6 +24,7 @@ const AppRouter = ({ LoginContainer: MyLoginContainer = undefined,
   const pages = {...pxpPages, ...myPages};  
   
   const routes = useSelector(state => state.auth.routes);
+  const privatePaths = routes.map((route) => pages[route.component].path);
   return(
     <Router history={history}>
     {console.log('render routes')}
@@ -36,7 +37,8 @@ const AppRouter = ({ LoginContainer: MyLoginContainer = undefined,
               component={() => (              
                 <Redirect to={config.publicInitRoute || '/login'} /> 
               )}              
-            />            
+            /> 
+                     
             <Route 
               path="/login"  
               exact={true}               
@@ -44,39 +46,51 @@ const AppRouter = ({ LoginContainer: MyLoginContainer = undefined,
                 return(
                 <AuthPublic>
                   <LoginContainer/>
-                </AuthPublic>
+                </AuthPublic>                  
               )}}
-            />                  
-            {routes.map((route) => {  
-              const Component = pages[route.component].path.component;             
-              return(                 
-                <Route
-                  key={route.id} 
-                  exact={true}
-                  path={pages[route.component].path}   
-                  render={() => (
-                    <AuthPrivate>
-                      <MainContainer pages={pages}>                       
-                      </MainContainer>  
-                    </AuthPrivate>
-                  )}
-                />
-              );
-            })}
-            {config.publicRoutes.map((route) => {              
-              return( 
-                <Route
-                  key={route.id} 
-                  exact={true}
-                  path={"/" + route.component}   
-                  render={() => (
-                    <AuthPublic>
-                      <PublicContainer Page={pages[route.component]} />
-                    </AuthPublic>
-                  )}
-                />
-              );
-            })}                 
+            />  
+              
+            <Route exact path={privatePaths}> 
+              <MainContainer pages={pages}>
+                <Switch>        
+                {routes.map((route) => {  
+                  const Component = pages[route.component].component;             
+                  return(                 
+                    <Route
+                      key={route.id} 
+                      exact={true}
+                      path={pages[route.component].path}   
+                      render={() => (
+                        <AuthPrivate>                          
+                            <Component/>
+                        </AuthPrivate>
+                      )}
+                    />
+                  );
+                })}
+                </Switch>  
+              </MainContainer>
+            </Route>
+            <Route exact path={config.publicRoutes}>
+              <PublicContainer>
+                <Switch>
+                {config.publicRoutes.map((route) => {              
+                  return( 
+                    <Route
+                      key={route.id} 
+                      exact={true}
+                      path={"/" + route.component}   
+                      render={() => (
+                        <AuthPublic>
+                          {pages[route.component]}
+                        </AuthPublic>
+                      )}
+                    />
+                  );
+                })} 
+                </Switch>
+              </PublicContainer>   
+            </Route>             
             <Route component={NotFoundPage} />
           </Switch>
         </Suspense>

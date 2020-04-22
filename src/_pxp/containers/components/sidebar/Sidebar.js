@@ -47,7 +47,6 @@ const Sidebar = props => {
       open={open}
       variant={variant}
     >
-    {console.log('render menu')}
       <Box
         height="100%"
         display="flex"
