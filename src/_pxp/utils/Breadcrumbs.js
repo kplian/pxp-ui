@@ -71,11 +71,10 @@ function generateNames( pages = [], menu, match ) {
     return arrayAux;
   }
 
-  results = results.map( page => {
+  return results.map( page => {
     const item = _.find(recursiveChild(menu), { component: page.name });
-    return { ...page, text: item.text };
+    return { ...page, text: item && item.text ? item.text: 'None' };
   });
-  return results;
 }
 
 function BreadcrumbsPxp({ className, ...rest }) {
@@ -112,12 +111,14 @@ function BreadcrumbsPxp({ className, ...rest }) {
             </Link>
           ))}
         </Breadcrumbs>
-        <Typography
-          variant="h3"
-          color="textPrimary"
-        >
-            { breads && _.last(breads).text }
-        </Typography>
+        {
+          // <Typography
+          //   variant="h3"
+          //   color="textPrimary"
+          // >
+          //     { breads && _.last(breads).text }
+          // </Typography>
+        }
 
       </Grid>
     </Grid>
