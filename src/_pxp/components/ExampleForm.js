@@ -13,6 +13,7 @@ const ExampleForm = () => {
     columns: {
       nombre: {
         type: 'TextField',
+        typeTextField: 'password',
         label: 'Nombre',
         initialValue: '',
         allowBlank: false,

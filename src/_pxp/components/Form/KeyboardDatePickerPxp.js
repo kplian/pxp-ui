@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
@@ -27,23 +26,18 @@ const areEqual = (prev, next) =>
   prev.error === next.error
 
 // eslint-disable-next-line react/prop-types
-export const KeyboardDatePickerPxp_ = ({ name, value, configInput, handles, error, states }) => {
+export const KeyboardDatePickerPxpComponent = ({ name, value, configInput, handles, error, states }) => {
   const classes = useStyles();
 
-  console.log('KeyboardDatePickerPxp_', configInput)
 
-  const {validate, label, variant, onChange, gridForm, minDate, maxDate} = configInput;
+  const { label, variant, gridForm, minDate, maxDate} = configInput;
 
-  const msg = (validate) && validate.error.error.msg;
 
 
   const minMaxDate = {
     ...(minDate && { minDate: minDate }),
     ...(maxDate && { maxDate: maxDate }),
   };
-
-
-  console.log(minMaxDate)
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -53,11 +47,11 @@ export const KeyboardDatePickerPxp_ = ({ name, value, configInput, handles, erro
           autoOk
 
           //disableToolbar
-          variant="inline"
+          variant={variant}
           format="dd/MM/yyyy"
           margin="normal"
-          id="date-picker-inline"
-          label="Date picker inline"
+          id={name}
+          label={label}
           value={value}
           onChange={(date) => handles.handleChange(
             { name: name, value: date, configInputState:configInput, states:states}
@@ -80,8 +74,6 @@ export const KeyboardDatePickerPxp_ = ({ name, value, configInput, handles, erro
 /**
  * A memoized component that will re-render only one of props described in areEqual change.
  */
-const KeyboardDatePickerPxp = React.memo(props => <KeyboardDatePickerPxp_ {...props} />, areEqual);
-
-
+const KeyboardDatePickerPxp = React.memo(props => <KeyboardDatePickerPxpComponent {...props} />, areEqual);
 
 export default KeyboardDatePickerPxp;

@@ -96,7 +96,7 @@ const DrawForm = ({ data, handles }) => {
           color="primary"
           onClick={(e) => handles.handleSubmitForm(e, states)}
         >
-          Save
+          {data.submitLabel || 'Submit'}
         </Button>
       </Box>
 

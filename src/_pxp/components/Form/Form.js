@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import DrawForm from './DrawForm';
@@ -71,7 +71,7 @@ const Form = ({className, rest, data, dialog = false }) => {
   const { enqueueSnackbar } = useSnackbar();
 
   //separate json for button submit onSubmit
-  const { onSubmit, nameForm, resetButton } = data;
+  const { onSubmit, nameForm } = data;
 
   // init data with custom values
   const getDateWithFormat = (date, format) => {
@@ -95,7 +95,6 @@ const Form = ({className, rest, data, dialog = false }) => {
         ...(column.minDate && { minDate: getDateWithFormat(column.minDate, column.format) }),
         ...(column.maxDate && { maxDate: getDateWithFormat(column.maxDate, column.format) }),
       }
-      console.log(jsonDate)
     }
 
     return {
@@ -110,20 +109,16 @@ const Form = ({className, rest, data, dialog = false }) => {
     { ...t, [nameKey]: setupColumn(value) }
   ), {});
 
-  console.log('configInitialized', configInitialized)
   const dataInitialized = {
     ...data,
     columns: configInitialized
   }
-
 
   // init form data aux like validations and debounce for not processing many times
   const validations = Object.entries(data.columns).filter(([nameKey, value]) => typeof value.validate === 'object').reduce((t, [nameKey, value]) => (
     { ...t, [nameKey]: value.validate.shape }
   ), {});
   const schema = Yup.object().shape(validations);
-
-
 
   // this handle has debounce for start with searching after 500 ms
   const handleInputChange = _.debounce(async (value, isSearchable, store) => {
@@ -135,11 +130,9 @@ const Form = ({className, rest, data, dialog = false }) => {
     }
   }, 500);
 
-
   const handleChange = ({ event, name, value, data, configInputState, states }) => {
     event && event.preventDefault(); // in some inputs we dont have event like date pickers
     const { _value, validate } = configInputState;
-    console.log('value on change', value)
 
     if (validations[name]) {
       schema.validateAt(name, { [name]: value }).then((valid) => {
@@ -159,13 +152,10 @@ const Form = ({className, rest, data, dialog = false }) => {
   };
 
   const handleDateChange = ({event, date, configInputState, states}) => {
-    console.log(event)
-    console.log(configInputState)
-    const { _value, validate } = configInputState;
+
+    const { _value } = configInputState;
     _value.setValue(date);
 
-    console.log(configInputState)
-    console.log(date)
   };
 
 
@@ -190,6 +180,17 @@ const Form = ({className, rest, data, dialog = false }) => {
 
   const [loadingScreen, setLoadingScreen] = useState(false);
 
+
+  // this factory is if exist some error then this  send to draw again the input with error or inputs
+  const validateAllValues = (values, states) => {
+    try {
+      schema.validateSync(values, { abortEarly: false });
+    } catch (errors) {
+      errors.inner.forEach((error) => {
+        states[error.path].validate.error.setError({ error: true, msg:  error.message });
+      });
+    }
+  }
 
   const sendData = (values, states) => {
     setLoadingScreen(true);
@@ -218,17 +219,14 @@ const Form = ({className, rest, data, dialog = false }) => {
   // logic for submit button
   const handleSubmitForm = (e, states) => {
     e.preventDefault();
-    console.log('handleSubmitForm',states)
-
     const values = { ...getValues(states), ...onSubmit.extraParams };
+
+    validateAllValues(values, states);
 
     schema.isValid(values)
     .then(function(valid) {
       if(valid) {
         (typeof onSubmit === 'function') ? onSubmit({values, states}) : sendData(values, states)
-
-      } else {
-        alert('necesitas completar la validacion')
       }
     });
 

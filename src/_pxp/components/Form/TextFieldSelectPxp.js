@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { TextField } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
@@ -10,11 +10,9 @@ const areEqual = (prev, next) =>
   prev.error === next.error
 
 // eslint-disable-next-line react/prop-types
-export const TextFieldSelectPxp_ = ({ name, value, configInput, handles, error, states }) => {
+export const TextFieldSelectPxpComponent = ({ name, value, configInput, handles, error, states }) => {
 
-  console.log('TextFieldSelectPxp_', name)
-
-  const {validate, label, variant, onChange, gridForm} = configInput;
+  const {validate, label, variant, gridForm} = configInput;
 
   const msg = (validate) && validate.error.error.msg;
 
@@ -57,7 +55,7 @@ export const TextFieldSelectPxp_ = ({ name, value, configInput, handles, error, 
 /**
  * A memoized component that will re-render only one of props described in areEqual change.
  */
-const TextFieldSelectPxp = React.memo(props => <TextFieldSelectPxp_ {...props} />, areEqual);
+const TextFieldSelectPxp = React.memo(props => <TextFieldSelectPxpComponent {...props} />, areEqual);
 
 
 
