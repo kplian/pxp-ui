@@ -71,7 +71,7 @@ const Form = ({className, rest, data, dialog = false }) => {
   const { enqueueSnackbar } = useSnackbar();
 
   //separate json for button submit onSave
-  const { onSave, nameForm } = data;
+  const { onSubmit, nameForm } = data;
 
   // init data with custom values
   const getDateWithFormat = (date, format) => {
@@ -190,47 +190,51 @@ const Form = ({className, rest, data, dialog = false }) => {
 
   const [loadingScreen, setLoadingScreen] = useState(false);
 
+
+  const sendData = (values, states) => {
+    setLoadingScreen(true);
+    connection.doRequest({
+      url: onSubmit.url,
+      params: values
+    }).then(resp => {
+      if(!resp.error) {
+        //need to reset the form
+        resetForm(states);
+        enqueueSnackbar('Success', {
+          variant: 'success',
+          action: <Button>See all</Button>
+        });
+      } else {
+        enqueueSnackbar('Error', {
+          variant: 'error',
+          action: <Button>See all</Button>
+        });
+      }
+      setLoadingScreen(false);
+
+    });
+  }
+
   // logic for submit button
   const handleSubmitForm = (e, states) => {
     e.preventDefault();
     console.log('handleSubmitForm',states)
 
-    const values = { ...getValues(states), ...onSave.extraParams };
+    const values = { ...getValues(states), ...onSubmit.extraParams };
 
     schema.isValid(values)
     .then(function(valid) {
-
       if(valid) {
-        setLoadingScreen(true);
-        connection.doRequest({
-          url: onSave.url,
-          params: values
-        }).then(resp => {
-          if(!resp.error) {
-            //need to reset the form
-            resetForm(states);
-            enqueueSnackbar('Success', {
-              variant: 'success',
-              action: <Button>See all</Button>
-            });
-          } else {
-            enqueueSnackbar('Error', {
-              variant: 'error',
-              action: <Button>See all</Button>
-            });
-          }
-          setLoadingScreen(false);
+        (typeof onSubmit === 'function') ? onSubmit({values, states}) : sendData(values, states)
 
-        });
       } else {
         alert('necesitas completar la validacion')
       }
-
-
     });
 
-
   };
+
+
 
   const handles = { handleChange, handleInputChange, handleSubmitForm, handleDateChange };
 

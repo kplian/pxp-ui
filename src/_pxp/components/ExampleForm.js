@@ -99,7 +99,7 @@ const ExampleForm = () => {
 
       }
     },
-    onSave: {
+    onSubmit: {
       url: 'seguridad/Persona/guardarPersona',
       extraParams: {
         correo: '', celular1: '', celular2: '', telefono1: '', telefono2: '', matricula: '', historia_clinica: '',
@@ -194,7 +194,7 @@ const ExampleForm = () => {
         variant: 'outlined'
       }
     },
-    onSave: {
+    onSubmit: {
       url: 'seguridad/Persona/insertarPersona',
       extraParams: {a: '1', b: '2'}
       //todo need to add typeSend for change to send all in jsonFormat or normal pxp
@@ -216,15 +216,13 @@ const ExampleForm = () => {
         gridForm: {xs: 12, sm: 6},
         variant: 'outlined',
         validate: {
-          shape: Yup.date().required('Required')
+          shape: Yup.string().required('Required')
         }
       },
 
     },
-    onSave: {
-      url: 'seguridad/algo/ejemplo',
-      extraParams: {a: '1', b: '2'}
-      //todo need to add typeSend for change to send all in jsonFormat or normal pxp
+    onSubmit : ({values}) => { //we can send an handle for receiving data from form here
+      console.log(values)
     }
   };
 
