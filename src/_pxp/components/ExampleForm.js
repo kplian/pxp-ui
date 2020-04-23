@@ -99,6 +99,7 @@ const ExampleForm = () => {
 
       }
     },
+    resetButton: true,
     onSubmit: {
       url: 'seguridad/Persona/guardarPersona',
       extraParams: {
@@ -221,6 +222,7 @@ const ExampleForm = () => {
       },
 
     },
+    resetButton: true,
     onSubmit : ({values}) => { //we can send an handle for receiving data from form here
       console.log(values)
     }

@@ -70,8 +70,8 @@ const Form = ({className, rest, data, dialog = false }) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
-  //separate json for button submit onSave
-  const { onSubmit, nameForm } = data;
+  //separate json for button submit onSubmit
+  const { onSubmit, nameForm, resetButton } = data;
 
   // init data with custom values
   const getDateWithFormat = (date, format) => {
@@ -170,7 +170,7 @@ const Form = ({className, rest, data, dialog = false }) => {
 
 
 
-  const resetForm = (states) => {
+  const resetForm = ({states}) => {
     Object.entries(states).forEach(([nameKey, state]) => {
       state._value.setValue('');
     })
@@ -199,7 +199,7 @@ const Form = ({className, rest, data, dialog = false }) => {
     }).then(resp => {
       if(!resp.error) {
         //need to reset the form
-        resetForm(states);
+        resetForm({states});
         enqueueSnackbar('Success', {
           variant: 'success',
           action: <Button>See all</Button>
@@ -236,7 +236,7 @@ const Form = ({className, rest, data, dialog = false }) => {
 
 
 
-  const handles = { handleChange, handleInputChange, handleSubmitForm, handleDateChange };
+  const handles = { handleChange, handleInputChange, handleSubmitForm, handleDateChange, resetForm };
 
   return (
     <>
