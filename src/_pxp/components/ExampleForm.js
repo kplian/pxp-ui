@@ -202,10 +202,39 @@ const ExampleForm = () => {
   };
 
 
+  const datePickers = {
+    nameForm: 'Formulario Datepickers',
+    columns: {
+
+      date: {
+        type: 'DatePicker',
+        label: 'Date',
+        initialValue: '22-05-2020',
+        minDate: '01-05-2020',
+        maxDate: '05-06-2020',
+        format: 'DD-MM-YYYY',
+        gridForm: {xs: 12, sm: 6},
+        variant: 'outlined',
+        validate: {
+          shape: Yup.date().required('Required')
+        }
+      },
+
+    },
+    onSave: {
+      url: 'seguridad/algo/ejemplo',
+      extraParams: {a: '1', b: '2'}
+      //todo need to add typeSend for change to send all in jsonFormat or normal pxp
+    }
+  };
+
+
+
   return (
     <>
       <Form data={jsonPersona}/>
       <Form data={jsonConfig}/>
+      <Form data={datePickers}/>
     </>
   );
 };

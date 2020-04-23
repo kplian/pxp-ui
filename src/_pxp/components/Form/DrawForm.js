@@ -5,6 +5,7 @@ import TextFieldSelectPxp from './TextFieldSelectPxp';
 import AutocompletePxp from './AutocompletePxp';
 import Grid from '@material-ui/core/Grid';
 import { Box, Button } from '@material-ui/core';
+import KeyboardDatePickerPxp from "./KeyboardDatePickerPxp";
 
 const DrawForm = ({ data, handles }) => {
   //init the draw and the states
@@ -54,6 +55,21 @@ const DrawForm = ({ data, handles }) => {
                 />
               );
             }
+
+            if (values.type === 'DatePicker') {
+              return (
+                <KeyboardDatePickerPxp key={index}
+                                       name={nameKey}
+                                       value={values._value.value}
+                                       configInput={values}
+                                       handles={handles}
+                                       memoDisabled={values.memoDisabled}
+                                       error={values.validate.error.error.error}
+                                       states={states}
+                />
+              );
+            }
+
             return ('');
           })
 
