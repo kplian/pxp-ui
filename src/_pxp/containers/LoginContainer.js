@@ -1,21 +1,22 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import LoginDialog from '../containers/components/LoginDialog';
+import LoginDialog from './components/LoginDialog';
 
 const LoginContainer = () => {
   const PxpLoginPage = () => (
     <div>
+      fdf
       <Typography variant="h1" component="h2" gutterBottom>
         PXP Login Page
-      </Typography>        
+      </Typography>
     </div>
   );
-  return ( 
-      <Container maxWidth="sm">
-        <PxpLoginPage />
-        <LoginDialog open={true} />  
-      </Container>
+  return (
+    <Container maxWidth="sm">
+      <PxpLoginPage />
+      <LoginDialog open />
+    </Container>
   );
 };
 
