@@ -32,7 +32,7 @@ const AppRouter = ({ LoginContainer: MyLoginContainer = undefined,
   return(
     <Router history={history}>    
       <div> 
-        <Suspense fallback={<div>Loading...</div>}>       
+               
           <Switch>            
             <Route 
               path="/" 
@@ -95,8 +95,7 @@ const AppRouter = ({ LoginContainer: MyLoginContainer = undefined,
               </PublicContainer>   
             </Route>             
             <Route component={NotFoundPage} />
-          </Switch>
-        </Suspense>
+          </Switch>       
       </div>
     </Router>
   );

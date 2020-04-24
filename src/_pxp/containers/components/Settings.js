@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { capitalCase } from 'change-case';
+import { useTranslation } from 'react-i18next';
 import {
   Badge,
   Box,
@@ -24,6 +25,11 @@ const THEMES = {
   KPLIAN: 'KPLIAN'
 };
 
+const LANGUAGES = {
+  ENGLISH: 'en',
+  SPANISH: 'es'
+};
+
 const useStyles = makeStyles((theme) => ({
   badge: {
     height: 10,
@@ -41,13 +47,16 @@ const useStyles = makeStyles((theme) => ({
 function Settings() {
   const classes = useStyles();
   const ref = useRef(null);
+  const { t } = useTranslation('segu_user');
   
   const { settings, saveSettings } = useSettings();
+  
   const [isOpen, setOpen] = useState(false);
   const [values, setValues] = useState({
     direction: settings.direction,
     responsiveFontSizes: settings.responsiveFontSizes,
-    theme: settings.theme
+    theme: settings.theme,
+    language: settings.language || settings.defaultLanguage
   });
 
   const handleOpen = () => {
@@ -65,14 +74,14 @@ function Settings() {
     });
   };
 
-  const handleSave = () => {
+  const handleSave = () => {    
     saveSettings(values);
     setOpen(false);
   };
 
   return (
     <>
-      <Tooltip title="Settings">
+      <Tooltip title={t('settings1')}>
         <Badge
           color="secondary"
           variant="dot"
@@ -103,7 +112,7 @@ function Settings() {
           variant="h4"
           color="textPrimary"
         >
-          Settings
+          {t('settings')}
         </Typography>
         <Box
           mt={2}
@@ -138,6 +147,27 @@ function Settings() {
                 value={theme}
               > 
                 {capitalCase(theme)}
+              </option>
+            ))}
+          </TextField>
+        </Box>
+        <Box mt={2}>
+          <TextField
+            fullWidth
+            label="Language"
+            name="language"
+            onChange={(event) => handleChange('language', event.target.value)}
+            select
+            SelectProps={{ native: true }}
+            value={values.language}
+            variant="outlined"
+          >
+            {Object.keys(LANGUAGES).map((key) => (
+              <option
+                key={LANGUAGES[key]}
+                value={LANGUAGES[key]}
+              > 
+                {capitalCase(key)}
               </option>
             ))}
           </TextField>
