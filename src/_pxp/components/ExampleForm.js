@@ -13,6 +13,7 @@ const ExampleForm = () => {
     columns: {
       nombre: {
         type: 'TextField',
+        typeTextField: 'password',
         label: 'Nombre',
         initialValue: '',
         allowBlank: false,
@@ -99,7 +100,8 @@ const ExampleForm = () => {
 
       }
     },
-    onSave: {
+    resetButton: true,
+    onSubmit: {
       url: 'seguridad/Persona/guardarPersona',
       extraParams: {
         correo: '', celular1: '', celular2: '', telefono1: '', telefono2: '', matricula: '', historia_clinica: '',
@@ -194,7 +196,7 @@ const ExampleForm = () => {
         variant: 'outlined'
       }
     },
-    onSave: {
+    onSubmit: {
       url: 'seguridad/Persona/insertarPersona',
       extraParams: {a: '1', b: '2'}
       //todo need to add typeSend for change to send all in jsonFormat or normal pxp
@@ -202,10 +204,38 @@ const ExampleForm = () => {
   };
 
 
+  const datePickers = {
+    nameForm: 'Formulario Datepickers',
+    columns: {
+
+      date: {
+        type: 'DatePicker',
+        label: 'Date',
+        initialValue: '22-05-2020',
+        minDate: '01-05-2020',
+        maxDate: '05-06-2020',
+        format: 'DD-MM-YYYY',
+        gridForm: {xs: 12, sm: 6},
+        variant: 'outlined',
+        validate: {
+          shape: Yup.string().required('Required')
+        }
+      },
+
+    },
+    resetButton: true,
+    onSubmit : ({values}) => { //we can send an handle for receiving data from form here
+      console.log(values)
+    }
+  };
+
+
+
   return (
     <>
       <Form data={jsonPersona}/>
       <Form data={jsonConfig}/>
+      <Form data={datePickers}/>
     </>
   );
 };

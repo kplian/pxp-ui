@@ -8,7 +8,6 @@ import {
 } from '@material-ui/core';
 
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import { Link as RouterLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {},

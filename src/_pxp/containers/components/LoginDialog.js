@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -13,107 +13,78 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FormHelperText } from '@material-ui/core';
 import { Icon } from '@material-ui/core';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import * as Yup from "yup";
+import Form from "../../components/Form/Form";
+import LoadingScreen from "../../components/LoadingScreen";
 
-export default (props) => {  
+export default (props) => {
+
+  const [loadingScreen, setLoadingScreen] = useState(false);
   const [open] = React.useState(props.open);
-  const [login, setLogin] = React.useState(props.login || ''); 
-  const [error, setError] = React.useState(''); 
-  const [password, setPassword] = React.useState(''); 
+  const [error, setError] = React.useState('');
   const sessionDied = useSelector(state => state.auth.sessionDied);
   const dispatch = useDispatch();
 
-  const onLoginChange = (e) => {
-    setLogin(e.target.value);
-  };
-
-  const onPasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleLogin = () => {
-    if (!login || !password) {       
-      setError('Username and password should not be empty *');
-    } else {
-      setError('');      
-      //startLogin({ login, password });
-      dispatch(startLogin({ login, password })).then((error) => {
-        console.log('dialog', error);
-        if (error !== 'success') {
-          setError(error);
+  const userForm = {
+    columns: {
+      username: {
+        type: 'TextField',
+        label: 'Username',
+        autoFocus: true,
+        initialValue: props.login || '',
+        gridForm: {xs: 12, sm: 12},
+        variant: 'outlined',
+        validate: {
+          shape: Yup.string().required('Username is Required')
         }
-      });
-    }    
+      },
+      password: {
+        type: 'TextField',
+        typeTextField: 'password',
+        label: 'Password',
+        initialValue: '',
+        gridForm: {xs: 12, sm: 12},
+        variant: 'outlined',
+        validate: {
+          shape: Yup.string().required('Password is Required')
+        }
+      }
+    },
+    resetButton: true,
+    submitLabel: 'Login', // this is optional
+    onSubmit: ({ values }) => {
+      setLoadingScreen(true);
+      handleLogin(values.username, values.password);
+    }
   };
 
-  const handleReset = () => {
-    setLogin('');
-    setPassword('');
-    setError('');
+
+  const handleLogin = (login, password) => {
+    dispatch(startLogin({ login, password })).then((error) => {
+      console.log('dialog', error);
+      if (error !== 'success') {
+        setError(error);
+        setLoadingScreen(false);
+      }
+    });
   };
 
   const handleClose = () => {
 
   }
 
-  return (     
-      <Dialog open={open || sessionDied} onClose={handleClose} aria-labelledby="form-dialog-title">      
+  return (
+    <>
+      <Dialog open={open || sessionDied} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Sign in {config.applicationName}
         </DialogTitle>
-        <DialogContent>            
-            <TextField
-            autoFocus
-            margin="dense"
-            id="username"
-            label="Username"
-            type="text"
-            value={login}
-            onChange={onLoginChange}
-            fullWidth
-            required
-            InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <AccountCircle />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <TextField            
-            margin="dense"
-            id="password"
-            label="Password"
-            type="password"
-            value={password}
-            onChange={onPasswordChange}
-            fullWidth
-            required
-            onKeyPress={(e) => {              
-              if (e.key === 'Enter') {                
-                e.preventDefault();
-                handleLogin();
-              }
-            }}
-            InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Icon>
-                      <VisibilityOff />
-                    </Icon>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            {error && <FormHelperText error>{error}</FormHelperText>}            
-        </DialogContent>        
-        <DialogActions>
-            <Button variant="outlined" onClick={handleReset} color="primary">
-            Reset
-            </Button>
-            <Button variant="contained" onClick={handleLogin} color="primary">
-            Login
-            </Button>
-        </DialogActions>
-      </Dialog> 
-    
+        <DialogContent>
+          <Form data={userForm} dialog={true}/>
+          {error && <FormHelperText error>{error}</FormHelperText>}
+        </DialogContent>
+      </Dialog>
+      { loadingScreen && <LoadingScreen /> }
+    </>
+
   );
 }

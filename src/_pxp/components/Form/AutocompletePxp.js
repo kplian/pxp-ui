@@ -11,13 +11,9 @@ const areEqual = (prev, next) => (
   prev.loading === next.loading &&
   prev.open === next.open)
 
-const AutocompletePxp_ = ({ name, value, configInput, handles, loading, states }) => {
-
-  console.log('AutocompletePxp_', name)
+const AutocompletePxpComponent = ({ name, value, configInput, handles, loading, states }) => {
 
   const { label, variant, store, isSearchable, gridForm} = configInput;
-
-
 
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
@@ -77,6 +73,6 @@ const AutocompletePxp_ = ({ name, value, configInput, handles, loading, states }
 /**
  * A memoized component that will re-render only one of props described in areEqual change.
  */
-const AutocompletePxp = React.memo(props => <AutocompletePxp_ {...props} />, areEqual);
+const AutocompletePxp = React.memo(props => <AutocompletePxpComponent {...props} />, areEqual);
 
 export default AutocompletePxp;

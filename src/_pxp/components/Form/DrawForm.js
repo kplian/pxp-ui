@@ -5,12 +5,26 @@ import TextFieldSelectPxp from './TextFieldSelectPxp';
 import AutocompletePxp from './AutocompletePxp';
 import Grid from '@material-ui/core/Grid';
 import { Box, Button } from '@material-ui/core';
+import KeyboardDatePickerPxp from "./KeyboardDatePickerPxp";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+}));
+
 
 const DrawForm = ({ data, handles }) => {
   //init the draw and the states
   const states = Object.entries(data.columns).reduce((t, [nameKey, value]) => (
     { ...t, [nameKey]: { ...InitValues(value), memoDisabled:(value.onChange) ? false : true } }
   ), {});
+
+  const classes = useStyles();
+
 
   return (
     <>
@@ -54,19 +68,35 @@ const DrawForm = ({ data, handles }) => {
                 />
               );
             }
+
+            if (values.type === 'DatePicker') {
+              return (
+                <KeyboardDatePickerPxp key={index}
+                                       name={nameKey}
+                                       value={values._value.value}
+                                       configInput={values}
+                                       handles={handles}
+                                       memoDisabled={values.memoDisabled}
+                                       error={values.validate.error.error.error}
+                                       states={states}
+                />
+              );
+            }
+
             return ('');
           })
 
         }
       </Grid>
 
-      <Box mt={2} display="flex" justifyContent="flex-end">
+      <Box mt={2} display="flex" justifyContent="flex-end" className={classes.root}>
+        {data.resetButton && <Button variant="outlined" onClick={() => handles.resetForm({states}) }>Reset</Button>}
         <Button
           variant="contained"
           color="primary"
           onClick={(e) => handles.handleSubmitForm(e, states)}
         >
-          Save
+          {data.submitLabel || 'Submit'}
         </Button>
       </Box>
 
