@@ -97,6 +97,7 @@ function BreadcrumbsPxp({ className, ...rest }) {
     >
       <Grid item>
         <Breadcrumbs
+          maxItems={3}
           separator={<NavigateNextIcon fontSize="small" />}
           aria-label="breadcrumb"
         >

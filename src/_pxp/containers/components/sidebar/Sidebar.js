@@ -1,15 +1,17 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
-import { Divider, Drawer, Box } from '@material-ui/core';
+import { Divider, Drawer, Box, Hidden } from '@material-ui/core';
 import Profile from './Profile';
 import SidebarNav from './SideBarNav';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import clsx from 'clsx';
+import Logo from '../Logo';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
-    width: 240,
+    width: 256,
     [theme.breakpoints.up('lg')]: {
       marginTop: 64,
       height: 'calc(100% - 64px)'
@@ -54,10 +56,17 @@ const Sidebar = props => {
         className={ clsx( classes.boxDrawer, className )}
       >
         <PerfectScrollbar options={{ suppressScrollX: true }}>
-          <div
-            {...rest}
-            className={classes.root}
-          >
+              <Hidden lgUp>
+                <Box
+                  p={2}
+                  display="flex"
+                  justifyContent="center"
+                >
+                  <RouterLink to="/">
+                    <Logo />
+                  </RouterLink>
+                </Box>
+            </Hidden>
             <Box p={2}>
               <Profile />
             </Box>
@@ -68,7 +77,7 @@ const Sidebar = props => {
                 menu={menu}
               />        
             </Box>
-          </div>
+ 
         </PerfectScrollbar>
       </Box>
     </Drawer>
