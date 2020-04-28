@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   shiftContent: {
-    paddingLeft: 240
+    paddingLeft: 255
   },
   content: {
     flex: '1 1 auto',
