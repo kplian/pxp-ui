@@ -1,8 +1,8 @@
 import { lazy } from 'react';
 const pages = {};
 
-pages.SEGU__usuario = { 
+pages.Example = { 
     path: '/segu/usuario',
-    component: lazy(() => import('./components/Example'))
+    component: lazy(() => import('../_security/components/person/PersonForm'))
 };
 export default pages;

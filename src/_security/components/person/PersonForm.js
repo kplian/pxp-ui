@@ -3,18 +3,18 @@ import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import Form from './../components/Form/Form';
+import Form from '../../../_pxp/components/Form/Form';
+import { useTranslation } from 'react-i18next';
 
 
-const ExampleForm = () => {
-
+const PersonForm = () => {
+  const { t } = useTranslation('segu_user');
   const jsonPersona = {
     nameForm: 'Formulario Persona',
     columns: {
       nombre: {
         type: 'TextField',
-        typeTextField: 'password',
-        label: 'Nombre',
+        label: 'name',
         initialValue: '',
         allowBlank: false,
         maxLength: 255,
@@ -26,7 +26,7 @@ const ExampleForm = () => {
       },
       ap_paterno: {
         type: 'TextField',
-        label: 'Apellido Paterno',
+        label: t('flastname'),
         initialValue: '',
         allowBlank: false,
         maxLength: 255,
@@ -100,8 +100,7 @@ const ExampleForm = () => {
 
       }
     },
-    resetButton: true,
-    onSubmit: {
+    onSave: {
       url: 'seguridad/Persona/guardarPersona',
       extraParams: {
         correo: '', celular1: '', celular2: '', telefono1: '', telefono2: '', matricula: '', historia_clinica: '',
@@ -119,6 +118,7 @@ const ExampleForm = () => {
 
   const jsonConfig = {
     nameForm: 'Formulario Usuario',
+    translationNS:'',
     columns: {
       email: {
         type: 'TextField',
@@ -196,7 +196,7 @@ const ExampleForm = () => {
         variant: 'outlined'
       }
     },
-    onSubmit: {
+    onSave: {
       url: 'seguridad/Persona/insertarPersona',
       extraParams: {a: '1', b: '2'}
       //todo need to add typeSend for change to send all in jsonFormat or normal pxp
@@ -204,40 +204,12 @@ const ExampleForm = () => {
   };
 
 
-  const datePickers = {
-    nameForm: 'Formulario Datepickers',
-    columns: {
-
-      date: {
-        type: 'DatePicker',
-        label: 'Date',
-        initialValue: '22-05-2020',
-        minDate: '01-05-2020',
-        maxDate: '05-06-2020',
-        format: 'DD-MM-YYYY',
-        gridForm: {xs: 12, sm: 6},
-        variant: 'outlined',
-        validate: {
-          shape: Yup.string().required('Required')
-        }
-      },
-
-    },
-    resetButton: true,
-    onSubmit : ({values}) => { //we can send an handle for receiving data from form here
-      console.log(values)
-    }
-  };
-
-
-
   return (
     <>
       <Form data={jsonPersona}/>
       <Form data={jsonConfig}/>
-      <Form data={datePickers}/>
     </>
   );
 };
 
-export default ExampleForm;
+export default PersonForm;

@@ -1,7 +1,8 @@
 import React, {
   createContext,
   useState,
-  useEffect
+  useEffect,
+  Suspense
 } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -9,6 +10,7 @@ import _ from 'lodash';
 import { storeSettings } from './settings-store';
 import { ThemeProvider } from '@material-ui/core';
 import { createTheme } from '../themes';
+import { useTranslation } from 'react-i18next';
 
 const THEMES = {
   LIGHT: 'LIGHT',
@@ -19,7 +21,9 @@ const THEMES = {
 const defaultSettings = {
   direction: 'ltr',
   responsiveFontSizes: true,
-  theme: THEMES.LIGHT
+  theme: THEMES.LIGHT,
+  language: undefined,
+  defaultLanguage: undefined
 };
 const SettingsContext = createContext({
   settings: defaultSettings,
@@ -29,13 +33,21 @@ const SettingsContext = createContext({
 });
 
 export function SettingsProvider({ settings, children }) {
-  const [currentSettings, setCurrentSettings] = useState(settings || defaultSettings);
-
+  const { i18n } = useTranslation();
+  const [currentSettings, setCurrentSettings] = useState({ ...(settings || defaultSettings), defaultLanguage:i18n.language });
+  
+  
   const handleSaveSettings = (updatedSettings = {}) => {
     const mergedSettings = _.merge({}, currentSettings, updatedSettings);
-
+    if (mergedSettings.language !== i18n.language) {
+      i18n.changeLanguage(mergedSettings.language);
+    }
+    
     setCurrentSettings(mergedSettings);
     storeSettings(mergedSettings);
+    
+    
+    
     console.log('deff', mergedSettings, handleSaveSettings );
   };
 
@@ -46,17 +58,17 @@ export function SettingsProvider({ settings, children }) {
 
   
 
-  return (
+  return (    
     <SettingsContext.Provider
       value={{
         settings: currentSettings,
         saveSettings: handleSaveSettings
       }}
-    >
+    > {console.log('render settings')}
       <ThemeProvider theme={createTheme(currentSettings)}>
         {children}
       </ThemeProvider>
-    </SettingsContext.Provider>
+    </SettingsContext.Provider>    
   );
 }
 
