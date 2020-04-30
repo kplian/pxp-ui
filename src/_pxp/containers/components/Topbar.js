@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -6,7 +7,7 @@ import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
 import { startLogout } from '../../actions/auth';
 import { useDispatch } from 'react-redux';
-
+import Logo from './Logo';
 
 import Settings from './Settings';
 
@@ -26,6 +27,13 @@ const useStyles = makeStyles(theme => ({
   },
   signOutButton: {
     marginLeft: theme.spacing(1)
+  }, 
+  logo: {
+    // backgroundColor: theme.palette.background.paper,
+    // borderRadius: '5px',
+    // paddingLeft: '5px',
+    // paddingRight: '5px',
+    // paddingTop: '5px',
   }
 }));
 
@@ -50,7 +58,12 @@ const Topbar = props => {
             >
                 <MenuIcon />
             </IconButton>
-        </Hidden>       
+        </Hidden>   
+        <Hidden mdDown>
+          <RouterLink to="/" className={ classes.logo }>
+            <Logo />
+          </RouterLink>
+        </Hidden>    
         <div className={classes.flexGrow} />
         
         

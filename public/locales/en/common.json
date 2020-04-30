@@ -1,0 +1,9 @@
+{
+    "hello": "Hello {{ name }}",
+    "settings": "Settings",
+    "thankyou": "Thank you",
+    "mipagina":{
+        "hello":"Custom Hello"
+    },
+    "body": "Hello <1>{{ name }}</1>, you have a message."
+}

@@ -1,18 +1,17 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
-import { Avatar, Typography } from '@material-ui/core';
+import { Avatar, Typography, Box, Link } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    minHeight: 'fit-content'
+    // minHeight: 'fit-content'
   },
   avatar: {
-    width: 60,
-    height: 60
+    cursor: 'pointer',
+    width: 64,
+    height: 64,
+    border: '1px solid ' + theme.palette.action.disabled 
   },
   name: {
     marginTop: theme.spacing(1)
@@ -34,20 +33,35 @@ const Profile = props => {
       {...props}
       className={classes.root}
     >
-      <Avatar
-        alt="Person"
-        className={classes.avatar}
-        component={RouterLink}
-        src={user.avatar}
-        to="/settings"
-      />
-      <Typography
-        className={classes.name}
-        variant="h4"
+      <Box display="flex" justifyContent="center">
+        <Avatar
+            alt="User"
+            className={classes.avatar}
+            component={RouterLink}
+            src={user.avatar}
+            to="/settings"
+          />
+      </Box>
+      <Box
+        mt={2}
+        textAlign="center"
       >
-        {user.name}
-      </Typography>
-      <Typography variant="body2">{user.bio}</Typography>
+        <Link
+          component={RouterLink}
+          to="/settings"
+          variant="h5"
+          color="textPrimary"
+          underline="none"
+        >
+          {`${user.name}`}
+        </Link>
+        <Typography
+          variant="body2"
+          color="textSecondary"
+        >
+          {user.bio}
+        </Typography>
+      </Box>
     </div>
   );
 };

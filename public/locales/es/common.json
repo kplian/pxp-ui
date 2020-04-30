@@ -1,0 +1,7 @@
+{
+    "hello": "Hola {{ name }}",    
+    "settings": "Herramientas",
+    "mipagina":{
+        "hello":"Hola propio"
+    }    
+}
