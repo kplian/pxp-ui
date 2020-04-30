@@ -11,10 +11,10 @@ import AuthPrivate from './AuthPrivate';
 import config from '../../config';
 import usePages from '../hooks/usePages';
 
-const RouteException = (message) => {
+function RouteException(message) {
   this.message = message;
   this.title = 'RouteException';
-};
+}
 
 const AppRouter = ({
   LoginContainer: MyLoginContainer = undefined,
@@ -29,7 +29,7 @@ const AppRouter = ({
   const routes = useSelector((state) => state.auth.routes);
   routes.forEach((element) => {
     if (!pages[element.component]) {
-      throw RouteException(
+      throw new RouteException(
         `Does not exists a component for ${element.component} in your pages object. Ensure that your component is lazy loaded from index file`,
       );
     }

@@ -61,8 +61,8 @@ import { login, startSetMenu } from './_pxp/actions/auth';
 import pxpPages from './_pxp/pxpPages';
 
 // import your custom pages
-import contaPages from './contabilidad/components';
-import presuPages from './presupuestos/components';
+// import contaPages from './contabilidad/components';
+// import presuPages from './presupuestos/components';
 
 // init translations
 // eslint-disable-next-line no-unused-vars
@@ -85,7 +85,9 @@ const jsx = (
   <Provider store={store}>
     <Suspense fallback={<div>Loading...</div>}>
       <SettingsProvider settings={settings}>
-        <PagesProvider pages={{ ...pxpPages, ...contaPages, ...presuPages }}>
+        <PagesProvider
+          pages={{ ...pxpPages /*, ...contaPages, ...presuPages*/ }}
+        >
           <CssBaseline />
           <SnackbarProvider maxSnack={1}>
             <AppRouter />
