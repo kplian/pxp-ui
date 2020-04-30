@@ -67,6 +67,7 @@ import pxpPages from './_pxp/pxpPages';
 // init translations
 // eslint-disable-next-line no-unused-vars
 import i18n from './_pxp/i18n';
+import LoadingScreen from "./_pxp/components/LoadingScreen";
 
 PxpClient.init(
   config.host,
@@ -83,7 +84,7 @@ const settings = restoreSettings();
 
 const jsx = (
   <Provider store={store}>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingScreen/>}>
       <SettingsProvider settings={settings}>
         <PagesProvider
           pages={{ ...pxpPages /*, ...contaPages, ...presuPages*/ }}
