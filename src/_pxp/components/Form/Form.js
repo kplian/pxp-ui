@@ -1,3 +1,10 @@
+/**
+ * Component Form for rendering a Form with many type from json config of for any pxp-ui project
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ *
+ */
+
 import React, { useState} from 'react';
 import * as Yup from 'yup';
 import _ from 'lodash';
@@ -205,6 +212,8 @@ const Form = ({className, rest, data, dialog = false }) => {
           variant: 'success',
           action: <Button>See all</Button>
         });
+        (typeof onSubmit.callback === 'function') && onSubmit.callback()
+
       } else {
         enqueueSnackbar('Error', {
           variant: 'error',

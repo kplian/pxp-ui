@@ -1,3 +1,10 @@
+/**
+ * Hooks for getting data from hooks state of for any pxp-ui project
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ *
+ */
+
 import { useState, useEffect } from 'react';
 import connection from "pxp-client";
 
@@ -22,7 +29,40 @@ const useFetch = (options) => {
 
         setLoading(true);
 
-        const response = await fetch(
+        connection.doRequest({
+          url: options.url,
+          params: options.params
+        }).then(resp => {
+
+          if (resp && isMounted) {
+            if (resp.status >= 400 && resp.status < 600) {
+              setError(resp);
+            } else {
+              //setData(resp);
+              if(options.infinite === true) {
+                setData(prevData => {
+                  if(prevData){
+                    return {...prevData, datos:prevData.datos.concat(resp.datos)}
+
+                  }else{
+                    return resp
+                  }
+                })
+              } else {
+                setData(resp);
+              }
+
+
+              setLoading(false);
+            }
+          }
+
+
+        }).catch((err) => {
+          err.code !== 20 && setError(err);
+        });;
+
+       /* const response = await fetch(
           connection.request({
             url: options.url,
             params: options.params
@@ -30,16 +70,9 @@ const useFetch = (options) => {
 
         ).catch((err) => {
           err.code !== 20 && setError(err);
-        });
+        });*/
 
-        if (response && isMounted) {
-          if (response.status >= 400 && response.status < 600) {
-            setError(response);
-          } else {
-            setData(await response.json());
-          }
-        }
-        setLoading(false);
+       /* */
       })();
     }
 
