@@ -7,6 +7,7 @@ import Topbar from './components/Topbar.js';
 import Sidebar from './components/sidebar/Sidebar.js';
 import LoginDialog from '../containers/components/LoginDialog';
 import Breadcrumbs from '../utils/Breadcrumbs';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,11 +18,11 @@ const useStyles = makeStyles(theme => ({
     }
   },
   shiftContent: {
-    paddingLeft: 240
+    paddingLeft: 256
   },
   content: {
     flex: '1 1 auto',
-    height: '100%',
+    height: 'calc( 100vh - 64px)',
     width: '100%',
     padding: 10,
   }
@@ -60,11 +61,13 @@ const MainContainer = ({ children }) => {
         open={shouldOpenSidebar}
         variant={isDesktop ? 'persistent' : 'temporary'}        
       />
-      <main className={classes.content}>
-        <Breadcrumbs/>
-        {children}
-        <Footer />
-      </main>
+      <PerfectScrollbar options={{ suppressScrollX: true }}>
+        <main className={classes.content}>
+          <Breadcrumbs/>
+          {children}
+          <Footer />
+        </main>
+      </PerfectScrollbar>
       <LoginDialog />
     </div>
   );
