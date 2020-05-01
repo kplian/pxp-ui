@@ -1,17 +1,19 @@
-/* eslint-disable no-console */
-/* eslint-disable import/prefer-default-export */
+/**
+ * Themes index file
+ * @copyright Kplian Ltda 2020
+ * @uthor Israel Colque
+ */
 import _ from 'lodash';
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core';
 import typography from './typography';
-import { LIGHT } from './light';
-import { ONE_DARK } from './dark';
-import { KPLIAN } from './kplian';
+import LIGHT from './light';
+import ONE_DARK from './dark';
+import KPLIAN from './kplian';
 
-// import { THEMES } from '../constants';
 export const THEMES = {
   LIGHT: 'LIGHT',
   ONE_DARK: 'ONE_DARK',
-  KPLIAN: 'KPLIAN'
+  KPLIAN: 'KPLIAN',
 };
 
 const baseConfig = {
@@ -21,48 +23,40 @@ const baseConfig = {
     MuiLinearProgress: {
       root: {
         borderRadius: 3,
-        overflow: 'hidden'
-      }
+        overflow: 'hidden',
+      },
     },
     MuiListItemIcon: {
       root: {
-        minWidth: 32
-      }
+        minWidth: 32,
+      },
     },
     MuiChip: {
       root: {
-        backgroundColor: 'rgba(0,0,0,0.075)'
-      }
-    }
-  }
+        backgroundColor: 'rgba(0,0,0,0.075)',
+      },
+    },
+  },
 };
 
-const themeConfigs = [
-  LIGHT,
-  ONE_DARK,
-  KPLIAN,   
-];
+const themeConfigs = [LIGHT, ONE_DARK, KPLIAN];
 
 export function createTheme(settings = {}) {
   let themeConfig = themeConfigs.find((theme) => theme.name === settings.theme);
 
   if (!themeConfig) {
+    // eslint-disable-next-line no-console
     console.warn(new Error(`The theme ${settings.theme} is not valid`));
     [themeConfig] = themeConfigs;
   }
 
   let theme = createMuiTheme(
-    _.merge(
-      {},
-      baseConfig,
-      themeConfig,
-      { direction: settings.direction }
-    )
+    _.merge({}, baseConfig, themeConfig, { direction: settings.direction }),
   );
 
   if (settings.responsiveFontSizes) {
     theme = responsiveFontSizes(theme);
   }
-  
+
   return theme;
 }

@@ -1,3 +1,8 @@
+/**
+ * Topbar section for logged in users
+ * @copyright Kplian Ltda 2020
+ * @uthor Jaime Rivera
+ */
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';

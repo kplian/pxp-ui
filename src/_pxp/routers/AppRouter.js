@@ -1,3 +1,8 @@
+/**
+ * Main router manager for pxp framework
+ * @copyright Kplian Ltda 2020
+ * @uthor Jaime Rivera
+ */
 import React from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';

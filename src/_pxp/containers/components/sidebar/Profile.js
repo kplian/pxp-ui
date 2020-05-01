@@ -1,9 +1,14 @@
+/**
+ * Profile section for logged in users
+ * @copyright Kplian Ltda 2020
+ * @uthor Israel Colque
+ */
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import { Avatar, Typography, Box, Link } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     // minHeight: 'fit-content'
   },
@@ -11,41 +16,34 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     width: 64,
     height: 64,
-    border: '1px solid ' + theme.palette.action.disabled 
+    border: `1px solid ${theme.palette.action.disabled}`,
   },
   name: {
-    marginTop: theme.spacing(1)
-  }
+    marginTop: theme.spacing(1),
+  },
 }));
 
-const Profile = props => {
-  
+const Profile = (props) => {
   const classes = useStyles();
-  //get user from 
+  // get user from
   const user = {
     name: 'Jaime Rivera',
     avatar: '/images/user.png',
-    bio: 'Software Arquitect'
+    bio: 'Software Arquitect',
   };
 
   return (
-    <div
-      {...props}
-      className={classes.root}
-    >
+    <div {...props} className={classes.root}>
       <Box display="flex" justifyContent="center">
         <Avatar
-            alt="User"
-            className={classes.avatar}
-            component={RouterLink}
-            src={user.avatar}
-            to="/settings"
-          />
+          alt="User"
+          className={classes.avatar}
+          component={RouterLink}
+          src={user.avatar}
+          to="/settings"
+        />
       </Box>
-      <Box
-        mt={2}
-        textAlign="center"
-      >
+      <Box mt={2} textAlign="center">
         <Link
           component={RouterLink}
           to="/settings"
@@ -55,10 +53,7 @@ const Profile = props => {
         >
           {`${user.name}`}
         </Link>
-        <Typography
-          variant="body2"
-          color="textSecondary"
-        >
+        <Typography variant="body2" color="textSecondary">
           {user.bio}
         </Typography>
       </Box>

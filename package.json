@@ -38,6 +38,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "typeface-roboto": "^0.0.75",
+    "uuid": "^8.0.0",
     "yup": "^0.28.3"
   },
   "scripts": {

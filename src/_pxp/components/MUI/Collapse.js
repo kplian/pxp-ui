@@ -1,3 +1,8 @@
+/**
+ * Collapse with horizontal collapse
+ * @copyright Kplian Ltda 2020
+ * @uthor Jaime Rivera
+ */
 import * as React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';

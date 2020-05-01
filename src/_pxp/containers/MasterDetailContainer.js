@@ -1,10 +1,15 @@
+/**
+ * Collapsible master detail container
+ * @copyright Kplian Ltda 2020
+ * @uthor Jaime Rivera
+ */
 import React, { useState, useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/styles';
 import { useMediaQuery } from '@material-ui/core';
-// import Fade from '@material-ui/core/Fade';
 
 import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
+import { v4 as uuidv4 } from 'uuid';
 import Collapse from '../components/MUI/Collapse';
 // import Collapse from '@material-ui/core/Collapse';
 import { setDetail } from '../actions/app';
@@ -39,6 +44,7 @@ const MasterDetailContainer = ({
 }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const containerId = uuidv4();
 
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'), {
     defaultMatches: true,
@@ -49,7 +55,7 @@ const MasterDetailContainer = ({
   const dispatch = useDispatch();
 
   const onBackToMaster = (pageId) => {
-    if (pageId === 'master_detail') {
+    if (pageId === containerId) {
       dispatch(setDetail(false));
       if (onCloseDetail) {
         onCloseDetail();
@@ -58,13 +64,9 @@ const MasterDetailContainer = ({
   };
 
   useEffect(() => {
-    eventsService.listenEvent(
-      'detail_go_back',
-      'master_detail',
-      onBackToMaster,
-    );
+    eventsService.listenEvent('detail_go_back', containerId, onBackToMaster);
     return () => {
-      eventsService.unlistenEvent('detail_go_back', 'master_detail');
+      eventsService.unlistenEvent('detail_go_back', containerId);
     };
   }, []);
 
@@ -75,7 +77,7 @@ const MasterDetailContainer = ({
         setShowMaster(true);
       } else {
         setShowDetail(openDetail);
-        dispatch(setDetail(openDetail, 'master_detail'));
+        dispatch(setDetail(openDetail, containerId));
         setShowMaster(!openDetail);
       }
     }

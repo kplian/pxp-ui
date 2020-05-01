@@ -1,12 +1,17 @@
+/**
+ * Menu and profile container for logged in users
+ * @copyright Kplian Ltda 2020
+ * @uthor Jaime Rivera
+ */
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer, Box, Hidden } from '@material-ui/core';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import clsx from 'clsx';
 import Profile from './Profile';
 import SidebarNav from './SideBarNav';
-import clsx from 'clsx';
 import Logo from '../Logo';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Sidebar = (props) => {
-  const { open, variant, onClose, className, ...rest } = props;
+  const { open, variant, onClose, className } = props;
   const classes = useStyles();
   const menu = useSelector((state) => state.auth.menu);
 

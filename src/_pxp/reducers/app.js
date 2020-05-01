@@ -1,3 +1,8 @@
+/**
+ * Reducer to manage application states
+ * @copyright Kplian Ltda 2020
+ * @uthor Jaime Rivera
+ */
 const defaultState = {
   detailPage: {
     isDetail: false,
