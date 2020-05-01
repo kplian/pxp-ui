@@ -1,3 +1,8 @@
+/**
+ * Settings tooltip
+ * @copyright Kplian Ltda 2020
+ * @uthor Israel Colque
+ */
 import React, { useState, useRef } from 'react';
 import { capitalCase } from 'change-case';
 import { useTranslation } from 'react-i18next';
@@ -13,21 +18,21 @@ import {
   TextField,
   Tooltip,
   Typography,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 import { Settings as SettingsIcon } from '@material-ui/icons';
 import useSettings from '../../hooks/useSettings';
-// import { THEMES } from 'src/constants'; 
+// import { THEMES } from 'src/constants';
 
 const THEMES = {
   LIGHT: 'LIGHT',
   ONE_DARK: 'ONE_DARK',
-  KPLIAN: 'KPLIAN'
+  KPLIAN: 'KPLIAN',
 };
 
 const LANGUAGES = {
   ENGLISH: 'en',
-  SPANISH: 'es'
+  SPANISH: 'es',
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -36,27 +41,27 @@ const useStyles = makeStyles((theme) => ({
     width: 10,
     borderRadius: 5,
     marginTop: 10,
-    marginRight: 5
+    marginRight: 5,
   },
   popover: {
     width: 320,
-    padding: theme.spacing(2)
-  }
+    padding: theme.spacing(2),
+  },
 }));
 
 function Settings() {
   const classes = useStyles();
   const ref = useRef(null);
   const { t } = useTranslation('segu_user');
-  
+
   const { settings, saveSettings } = useSettings();
-  
+
   const [isOpen, setOpen] = useState(false);
   const [values, setValues] = useState({
     direction: settings.direction,
     responsiveFontSizes: settings.responsiveFontSizes,
     theme: settings.theme,
-    language: settings.language || settings.defaultLanguage
+    language: settings.language || settings.defaultLanguage,
   });
 
   const handleOpen = () => {
@@ -70,11 +75,11 @@ function Settings() {
   const handleChange = (field, value) => {
     setValues({
       ...values,
-      [field]: value
+      [field]: value,
     });
   };
 
-  const handleSave = () => {    
+  const handleSave = () => {
     saveSettings(values);
     setOpen(false);
   };
@@ -87,11 +92,7 @@ function Settings() {
           variant="dot"
           classes={{ badge: classes.badge }}
         >
-          <IconButton
-            color="inherit"
-            onClick={handleOpen}
-            ref={ref}
-          >
+          <IconButton color="inherit" onClick={handleOpen} ref={ref}>
             <SvgIcon fontSize="small">
               <SettingsIcon />
             </SvgIcon>
@@ -101,32 +102,28 @@ function Settings() {
       <Popover
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'center'
+          horizontal: 'center',
         }}
         classes={{ paper: classes.popover }}
         anchorEl={ref.current}
         onClose={handleClose}
         open={isOpen}
       >
-        <Typography
-          variant="h4"
-          color="textPrimary"
-        >
+        <Typography variant="h4" color="textPrimary">
           {t('settings')}
         </Typography>
-        <Box
-          mt={2}
-          px={1}
-        >
+        <Box mt={2} px={1}>
           <FormControlLabel
-            control={(
+            control={
               <Switch
                 checked={values.responsiveFontSizes}
                 edge="start"
                 name="direction"
-                onChange={(event) => handleChange('responsiveFontSizes', event.target.checked)}
+                onChange={(event) =>
+                  handleChange('responsiveFontSizes', event.target.checked)
+                }
               />
-            )}
+            }
             label="Responsive font sizes"
           />
         </Box>
@@ -142,10 +139,7 @@ function Settings() {
             variant="outlined"
           >
             {Object.keys(THEMES).map((theme) => (
-              <option
-                key={theme}
-                value={theme}
-              > 
+              <option key={theme} value={theme}>
                 {capitalCase(theme)}
               </option>
             ))}
@@ -163,10 +157,7 @@ function Settings() {
             variant="outlined"
           >
             {Object.keys(LANGUAGES).map((key) => (
-              <option
-                key={LANGUAGES[key]}
-                value={LANGUAGES[key]}
-              > 
+              <option key={LANGUAGES[key]} value={LANGUAGES[key]}>
                 {capitalCase(key)}
               </option>
             ))}

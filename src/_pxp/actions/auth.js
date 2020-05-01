@@ -1,3 +1,8 @@
+/**
+ * Auth actions for redux store
+ * @copyright Kplian Ltda 2020
+ * @uthor Jaime Rivera
+ */
 import PxpClient from 'pxp-client';
 import config from '../../config';
 import history from '../routers/History';
