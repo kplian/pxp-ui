@@ -1,3 +1,9 @@
+/**
+ * Hook UseError for init in the object
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ *
+ */
 import { useState } from 'react';
 
 const UseError = () => {

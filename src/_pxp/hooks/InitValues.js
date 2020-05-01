@@ -1,3 +1,9 @@
+/**
+ * Hook initValues for inputs
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ *
+ */
 import useValue from './useValue';
 import useError from './useError';
 import useJsonStore from './useJsonStore';

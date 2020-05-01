@@ -1,20 +1,30 @@
+/**
+ * TextField Select Component
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ */
 import React from 'react';
 import { TextField } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-
 
 const areEqual = (prev, next) =>
   next.memoDisabled !== false &&
   prev.value === next.value &&
   prev.name === next.name &&
-  prev.error === next.error
+  prev.error === next.error;
 
 // eslint-disable-next-line react/prop-types
-export const TextFieldSelectPxpComponent = ({ name, value, configInput, handles, error, states }) => {
+export const TextFieldSelectPxpComponent = ({
+  name,
+  value,
+  configInput,
+  handles,
+  error,
+  states,
+}) => {
+  const { validate, label, variant, gridForm } = configInput;
 
-  const {validate, label, variant, gridForm} = configInput;
-
-  const msg = (validate) && validate.error.error.msg;
+  const msg = validate && validate.error.error.msg;
 
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
@@ -24,39 +34,40 @@ export const TextFieldSelectPxpComponent = ({ name, value, configInput, handles,
         fullWidth
         helperText={Boolean(error) && msg}
         label={label}
-        //margin="normal"
+        // margin="normal"
         name={name}
-          // onBlur={handleBlur}
-        onChange={(event) => handles.handleChange({
-            event, name, value: event.target.value, configInputState:configInput, states
-          })}
+        // onBlur={handleBlur}
+        onChange={(event) =>
+          handles.handleChange({
+            event,
+            name,
+            value: event.target.value,
+            configInputState: configInput,
+            states,
+          })
+        }
         value={value}
         variant={variant}
         select
         SelectProps={{ native: true }}
       >
         {configInput.store.map((opt, indexOpt) => (
-          <option
-            key={indexOpt}
-            value={opt.value}
-          >
+          // eslint-disable-next-line react/no-array-index-key
+          <option key={indexOpt} value={opt.value}>
             {opt.label}
           </option>
         ))}
       </TextField>
-
-
     </Grid>
   );
 };
 
-
-
 /**
  * A memoized component that will re-render only one of props described in areEqual change.
  */
-const TextFieldSelectPxp = React.memo(props => <TextFieldSelectPxpComponent {...props} />, areEqual);
-
-
+const TextFieldSelectPxp = React.memo(
+  (props) => <TextFieldSelectPxpComponent {...props} />,
+  areEqual,
+);
 
 export default TextFieldSelectPxp;

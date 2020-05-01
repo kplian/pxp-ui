@@ -1,8 +1,10 @@
+/**
+ * Loading Component, Circular Progress in the viewport
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ */
 import React from 'react';
-import {
-  CircularProgress,
-  makeStyles
-} from '@material-ui/core';
+import { CircularProgress, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,12 +19,12 @@ const useStyles = makeStyles((theme) => ({
     position: 'fixed',
     top: 0,
     width: '100%',
-    zIndex: 2000
+    zIndex: 2000,
   },
   logo: {
     width: 200,
-    maxWidth: '100%'
-  }
+    maxWidth: '100%',
+  },
 }));
 
 function LoadingScreen() {
