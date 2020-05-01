@@ -1,15 +1,19 @@
-import React, {useState} from 'react';
-import TolPop from "../TolPop";
-import {Box, Button, Popover, Typography} from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import ViewColumn from "@material-ui/icons/ViewColumn";
-
+/**
+ * Component for rendering the options for showing or hide columns from config json for any pxp-ui project
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ *
+ */
+import React from 'react';
+import { Box } from '@material-ui/core';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import ViewColumn from '@material-ui/icons/ViewColumn';
+import TolPop from '../TolPop';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,14 +24,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CheckListColumn = ({statesShowColumn, setStatesShowColumn}) => {
+const CheckListColumn = ({ statesShowColumn, setStatesShowColumn }) => {
   const classes = useStyles();
 
   const handleChange = (event) => {
-    setStatesShowColumn({ ...statesShowColumn, [event.target.name]: event.target.checked });
+    setStatesShowColumn({
+      ...statesShowColumn,
+      [event.target.name]: event.target.checked,
+    });
   };
-
-  //const error = [gilad, jason, antoine].filter((v) => v).length !== 2;
 
   return (
     <>
@@ -36,18 +41,22 @@ const CheckListColumn = ({statesShowColumn, setStatesShowColumn}) => {
           <FormControl component="fieldset" className={classes.formControl}>
             <FormLabel component="legend">Show Columns</FormLabel>
             <FormGroup>
-              {
-                Object.entries(statesShowColumn).map(([nameKey, value]) => (
-                  <FormControlLabel key={`checklist_${nameKey}`}
-                    control={<Checkbox checked={statesShowColumn[nameKey]} onChange={handleChange} name={nameKey} />}
-                    label={nameKey}
-                  />
-                ))
-              }
+              {Object.entries(statesShowColumn).map(([nameKey]) => (
+                <FormControlLabel
+                  key={`checklist_${nameKey}`}
+                  control={
+                    <Checkbox
+                      checked={statesShowColumn[nameKey]}
+                      onChange={handleChange}
+                      name={nameKey}
+                    />
+                  }
+                  label={nameKey}
+                />
+              ))}
             </FormGroup>
           </FormControl>
         </Box>
-
       </TolPop>
     </>
   );

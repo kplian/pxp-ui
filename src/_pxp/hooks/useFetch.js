@@ -6,7 +6,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import connection from "pxp-client";
+import connection from 'pxp-client';
 
 const useFetch = (options) => {
   const [data, setData] = useState(null);
@@ -23,56 +23,46 @@ const useFetch = (options) => {
         setLoading(true);
 
         const params = new URLSearchParams();
+        // eslint-disable-next-line guard-for-in
         for (const key in options) {
           params.append(key, options[key]);
         }
 
         setLoading(true);
 
-        connection.doRequest({
-          url: options.url,
-          params: options.params
-        }).then(resp => {
-
-          if (resp && isMounted) {
-            if (resp.status >= 400 && resp.status < 600) {
-              setError(resp);
-            } else {
-              //setData(resp);
-              if(options.infinite === true) {
-                setData(prevData => {
-                  if(prevData){
-                    return {...prevData, datos:prevData.datos.concat(resp.datos)}
-
-                  }else{
-                    return resp
-                  }
-                })
-              } else {
-                setData(resp);
-              }
-
-
-              setLoading(false);
-            }
-          }
-
-
-        }).catch((err) => {
-          err.code !== 20 && setError(err);
-        });;
-
-       /* const response = await fetch(
-          connection.request({
+        connection
+          .doRequest({
             url: options.url,
-            params: options.params
+            params: options.params,
           })
+          .then((resp) => {
+            if (resp && isMounted) {
+              if (resp.status >= 400 && resp.status < 600) {
+                setError(resp);
+              } else {
+                // setData(resp);
+                if (options.infinite === true) {
+                  setData((prevData) => {
+                    if (prevData) {
+                      return {
+                        ...prevData,
+                        datos: prevData.datos.concat(resp.datos),
+                      };
+                    }
+                    return resp;
+                  });
+                } else {
+                  setData(resp);
+                }
 
-        ).catch((err) => {
-          err.code !== 20 && setError(err);
-        });*/
-
-       /* */
+                setLoading(false);
+              }
+            }
+          })
+          .catch((err) => {
+            // eslint-disable-next-line no-unused-expressions
+            err.code !== 20 && setError(err);
+          });
       })();
     }
 

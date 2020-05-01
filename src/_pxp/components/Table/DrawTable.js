@@ -1,20 +1,16 @@
-import React, {useState} from 'react';
-import {makeStyles} from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import TableToolbarPxp from "./TableToolbarPxp";
-import TableContainer from "@material-ui/core/TableContainer";
-import Table from "@material-ui/core/Table";
-import TableHeadPxp from "./TableHeadPxp";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import Checkbox from "@material-ui/core/Checkbox";
-import TableBody from "@material-ui/core/TableBody";
-import MenuTableCell from "./MenuTableCell";
-import MenuItemTableCell from "./MenuItemTableCell";
-import Skeleton from "@material-ui/lab/Skeleton";
-import TableBodyPxp from "./TableBodyPxp";
-import SkeletonLoading from "./SkeletonLoading";
-
+/**
+ * Component for rendering a table from config json for any pxp-ui project
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ *
+ */
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import TableContainer from '@material-ui/core/TableContainer';
+import Table from '@material-ui/core/Table';
+import TableHeadPxp from './TableHeadPxp';
+import TableBodyPxp from './TableBodyPxp';
+import SkeletonLoading from './SkeletonLoading';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,33 +36,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DrawTable = ({id_store, dataConfig, data,
-                     buttonsToolbar, buttonsToolbarBySelections, emptyRows, dense,
-                     handles, order, orderBy,
-                     buttonsTableCell,statesShowColumn,
-                     selected,
-                     loading,
-                     jsonStore
-                   }) => {
-
-
-
+const DrawTable = ({
+  idStore,
+  dataConfig,
+  data,
+  emptyRows,
+  dense,
+  handles,
+  order,
+  orderBy,
+  buttonsTableCell,
+  statesShowColumn,
+  selected,
+  loading,
+  jsonStore,
+  lastBookElementRef,
+}) => {
   const classes = useStyles();
 
-
-
+  const { paginationType } = dataConfig;
 
   return (
-      <>
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
-            aria-label="enhanced table"
-            stickyHeader
-          >
-            {data && <TableHeadPxp
+    <>
+      <TableContainer>
+        <Table
+          className={classes.table}
+          aria-labelledby="tableTitle"
+          size={dense ? 'small' : 'medium'}
+          aria-label="enhanced table"
+          stickyHeader
+        >
+          {data && (
+            <TableHeadPxp
               classes={classes}
               numSelected={selected.length}
               order={order}
@@ -76,12 +77,17 @@ const DrawTable = ({id_store, dataConfig, data,
               rowCount={data.datos.length}
               headCells={dataConfig.columns}
               statesShowColumn={statesShowColumn}
-            />}
+            />
+          )}
 
-            {(!loading) && <TableBodyPxp
+          {((!loading &&
+            (paginationType === 'pagination' ||
+              paginationType === undefined)) ||
+            (data && paginationType === 'infiniteScrolling')) && (
+            <TableBodyPxp
               dataConfig={dataConfig}
               data={data}
-              id_store={id_store}
+              idStore={idStore}
               statesShowColumn={statesShowColumn}
               handleCheckInCell={handles.handleCheckInCell}
               buttonsTableCell={buttonsTableCell}
@@ -89,16 +95,21 @@ const DrawTable = ({id_store, dataConfig, data,
               emptyRows={emptyRows}
               selected={selected}
               jsonStore={jsonStore}
-            />}
+              lastBookElementRef={lastBookElementRef}
+            />
+          )}
 
-            {(loading) && <SkeletonLoading columns={dataConfig.columns} statesShowColumn={statesShowColumn} rowsCount={dataConfig.getDataTable.params.limit}/>}
-
-
-          </Table>
-        </TableContainer>
-</>
+          {loading && (
+            <SkeletonLoading
+              columns={dataConfig.columns}
+              statesShowColumn={statesShowColumn}
+              rowsCount={dataConfig.getDataTable.params.limit}
+            />
+          )}
+        </Table>
+      </TableContainer>
+    </>
   );
-
 };
 
 export default DrawTable;

@@ -3,12 +3,17 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
-const SkeletonLoading = ({columns, statesShowColumn, rowsCount}) => {
+
+const areEqual = (prev, next) => (
+  prev.statesShowColumn === next.statesShowColumn)
+
+
+const SkeletonLoadingComponent = ({columns, statesShowColumn, rowsCount}) => {
 
   return (
     <TableBody>
       {
-        [1,2,3,4,5,6,7,8,9,10].map((row, index) => {
+        [1,2,3,4,5,6,7,8,9,10].map((row, index) => { //todo change for rowsCount
           return (
             <TableRow
               key={`tableRow_${index}`}
@@ -51,4 +56,11 @@ const SkeletonLoading = ({columns, statesShowColumn, rowsCount}) => {
   );
 };
 
+
+/**
+ * A memoized component that will re-render only one of props described in areEqual change.
+ */
+const SkeletonLoading = React.memo(props => <SkeletonLoadingComponent {...props} />, areEqual);
+
 export default SkeletonLoading;
+

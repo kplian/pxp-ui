@@ -1,13 +1,17 @@
+/**
+ * Component for rendering the menu(buttons) in each cell from config json for any pxp-ui project
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ *
+ */
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-
 const ITEM_HEIGHT = 48;
-const MenuTableCell = ({children}) => {
-
-  //the children is the buttons
+const MenuTableCell = ({ children }) => {
+  // the children is the buttons
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -50,4 +54,3 @@ const MenuTableCell = ({children}) => {
 };
 
 export default MenuTableCell;
-
