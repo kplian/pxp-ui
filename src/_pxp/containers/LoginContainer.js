@@ -1,3 +1,8 @@
+/**
+ * Login conntainer for pxp applications
+ * @copyright Kplian Ltda 2020
+ * @uthor Jaime Rivera
+ */
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';

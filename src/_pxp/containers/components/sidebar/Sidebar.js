@@ -1,45 +1,49 @@
+/**
+ * Menu and profile container for logged in users
+ * @copyright Kplian Ltda 2020
+ * @uthor Jaime Rivera
+ */
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer, Box, Hidden } from '@material-ui/core';
-import Profile from './Profile';
-import SidebarNav from './SideBarNav';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import clsx from 'clsx';
+import Profile from './Profile';
+import SidebarNav from './SideBarNav';
 import Logo from '../Logo';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   drawer: {
     width: 256,
     [theme.breakpoints.up('lg')]: {
       marginTop: 64,
-      height: 'calc(100% - 64px)'
-    }
+      height: 'calc(100% - 64px)',
+    },
   },
   root: {
     backgroundColor: theme.palette.white,
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    padding: theme.spacing(0)
+    padding: theme.spacing(0),
   },
   divider: {
-   //  backgroundColor: '#444755 !important',
+    //  backgroundColor: '#444755 !important',
   },
   nav: {
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
   boxDrawer: {
-   //  borderRight: '1px solid #444755',
-  }
+    //  borderRight: '1px solid #444755',
+  },
 }));
 
-const Sidebar = props => {
-  const { open, variant, onClose, className, ...rest } = props;  
+const Sidebar = (props) => {
+  const { open, variant, onClose, className } = props;
   const classes = useStyles();
-  const menu = useSelector(state => state.auth.menu);
-
+  const menu = useSelector((state) => state.auth.menu);
 
   return (
     <Drawer
@@ -53,31 +57,23 @@ const Sidebar = props => {
         height="100%"
         display="flex"
         flexDirection="column"
-        className={ clsx( classes.boxDrawer, className )}
+        className={clsx(classes.boxDrawer, className)}
       >
         <PerfectScrollbar options={{ suppressScrollX: true }}>
-              <Hidden lgUp>
-                <Box
-                  p={2}
-                  display="flex"
-                  justifyContent="center"
-                >
-                  <RouterLink to="/">
-                    <Logo />
-                  </RouterLink>
-                </Box>
-            </Hidden>
-            <Box p={2}>
-              <Profile />
+          <Hidden lgUp>
+            <Box p={2} display="flex" justifyContent="center">
+              <RouterLink to="/">
+                <Logo />
+              </RouterLink>
             </Box>
-            <Divider className={classes.divider} />
-            <Box p={2}>
-              <SidebarNav
-                className={classes.nav}                
-                menu={menu}
-              />        
-            </Box>
- 
+          </Hidden>
+          <Box p={2}>
+            <Profile />
+          </Box>
+          <Divider className={classes.divider} />
+          <Box p={2}>
+            <SidebarNav className={classes.nav} menu={menu} />
+          </Box>
         </PerfectScrollbar>
       </Box>
     </Drawer>

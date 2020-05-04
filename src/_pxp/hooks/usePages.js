@@ -1,3 +1,8 @@
+/**
+ * Hook to use pages context
+ * @copyright Kplian Ltda 2020
+ * @uthor Jaime Rivera
+ */
 import { useContext } from 'react';
 import PagesContext from '../context/PagesContext';
 

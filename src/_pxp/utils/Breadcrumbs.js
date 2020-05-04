@@ -1,22 +1,17 @@
+/**
+ * BreadCrumbs component to navigate forward and back
+ * @copyright Kplian Ltda 2020
+ * @uthor Jaime Rivera
+ */
 import React from 'react';
-import { useRouteMatch, useHistory , Link as RouterLink } from 'react-router-dom';
+import { useRouteMatch, Link as RouterLink } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import {
-  Box,
-  Breadcrumbs,
-  Button,
-  Grid,
-  Link,
-  SvgIcon,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Breadcrumbs, Grid, Link, makeStyles } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import * as _ from 'lodash';
 import { useSelector } from 'react-redux';
-import history from '../routers/History';
 import usePages from '../hooks/usePages';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,10 +30,10 @@ const useStyles = makeStyles((theme) => ({
 function generateNames(pages = [], menu, match) {
   const values = _.compact(match.path.split('/'));
 
-  let matches = []; let
-    temp = '';
+  const matches = [];
+  let temp = '';
   values.map((item) => {
-    temp = `${temp  }/${  item}`;
+    temp = `${temp}/${item}`;
     matches.push(temp);
   });
 
@@ -46,9 +41,8 @@ function generateNames(pages = [], menu, match) {
     Object.keys(pages).map((key) => {
       if (_.includes(matches, pages[key].path)) {
         return { ...pages[key], name: key };
-      } else {
-        return null;
       }
+      return null;
     }),
   );
 
@@ -79,12 +73,11 @@ function generateNames(pages = [], menu, match) {
   });
 }
 
-function BreadcrumbsPxp({ className, ...rest }) {
+function BreadcrumbsPxp({ className }) {
   const classes = useStyles();
 
   const menu = useSelector((state) => state.auth.menu);
   // const history = useHistory();
-  console.log('history', history);
   const { pages } = usePages();
   const match = useRouteMatch();
   const breads = generateNames(pages, menu, match);
@@ -95,7 +88,6 @@ function BreadcrumbsPxp({ className, ...rest }) {
       container
       justify="space-between"
       spacing={3}
-      {...rest}
     >
       <Grid item>
         <Breadcrumbs
