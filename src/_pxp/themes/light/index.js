@@ -20,7 +20,7 @@ export const LIGHT = {
     },
     background: {
       default: colors.common.white,
-      dark: '#f4f6f8',
+      dark: '#e3e3e3',
       paper: colors.common.white
     },
     primary: {

@@ -51,7 +51,7 @@ const Topbar = props => {
       className={classes.root}
     >
       <Toolbar> 
-        <Hidden lgUp>
+        <Hidden mdUp>
             <IconButton
                 color="inherit"
                 onClick={onSidebarOpen}
@@ -59,7 +59,7 @@ const Topbar = props => {
                 <MenuIcon />
             </IconButton>
         </Hidden>   
-        <Hidden mdDown>
+        <Hidden smDown>
           <RouterLink to="/" className={ classes.logo }>
             <Logo />
           </RouterLink>
