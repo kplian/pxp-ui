@@ -20,7 +20,7 @@ export const TextFieldPxpComponent = ({
   name,
   value,
   configInput,
-  handlers,
+  handleChange,
   error,
   states,
 }) => {
@@ -48,7 +48,7 @@ export const TextFieldPxpComponent = ({
         name={name}
         // onBlur={handleBlur}
         onChange={(event) =>
-          handlers.handleChange({
+          handleChange({
             event,
             name,
             value: event.target.value,

@@ -49,7 +49,7 @@ const DrawForm = ({ data, handlers }) => {
                 name={nameKey}
                 value={values._value.value}
                 configInput={values}
-                handlers={handlers}
+                handleChange={handlers.handleChange}
                 memoDisabled={values.memoDisabled}
                 error={values.validate.error.error.error}
                 states={states}
@@ -64,7 +64,7 @@ const DrawForm = ({ data, handlers }) => {
                 name={nameKey}
                 value={values._value.value}
                 configInput={values}
-                handlers={handlers}
+                handleChange={handlers.handleChange}
                 memoDisabled={values.memoDisabled}
                 error={values.validate.error.error.error}
                 states={states}
@@ -79,7 +79,7 @@ const DrawForm = ({ data, handlers }) => {
                 name={nameKey}
                 value={values._value.value}
                 configInput={values}
-                handlers={handlers}
+                handleChange={handlers.handleChange}
                 loading={values.store.loading}
                 memoDisabled={values.memoDisabled}
                 states={states}
@@ -95,7 +95,7 @@ const DrawForm = ({ data, handlers }) => {
                 name={nameKey}
                 value={values._value.value}
                 configInput={values}
-                handlers={handlers}
+                handleChange={handlers.handleChange}
                 memoDisabled={values.memoDisabled}
                 error={values.validate.error.error.error}
                 states={states}

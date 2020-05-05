@@ -28,7 +28,7 @@ const AutocompletePxpComponent = ({
   name,
   value, // is used in areEqual
   configInput,
-  handlers,
+  handleChange,
   loading, // is used in areEqual
   states,
 }) => {
@@ -100,7 +100,7 @@ const AutocompletePxpComponent = ({
           />
         )}
         onChange={(event, newValue) => {
-          handlers.handleChange({
+          handleChange({
             event,
             name,
             value: newValue ? newValue[store.idDD] : '',

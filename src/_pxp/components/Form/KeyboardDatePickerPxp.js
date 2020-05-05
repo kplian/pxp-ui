@@ -36,7 +36,7 @@ export const KeyboardDatePickerPxpComponent = ({
   name,
   value,
   configInput,
-  handlers,
+  handleChange,
   error, // is used in areEqual
   states,
 }) => {
@@ -63,7 +63,7 @@ export const KeyboardDatePickerPxpComponent = ({
           label={label}
           value={value}
           onChange={(date) =>
-            handlers.handleChange({
+            handleChange({
               name,
               value: date,
               configInputState: configInput,

@@ -30,7 +30,6 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState } from 'react';
 import * as Yup from 'yup';
-import _ from 'lodash';
 import { Box, Button, Card, Container, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import connection from 'pxp-client';
