@@ -8,8 +8,6 @@
  * @param {Object} handles Object containing all form handlers
  * @param {loading} data.columns Columns that will be shown in form you can see each component documentation
  * @param {states} data.onSubmit url and extra params to send on submit form
- * @todo grid key shouldnt be unique?
- * @todo Do we need to recieve all form handlers?
  */
 /* eslint-disable react/jsx-props-no-spreading */
 
@@ -17,6 +15,7 @@ import React from 'react';
 import { CircularProgress, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Grid from '@material-ui/core/Grid';
+import _ from 'lodash';
 
 const areEqual = (prev, next) =>
   next.memoDisabled !== false &&
@@ -29,11 +28,30 @@ const AutocompletePxpComponent = ({
   name,
   value, // is used in areEqual
   configInput,
-  handles,
+  handlers,
   loading, // is used in areEqual
   states,
 }) => {
   const { label, variant, store, isSearchable, gridForm } = configInput;
+
+  // this handle has debounce for start with searching after 500 ms
+  const handleInputChange = _.debounce(async (valueInput) => {
+    if (
+      valueInput &&
+      isSearchable &&
+      valueInput !== 0 &&
+      valueInput.length >= store.minChars
+    ) {
+      store.set({
+        ...store.state,
+        params: {
+          ...store.state.params,
+          par_filtro: store.parFilters,
+          query: valueInput,
+        },
+      });
+    }
+  }, 500);
 
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
@@ -41,7 +59,7 @@ const AutocompletePxpComponent = ({
         // key={index}
         id={name}
         onInputChange={(e) =>
-          handles.handleInputChange(e.target.value, isSearchable, store)
+          handleInputChange(e.target.value, isSearchable, store)
         }
         open={store.open}
         onOpen={() => {
@@ -82,7 +100,7 @@ const AutocompletePxpComponent = ({
           />
         )}
         onChange={(event, newValue) => {
-          handles.handleChange({
+          handlers.handleChange({
             event,
             name,
             value: newValue ? newValue[store.idDD] : '',

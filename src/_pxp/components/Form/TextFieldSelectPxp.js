@@ -3,6 +3,8 @@
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  */
+/* eslint-disable react/jsx-props-no-spreading */
+
 import React from 'react';
 import { TextField } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
@@ -18,7 +20,7 @@ export const TextFieldSelectPxpComponent = ({
   name,
   value,
   configInput,
-  handles,
+  handlers,
   error,
   states,
 }) => {
@@ -38,7 +40,7 @@ export const TextFieldSelectPxpComponent = ({
         name={name}
         // onBlur={handleBlur}
         onChange={(event) =>
-          handles.handleChange({
+          handlers.handleChange({
             event,
             name,
             value: event.target.value,

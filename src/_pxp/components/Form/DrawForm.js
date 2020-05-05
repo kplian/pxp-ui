@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DrawForm = ({ data, handles }) => {
+const DrawForm = ({ data, handlers }) => {
   // init the draw and the states
   const states = Object.entries(data.columns).reduce(
     (t, [nameKey, value]) => ({
@@ -49,7 +49,7 @@ const DrawForm = ({ data, handles }) => {
                 name={nameKey}
                 value={values._value.value}
                 configInput={values}
-                handles={handles}
+                handlers={handlers}
                 memoDisabled={values.memoDisabled}
                 error={values.validate.error.error.error}
                 states={states}
@@ -64,7 +64,7 @@ const DrawForm = ({ data, handles }) => {
                 name={nameKey}
                 value={values._value.value}
                 configInput={values}
-                handles={handles}
+                handlers={handlers}
                 memoDisabled={values.memoDisabled}
                 error={values.validate.error.error.error}
                 states={states}
@@ -79,7 +79,7 @@ const DrawForm = ({ data, handles }) => {
                 name={nameKey}
                 value={values._value.value}
                 configInput={values}
-                handles={handles}
+                handlers={handlers}
                 loading={values.store.loading}
                 memoDisabled={values.memoDisabled}
                 states={states}
@@ -95,7 +95,7 @@ const DrawForm = ({ data, handles }) => {
                 name={nameKey}
                 value={values._value.value}
                 configInput={values}
-                handles={handles}
+                handlers={handlers}
                 memoDisabled={values.memoDisabled}
                 error={values.validate.error.error.error}
                 states={states}
@@ -116,7 +116,7 @@ const DrawForm = ({ data, handles }) => {
         {data.resetButton && (
           <Button
             variant="outlined"
-            onClick={() => handles.resetForm({ states })}
+            onClick={() => handlers.resetForm({ states })}
           >
             Reset
           </Button>
@@ -124,7 +124,7 @@ const DrawForm = ({ data, handles }) => {
         <Button
           variant="contained"
           color="primary"
-          onClick={(e) => handles.handleSubmitForm(e, states)}
+          onClick={(e) => handlers.handleSubmitForm(e, states)}
         >
           {data.submitLabel || 'Submit'}
         </Button>

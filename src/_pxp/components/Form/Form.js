@@ -151,25 +151,6 @@ const Form = ({ className, rest, data, dialog = false }) => {
     );
   const schema = Yup.object().shape(validations);
 
-  // this handle has debounce for start with searching after 500 ms
-  const handleInputChange = _.debounce(async (value, isSearchable, store) => {
-    if (
-      value &&
-      isSearchable &&
-      value !== 0 &&
-      value.length >= store.minChars
-    ) {
-      store.set({
-        ...store.state,
-        params: {
-          ...store.state.params,
-          par_filtro: store.parFilters,
-          query: value,
-        },
-      });
-    }
-  }, 500);
-
   const handleChange = ({
     event,
     name,
@@ -293,9 +274,8 @@ const Form = ({ className, rest, data, dialog = false }) => {
     });
   };
 
-  const handles = {
+  const handlers = {
     handleChange,
-    handleInputChange,
     handleSubmitForm,
     resetForm,
   };
@@ -303,7 +283,7 @@ const Form = ({ className, rest, data, dialog = false }) => {
   return (
     <>
       {dialog ? (
-        <DrawForm data={dataInitialized} handles={handles} />
+        <DrawForm data={dataInitialized} handlers={handlers} />
       ) : (
         <Container maxWidth={false}>
           <Header nameForm={nameForm} />
@@ -312,7 +292,7 @@ const Form = ({ className, rest, data, dialog = false }) => {
             <Card className={clsx(classes.root, className)} {...rest}>
               <Box p={2}>
                 <Box mt={3} display="flex" alignItems="center" />
-                <DrawForm data={dataInitialized} handles={handles} />
+                <DrawForm data={dataInitialized} handlers={handlers} />
               </Box>
             </Card>
           </Box>
