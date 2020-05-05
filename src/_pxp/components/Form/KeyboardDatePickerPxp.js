@@ -15,6 +15,7 @@ import {
 } from '@material-ui/pickers';
 
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import {TextField} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -40,6 +41,7 @@ export const KeyboardDatePickerPxpComponent = ({
   error, // is used in areEqual
   states,
   disabled = false,
+  helperText,
 }) => {
   const classes = useStyles();
 
@@ -77,6 +79,7 @@ export const KeyboardDatePickerPxpComponent = ({
           inputVariant="outlined"
           {...minMaxDate}
           disabled={disabled}
+          helperText={helperText}
         />
       </Grid>
     </MuiPickersUtilsProvider>

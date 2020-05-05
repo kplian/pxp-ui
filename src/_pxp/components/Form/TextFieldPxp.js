@@ -25,6 +25,7 @@ export const TextFieldPxpComponent = ({
   error,
   states,
   disabled = false,
+  helperText,
 }) => {
   const {
     validate,
@@ -44,7 +45,7 @@ export const TextFieldPxpComponent = ({
         {...(autoFocus && { autoFocus })}
         error={Boolean(error)}
         fullWidth
-        helperText={Boolean(error) && msg}
+        helperText={error ? msg : helperText}
         label={label}
         // margin="normal"
         name={name}

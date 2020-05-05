@@ -54,6 +54,7 @@ const DrawForm = ({ data, handlers }) => {
                 error={values.validate.error.error.error}
                 states={states}
                 disabled={values.disabled}
+                helperText={values.helperText}
               />
             );
           }
@@ -70,6 +71,7 @@ const DrawForm = ({ data, handlers }) => {
                 error={values.validate.error.error.error}
                 states={states}
                 disabled={values.disabled}
+                helperText={values.helperText}
               />
             );
           }
@@ -87,6 +89,7 @@ const DrawForm = ({ data, handlers }) => {
                 states={states}
                 open={values.store.open}
                 disabled={values.disabled}
+                helperText={values.helperText}
               />
             );
           }
@@ -103,6 +106,7 @@ const DrawForm = ({ data, handlers }) => {
                 error={values.validate.error.error.error}
                 states={states}
                 disabled={values.disabled}
+                helperText={values.helperText}
               />
             );
           }

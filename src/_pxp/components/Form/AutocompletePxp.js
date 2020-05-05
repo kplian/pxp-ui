@@ -32,6 +32,7 @@ const AutocompletePxpComponent = ({
   loading, // is used in areEqual
   states,
   disabled = false,
+  helperText,
 }) => {
   const { label, variant, store, isSearchable, gridForm } = configInput;
 
@@ -98,6 +99,7 @@ const AutocompletePxpComponent = ({
                 </>
               ),
             }}
+            helperText={helperText}
           />
         )}
         onChange={(event, newValue) => {

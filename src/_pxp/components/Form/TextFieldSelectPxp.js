@@ -24,6 +24,7 @@ export const TextFieldSelectPxpComponent = ({
   error,
   states,
   disabled = false,
+  helperText,
 }) => {
   const { validate, label, variant, gridForm } = configInput;
 
@@ -35,7 +36,7 @@ export const TextFieldSelectPxpComponent = ({
         // key={index}
         error={Boolean(error)}
         fullWidth
-        helperText={Boolean(error) && msg}
+        helperText={error ? msg : helperText}
         label={label}
         // margin="normal"
         name={name}
