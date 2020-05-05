@@ -36,8 +36,8 @@ const useStyles = makeStyles((theme) => ({
 const MainContainer = ({ children }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'), {
-    defaultMatches: true,
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'), {
+    defaultMatches: true
   });
 
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -65,12 +65,13 @@ const MainContainer = ({ children }) => {
         open={shouldOpenSidebar}
         variant={isDesktop ? 'persistent' : 'temporary'}
       />
-      <PerfectScrollbar options={{ suppressScrollX: true }}>
+      <PerfectScrollbar options={{ suppressScrollX: true }} id="content">
+       
         <main className={classes.content}>
           <Breadcrumbs />
           {children}
           <Footer />
-        </main>
+        </main>  
       </PerfectScrollbar>
       <LoginDialog />
     </div>

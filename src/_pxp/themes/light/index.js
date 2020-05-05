@@ -25,8 +25,8 @@ export default {
     },
     background: {
       default: colors.common.white,
-      dark: '#f4f6f8',
-      paper: colors.common.white,
+      dark: '#e3e3e3',
+      paper: colors.common.white
     },
     primary: {
       main: colors.indigo[600],
