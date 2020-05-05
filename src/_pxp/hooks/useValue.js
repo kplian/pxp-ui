@@ -2,7 +2,7 @@
  * Hook useValue for init in the object
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
- *
+ * @todo maybe rename to useValue
  */
 import { useState } from 'react';
 

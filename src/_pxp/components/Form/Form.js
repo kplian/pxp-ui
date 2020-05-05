@@ -2,7 +2,29 @@
  * Component Form for rendering a Form with many type from json config of for any pxp-ui project
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
- *
+ * These are possible configuration params:
+ * @param {boolean} dialog If form is a dilog or not
+ * @param {String} classname Name of class to be used in card component
+ * @param {Object} data Configuration object
+ * @param {String} data.nameForm Name of form which will show in header
+ * @param {array} data.columns Columns that will be shown in form you can see each component documentation
+ * @param {object} data.onSubmit url and extra params to send on submit form
+ * @param {String} data.onSubmit.url url on submit form
+ * @param {Object} data.onSubmit.extraParams Object which contain aditional data to send on form submit
+ * @example
+ *  onSubmit: {
+ *    url: 'seguridad/Persona/guardarPersona',
+ *    extraParams: {
+ *       correo: '',
+ *       direccion: ''
+ *  }
+ * @todo Add availability to register custom buttons array with handlers
+ * @todo Dates formats should use a general format configuration for all system
+ * @todo Allow keyboard events on fields
+ * @todo Allow groups
+ * @todo allow access to fields for show, hide allowblank or not
+ * @todo table id where do we define it? Maybe we need to define multiple id as well
+ * @todo change handles by handlers?
  */
 
 /* eslint-disable no-underscore-dangle */
@@ -70,8 +92,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Form = ({ className, rest, data, dialog = false }) => {
-  console.log('FORM');
-
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -140,7 +160,6 @@ const Form = ({ className, rest, data, dialog = false }) => {
       value.length >= store.minChars
     ) {
       store.set({
-        // eslint-disable-next-line max-len
         ...store.state,
         params: {
           ...store.state.params,
@@ -264,7 +283,7 @@ const Form = ({ className, rest, data, dialog = false }) => {
 
     validateAllValues(values, states);
 
-    schema.isValid(values).then(function (valid) {
+    schema.isValid(values).then((valid) => {
       if (valid) {
         // eslint-disable-next-line no-unused-expressions
         typeof onSubmit === 'function'

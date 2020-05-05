@@ -2,6 +2,14 @@
  * AutoComplete Component
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
+ * @param {String} name Is the key of columns object
+ * @param {String} value Init value for component
+ * @param {configInput} data Configuration object
+ * @param {Object} handles Object containing all form handlers
+ * @param {loading} data.columns Columns that will be shown in form you can see each component documentation
+ * @param {states} data.onSubmit url and extra params to send on submit form
+ * @todo grid key shouldnt be unique?
+ * @todo Do we need to recieve all form handlers?
  */
 /* eslint-disable react/jsx-props-no-spreading */
 

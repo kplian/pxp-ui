@@ -2,7 +2,7 @@
  * Hooks for listening the loading, errors and data while the useJsonStore is executed of for any pxp-ui project
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
- *
+ * @todo maybe rename to useJsonStore
  */
 import { useState } from 'react';
 import useFetch from './useFetch';
