@@ -6,6 +6,18 @@ import Typography from '@material-ui/core/Typography';
 import Form from './Form/Form';
 
 const ExampleForm = () => {
+  const jsonExample1 = {
+    nameForm: 'Formulario Persona',
+    columns: {
+      nombre: {},
+      ap_paterno: {},
+    },
+    submitLabel: 'Enviar',
+    onSubmit: {
+      url: 'seguridad/Persona/guardarPersona',
+    },
+  };
+
   const jsonPersona = {
     nameForm: 'Formulario Persona',
     columns: {
@@ -230,6 +242,7 @@ const ExampleForm = () => {
 
   return (
     <>
+      <Form data={jsonExample1} />
       <Form data={jsonPersona} />
       <Form data={jsonConfig} />
       <Form data={datePickers} />

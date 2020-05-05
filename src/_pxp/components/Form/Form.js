@@ -106,7 +106,17 @@ const Form = ({ className, rest, data, dialog = false }) => {
     return dateResp;
   };
 
-  const setupColumn = (column) => {
+  const setupColumn = (nameKey, column) => {
+    // we need to init the defaults values too
+    const defaultValues = {
+      type: 'TextField',
+      label: nameKey,
+      initialValue: '',
+      maxLength: 255,
+      gridForm: { xs: 12, sm: 12 },
+      variant: 'outlined',
+    };
+
     let jsonDate = {};
     if (column.type === 'DatePicker') {
       jsonDate = {
@@ -123,13 +133,14 @@ const Form = ({ className, rest, data, dialog = false }) => {
     }
 
     return {
+      ...defaultValues,
       ...column,
       ...jsonDate,
     };
   };
 
   const configInitialized = Object.entries(data.columns).reduce(
-    (t, [nameKey, value]) => ({ ...t, [nameKey]: setupColumn(value) }),
+    (t, [nameKey, value]) => ({ ...t, [nameKey]: setupColumn(nameKey, value) }),
     {},
   );
 
@@ -246,7 +257,7 @@ const Form = ({ className, rest, data, dialog = false }) => {
             onSubmit.callback();
           }
         } else {
-          enqueueSnackbar('Error', {
+          enqueueSnackbar(resp.detail.message, {
             variant: 'error',
             action: <Button>See all</Button>,
           });
