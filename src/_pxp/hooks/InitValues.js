@@ -2,7 +2,6 @@
  * Hook initValues for inputs
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
- * @todo if this is a hook maybe rename to use
  */
 import useValue from './useValue';
 import useError from './useError';

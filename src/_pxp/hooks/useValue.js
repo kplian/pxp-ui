@@ -2,11 +2,10 @@
  * Hook useValue for init in the object
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
- * @todo maybe rename to useValue
  */
 import { useState } from 'react';
 
-const UseValue = (initialValue) => {
+const useValue = (initialValue) => {
   const [value, setValue] = useState(initialValue);
   return {
     value,
@@ -14,4 +13,4 @@ const UseValue = (initialValue) => {
   };
 };
 
-export default UseValue;
+export default useValue;
