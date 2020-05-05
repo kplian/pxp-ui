@@ -53,6 +53,7 @@ const DrawForm = ({ data, handlers }) => {
                 memoDisabled={values.memoDisabled}
                 error={values.validate.error.error.error}
                 states={states}
+                disabled={values.disabled}
               />
             );
           }
@@ -68,6 +69,7 @@ const DrawForm = ({ data, handlers }) => {
                 memoDisabled={values.memoDisabled}
                 error={values.validate.error.error.error}
                 states={states}
+                disabled={values.disabled}
               />
             );
           }
@@ -84,6 +86,7 @@ const DrawForm = ({ data, handlers }) => {
                 memoDisabled={values.memoDisabled}
                 states={states}
                 open={values.store.open}
+                disabled={values.disabled}
               />
             );
           }
@@ -99,6 +102,7 @@ const DrawForm = ({ data, handlers }) => {
                 memoDisabled={values.memoDisabled}
                 error={values.validate.error.error.error}
                 states={states}
+                disabled={values.disabled}
               />
             );
           }

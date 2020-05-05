@@ -23,6 +23,7 @@ export const TextFieldSelectPxpComponent = ({
   handleChange,
   error,
   states,
+  disabled = false,
 }) => {
   const { validate, label, variant, gridForm } = configInput;
 
@@ -52,6 +53,7 @@ export const TextFieldSelectPxpComponent = ({
         variant={variant}
         select
         SelectProps={{ native: true }}
+        disabled={disabled}
       >
         {configInput.store.map((opt, indexOpt) => (
           // eslint-disable-next-line react/no-array-index-key

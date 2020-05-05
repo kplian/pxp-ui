@@ -13,7 +13,8 @@ const areEqual = (prev, next) =>
   next.memoDisabled !== false &&
   prev.value === next.value &&
   prev.name === next.name &&
-  prev.error === next.error;
+  prev.error === next.error &&
+  prev.disabled === next.disabled;
 
 // eslint-disable-next-line react/prop-types
 export const TextFieldPxpComponent = ({
@@ -23,6 +24,7 @@ export const TextFieldPxpComponent = ({
   handleChange,
   error,
   states,
+  disabled = false,
 }) => {
   const {
     validate,
@@ -59,6 +61,7 @@ export const TextFieldPxpComponent = ({
         value={value}
         variant={variant}
         {...(typeTextField && { type: typeTextField })}
+        disabled={disabled}
       />
     </Grid>
   );

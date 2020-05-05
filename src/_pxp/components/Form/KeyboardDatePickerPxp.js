@@ -39,6 +39,7 @@ export const KeyboardDatePickerPxpComponent = ({
   handleChange,
   error, // is used in areEqual
   states,
+  disabled = false,
 }) => {
   const classes = useStyles();
 
@@ -75,6 +76,7 @@ export const KeyboardDatePickerPxpComponent = ({
           }}
           inputVariant="outlined"
           {...minMaxDate}
+          disabled={disabled}
         />
       </Grid>
     </MuiPickersUtilsProvider>

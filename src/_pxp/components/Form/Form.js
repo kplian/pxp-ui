@@ -18,13 +18,11 @@
  *       correo: '',
  *       direccion: ''
  *  }
- * @todo Add availability to register custom buttons array with handlers
  * @todo Dates formats should use a general format configuration for all system
  * @todo Allow keyboard events on fields
  * @todo Allow groups
  * @todo allow access to fields for show, hide allowblank or not
  * @todo table id where do we define it? Maybe we need to define multiple id as well
- * @todo change handles by handlers?
  */
 
 /* eslint-disable no-underscore-dangle */
@@ -193,6 +191,7 @@ const Form = ({ className, rest, data, dialog = false }) => {
     });
   };
 
+  // this is for giving format to values for send to the backend
   const getValues = (states) => {
     const values = Object.entries(states).reduce(
       (t, [nameKey, state]) => ({

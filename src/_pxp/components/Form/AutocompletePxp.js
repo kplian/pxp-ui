@@ -31,6 +31,7 @@ const AutocompletePxpComponent = ({
   handleChange,
   loading, // is used in areEqual
   states,
+  disabled = false,
 }) => {
   const { label, variant, store, isSearchable, gridForm } = configInput;
 
@@ -112,6 +113,7 @@ const AutocompletePxpComponent = ({
         renderOption={
           store.renderOption ? (option) => store.renderOption(option) : null
         }
+        disabled={disabled}
       />
     </Grid>
   );
