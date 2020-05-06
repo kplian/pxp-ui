@@ -18,8 +18,10 @@
  *       correo: '',
  *       direccion: ''
  *  }
- * @todo Dates formats should use a general format configuration for all system
- * @todo Allow keyboard events on fields
+ *  parameters for columns
+ * @param columns.column.validate: {
+          shape: Yup.string().required('Required'),
+        } if you want allow blank then you do not need to send that parameter
  * @todo Allow groups
  * @todo allow access to fields for show, hide allowblank or not
  * @todo table id where do we define it? Maybe we need to define multiple id as well
@@ -27,12 +29,20 @@
 
 /* eslint-disable no-underscore-dangle */
 import React, { useState } from 'react';
+import _ from 'lodash';
 import * as Yup from 'yup';
 import { Box, Button, Card, Container, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import connection from 'pxp-client';
 import { useSnackbar } from 'notistack';
 import moment from 'moment';
+import {
+  defaultConfig,
+  defaultValuesTextField,
+  defaultValuesDropdown,
+  defaultValuesAutoComplete,
+  defaultValuesDatePicker,
+} from './defaultValues';
 import LoadingScreen from '../LoadingScreen';
 import Header from './Header';
 import DrawForm from './DrawForm';
@@ -95,57 +105,32 @@ const Form = ({ className, rest, data, dialog = false }) => {
   // separate json for button submit onSubmit
   const { onSubmit, nameForm } = data;
 
-  // init data with custom values
-  const getDateWithFormat = (date, format) => {
-    let dateResp;
-    if (date) {
-      dateResp = moment(date, format).toDate();
-    } else {
-      dateResp = null;
-    }
-    return dateResp;
-  };
+  const mergedDataConfig = _.merge({}, defaultConfig, data);
+
+
 
   const setupColumn = (nameKey, column) => {
     // we need to init the defaults values too
     const defaultValues = {
-      type: 'TextField',
+      ...(column.type === 'TextField' && { ...defaultValuesTextField }),
+      ...(column.type === 'Dropdown' && { ...defaultValuesDropdown }),
+      ...(column.type === 'AutoComplete' && { ...defaultValuesAutoComplete }),
+      ...(column.type === 'DatePicker' && { ...defaultValuesDatePicker }),
       label: nameKey,
-      initialValue: '',
-      maxLength: 255,
-      gridForm: { xs: 12, sm: 12 },
-      variant: 'outlined',
     };
+    const mergeSetupConfig = _.merge({}, defaultValues, column);
+    console.log('mergeSetupConfig', mergeSetupConfig);
 
-    let jsonDate = {};
-    if (column.type === 'DatePicker') {
-      jsonDate = {
-        ...jsonDate,
-        initialValue: getDateWithFormat(column.initialValue, column.format),
-        // condition if exist min date and maxDate in the config
-        ...(column.minDate && {
-          minDate: getDateWithFormat(column.minDate, column.format),
-        }),
-        ...(column.maxDate && {
-          maxDate: getDateWithFormat(column.maxDate, column.format),
-        }),
-      };
-    }
-
-    return {
-      ...defaultValues,
-      ...column,
-      ...jsonDate,
-    };
+    return mergeSetupConfig;
   };
 
-  const configInitialized = Object.entries(data.columns).reduce(
+  const configInitialized = Object.entries(mergedDataConfig.columns).reduce(
     (t, [nameKey, value]) => ({ ...t, [nameKey]: setupColumn(nameKey, value) }),
     {},
   );
 
   const dataInitialized = {
-    ...data,
+    ...mergedDataConfig,
     columns: configInitialized,
   };
 

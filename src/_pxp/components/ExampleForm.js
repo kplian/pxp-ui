@@ -3,18 +3,54 @@ import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
+import moment from 'moment';
 import Form from './Form/Form';
 
 const ExampleForm = () => {
+
   const jsonExample1 = {
-    nameForm: 'Formulario Persona',
     columns: {
-      nombre: {},
-      ap_paterno: {},
-    },
-    submitLabel: 'Enviar',
-    onSubmit: {
-      url: 'seguridad/Persona/guardarPersona',
+      nombre: { type: 'TextField' },
+      ap_paterno: { type: 'TextField' },
+      genero: {
+        type: 'Dropdown',
+        store: [
+          { value: '', label: '' },
+          { value: 'masculino', label: 'masculino' },
+        ],
+      },
+      date: {
+        type: 'DatePicker',
+        label: 'Date',
+        initialValue: moment(new Date()).toDate(),
+        format: 'DD-MM-YYYY',
+      },
+      persona: {
+        type: 'AutoComplete',
+        label: 'Persona',
+        initialValue: '',
+        store: {
+          url: 'seguridad/Persona/listarPersona',
+          params: {
+            start: '0',
+            limit: '10',
+            sort: 'id_persona',
+            dir: 'ASC',
+          },
+          parFilters: 'p.nombre_completo1#p.ci',
+          idDD: 'id_persona',
+          descDD: 'nombre_completo2',
+          minChars: 2,
+        },
+        remote: true,
+        gridForm: { xs: 12, sm: 6 },
+        variant: 'outlined',
+        isSearchable: false,
+        validate: {
+          shape: Yup.string().required('Required'),
+        },
+        helperText: 'mensaje de ayuda',
+      },
     },
   };
 
@@ -243,9 +279,9 @@ const ExampleForm = () => {
   return (
     <>
       <Form data={jsonExample1} />
-      <Form data={jsonPersona} />
+      {/*      <Form data={jsonPersona} />
       <Form data={jsonConfig} />
-      <Form data={datePickers} />
+      <Form data={datePickers} /> */}
     </>
   );
 };
