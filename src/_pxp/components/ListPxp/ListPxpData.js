@@ -53,7 +53,7 @@ const ListPxpData = ({ config }) => {
                   sort: params.sort || '',
                   dir: params.dir || 'ASC',
                   contenedor: params.contenedor,
-                  bottom_filter_fields: config.getDataTable.bottom_filter_fields || '',
+                  bottom_filter_fields: params.bottom_filter_fields || '',
                   bottom_filter_value: value
               }
           });
@@ -88,7 +88,7 @@ const ListPxpData = ({ config }) => {
     }, [start, value]);
 
     return (
-        <ListPxp data={ configData.data } config={ config } />
+        <ListPxp data={ configData.data } config={ config }></ListPxp>
     );
 }
 
