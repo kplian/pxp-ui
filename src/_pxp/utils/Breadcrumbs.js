@@ -32,7 +32,7 @@ function generateNames(pages = [], menu, match) {
 
   const matches = [];
   let temp = '';
-  values.map((item) => {
+  values.forEach((item) => {
     temp = `${temp}/${item}`;
     matches.push(temp);
   });
