@@ -2,12 +2,11 @@
  * Hooks for listening the loading, errors and data while the useJsonStore is executed of for any pxp-ui project
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
- *
  */
 import { useState } from 'react';
 import useFetch from './useFetch';
 
-const UseJsonStore = (optionsRequest) => {
+const useJsonStore = (optionsRequest) => {
   const [state, set] = useState({
     url: optionsRequest.url,
     params: optionsRequest.params,
@@ -26,4 +25,4 @@ const UseJsonStore = (optionsRequest) => {
   };
 };
 
-export default UseJsonStore;
+export default useJsonStore;

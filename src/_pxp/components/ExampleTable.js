@@ -8,6 +8,8 @@ import Label from './Label';
 import TablePxp from './Table/TablePxp';
 import imgAvatar from './Table/avatar.jpeg';
 
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
@@ -144,7 +146,12 @@ const ExampleTable = () => {
     buttonDel: true,
     buttonNew: true,
     buttonEdit: true,
-
+    actionsTableCell: {
+      icon: <AddShoppingCartIcon />,
+      onClick: () => {
+        alert('llega');
+      },
+    },
     resetButton: true,
     onSubmit: {
       url: 'seguridad/Persona/guardarPersona',

@@ -3,6 +3,8 @@
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  */
+/* eslint-disable react/jsx-props-no-spreading */
+
 import React from 'react';
 import { TextField } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
@@ -18,9 +20,11 @@ export const TextFieldSelectPxpComponent = ({
   name,
   value,
   configInput,
-  handles,
+  handleChange,
   error,
   states,
+  disabled = false,
+  helperText,
 }) => {
   const { validate, label, variant, gridForm } = configInput;
 
@@ -32,13 +36,13 @@ export const TextFieldSelectPxpComponent = ({
         // key={index}
         error={Boolean(error)}
         fullWidth
-        helperText={Boolean(error) && msg}
+        helperText={error ? msg : helperText}
         label={label}
         // margin="normal"
         name={name}
         // onBlur={handleBlur}
         onChange={(event) =>
-          handles.handleChange({
+          handleChange({
             event,
             name,
             value: event.target.value,
@@ -50,6 +54,7 @@ export const TextFieldSelectPxpComponent = ({
         variant={variant}
         select
         SelectProps={{ native: true }}
+        disabled={disabled}
       >
         {configInput.store.map((opt, indexOpt) => (
           // eslint-disable-next-line react/no-array-index-key

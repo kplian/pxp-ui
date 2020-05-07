@@ -2,6 +2,12 @@
  * AutoComplete Component
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
+ * @param {String} name Is the key of columns object
+ * @param {String} value Init value for component
+ * @param {configInput} data Configuration object
+ * @param {Object} handles Object containing all form handlers
+ * @param {loading} data.columns Columns that will be shown in form you can see each component documentation
+ * @param {states} data.onSubmit url and extra params to send on submit form
  */
 /* eslint-disable react/jsx-props-no-spreading */
 
@@ -9,6 +15,7 @@ import React from 'react';
 import { CircularProgress, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Grid from '@material-ui/core/Grid';
+import _ from 'lodash';
 
 const areEqual = (prev, next) =>
   next.memoDisabled !== false &&
@@ -21,11 +28,32 @@ const AutocompletePxpComponent = ({
   name,
   value, // is used in areEqual
   configInput,
-  handles,
+  handleChange,
   loading, // is used in areEqual
   states,
+  disabled = false,
+  helperText,
 }) => {
   const { label, variant, store, isSearchable, gridForm } = configInput;
+
+  // this handle has debounce for start with searching after 500 ms
+  const handleInputChange = _.debounce(async (valueInput) => {
+    if (
+      valueInput &&
+      isSearchable &&
+      valueInput !== 0 &&
+      valueInput.length >= store.minChars
+    ) {
+      store.set({
+        ...store.state,
+        params: {
+          ...store.state.params,
+          par_filtro: store.parFilters,
+          query: valueInput,
+        },
+      });
+    }
+  }, 500);
 
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
@@ -33,7 +61,7 @@ const AutocompletePxpComponent = ({
         // key={index}
         id={name}
         onInputChange={(e) =>
-          handles.handleInputChange(e.target.value, isSearchable, store)
+          handleInputChange(e.target.value, isSearchable, store)
         }
         open={store.open}
         onOpen={() => {
@@ -71,10 +99,11 @@ const AutocompletePxpComponent = ({
                 </>
               ),
             }}
+            helperText={helperText}
           />
         )}
         onChange={(event, newValue) => {
-          handles.handleChange({
+          handleChange({
             event,
             name,
             value: newValue ? newValue[store.idDD] : '',
@@ -86,6 +115,7 @@ const AutocompletePxpComponent = ({
         renderOption={
           store.renderOption ? (option) => store.renderOption(option) : null
         }
+        disabled={disabled}
       />
     </Grid>
   );

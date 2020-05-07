@@ -2,122 +2,95 @@
  * Component Form for rendering a Form with many type from json config of for any pxp-ui project
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
- *
+ * These are possible configuration params:
+ * @param {boolean} dialog If form is a dilog or not
+ * @param {String} classname Name of class to be used in card component
+ * @param {Object} data Configuration object
+ * @param {String} data.nameForm Name of form which will show in header
+ * @param {array} data.columns Columns that will be shown in form you can see each component documentation
+ * @param {object} data.onSubmit url and extra params to send on submit form
+ * @param {String} data.onSubmit.url url on submit form
+ * @param {Object} data.onSubmit.extraParams Object which contain aditional data to send on form submit
+ * @example
+ *  onSubmit: {
+ *    url: 'seguridad/Persona/guardarPersona',
+ *    extraParams: {
+ *       correo: '',
+ *       direccion: ''
+ *  }
+ *  parameters for columns
+ * @param columns.column.validate: {
+          shape: Yup.string().required('Required'),
+        } if you want allow blank then you do not need to send that parameter
+ @param {Object} data.groups you can split the form with many groups
+ * @example
+ *  groups: {
+ *   userGroup: {
+ *     titleGroup: '',
+ *     gridGroup: { xs: 12, sm: 12 },
+ *   },
+ * },
+ * @todo allow access to fields for show, hide allowblank or not
+ * @todo table id where do we define it? Maybe we need to define multiple id as well
  */
 
 /* eslint-disable no-underscore-dangle */
 import React, { useState } from 'react';
-import * as Yup from 'yup';
 import _ from 'lodash';
-import { Box, Button, Card, Container, makeStyles } from '@material-ui/core';
-import clsx from 'clsx';
+import * as Yup from 'yup';
+import { Button, makeStyles } from '@material-ui/core';
 import connection from 'pxp-client';
 import { useSnackbar } from 'notistack';
 import moment from 'moment';
+import {
+  defaultConfig,
+  defaultValuesTextField,
+  defaultValuesDropdown,
+  defaultValuesAutoComplete,
+  defaultValuesDatePicker,
+} from './defaultValues';
 import LoadingScreen from '../LoadingScreen';
-import Header from './Header';
 import DrawForm from './DrawForm';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-  bulkOperations: {
-    position: 'relative',
-  },
-  bulkActions: {
-    paddingLeft: 4,
-    paddingRight: 4,
-    marginTop: 6,
-    position: 'absolute',
-    width: '100%',
-    zIndex: 2,
-    backgroundColor: theme.palette.background.default,
-  },
-  bulkAction: {
-    marginLeft: theme.spacing(2),
-  },
-  queryField: {
-    width: 500,
-  },
-  categoryField: {
-    flexBasis: 500,
-    width: '100%',
-  },
-  availabilityField: {
-    marginLeft: theme.spacing(2),
-    flexBasis: 200,
-  },
-  stockField: {
-    marginLeft: theme.spacing(2),
-  },
-  shippableField: {
-    marginLeft: theme.spacing(2),
-  },
-  imageCell: {
-    fontSize: 0,
-    width: 68,
-    flexBasis: 68,
-    flexGrow: 0,
-    flexShrink: 0,
-  },
-  image: {
-    height: 68,
-    width: 68,
-  },
-
-  marginAutoItem: {
-    margin: 'auto',
-  },
 }));
 
-const Form = ({ className, rest, data, dialog = false }) => {
-  console.log('FORM');
-
-  const classes = useStyles();
+const Form = ({ data, dialog = false }) => {
+  const classes = useStyles(); // for using
   const { enqueueSnackbar } = useSnackbar();
 
-  // separate json for button submit onSubmit
-  const { onSubmit, nameForm } = data;
-
-  // init data with custom values
-  const getDateWithFormat = (date, format) => {
-    let dateResp;
-    if (date) {
-      dateResp = moment(date, format).toDate();
-    } else {
-      dateResp = null;
-    }
-    return dateResp;
-  };
-
-  const setupColumn = (column) => {
-    let jsonDate = {};
-    if (column.type === 'DatePicker') {
-      jsonDate = {
-        ...jsonDate,
-        initialValue: getDateWithFormat(column.initialValue, column.format),
-        // condition if exist min date and maxDate in the config
-        ...(column.minDate && {
-          minDate: getDateWithFormat(column.minDate, column.format),
-        }),
-        ...(column.maxDate && {
-          maxDate: getDateWithFormat(column.maxDate, column.format),
-        }),
-      };
-    }
-
-    return {
-      ...column,
-      ...jsonDate,
+  let mergedDataConfig = _.merge({}, defaultConfig, data);
+  if (typeof data.groups === 'object') {
+    mergedDataConfig = {
+      ...mergedDataConfig,
+      groups: data.groups,
     };
+  }
+
+  // separate json for button submit onSubmit
+  const { onSubmit, nameForm } = mergedDataConfig;
+
+  const setupColumn = (nameKey, column) => {
+    // we need to init the defaults values too
+    const defaultValues = {
+      ...(column.type === 'TextField' && { ...defaultValuesTextField }),
+      ...(column.type === 'Dropdown' && { ...defaultValuesDropdown }),
+      ...(column.type === 'AutoComplete' && { ...defaultValuesAutoComplete }),
+      ...(column.type === 'DatePicker' && { ...defaultValuesDatePicker }),
+      label: nameKey,
+    };
+    const mergeSetupConfig = _.merge({}, defaultValues, column);
+    return mergeSetupConfig;
   };
 
-  const configInitialized = Object.entries(data.columns).reduce(
-    (t, [nameKey, value]) => ({ ...t, [nameKey]: setupColumn(value) }),
+  const configInitialized = Object.entries(mergedDataConfig.columns).reduce(
+    (t, [nameKey, value]) => ({ ...t, [nameKey]: setupColumn(nameKey, value) }),
     {},
   );
 
   const dataInitialized = {
-    ...data,
+    ...mergedDataConfig,
     columns: configInitialized,
   };
 
@@ -130,26 +103,6 @@ const Form = ({ className, rest, data, dialog = false }) => {
       {},
     );
   const schema = Yup.object().shape(validations);
-
-  // this handle has debounce for start with searching after 500 ms
-  const handleInputChange = _.debounce(async (value, isSearchable, store) => {
-    if (
-      value &&
-      isSearchable &&
-      value !== 0 &&
-      value.length >= store.minChars
-    ) {
-      store.set({
-        // eslint-disable-next-line max-len
-        ...store.state,
-        params: {
-          ...store.state.params,
-          par_filtro: store.parFilters,
-          query: value,
-        },
-      });
-    }
-  }, 500);
 
   const handleChange = ({
     event,
@@ -194,6 +147,7 @@ const Form = ({ className, rest, data, dialog = false }) => {
     });
   };
 
+  // this is for giving format to values for send to the backend
   const getValues = (states) => {
     const values = Object.entries(states).reduce(
       (t, [nameKey, state]) => ({
@@ -248,7 +202,7 @@ const Form = ({ className, rest, data, dialog = false }) => {
             onSubmit.callback();
           }
         } else {
-          enqueueSnackbar('Error', {
+          enqueueSnackbar(resp.detail.message, {
             variant: 'error',
             action: <Button>See all</Button>,
           });
@@ -260,11 +214,15 @@ const Form = ({ className, rest, data, dialog = false }) => {
   // logic for submit button
   const handleSubmitForm = (e, states) => {
     e.preventDefault();
-    const values = { ...getValues(states), ...onSubmit.extraParams };
+    console.log(onSubmit);
+    const values = {
+      ...getValues(states),
+      ...(onSubmit.extraParams && { ...onSubmit.extraParams }),
+    };
 
     validateAllValues(values, states);
 
-    schema.isValid(values).then(function (valid) {
+    schema.isValid(values).then((valid) => {
       if (valid) {
         // eslint-disable-next-line no-unused-expressions
         typeof onSubmit === 'function'
@@ -274,31 +232,15 @@ const Form = ({ className, rest, data, dialog = false }) => {
     });
   };
 
-  const handles = {
+  const handlers = {
     handleChange,
-    handleInputChange,
     handleSubmitForm,
     resetForm,
   };
 
   return (
     <>
-      {dialog ? (
-        <DrawForm data={dataInitialized} handles={handles} />
-      ) : (
-        <Container maxWidth={false}>
-          <Header nameForm={nameForm} />
-          <Box mt={3}>
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <Card className={clsx(classes.root, className)} {...rest}>
-              <Box p={2}>
-                <Box mt={3} display="flex" alignItems="center" />
-                <DrawForm data={dataInitialized} handles={handles} />
-              </Box>
-            </Card>
-          </Box>
-        </Container>
-      )}
+      <DrawForm data={dataInitialized} handlers={handlers} dialog={dialog} />
       {loadingScreen && <LoadingScreen />}
     </>
   );

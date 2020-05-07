@@ -2,11 +2,10 @@
  * Hook UseError for init in the object
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
- *
  */
 import { useState } from 'react';
 
-const UseError = () => {
+const useError = () => {
   const [error, setError] = useState({ error: false, msg: '' });
   return {
     error,
@@ -14,4 +13,4 @@ const UseError = () => {
   };
 };
 
-export default UseError;
+export default useError;

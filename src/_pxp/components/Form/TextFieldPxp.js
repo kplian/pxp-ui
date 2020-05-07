@@ -13,16 +13,19 @@ const areEqual = (prev, next) =>
   next.memoDisabled !== false &&
   prev.value === next.value &&
   prev.name === next.name &&
-  prev.error === next.error;
+  prev.error === next.error &&
+  prev.disabled === next.disabled;
 
 // eslint-disable-next-line react/prop-types
 export const TextFieldPxpComponent = ({
   name,
   value,
   configInput,
-  handles,
+  handleChange,
   error,
   states,
+  disabled = false,
+  helperText,
 }) => {
   const {
     validate,
@@ -42,13 +45,13 @@ export const TextFieldPxpComponent = ({
         {...(autoFocus && { autoFocus })}
         error={Boolean(error)}
         fullWidth
-        helperText={Boolean(error) && msg}
+        helperText={error ? msg : helperText}
         label={label}
         // margin="normal"
         name={name}
         // onBlur={handleBlur}
         onChange={(event) =>
-          handles.handleChange({
+          handleChange({
             event,
             name,
             value: event.target.value,
@@ -59,6 +62,7 @@ export const TextFieldPxpComponent = ({
         value={value}
         variant={variant}
         {...(typeTextField && { type: typeTextField })}
+        disabled={disabled}
       />
     </Grid>
   );

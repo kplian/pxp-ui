@@ -11,6 +11,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import TableBody from '@material-ui/core/TableBody';
 import MenuTableCell from './MenuTableCell';
 import MenuItemTableCell from './MenuItemTableCell';
+import ButtonPxp from '../ButtonPxp';
 
 const TableBodyPxp = ({
   dataConfig,
@@ -75,9 +76,17 @@ const TableBodyPxp = ({
             )}
 
             <TableCell align="right">
-              <MenuTableCell>
-                <MenuItemTableCell buttons={buttonsTableCell} row={row} />
-              </MenuTableCell>
+              {dataConfig.actionsTableCell &&
+              typeof dataConfig.actionsTableCell.onClick === 'function' ? (
+                <ButtonPxp
+                  icon={dataConfig.actionsTableCell.icon}
+                  onClick={dataConfig.actionsTableCell.onClick}
+                />
+              ) : (
+                <MenuTableCell>
+                  <MenuItemTableCell buttons={buttonsTableCell} row={row} />
+                </MenuTableCell>
+              )}
             </TableCell>
           </TableRow>
         );
