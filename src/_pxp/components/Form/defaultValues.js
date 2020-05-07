@@ -13,6 +13,12 @@ export const defaultConfig = {
     url: 'changeSystem/changeControl/changeMethod',
     extraParams: {},
   },
+  groups: {
+    group1: {
+      titleGroup: '',
+      gridGroup: { xs: 12, sm: 12 },
+    },
+  },
 };
 export const defaultValuesTextField = {
   type: 'TextField',
@@ -24,6 +30,7 @@ export const defaultValuesTextField = {
   validate: undefined,
   helperText: undefined,
   disabled: undefined,
+  group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };
 export const defaultValuesDropdown = {
   type: 'Dropdown',
@@ -35,6 +42,7 @@ export const defaultValuesDropdown = {
   validate: undefined,
   helperText: undefined,
   disabled: undefined,
+  group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };
 export const defaultValuesAutoComplete = {
   type: 'AutoComplete',
@@ -61,6 +69,7 @@ export const defaultValuesAutoComplete = {
   validate: undefined,
   helperText: undefined,
   disabled: undefined,
+  group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };
 
 export const defaultValuesDatePicker = {
@@ -75,4 +84,5 @@ export const defaultValuesDatePicker = {
   validate: undefined,
   helperText: undefined,
   disabled: undefined,
+  group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };

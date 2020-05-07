@@ -7,10 +7,9 @@ import moment from 'moment';
 import Form from './Form/Form';
 
 const ExampleForm = () => {
-
   const jsonExample1 = {
     columns: {
-      nombre: { type: 'TextField' },
+      nombre: { type: 'TextField', group: 'groupUser', },
       ap_paterno: { type: 'TextField' },
       genero: {
         type: 'Dropdown',
@@ -43,13 +42,24 @@ const ExampleForm = () => {
           minChars: 2,
         },
         remote: true,
-        gridForm: { xs: 12, sm: 6 },
+        gridForm: { xs: 12, sm: 12 },
         variant: 'outlined',
         isSearchable: false,
         validate: {
           shape: Yup.string().required('Required'),
         },
         helperText: 'mensaje de ayuda',
+        group: 'groupUser',
+      },
+    },
+    groups: {
+      groupPerson: {
+        titleGroup: 'Persona',
+        gridGroup: { xs: 12, sm: 6 },
+      },
+      groupUser: {
+        titleGroup: 'Usuario',
+        gridGroup: { xs: 12, sm: 6 },
       },
     },
   };
@@ -278,7 +288,7 @@ const ExampleForm = () => {
 
   return (
     <>
-      <Form data={jsonExample1} />
+      <Form data={jsonExample1}/>
       {/*      <Form data={jsonPersona} />
       <Form data={jsonConfig} />
       <Form data={datePickers} /> */}

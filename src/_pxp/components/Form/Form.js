@@ -22,7 +22,14 @@
  * @param columns.column.validate: {
           shape: Yup.string().required('Required'),
         } if you want allow blank then you do not need to send that parameter
- * @todo Allow groups
+ @param {Object} data.groups you can split the form with many groups
+ * @example
+ *  groups: {
+ *   userGroup: {
+ *     titleGroup: '',
+ *     gridGroup: { xs: 12, sm: 12 },
+ *   },
+ * },
  * @todo allow access to fields for show, hide allowblank or not
  * @todo table id where do we define it? Maybe we need to define multiple id as well
  */
@@ -31,8 +38,7 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
 import * as Yup from 'yup';
-import { Box, Button, Card, Container, makeStyles } from '@material-ui/core';
-import clsx from 'clsx';
+import { Button, makeStyles } from '@material-ui/core';
 import connection from 'pxp-client';
 import { useSnackbar } from 'notistack';
 import moment from 'moment';
@@ -44,70 +50,26 @@ import {
   defaultValuesDatePicker,
 } from './defaultValues';
 import LoadingScreen from '../LoadingScreen';
-import Header from './Header';
 import DrawForm from './DrawForm';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-  bulkOperations: {
-    position: 'relative',
-  },
-  bulkActions: {
-    paddingLeft: 4,
-    paddingRight: 4,
-    marginTop: 6,
-    position: 'absolute',
-    width: '100%',
-    zIndex: 2,
-    backgroundColor: theme.palette.background.default,
-  },
-  bulkAction: {
-    marginLeft: theme.spacing(2),
-  },
-  queryField: {
-    width: 500,
-  },
-  categoryField: {
-    flexBasis: 500,
-    width: '100%',
-  },
-  availabilityField: {
-    marginLeft: theme.spacing(2),
-    flexBasis: 200,
-  },
-  stockField: {
-    marginLeft: theme.spacing(2),
-  },
-  shippableField: {
-    marginLeft: theme.spacing(2),
-  },
-  imageCell: {
-    fontSize: 0,
-    width: 68,
-    flexBasis: 68,
-    flexGrow: 0,
-    flexShrink: 0,
-  },
-  image: {
-    height: 68,
-    width: 68,
-  },
-
-  marginAutoItem: {
-    margin: 'auto',
-  },
 }));
 
-const Form = ({ className, rest, data, dialog = false }) => {
-  const classes = useStyles();
+const Form = ({ data, dialog = false }) => {
+  const classes = useStyles(); // for using
   const { enqueueSnackbar } = useSnackbar();
 
+  let mergedDataConfig = _.merge({}, defaultConfig, data);
+  if (typeof data.groups === 'object') {
+    mergedDataConfig = {
+      ...mergedDataConfig,
+      groups: data.groups,
+    };
+  }
+
   // separate json for button submit onSubmit
-  const { onSubmit, nameForm } = data;
-
-  const mergedDataConfig = _.merge({}, defaultConfig, data);
-
-
+  const { onSubmit, nameForm } = mergedDataConfig;
 
   const setupColumn = (nameKey, column) => {
     // we need to init the defaults values too
@@ -119,8 +81,6 @@ const Form = ({ className, rest, data, dialog = false }) => {
       label: nameKey,
     };
     const mergeSetupConfig = _.merge({}, defaultValues, column);
-    console.log('mergeSetupConfig', mergeSetupConfig);
-
     return mergeSetupConfig;
   };
 
@@ -254,7 +214,11 @@ const Form = ({ className, rest, data, dialog = false }) => {
   // logic for submit button
   const handleSubmitForm = (e, states) => {
     e.preventDefault();
-    const values = { ...getValues(states), ...onSubmit.extraParams };
+    console.log(onSubmit);
+    const values = {
+      ...getValues(states),
+      ...(onSubmit.extraParams && { ...onSubmit.extraParams }),
+    };
 
     validateAllValues(values, states);
 
@@ -276,22 +240,7 @@ const Form = ({ className, rest, data, dialog = false }) => {
 
   return (
     <>
-      {dialog ? (
-        <DrawForm data={dataInitialized} handlers={handlers} />
-      ) : (
-        <Container maxWidth={false}>
-          <Header nameForm={nameForm} />
-          <Box mt={3}>
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <Card className={clsx(classes.root, className)} {...rest}>
-              <Box p={2}>
-                <Box mt={3} display="flex" alignItems="center" />
-                <DrawForm data={dataInitialized} handlers={handlers} />
-              </Box>
-            </Card>
-          </Box>
-        </Container>
-      )}
+      <DrawForm data={dataInitialized} handlers={handlers} dialog={dialog} />
       {loadingScreen && <LoadingScreen />}
     </>
   );
