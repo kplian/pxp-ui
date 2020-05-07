@@ -10,7 +10,7 @@ import Menu from '@material-ui/core/Menu';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const ITEM_HEIGHT = 48;
-const MenuTableCell = ({ children }) => {
+const MenuTableCell = ({ children, icon }) => {
   // the children is the buttons
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -32,7 +32,7 @@ const MenuTableCell = ({ children }) => {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <MoreVertIcon />
+        {icon || <MoreVertIcon />}
       </IconButton>
       <Menu
         id="long-menu"
