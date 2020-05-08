@@ -32,6 +32,17 @@ export const defaultValuesTextField = {
   disabled: undefined,
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };
+export const defaultValuesSwitch = {
+  type: 'Switch',
+  label: undefined,
+  initialValue: false,
+  maxLength: 255,
+  gridForm: { xs: 12, sm: 12 },
+  variant: 'outlined',
+  validate: undefined,
+  disabled: undefined,
+  group: undefined, // the default group ever is group1 or the first position in the object of the groups
+};
 export const defaultValuesDropdown = {
   type: 'Dropdown',
   label: undefined,

@@ -20,6 +20,7 @@ import TextFieldPxp from './TextFieldPxp';
 import TextFieldSelectPxp from './TextFieldSelectPxp';
 import AutocompletePxp from './AutocompletePxp';
 import KeyboardDatePickerPxp from './KeyboardDatePickerPxp';
+import SwitchPxp from './SwitchPxp';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -123,6 +124,20 @@ const DrawForm = ({ data, handlers, dialog }) => {
         />,
       );
     }
+    if (values.type === 'Switch') {
+      groupsConfig[groupName].children.push(
+        <SwitchPxp
+          key={index}
+          name={nameKey}
+          value={values._value.value}
+          configInput={values}
+          handleChange={handlers.handleChange}
+          memoDisabled={values.memoDisabled}
+          states={states}
+          disabled={values.disabled}
+        />,
+      );
+    }
     return null;
   });
 
@@ -175,7 +190,6 @@ const DrawForm = ({ data, handlers, dialog }) => {
             })}
         </Grid>
       )}
-
       <Box
         mt={2}
         display="flex"

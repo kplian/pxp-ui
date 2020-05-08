@@ -48,6 +48,7 @@ import {
   defaultValuesDropdown,
   defaultValuesAutoComplete,
   defaultValuesDatePicker,
+  defaultValuesSwitch,
 } from './defaultValues';
 import LoadingScreen from '../LoadingScreen';
 import DrawForm from './DrawForm';
@@ -75,6 +76,7 @@ const Form = ({ data, dialog = false }) => {
     // we need to init the defaults values too
     const defaultValues = {
       ...(column.type === 'TextField' && { ...defaultValuesTextField }),
+      ...(column.type === 'Switch' && { ...defaultValuesSwitch }),
       ...(column.type === 'Dropdown' && { ...defaultValuesDropdown }),
       ...(column.type === 'AutoComplete' && { ...defaultValuesAutoComplete }),
       ...(column.type === 'DatePicker' && { ...defaultValuesDatePicker }),
@@ -158,7 +160,9 @@ const Form = ({ data, dialog = false }) => {
         ...(state.type === 'AutoComplete' && {
           [nameKey]: state._value.value[state.store.idDD],
         }),
-        ...((state.type === 'Dropdown' || state.type === 'TextField') && {
+        ...((state.type === 'Dropdown' ||
+          state.type === 'TextField' ||
+          state.type === 'Switch') && {
           [nameKey]: state._value.value,
         }),
       }),

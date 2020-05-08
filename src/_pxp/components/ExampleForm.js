@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -9,8 +9,9 @@ import Form from './Form/Form';
 const ExampleForm = () => {
   const jsonExample1 = {
     columns: {
-      nombre: { type: 'TextField', group: 'groupUser', },
+      nombre: { type: 'TextField', group: 'groupUser' },
       ap_paterno: { type: 'TextField' },
+      Checked: { type: 'Switch', initialValue: false },
       genero: {
         type: 'Dropdown',
         store: [
@@ -288,7 +289,7 @@ const ExampleForm = () => {
 
   return (
     <>
-      <Form data={jsonExample1}/>
+      <Form data={jsonExample1} />
       {/*      <Form data={jsonPersona} />
       <Form data={jsonConfig} />
       <Form data={datePickers} /> */}
