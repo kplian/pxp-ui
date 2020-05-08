@@ -53,12 +53,7 @@ import {
 import LoadingScreen from '../LoadingScreen';
 import DrawForm from './DrawForm';
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-}));
-
 const Form = ({ data, dialog = false }) => {
-  const classes = useStyles(); // for using
   const { enqueueSnackbar } = useSnackbar();
 
   let mergedDataConfig = _.merge({}, defaultConfig, data);
