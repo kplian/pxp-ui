@@ -14,16 +14,14 @@ const MenuItemTableCell = forwardRef(({ buttons, row }, ref) => {
   return (
     <>
       {Object.entries(buttons).map(([nameKey, button]) => {
-        const IconButton = button.buttonIcon;
+        // const IconButton = button.buttonIcon;
 
         return (
           <MenuItem
             key={`menuItem_${nameKey}`}
             onClick={() => button.onClick(row)}
           >
-            <ListItemIcon>
-              <IconButton />
-            </ListItemIcon>
+            <ListItemIcon>{button.buttonIcon}</ListItemIcon>
             <Typography variant="inherit">{button.label}</Typography>
           </MenuItem>
         );

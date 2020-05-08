@@ -4,12 +4,11 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Avatar from '@material-ui/core/Avatar';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import Label from './Label';
 import TablePxp from './Table/TablePxp';
 import imgAvatar from './Table/avatar.jpeg';
-
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-
+import WcIcon from '@material-ui/icons/Wc';
 const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
@@ -147,10 +146,31 @@ const ExampleTable = () => {
     buttonNew: true,
     buttonEdit: true,
     actionsTableCell: {
-      icon: <AddShoppingCartIcon />,
-      onClick: () => {
-        alert('llega');
+      buttonDel: true,
+      buttonEdit: true,
+      extraButtons: {
+        otherButton: {
+          label: 'otro',
+          buttonIcon: <AddShoppingCartIcon />,
+          onClick: (row) => {
+            alert('llega');
+            console.log(row);
+          },
+        },
+        otro2: {
+          label: 'otro',
+          buttonIcon: <WcIcon />,
+          onClick: (row) => {
+            alert('otro2');
+            console.log(row);
+          },
+        },
       },
+      /* icon: <AddShoppingCartIcon />,
+      onClick: (row) => {
+        alert('llega');
+        console.log(row);
+      },*/
     },
     resetButton: true,
     onSubmit: {
