@@ -10,7 +10,8 @@ const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
         width: '100%',
-        backgroundColor: theme.palette.background.dark,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[8],
     },
     tabOption: {
         minWidth: '100px',

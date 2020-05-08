@@ -18,7 +18,7 @@ export default {
       focus: 'rgba(255, 255, 255, 0.12)',
     },
     background: {
-      default: '#2a2d3d',
+      default: '#222431',
       dark: '#222431',
       paper: '#2a2d3d',
     },

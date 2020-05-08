@@ -48,14 +48,14 @@ const ExampleList = () => {
     showFilter: true,
     filters: options,
     columns: {
-      // render: (row) => {
-      //   return <table>
-      //     <tbody>
-      //       <tr><th>Usuario: </th><td>{ row.desc_person }</td></tr>
-      //       <tr><th>Activo: </th><td>{ row.estado_reg }</td></tr>
-      //     </tbody>              
-      //   </table>;
-      // },
+      render: (row) => {
+        return <table>
+          <tbody>
+            <tr><th>Usuario: </th><td>{ row.desc_person }</td></tr>
+            <tr><th>Activo: </th><td>{ row.estado_reg }</td></tr>
+          </tbody>              
+        </table>;
+      },
       primary: {
         field: 'desc_person',
         renderOption: (row) => {

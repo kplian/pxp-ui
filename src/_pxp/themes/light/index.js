@@ -24,7 +24,7 @@ export default {
       active: colors.blueGrey[600],
     },
     background: {
-      default: colors.common.white,
+      default: '#e3e3e3',
       dark: '#e3e3e3',
       paper: colors.common.white
     },

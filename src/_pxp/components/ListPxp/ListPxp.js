@@ -28,8 +28,6 @@ import { defaultConfig } from './defaultConfig';
 
 const useStyles = makeStyles(theme => ({
     root: {
-      flexGrow: 1,
-      maxWidth: 752,
     },
     title: {
       margin: theme.spacing(4, 0, 2),
@@ -37,6 +35,13 @@ const useStyles = makeStyles(theme => ({
     drawer: {
         backgroundColor: theme.palette.grey[800],
         color: theme.palette.common.white, 
+    },
+    list: {
+      marginTop: '8px',
+      backgroundColor: theme.palette.background.paper, 
+      boxShadow: theme.shadows[8],
+      paddingTop: 0,
+      paddingBottom: 0,
     },
     inline: {
         display: 'inline',
@@ -131,10 +136,10 @@ const ListPxp = ({ data = [], actions=[], config = {} }) => {
     }
     
     return (    
-        <div>
+        <div className={ classes.root }>
             { configAll.showSearch && <SearchFab handleSearch={ handleSearch }></SearchFab> }
             { configAll.showFilter && <OptionsFilter filters={ configAll.filters } handleFilter={ handleFilter }/> }
-            <List dense={true}>
+            <List dense={true} className={ classes.list }>
               <Divider/>
               
               { data && data.length == 0 && configAll.infiniteScroll.hasMore && <SkeletonItems length={5}/> }
