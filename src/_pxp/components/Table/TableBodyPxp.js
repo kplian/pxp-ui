@@ -80,7 +80,7 @@ const TableBodyPxp = ({
               typeof dataConfig.actionsTableCell.onClick === 'function' ? (
                 <ButtonPxp
                   icon={dataConfig.actionsTableCell.icon}
-                  onClick={dataConfig.actionsTableCell.onClick}
+                  onClick={() => dataConfig.actionsTableCell.onClick(row)}
                 />
               ) : (
                 <MenuTableCell>

@@ -103,7 +103,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const TablePxp = ({ dataConfig, width }) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-  const { idStore, buttonNew, buttonEdit, buttonDel } = dataConfig;
+  const {
+    idStore,
+    buttonNew,
+    buttonEdit,
+    buttonDel,
+    actionsTableCell,
+  } = dataConfig;
 
   const { paginationType } = dataConfig;
 
@@ -331,20 +337,21 @@ const TablePxp = ({ dataConfig, width }) => {
   };
 
   const buttonsTableCell = {
-    ...(buttonEdit && {
+    ...(actionsTableCell.buttonEdit && {
       buttonEdit: {
         onClick: handleEdit,
-        buttonIcon: ButtonEdit,
+        buttonIcon: <EditIcon />,
         label: 'Edit',
       },
     }),
-    ...(buttonDel && {
+    ...(actionsTableCell.buttonDel && {
       buttonDel: {
         onClick: handleDelete,
-        buttonIcon: ButtonDelete,
+        buttonIcon: <DeleteIcon />,
         label: 'Delete',
       },
     }),
+    ...actionsTableCell.extraButtons,
   };
 
   // pagination
