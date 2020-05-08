@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
       : {}),
     ...(theme.name === 'ONE_DARK'
       ? {
-          backgroundColor: theme.palette.background.default,
+          backgroundColor: theme.palette.background.paper,
         }
       : {}),
   },
