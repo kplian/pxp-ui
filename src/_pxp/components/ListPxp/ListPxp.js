@@ -10,7 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { OutlinedInput, InputAdornment } from '@material-ui/core';
+
 import { MoreVert, ExpandMore, ExpandLess, Delete, Edit } from '@material-ui/icons/index';
 import Divider from '@material-ui/core/Divider';
 /////
@@ -18,15 +18,13 @@ import Drawer from '@material-ui/core/Drawer';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
 import InfiniteScroll from 'react-infinite-scroller';
-// import { data } from './demodata';
 
-//hooks
-import TabsOptions from './TabsOptions';
-import SearchIcon from '@material-ui/icons/Search';
-import CloseIcon from '@material-ui/icons/Close';
 import SkeletonItems from './SkeletonItems';
 import SearchFab from './SearchFab';
+import OptionsFilter from './OptionsFilter';
+import _ from 'lodash';
 
+import { defaultConfig } from './defaultConfig';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -61,48 +59,6 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
-// JSON CONFIG
-const defaultConfig = {
-    showActions: true,
-    showSearch: true,
-    infiniteScroll: false,
-    render: {
-      primary: {
-        field: 'num_tramite',
-        renderOption: ( row ) => {
-          return <div>Render</div>
-        }
-      },
-      secondary: {
-        field: 'desc_funcionario',
-        renderOption: ( row ) => {
-          return <div>Render</div>
-        }
-      },
-      terciary: {
-        field: 'importe_total',
-        text: 'Total',
-        level: 3,
-        renderOption: ( row ) => {
-          return <div>Render</div>
-        }
-      },
-      detail: [{
-        field:'obs',
-        text: 'Observaciones'
-      },
-      {
-        field:'justificacion',
-        text: 'Justificacion'
-      },
-      {
-        field:'lugar_entrega',
-        text: 'Lugar Entrega'
-      }]
-    }
-};
-
 const defaultActions = [
   { 
     icon: <Edit/>, 
@@ -117,12 +73,11 @@ const defaultActions = [
 ];
 
 // export const ListTable = ({ data, actions }) => {
-const ListPxp = ({ data = [], actions=[], config = {}, detail, loadMore }) => {
+const ListPxp = ({ data = [], actions=[], config = {} }) => {
   // IntersectionObserver revisar
     const configAll = { ...defaultConfig, ...config };
     const actionsAll = [ ...defaultActions, ...actions ];
-    const render = configAll.render || {};
-    const originalData = data;
+    const columns = configAll.columns || {};
 
     const classes = useStyles();
 
@@ -142,7 +97,9 @@ const ListPxp = ({ data = [], actions=[], config = {}, detail, loadMore }) => {
     };
 
     const handleClick = (index ) => {
+      if ( configAll.showDetail ) {
         setState({  ...state, [index]: !state[index] });
+      }
     }
 
     const fullList = side => (
@@ -163,22 +120,25 @@ const ListPxp = ({ data = [], actions=[], config = {}, detail, loadMore }) => {
       </div>
     );
 
-    const handleSearch = (e) => {
-      console.log('e', e.target.value );
-      const value = e.target.value;
-      data = originalData.filter( item => {
-        console.log(item.desc_person.toLowerCase().includes(value.toLowerCase()));
-        return item.desc_person.toLowerCase().includes(value.toLowerCase());
-      });      
+    const handleSearch = _.debounce((value) => {
+      console.log(value)
+      config.onSearch( value );
+    }, 500);
+
+    const handleFilter = (value) => {
+      console.log(value)
+      config.onSearch( value );
     }
     
     return (    
         <div>
-            <SearchFab></SearchFab>
+            { configAll.showSearch && <SearchFab handleSearch={ handleSearch }></SearchFab> }
+            { configAll.showFilter && <OptionsFilter filters={ configAll.filters } handleFilter={ handleFilter }/> }
             <List dense={true}>
               <Divider/>
               
-              { data && data.length == 0 && <SkeletonItems length={5}/> }
+              { data && data.length == 0 && configAll.infiniteScroll.hasMore && <SkeletonItems length={5}/> }
+              { data && data.length == 0 && !configAll.infiniteScroll.hasMore && <h3>No items to show...</h3> }
               <InfiniteScroll
                   useWindow={false}
                   pageStart={0}
@@ -190,60 +150,74 @@ const ListPxp = ({ data = [], actions=[], config = {}, detail, loadMore }) => {
               >
               {data && data.length > 0 && data.map( (item, index) =>(<div key={index} >
                 <ListItem button onClick={ ()=> handleClick(index)}>
-                  <ListItemIcon>
-                    {state[index] ? <ExpandLess /> : <ExpandMore />}
-                  </ListItemIcon>
-                  <ListItemText 
-                    primary={<React.Fragment>
-                      <Box display="flex"
-                            flexWrap="wrap">
-                          <Box flexGrow={1}>
-                              <Typography
+                  { configAll.showDetail && <ListItemIcon>
+                      {state[index] ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemIcon>
+                  }
+                  { configAll.columns.render && configAll.columns.render( item ) }
+                  { !configAll.columns.render &&
+                    <ListItemText 
+                      primary={<React.Fragment>
+                        <Box display="flex"
+                              flexWrap="wrap">
+                            <Box flexGrow={1}>
+                                { columns.primary.renderOption && columns.primary.renderOption(item) }
+                                { !columns.primary.renderOption && 
+                                  <Typography
+                                    component="span"
+                                    variant="subtitle1"
+                                    className={classes.inline}
+                                    color="inherit"
+                                    >
+                                      { item[ columns.primary.field ] }
+                                  </Typography> 
+                              }
+                            </Box>
+                            <Box>
+                              { columns.terciary.renderOption && columns.terciary.renderOption(item) }
+                              { !columns.terciary.renderOption && 
+                                <Typography
+                                component="span"
+                                variant="overline"
+                                color="secondary"
+                                >
+                                    <b>
+                                      { columns.terciary.text }:&nbsp; 
+                                    </b>
+                                    { item[ columns.terciary.field] }
+                                </Typography>
+                              }
+                            </Box>
+                        </Box>
+                      </React.Fragment> 
+                    }
+                    secondary={ 
+                      <React.Fragment>
+                          { columns.secondary.renderOption && columns.secondary.renderOption(item) }
+                          { !columns.secondary.renderOption && 
+                            <Typography
                               component="span"
-                              variant="subtitle1"
+                              variant="caption"
                               className={classes.inline}
-                              color="inherit"
-                              >
-                                {item[ render.primary.field ]}
-                              </Typography> 
-                          </Box>
-                          <Box>
-                              <Typography
-                              component="span"
-                              variant="overline"
                               color="secondary"
-                              >
-                                  <b>
-                                    { render.terciary.text }:
-                                  </b>
-                                  { item[ render.terciary.field] }
-                              </Typography>
-                          </Box>
-                      </Box>
-                    </React.Fragment> 
+                            >
+                              {item[ columns.secondary.field ]}
+                            </Typography>
+                          }
+                      </React.Fragment>
+                    }
+                    />
                   }
-                  secondary={ 
-                    <React.Fragment>
-                        <Typography
-                          component="span"
-                          variant="caption"
-                          className={classes.inline}
-                          color="secondary"
-                        >
-                          {item[ render.secondary.field ]}
-                        </Typography>
-                    </React.Fragment>
-                  }
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="options" color="primary" onClick={toggleDrawer('bottom', true)}> 
-                      <MoreVert />
-                    </IconButton>
-                  </ListItemSecondaryAction>
+                  { configAll.showActions && <ListItemSecondaryAction>
+                     <IconButton edge="end" aria-label="options" color="primary" onClick={toggleDrawer('bottom', true)}> 
+                       <MoreVert />
+                     </IconButton>
+                   </ListItemSecondaryAction>
+                 }
                 </ListItem>
                 <Collapse in={state[index]} timeout="auto" unmountOnExit>
                   <Grid container spacing={0} className={ classes.detail }>
-                      { render.detail.map( (option, index) => 
+                      { !columns.detailRender && columns.detail && columns.detail.map( (option, index) => 
                         <React.Fragment key={ index }>
                           <Grid item xs={4} sm={3} md={2} xl={1} className={ classes.detailTitle}>
                             <b>{ option.text }</b>
@@ -253,6 +227,7 @@ const ListPxp = ({ data = [], actions=[], config = {}, detail, loadMore }) => {
                           </Grid>
                         </React.Fragment>
                       )}
+                      { columns.detailRender && columns.detailRender(item) }
                   </Grid>
                 </Collapse>
                 <Divider/>

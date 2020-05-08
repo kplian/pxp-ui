@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     // },
   }));
   
-const SearchFab = () => {
+const SearchFab = ({ handleSearch }) => {
     const theme = useTheme();
     const classes = useStyles();
     const transitionDuration = {
@@ -71,8 +71,8 @@ const SearchFab = () => {
                     <SearchIcon/>
                 </Fab>
             </Zoom>
-            <Slide in={visible} timeout={700} direction="left" mountOnEnter unmountOnExit>
-                <InputBase type="text" className={ classes.inputSearch }/>
+            <Slide in={visible} timeout={300} direction="left" mountOnEnter unmountOnExit>
+                <InputBase type="text" className={ classes.inputSearch } onChange={ (e) => handleSearch(e.target.value) }/>
             </Slide>
         </>
     )
