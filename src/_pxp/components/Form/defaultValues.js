@@ -19,6 +19,7 @@ export const defaultConfig = {
       gridGroup: { xs: 12, sm: 12 },
     },
   },
+  typeForm: 'normal', // can be steppers (type wizard)
 };
 export const defaultValuesTextField = {
   type: 'TextField',

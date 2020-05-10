@@ -18,6 +18,9 @@ const ExampleForm = () => {
           { value: '', label: '' },
           { value: 'masculino', label: 'masculino' },
         ],
+        validate: {
+          shape: Yup.string().required('Required'),
+        },
       },
       date: {
         type: 'DatePicker',
@@ -45,7 +48,7 @@ const ExampleForm = () => {
         remote: true,
         gridForm: { xs: 12, sm: 12 },
         variant: 'outlined',
-        isSearchable: false,
+        isSearchable: true,
         validate: {
           shape: Yup.string().required('Required'),
         },

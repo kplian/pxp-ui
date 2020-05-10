@@ -54,8 +54,6 @@ import LoadingScreen from '../LoadingScreen';
 import DrawForm from './DrawForm';
 
 const Form = ({ data, dialog = false }) => {
-  const { enqueueSnackbar } = useSnackbar();
-
   let mergedDataConfig = _.merge({}, defaultConfig, data);
   if (typeof data.groups === 'object') {
     mergedDataConfig = {
@@ -63,9 +61,21 @@ const Form = ({ data, dialog = false }) => {
       groups: data.groups,
     };
   }
+  // get the default group for columns with group undefined
+  const defaultGroup = Object.keys(mergedDataConfig.groups)[0];
 
-  // separate json for button submit onSubmit
-  const { onSubmit, nameForm } = mergedDataConfig;
+  // init form data aux like validations and debounce for not processing many times
+  const validations = Object.entries(data.columns)
+    // eslint-disable-next-line no-unused-vars
+    .filter(([nameKey, value]) => typeof value.validate === 'object')
+    .reduce(
+      (t, [nameKey, value]) => ({
+        ...t,
+        [nameKey]: value.validate.shape,
+      }),
+      {},
+    );
+  const schema = Yup.object().shape(validations);
 
   const setupColumn = (nameKey, column) => {
     // we need to init the defaults values too
@@ -76,30 +86,48 @@ const Form = ({ data, dialog = false }) => {
       ...(column.type === 'AutoComplete' && { ...defaultValuesAutoComplete }),
       ...(column.type === 'DatePicker' && { ...defaultValuesDatePicker }),
       label: nameKey,
+      ...(column.group === undefined && { group: defaultGroup }),
     };
+
     const mergeSetupConfig = _.merge({}, defaultValues, column);
     return mergeSetupConfig;
   };
 
   const configInitialized = Object.entries(mergedDataConfig.columns).reduce(
-    (t, [nameKey, value]) => ({ ...t, [nameKey]: setupColumn(nameKey, value) }),
+    (t, [nameKey, value]) => ({
+      ...t,
+      [nameKey]: {
+        ...setupColumn(nameKey, value),
+        ...(validations[nameKey] && { shape: validations[nameKey] }),
+      },
+    }),
     {},
   );
+
+  const schemaByGroup = {};
+  Object.entries(mergedDataConfig.groups).forEach(([nameGroup]) => {
+    const validationsByGroup = Object.entries(configInitialized)
+      // eslint-disable-next-line no-unused-vars
+      .filter(
+        ([nameKey, value]) =>
+          typeof value.shape === 'object' && value.group === nameGroup,
+      )
+      .reduce(
+        (t, [nameKey, value]) => ({
+          ...t,
+          [nameKey]: value.validate.shape,
+        }),
+        {},
+      );
+    const schemaAux = Yup.object().shape(validationsByGroup);
+    schemaByGroup[nameGroup] = schemaAux;
+  });
+
 
   const dataInitialized = {
     ...mergedDataConfig,
     columns: configInitialized,
   };
-
-  // init form data aux like validations and debounce for not processing many times
-  const validations = Object.entries(data.columns)
-    // eslint-disable-next-line no-unused-vars
-    .filter(([nameKey, value]) => typeof value.validate === 'object')
-    .reduce(
-      (t, [nameKey, value]) => ({ ...t, [nameKey]: value.validate.shape }),
-      {},
-    );
-  const schema = Yup.object().shape(validations);
 
   const handleChange = ({
     event,
@@ -137,110 +165,19 @@ const Form = ({ data, dialog = false }) => {
     }
   };
 
-  const resetForm = ({ states }) => {
-    // eslint-disable-next-line no-unused-vars
-    Object.entries(states).forEach(([nameKey, state]) => {
-      state._value.setValue('');
-    });
-  };
-
-  // this is for giving format to values for send to the backend
-  const getValues = (states) => {
-    const values = Object.entries(states).reduce(
-      (t, [nameKey, state]) => ({
-        ...t,
-        ...(state.type === 'DatePicker' && {
-          [nameKey]: moment(state._value.value).format(state.format),
-        }),
-        ...(state.type === 'AutoComplete' && {
-          [nameKey]: state._value.value[state.store.idDD],
-        }),
-        ...((state.type === 'Dropdown' ||
-          state.type === 'TextField' ||
-          state.type === 'Switch') && {
-          [nameKey]: state._value.value,
-        }),
-      }),
-      {},
-    );
-    return values;
-  };
-
-  const [loadingScreen, setLoadingScreen] = useState(false);
-
-  // this factory is if exist some error then this  send to draw again the input with error or inputs
-  const validateAllValues = (values, states) => {
-    try {
-      schema.validateSync(values, { abortEarly: false });
-    } catch (errors) {
-      errors.inner.forEach((error) => {
-        states[error.path].validate.error.setError({
-          error: true,
-          msg: error.message,
-        });
-      });
-    }
-  };
-
-  const sendData = (values, states) => {
-    setLoadingScreen(true);
-    connection
-      .doRequest({
-        url: onSubmit.url,
-        params: values,
-      })
-      .then((resp) => {
-        if (!resp.error) {
-          // need to reset the form
-          resetForm({ states });
-          enqueueSnackbar('Success', {
-            variant: 'success',
-            action: <Button>See all</Button>,
-          });
-          if (typeof onSubmit.callback === 'function') {
-            onSubmit.callback();
-          }
-        } else {
-          enqueueSnackbar(resp.detail.message, {
-            variant: 'error',
-            action: <Button>See all</Button>,
-          });
-        }
-        setLoadingScreen(false);
-      });
-  };
-
-  // logic for submit button
-  const handleSubmitForm = (e, states) => {
-    e.preventDefault();
-    console.log(onSubmit);
-    const values = {
-      ...getValues(states),
-      ...(onSubmit.extraParams && { ...onSubmit.extraParams }),
-    };
-
-    validateAllValues(values, states);
-
-    schema.isValid(values).then((valid) => {
-      if (valid) {
-        // eslint-disable-next-line no-unused-expressions
-        typeof onSubmit === 'function'
-          ? onSubmit({ values, states })
-          : sendData(values, states);
-      }
-    });
-  };
-
   const handlers = {
     handleChange,
-    handleSubmitForm,
-    resetForm,
   };
 
   return (
     <>
-      <DrawForm data={dataInitialized} handlers={handlers} dialog={dialog} />
-      {loadingScreen && <LoadingScreen />}
+      <DrawForm
+        data={dataInitialized}
+        handlers={handlers}
+        dialog={dialog}
+        schema={schema}
+        schemaByGroup={schemaByGroup}
+      />
     </>
   );
 };
