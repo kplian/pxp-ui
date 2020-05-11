@@ -1,6 +1,4 @@
-import React from 'react';
 import { SvgIcon } from '@material-ui/core';
-
 const FileIcon = () => {
   return (
     <SvgIcon viewBox="0 0 50 50">

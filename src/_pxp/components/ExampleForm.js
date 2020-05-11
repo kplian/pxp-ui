@@ -5,6 +5,9 @@ import Typography from '@material-ui/core/Typography';
 
 import moment from 'moment';
 import Form from './Form/Form';
+import ButtonPxp from "./ButtonPxp";
+import {ArrowLeftIcon} from "@material-ui/pickers/_shared/icons/ArrowLeftIcon";
+
 
 const ExampleForm = () => {
   const jsonExample1 = {
@@ -292,6 +295,7 @@ const ExampleForm = () => {
 
   return (
     <>
+
       <Form data={jsonExample1} />
       {/*      <Form data={jsonPersona} />
       <Form data={jsonConfig} />
