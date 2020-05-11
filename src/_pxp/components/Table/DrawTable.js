@@ -64,7 +64,6 @@ const DrawTable = ({
           aria-labelledby="tableTitle"
           size={dense ? 'small' : 'medium'}
           aria-label="enhanced table"
-          stickyHeader
         >
           {data && (
             <TableHeadPxp
