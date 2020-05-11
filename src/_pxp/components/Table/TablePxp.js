@@ -158,7 +158,6 @@ const TablePxp = ({ dataConfig, width }) => {
   useEffect(() => {
     const columnsForWidth = (nameKey, index) => {
       let jsonRes = {};
-      console.log('width',width)
       switch (width) {
         case 'xs':
           jsonRes = {
