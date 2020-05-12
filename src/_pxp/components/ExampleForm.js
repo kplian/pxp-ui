@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import moment from 'moment';
 import Form from './Form/Form';
-import ButtonPxp from "./ButtonPxp";
-import {ArrowLeftIcon} from "@material-ui/pickers/_shared/icons/ArrowLeftIcon";
-
 
 const ExampleForm = () => {
   const jsonExample1 = {
@@ -69,6 +66,7 @@ const ExampleForm = () => {
         gridGroup: { xs: 12, sm: 6 },
       },
     },
+    typeForm: 'steppers',
   };
 
   const jsonPersona = {
@@ -295,7 +293,6 @@ const ExampleForm = () => {
 
   return (
     <>
-
       <Form data={jsonExample1} />
       {/*      <Form data={jsonPersona} />
       <Form data={jsonConfig} />
