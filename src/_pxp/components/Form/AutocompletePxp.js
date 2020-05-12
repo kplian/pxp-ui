@@ -35,6 +35,7 @@ const AutocompletePxpComponent = ({
   disabled = false,
   helperText,
   error,
+  msgError,
 }) => {
   const {
     label,
@@ -64,7 +65,6 @@ const AutocompletePxpComponent = ({
     }
   }, 500);
 
-  const msg = validate && validate.error.error.msg;
 
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
@@ -98,7 +98,7 @@ const AutocompletePxpComponent = ({
           <TextField
             {...params}
             error={Boolean(error)}
-            helperText={error ? msg : helperText}
+            helperText={error ? msgError : helperText}
             label={label}
             variant={variant}
             InputProps={{

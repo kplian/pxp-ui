@@ -84,7 +84,7 @@ const DrawForm = ({ data, handlers, dialog, schema, schemaByGroup }) => {
   const resetForm = ({ states }) => {
     // eslint-disable-next-line no-unused-vars
     Object.entries(states).forEach(([nameKey, state]) => {
-      state._value.setValue(state.initialValue);
+      state.setValue(state.initialValue);
     });
   };
 
@@ -94,15 +94,15 @@ const DrawForm = ({ data, handlers, dialog, schema, schemaByGroup }) => {
       (t, [nameKey, state]) => ({
         ...t,
         ...(state.type === 'DatePicker' && {
-          [nameKey]: moment(state._value.value).format(state.format),
+          [nameKey]: moment(state.value).format(state.format),
         }),
         ...(state.type === 'AutoComplete' && {
-          [nameKey]: state._value.value[state.store.idDD],
+          [nameKey]: state.value[state.store.idDD],
         }),
         ...((state.type === 'Dropdown' ||
           state.type === 'TextField' ||
           state.type === 'Switch') && {
-          [nameKey]: state._value.value,
+          [nameKey]: state.value,
         }),
       }),
       {},
@@ -116,8 +116,8 @@ const DrawForm = ({ data, handlers, dialog, schema, schemaByGroup }) => {
       schema.validateSync(values, { abortEarly: false });
     } catch (errors) {
       errors.inner.forEach((error) => {
-        states[error.path].validate.error.setError({
-          error: true,
+        states[error.path].setError({
+          hasError: true,
           msg: error.message,
         });
       });
@@ -181,11 +181,12 @@ const DrawForm = ({ data, handlers, dialog, schema, schemaByGroup }) => {
           <TextFieldPxp
             key={index}
             name={nameKey}
-            value={values._value.value}
+            value={values.value}
             configInput={values}
             handleChange={handlers.handleChange}
             memoDisabled={values.memoDisabled}
-            error={values.validate.error.error.error}
+            error={values.error.hasError}
+            msgError={values.error.msg}
             states={states}
             disabled={values.disabled}
             helperText={values.helperText}
@@ -198,11 +199,12 @@ const DrawForm = ({ data, handlers, dialog, schema, schemaByGroup }) => {
           <TextFieldSelectPxp
             key={index}
             name={nameKey}
-            value={values._value.value}
+            value={values.value}
             configInput={values}
             handleChange={handlers.handleChange}
             memoDisabled={values.memoDisabled}
-            error={values.validate.error.error.error}
+            error={values.error.hasError}
+            msgError={values.error.msg}
             states={states}
             disabled={values.disabled}
             helperText={values.helperText}
@@ -215,7 +217,7 @@ const DrawForm = ({ data, handlers, dialog, schema, schemaByGroup }) => {
           <AutocompletePxp
             key={index}
             name={nameKey}
-            value={values._value.value}
+            value={values.value}
             configInput={values}
             handleChange={handlers.handleChange}
             loading={values.store.loading}
@@ -224,7 +226,8 @@ const DrawForm = ({ data, handlers, dialog, schema, schemaByGroup }) => {
             open={values.store.open}
             disabled={values.disabled}
             helperText={values.helperText}
-            error={values.validate.error.error.error}
+            error={values.error.hasError}
+            msgError={values.error.msg}
           />,
         );
       }
@@ -234,11 +237,11 @@ const DrawForm = ({ data, handlers, dialog, schema, schemaByGroup }) => {
           <KeyboardDatePickerPxp
             key={index}
             name={nameKey}
-            value={values._value.value}
+            value={values.value}
             configInput={values}
             handleChange={handlers.handleChange}
             memoDisabled={values.memoDisabled}
-            error={values.validate.error.error.error}
+            error={values.error.hasError}
             states={states}
             disabled={values.disabled}
             helperText={values.helperText}
@@ -250,7 +253,7 @@ const DrawForm = ({ data, handlers, dialog, schema, schemaByGroup }) => {
           <SwitchPxp
             key={index}
             name={nameKey}
-            value={values._value.value}
+            value={values.value}
             configInput={values}
             handleChange={handlers.handleChange}
             memoDisabled={values.memoDisabled}
@@ -274,8 +277,8 @@ const DrawForm = ({ data, handlers, dialog, schema, schemaByGroup }) => {
       schemaByGroup[group].validateSync(values, { abortEarly: false });
     } catch (errors) {
       errors.inner.forEach((error) => {
-        states[error.path].validate.error.setError({
-          error: true,
+        states[error.path].setError({
+          hasError: true,
           msg: error.message,
         });
       });

@@ -123,7 +123,6 @@ const Form = ({ data, dialog = false }) => {
     schemaByGroup[nameGroup] = schemaAux;
   });
 
-
   const dataInitialized = {
     ...mergedDataConfig,
     columns: configInitialized,
@@ -139,20 +138,20 @@ const Form = ({ data, dialog = false }) => {
   }) => {
     // eslint-disable-next-line no-unused-expressions
     event && event.preventDefault(); // in some inputs we dont have event like date pickers
-    const { _value, validate } = configInputState;
+    const { setValue, setError } = configInputState;
 
     if (validations[name]) {
       schema
         .validateAt(name, { [name]: value })
         .then(() => {
-          validate.error.setError({ error: false, msg: '' });
+          setError({ hasError: false, msg: '' });
         })
         .catch((err) => {
-          validate.error.setError({ error: true, msg: err.message });
+          setError({ hasError: true, msg: err.message });
         });
     }
 
-    _value.setValue(dataValue || value);
+    setValue(dataValue || value);
 
     if (configInputState.onChange) {
       configInputState.onChange({
