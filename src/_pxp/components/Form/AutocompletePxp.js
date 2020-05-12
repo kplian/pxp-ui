@@ -22,7 +22,8 @@ const areEqual = (prev, next) =>
   prev.value === next.value &&
   prev.name === next.name &&
   prev.loading === next.loading &&
-  prev.open === next.open;
+  prev.open === next.open &&
+  prev.error === next.error;
 
 const AutocompletePxpComponent = ({
   name,
@@ -33,8 +34,16 @@ const AutocompletePxpComponent = ({
   states,
   disabled = false,
   helperText,
+  error,
 }) => {
-  const { label, variant, store, isSearchable, gridForm } = configInput;
+  const {
+    label,
+    variant,
+    store,
+    isSearchable,
+    gridForm,
+    validate,
+  } = configInput;
 
   // this handle has debounce for start with searching after 500 ms
   const handleInputChange = _.debounce(async (valueInput) => {
@@ -54,6 +63,8 @@ const AutocompletePxpComponent = ({
       });
     }
   }, 500);
+
+  const msg = validate && validate.error.error.msg;
 
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
@@ -86,6 +97,8 @@ const AutocompletePxpComponent = ({
         renderInput={(params) => (
           <TextField
             {...params}
+            error={Boolean(error)}
+            helperText={error ? msg : helperText}
             label={label}
             variant={variant}
             InputProps={{
@@ -99,7 +112,6 @@ const AutocompletePxpComponent = ({
                 </>
               ),
             }}
-            helperText={helperText}
           />
         )}
         onChange={(event, newValue) => {

@@ -222,6 +222,7 @@ const DrawForm = ({ data, handlers, dialog, schema, schemaByGroup }) => {
           open={values.store.open}
           disabled={values.disabled}
           helperText={values.helperText}
+          error={values.validate.error.error.error}
         />,
       );
     }
