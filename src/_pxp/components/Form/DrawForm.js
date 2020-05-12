@@ -174,89 +174,93 @@ const DrawForm = ({ data, handlers, dialog, schema, schemaByGroup }) => {
 
   Object.entries(states).map(([nameKey, values], index) => {
     const groupName = values.group || Object.keys(groupsConfig)[0];
-    if (values.type === 'TextField') {
-      groupsConfig[groupName].children.push(
-        <TextFieldPxp
-          key={index}
-          name={nameKey}
-          value={values._value.value}
-          configInput={values}
-          handleChange={handlers.handleChange}
-          memoDisabled={values.memoDisabled}
-          error={values.validate.error.error.error}
-          states={states}
-          disabled={values.disabled}
-          helperText={values.helperText}
-        />,
-      );
+    // if hide is false then showing
+    if (!values.hide) {
+      if (values.type === 'TextField') {
+        groupsConfig[groupName].children.push(
+          <TextFieldPxp
+            key={index}
+            name={nameKey}
+            value={values._value.value}
+            configInput={values}
+            handleChange={handlers.handleChange}
+            memoDisabled={values.memoDisabled}
+            error={values.validate.error.error.error}
+            states={states}
+            disabled={values.disabled}
+            helperText={values.helperText}
+          />,
+        );
+      }
+
+      if (values.type === 'Dropdown') {
+        groupsConfig[groupName].children.push(
+          <TextFieldSelectPxp
+            key={index}
+            name={nameKey}
+            value={values._value.value}
+            configInput={values}
+            handleChange={handlers.handleChange}
+            memoDisabled={values.memoDisabled}
+            error={values.validate.error.error.error}
+            states={states}
+            disabled={values.disabled}
+            helperText={values.helperText}
+          />,
+        );
+      }
+
+      if (values.type === 'AutoComplete') {
+        groupsConfig[groupName].children.push(
+          <AutocompletePxp
+            key={index}
+            name={nameKey}
+            value={values._value.value}
+            configInput={values}
+            handleChange={handlers.handleChange}
+            loading={values.store.loading}
+            memoDisabled={values.memoDisabled}
+            states={states}
+            open={values.store.open}
+            disabled={values.disabled}
+            helperText={values.helperText}
+            error={values.validate.error.error.error}
+          />,
+        );
+      }
+
+      if (values.type === 'DatePicker') {
+        groupsConfig[groupName].children.push(
+          <KeyboardDatePickerPxp
+            key={index}
+            name={nameKey}
+            value={values._value.value}
+            configInput={values}
+            handleChange={handlers.handleChange}
+            memoDisabled={values.memoDisabled}
+            error={values.validate.error.error.error}
+            states={states}
+            disabled={values.disabled}
+            helperText={values.helperText}
+          />,
+        );
+      }
+      if (values.type === 'Switch') {
+        groupsConfig[groupName].children.push(
+          <SwitchPxp
+            key={index}
+            name={nameKey}
+            value={values._value.value}
+            configInput={values}
+            handleChange={handlers.handleChange}
+            memoDisabled={values.memoDisabled}
+            states={states}
+            disabled={values.disabled}
+          />,
+        );
+      }
     }
 
-    if (values.type === 'Dropdown') {
-      groupsConfig[groupName].children.push(
-        <TextFieldSelectPxp
-          key={index}
-          name={nameKey}
-          value={values._value.value}
-          configInput={values}
-          handleChange={handlers.handleChange}
-          memoDisabled={values.memoDisabled}
-          error={values.validate.error.error.error}
-          states={states}
-          disabled={values.disabled}
-          helperText={values.helperText}
-        />,
-      );
-    }
-
-    if (values.type === 'AutoComplete') {
-      groupsConfig[groupName].children.push(
-        <AutocompletePxp
-          key={index}
-          name={nameKey}
-          value={values._value.value}
-          configInput={values}
-          handleChange={handlers.handleChange}
-          loading={values.store.loading}
-          memoDisabled={values.memoDisabled}
-          states={states}
-          open={values.store.open}
-          disabled={values.disabled}
-          helperText={values.helperText}
-          error={values.validate.error.error.error}
-        />,
-      );
-    }
-
-    if (values.type === 'DatePicker') {
-      groupsConfig[groupName].children.push(
-        <KeyboardDatePickerPxp
-          key={index}
-          name={nameKey}
-          value={values._value.value}
-          configInput={values}
-          handleChange={handlers.handleChange}
-          memoDisabled={values.memoDisabled}
-          error={values.validate.error.error.error}
-          states={states}
-          disabled={values.disabled}
-          helperText={values.helperText}
-        />,
-      );
-    }
-    if (values.type === 'Switch') {
-      groupsConfig[groupName].children.push(
-        <SwitchPxp
-          key={index}
-          name={nameKey}
-          value={values._value.value}
-          configInput={values}
-          handleChange={handlers.handleChange}
-          memoDisabled={values.memoDisabled}
-          states={states}
-          disabled={values.disabled}
-        />,
-      );
-    }
     return null;
   });
 

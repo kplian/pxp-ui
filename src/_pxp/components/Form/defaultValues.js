@@ -31,6 +31,7 @@ export const defaultValuesTextField = {
   validate: undefined,
   helperText: undefined,
   disabled: undefined,
+  hide: undefined,
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };
 export const defaultValuesSwitch = {
@@ -42,6 +43,7 @@ export const defaultValuesSwitch = {
   variant: 'outlined',
   validate: undefined,
   disabled: undefined,
+  hide: undefined,
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };
 export const defaultValuesDropdown = {
@@ -54,6 +56,7 @@ export const defaultValuesDropdown = {
   validate: undefined,
   helperText: undefined,
   disabled: undefined,
+  hide: undefined,
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };
 export const defaultValuesAutoComplete = {
@@ -81,6 +84,7 @@ export const defaultValuesAutoComplete = {
   validate: undefined,
   helperText: undefined,
   disabled: undefined,
+  hide: undefined,
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };
 
@@ -96,5 +100,6 @@ export const defaultValuesDatePicker = {
   validate: undefined,
   helperText: undefined,
   disabled: undefined,
+  hide: undefined,
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };

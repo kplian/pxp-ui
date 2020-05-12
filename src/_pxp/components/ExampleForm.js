@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import moment from 'moment';
 import Form from './Form/Form';
+import ExampleTextField from './Form/examples/ExampleTextField';
 
 const ExampleForm = () => {
+  const [test, setTest] = useState(null);
+
   const jsonExample1 = {
     columns: {
       nombre: { type: 'TextField', group: 'groupUser' },
@@ -272,31 +275,26 @@ const ExampleForm = () => {
       date: {
         type: 'DatePicker',
         label: 'Date',
-        initialValue: '22-05-2020',
-        minDate: '01-05-2020',
-        maxDate: '05-06-2020',
+        initialValue: moment(new Date()).toDate(),
         format: 'DD-MM-YYYY',
-        gridForm: { xs: 12, sm: 6 },
-        variant: 'outlined',
-        validate: {
-          shape: Yup.string().required('Required'),
-        },
-        helperText: 'mensaje de ayuda',
       },
     },
     resetButton: true,
     onSubmit: ({ values }) => {
       // we can send an handle for receiving data from form here
       console.log(values);
+      console.log(test);
     },
   };
 
   return (
     <>
+      <ExampleTextField />
       <Form data={jsonExample1} />
+      <Form data={datePickers} />
+
       {/*      <Form data={jsonPersona} />
-      <Form data={jsonConfig} />
-      <Form data={datePickers} /> */}
+      <Form data={jsonConfig} /> */}
     </>
   );
 };

@@ -13,25 +13,32 @@ const ExampleTextField = () => {
     ...simpleForm,
     columns: {
       name: configTextField,
-      textfieldHelper: {
+      textFieldHelper: {
         ...configTextField,
-        label: 'textfield1',
+        label: 'textFieldHelper',
         gridForm: { xs: 12, sm: 6 },
         helperText: 'Helper Text',
       },
-      textfieldDisabled: {
+      textFieldDisabled: {
         ...configTextField,
-        label: 'textfieldDisabled',
+        label: 'textFieldDisabled',
         gridForm: { xs: 12, sm: 6 },
         disabled: true,
       },
-      textfieldValidate: {
+      textFieldValidate: {
         ...configTextField,
-        label: 'textfieldValidate',
+        label: 'textFieldValidate',
         gridForm: { xs: 12, sm: 6 },
         validate: {
           shape: Yup.string().email().required('Required'), // for validate you can see YUM
         },
+      },
+      textFieldPassword: {
+        ...configTextField,
+        label: 'textFieldPassword',
+        gridForm: { xs: 12, sm: 6 },
+        typeTextField: 'password',
+        hide: true,
       },
     },
   };
