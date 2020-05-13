@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -33,7 +33,7 @@ const ExampleForm = () => {
       persona: {
         type: 'AutoComplete',
         label: 'Persona',
-        initialValue: '',
+        initialValue: null,
         store: {
           url: 'seguridad/Persona/listarPersona',
           params: {
@@ -217,7 +217,7 @@ const ExampleForm = () => {
       persona: {
         type: 'AutoComplete',
         label: 'Persona',
-        initialValue: '',
+        initialValue: null,
         store: {
           url: 'seguridad/Persona/listarPersona',
           params: {
