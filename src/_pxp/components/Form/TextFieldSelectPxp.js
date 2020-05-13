@@ -13,6 +13,7 @@ const areEqual = (prev, next) =>
   next.memoDisabled !== false &&
   prev.value === next.value &&
   prev.name === next.name &&
+  prev.disabled === next.disabled &&
   prev.error === next.error;
 
 // eslint-disable-next-line react/prop-types

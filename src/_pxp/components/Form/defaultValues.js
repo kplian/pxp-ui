@@ -62,7 +62,7 @@ export const defaultValuesDropdown = {
 export const defaultValuesAutoComplete = {
   type: 'AutoComplete',
   label: undefined,
-  initialValue: '',
+  initialValue: null,
   store: {
     url: 'system/Control/Method',
     params: {

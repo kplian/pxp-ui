@@ -97,7 +97,7 @@ const DrawForm = ({ data, handlers, dialog, schema, schemaByGroup }) => {
           [nameKey]: moment(state.value).format(state.format),
         }),
         ...(state.type === 'AutoComplete' && {
-          [nameKey]: state.value[state.store.idDD],
+          [nameKey]: (state.value && state.value[state.store.idDD]) || '',
         }),
         ...((state.type === 'Dropdown' ||
           state.type === 'TextField' ||

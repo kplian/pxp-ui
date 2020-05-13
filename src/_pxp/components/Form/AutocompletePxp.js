@@ -23,6 +23,7 @@ const areEqual = (prev, next) =>
   prev.name === next.name &&
   prev.loading === next.loading &&
   prev.open === next.open &&
+  prev.disabled === next.disabled &&
   prev.error === next.error;
 
 const AutocompletePxpComponent = ({
@@ -37,14 +38,7 @@ const AutocompletePxpComponent = ({
   error,
   msgError,
 }) => {
-  const {
-    label,
-    variant,
-    store,
-    isSearchable,
-    gridForm,
-    validate,
-  } = configInput;
+  const { label, variant, store, isSearchable, gridForm } = configInput;
 
   // this handle has debounce for start with searching after 500 ms
   const handleInputChange = _.debounce(async (valueInput) => {
@@ -65,14 +59,15 @@ const AutocompletePxpComponent = ({
     }
   }, 500);
 
-
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
       <Autocomplete
         // key={index}
         id={name}
+        filterSelectedOptions
+        value={value}
         onInputChange={(e) =>
-          handleInputChange(e.target.value, isSearchable, store)
+          handleInputChange(e && e.target.value, isSearchable, store)
         }
         open={store.open}
         onOpen={() => {
@@ -81,15 +76,21 @@ const AutocompletePxpComponent = ({
         onClose={() => {
           store.setOpen(false);
         }}
-        // getOptionSelected={(option, value) => option.value === value.value}
-        getOptionSelected={(option, value) => option.value === value.value}
-        getOptionLabel={(option) => option[store.descDD]}
+        getOptionLabel={(option) => (option ? option[store.descDD] : '')}
+        getOptionSelected={(optionEq, valueEq) => {
+          if (
+            // we need to put this for not generating error when the autocomplete tries to find the value in the option
+            configInput.initialValue &&
+            valueEq[store.idDD] === configInput.initialValue[store.idDD]
+          ) {
+            return true;
+          }
+          return optionEq[store.idDD] === valueEq[store.idDD];
+        }}
         options={
           store.data
             ? store.data.datos.map((i) => ({
                 ...i,
-                value: i[store.idDD],
-                label: i[store.descDD],
               }))
             : [] // we need to send empty array for init form
         }

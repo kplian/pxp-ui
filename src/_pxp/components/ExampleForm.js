@@ -5,10 +5,9 @@ import Typography from '@material-ui/core/Typography';
 
 import moment from 'moment';
 import Form from './Form/Form';
-import ExampleTextField from './Form/examples/ExampleTextField';
+
 
 const ExampleForm = () => {
-  const [test, setTest] = useState(null);
 
   const jsonExample1 = {
     columns: {
@@ -283,18 +282,16 @@ const ExampleForm = () => {
     onSubmit: ({ values }) => {
       // we can send an handle for receiving data from form here
       console.log(values);
-      console.log(test);
     },
   };
 
   return (
     <>
-      <ExampleTextField />
       <Form data={jsonExample1} />
       <Form data={datePickers} />
 
-      {/*      <Form data={jsonPersona} />
-      <Form data={jsonConfig} /> */}
+      <Form data={jsonPersona} />
+      <Form data={jsonConfig} />
     </>
   );
 };

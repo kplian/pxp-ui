@@ -151,7 +151,10 @@ const Form = ({ data, dialog = false }) => {
         });
     }
 
-    setValue(dataValue || value);
+    const valueOfType =
+      configInputState.type === 'AutoComplete' ? dataValue : value;
+
+    setValue(valueOfType);
 
     if (configInputState.onChange) {
       configInputState.onChange({
