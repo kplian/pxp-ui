@@ -1,14 +1,17 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import moment from 'moment';
 import Form from './Form/Form';
+import ButtonPxp from "./ButtonPxp";
+import IconPxp from "../icons/IconPxp";
 
 
 const ExampleForm = () => {
 
+  const ref = useRef();
   const jsonExample1 = {
     columns: {
       nombre: { type: 'TextField', group: 'groupUser' },
@@ -285,13 +288,23 @@ const ExampleForm = () => {
     },
   };
 
+  const handleClickButton = () => {
+    ref.current.states.ap_paterno.setValue('favio figueroa')
+  }
+  const handleClickSubmit = e => {
+    const states = ref.current.states;
+    ref.current.handleSubmitForm(e,states )
+  }
+
   return (
     <>
-      <Form data={jsonExample1} />
-      <Form data={datePickers} />
+      <Form data={jsonExample1} ref={ref} />
+      <ButtonPxp icon={<IconPxp />} onClick={handleClickButton} />
+      <ButtonPxp icon={<IconPxp />} onClick={handleClickSubmit} />
+     {/* <Form data={datePickers} />
 
       <Form data={jsonPersona} />
-      <Form data={jsonConfig} />
+      <Form data={jsonConfig} />*/}
     </>
   );
 };

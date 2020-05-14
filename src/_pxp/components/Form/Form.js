@@ -35,7 +35,7 @@
  */
 
 /* eslint-disable no-underscore-dangle */
-import React, { useState } from 'react';
+import React, {forwardRef, useImperativeHandle} from 'react';
 import _ from 'lodash';
 import * as Yup from 'yup';
 import { Button, makeStyles } from '@material-ui/core';
@@ -53,7 +53,12 @@ import {
 import LoadingScreen from '../LoadingScreen';
 import DrawForm from './DrawForm';
 
-const Form = ({ data, dialog = false }) => {
+const Form = forwardRef((props, ref) => {
+
+  const { data, dialog = false } = props;
+
+
+
   let mergedDataConfig = _.merge({}, defaultConfig, data);
   if (typeof data.groups === 'object') {
     mergedDataConfig = {
@@ -171,6 +176,7 @@ const Form = ({ data, dialog = false }) => {
     handleChange,
   };
 
+
   return (
     <>
       <DrawForm
@@ -179,9 +185,10 @@ const Form = ({ data, dialog = false }) => {
         dialog={dialog}
         schema={schema}
         schemaByGroup={schemaByGroup}
+        ref={ref}
       />
     </>
   );
-};
+});
 
 export default Form;
