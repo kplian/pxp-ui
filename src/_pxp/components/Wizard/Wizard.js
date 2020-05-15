@@ -12,6 +12,7 @@ import clsx from 'clsx';
 import SettingsIcon from '@material-ui/icons/Settings';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import VideoLabelIcon from '@material-ui/icons/VideoLabel';
+import { FileIcon, UserSettings, IconPxp } from '../../icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -207,9 +208,10 @@ function ColorlibStepIcon(props) {
   console.log('prorp', props);
   
   const icons = {
-    1: <SettingsIcon />,
-    2: <GroupAddIcon />,
+    1: <UserSettings />,
+    2: <FileIcon />,
     3: <VideoLabelIcon />,
+    4: <IconPxp />
   };
 
   return (

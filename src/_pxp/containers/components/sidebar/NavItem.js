@@ -11,6 +11,7 @@ import { Button, Collapse, ListItem, makeStyles } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import Icon from '@material-ui/core/Icon';
+import iconsPxp from '../../../icons';
 
 const useStyles = makeStyles((theme) => ({
   item: {
@@ -97,6 +98,19 @@ const NavItem = ({
 
   const style = { paddingLeft };
 
+  const getIcon = () => {
+    const IconPxp = iconsPxp[icon] ? iconsPxp[icon] : null;
+    return <React.Fragment>
+      { icon && IconPxp ? 
+        <div className={classes.icon}>
+          <IconPxp /> 
+        </div>
+        :
+        <Icon className={classes.icon}>{icon + '_outline'}</Icon>
+      } 
+    </React.Fragment>
+  };
+
   if (children) {
     return (
       <ListItem
@@ -106,7 +120,7 @@ const NavItem = ({
         {...rest}
       >
         <Button className={classes.button} onClick={handleOpen} style={style}>
-          {icon && <Icon className={classes.icon}>{icon + '_outline'}</Icon>}
+          {icon && getIcon()}
           <span className={classes.title}>{title}</span>
           {open ? (
             <ExpandLessIcon size="small" color="inherit" />
@@ -133,7 +147,7 @@ const NavItem = ({
         style={style}
         to={href}
       >
-        {icon && <Icon className={classes.icon}>{icon + '_outline'}</Icon>}
+        {icon && getIcon()}
         {title}
       </Button>
     </ListItem>
