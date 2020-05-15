@@ -23,12 +23,12 @@ export const TextFieldPxpComponent = ({
   configInput,
   handleChange,
   error,
+  msgError,
   states,
   disabled = false,
   helperText,
 }) => {
   const {
-    validate,
     label,
     variant,
     gridForm,
@@ -36,7 +36,6 @@ export const TextFieldPxpComponent = ({
     autoFocus,
   } = configInput;
 
-  const msg = validate && validate.error.error.msg;
 
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
@@ -45,7 +44,7 @@ export const TextFieldPxpComponent = ({
         {...(autoFocus && { autoFocus })}
         error={Boolean(error)}
         fullWidth
-        helperText={error ? msg : helperText}
+        helperText={error ? msgError : helperText}
         label={label}
         // margin="normal"
         name={name}

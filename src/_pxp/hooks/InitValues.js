@@ -4,8 +4,6 @@
  * @uthor Favio Figueroa
  */
 import { useState } from 'react';
-import useValue from './useValue';
-import useError from './useError';
 import useJsonStore from './useJsonStore';
 
 const InitValues = (values) => {
@@ -15,14 +13,21 @@ const InitValues = (values) => {
     type,
     store,
     disabled: isDisabled = false,
+    hide: isHidden = false,
   } = values;
 
+  const [value, setValue] = useState(initialValue);
+  const [error, setError] = useState({ hasError: false, msg: '' });
   const [disabled, setDisabled] = useState(isDisabled);
+  const [hide, setHide] = useState(isHidden);
+
   let config = {
     ...values,
-    _value: useValue(initialValue),
-    validate: { ...validate, error: useError() },
+    validate: { ...validate },
+    ...{ value, setValue },
+    ...{ error, setError },
     ...{ disabled, setDisabled },
+    ...{ hide, setHide },
   };
 
   if (type === 'AutoComplete' && store) {

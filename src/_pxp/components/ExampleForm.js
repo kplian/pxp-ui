@@ -1,22 +1,31 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import moment from 'moment';
 import Form from './Form/Form';
+import ButtonPxp from "./ButtonPxp";
+import IconPxp from "../icons/IconPxp";
+
 
 const ExampleForm = () => {
+
+  const ref = useRef();
   const jsonExample1 = {
     columns: {
-      nombre: { type: 'TextField', group: 'groupUser', },
+      nombre: { type: 'TextField', group: 'groupUser' },
       ap_paterno: { type: 'TextField' },
+      Checked: { type: 'Switch', initialValue: false },
       genero: {
         type: 'Dropdown',
         store: [
           { value: '', label: '' },
           { value: 'masculino', label: 'masculino' },
         ],
+        validate: {
+          shape: Yup.string().required('Required'),
+        },
       },
       date: {
         type: 'DatePicker',
@@ -27,7 +36,7 @@ const ExampleForm = () => {
       persona: {
         type: 'AutoComplete',
         label: 'Persona',
-        initialValue: '',
+        initialValue: null,
         store: {
           url: 'seguridad/Persona/listarPersona',
           params: {
@@ -44,7 +53,7 @@ const ExampleForm = () => {
         remote: true,
         gridForm: { xs: 12, sm: 12 },
         variant: 'outlined',
-        isSearchable: false,
+        isSearchable: true,
         validate: {
           shape: Yup.string().required('Required'),
         },
@@ -62,6 +71,7 @@ const ExampleForm = () => {
         gridGroup: { xs: 12, sm: 6 },
       },
     },
+    typeForm: 'steppers',
   };
 
   const jsonPersona = {
@@ -210,7 +220,7 @@ const ExampleForm = () => {
       persona: {
         type: 'AutoComplete',
         label: 'Persona',
-        initialValue: '',
+        initialValue: null,
         store: {
           url: 'seguridad/Persona/listarPersona',
           params: {
@@ -267,16 +277,8 @@ const ExampleForm = () => {
       date: {
         type: 'DatePicker',
         label: 'Date',
-        initialValue: '22-05-2020',
-        minDate: '01-05-2020',
-        maxDate: '05-06-2020',
+        initialValue: moment(new Date()).toDate(),
         format: 'DD-MM-YYYY',
-        gridForm: { xs: 12, sm: 6 },
-        variant: 'outlined',
-        validate: {
-          shape: Yup.string().required('Required'),
-        },
-        helperText: 'mensaje de ayuda',
       },
     },
     resetButton: true,
@@ -286,12 +288,23 @@ const ExampleForm = () => {
     },
   };
 
+  const handleClickButton = () => {
+    ref.current.states.ap_paterno.setValue('favio figueroa')
+  }
+  const handleClickSubmit = e => {
+    const states = ref.current.states;
+    ref.current.handleSubmitForm(e,states )
+  }
+
   return (
     <>
-      <Form data={jsonExample1}/>
-      {/*      <Form data={jsonPersona} />
-      <Form data={jsonConfig} />
-      <Form data={datePickers} /> */}
+      <Form data={jsonExample1} ref={ref} />
+      <ButtonPxp icon={<IconPxp />} onClick={handleClickButton} />
+      <ButtonPxp icon={<IconPxp />} onClick={handleClickSubmit} />
+     {/* <Form data={datePickers} />
+
+      <Form data={jsonPersona} />
+      <Form data={jsonConfig} />*/}
     </>
   );
 };

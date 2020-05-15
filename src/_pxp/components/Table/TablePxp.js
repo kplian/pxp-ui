@@ -185,6 +185,11 @@ const TablePxp = ({ dataConfig, width }) => {
             ...(width === 'lg' && { [nameKey]: true }),
           };
           break;
+        case 'xl':
+          jsonRes = {
+            ...(width === 'xl' && { [nameKey]: true }),
+          };
+          break;
         default:
           jsonRes = {};
       }

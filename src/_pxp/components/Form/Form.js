@@ -35,7 +35,7 @@
  */
 
 /* eslint-disable no-underscore-dangle */
-import React, { useState } from 'react';
+import React, {forwardRef, useImperativeHandle} from 'react';
 import _ from 'lodash';
 import * as Yup from 'yup';
 import { Button, makeStyles } from '@material-ui/core';
@@ -48,17 +48,16 @@ import {
   defaultValuesDropdown,
   defaultValuesAutoComplete,
   defaultValuesDatePicker,
+  defaultValuesSwitch,
 } from './defaultValues';
 import LoadingScreen from '../LoadingScreen';
 import DrawForm from './DrawForm';
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-}));
+const Form = forwardRef((props, ref) => {
 
-const Form = ({ data, dialog = false }) => {
-  const classes = useStyles(); // for using
-  const { enqueueSnackbar } = useSnackbar();
+  const { data, dialog = false } = props;
+
+
 
   let mergedDataConfig = _.merge({}, defaultConfig, data);
   if (typeof data.groups === 'object') {
@@ -67,42 +66,72 @@ const Form = ({ data, dialog = false }) => {
       groups: data.groups,
     };
   }
-
-  // separate json for button submit onSubmit
-  const { onSubmit, nameForm } = mergedDataConfig;
-
-  const setupColumn = (nameKey, column) => {
-    // we need to init the defaults values too
-    const defaultValues = {
-      ...(column.type === 'TextField' && { ...defaultValuesTextField }),
-      ...(column.type === 'Dropdown' && { ...defaultValuesDropdown }),
-      ...(column.type === 'AutoComplete' && { ...defaultValuesAutoComplete }),
-      ...(column.type === 'DatePicker' && { ...defaultValuesDatePicker }),
-      label: nameKey,
-    };
-    const mergeSetupConfig = _.merge({}, defaultValues, column);
-    return mergeSetupConfig;
-  };
-
-  const configInitialized = Object.entries(mergedDataConfig.columns).reduce(
-    (t, [nameKey, value]) => ({ ...t, [nameKey]: setupColumn(nameKey, value) }),
-    {},
-  );
-
-  const dataInitialized = {
-    ...mergedDataConfig,
-    columns: configInitialized,
-  };
+  // get the default group for columns with group undefined
+  const defaultGroup = Object.keys(mergedDataConfig.groups)[0];
 
   // init form data aux like validations and debounce for not processing many times
   const validations = Object.entries(data.columns)
     // eslint-disable-next-line no-unused-vars
     .filter(([nameKey, value]) => typeof value.validate === 'object')
     .reduce(
-      (t, [nameKey, value]) => ({ ...t, [nameKey]: value.validate.shape }),
+      (t, [nameKey, value]) => ({
+        ...t,
+        [nameKey]: value.validate.shape,
+      }),
       {},
     );
   const schema = Yup.object().shape(validations);
+
+  const setupColumn = (nameKey, column) => {
+    // we need to init the defaults values too
+    const defaultValues = {
+      ...(column.type === 'TextField' && { ...defaultValuesTextField }),
+      ...(column.type === 'Switch' && { ...defaultValuesSwitch }),
+      ...(column.type === 'Dropdown' && { ...defaultValuesDropdown }),
+      ...(column.type === 'AutoComplete' && { ...defaultValuesAutoComplete }),
+      ...(column.type === 'DatePicker' && { ...defaultValuesDatePicker }),
+      label: nameKey,
+      ...(column.group === undefined && { group: defaultGroup }),
+    };
+
+    const mergeSetupConfig = _.merge({}, defaultValues, column);
+    return mergeSetupConfig;
+  };
+
+  const configInitialized = Object.entries(mergedDataConfig.columns).reduce(
+    (t, [nameKey, value]) => ({
+      ...t,
+      [nameKey]: {
+        ...setupColumn(nameKey, value),
+        ...(validations[nameKey] && { shape: validations[nameKey] }),
+      },
+    }),
+    {},
+  );
+
+  const schemaByGroup = {};
+  Object.entries(mergedDataConfig.groups).forEach(([nameGroup]) => {
+    const validationsByGroup = Object.entries(configInitialized)
+      // eslint-disable-next-line no-unused-vars
+      .filter(
+        ([nameKey, value]) =>
+          typeof value.shape === 'object' && value.group === nameGroup,
+      )
+      .reduce(
+        (t, [nameKey, value]) => ({
+          ...t,
+          [nameKey]: value.validate.shape,
+        }),
+        {},
+      );
+    const schemaAux = Yup.object().shape(validationsByGroup);
+    schemaByGroup[nameGroup] = schemaAux;
+  });
+
+  const dataInitialized = {
+    ...mergedDataConfig,
+    columns: configInitialized,
+  };
 
   const handleChange = ({
     event,
@@ -114,20 +143,23 @@ const Form = ({ data, dialog = false }) => {
   }) => {
     // eslint-disable-next-line no-unused-expressions
     event && event.preventDefault(); // in some inputs we dont have event like date pickers
-    const { _value, validate } = configInputState;
+    const { setValue, setError } = configInputState;
 
     if (validations[name]) {
       schema
         .validateAt(name, { [name]: value })
         .then(() => {
-          validate.error.setError({ error: false, msg: '' });
+          setError({ hasError: false, msg: '' });
         })
         .catch((err) => {
-          validate.error.setError({ error: true, msg: err.message });
+          setError({ hasError: true, msg: err.message });
         });
     }
 
-    _value.setValue(dataValue || value);
+    const valueOfType =
+      configInputState.type === 'AutoComplete' ? dataValue : value;
+
+    setValue(valueOfType);
 
     if (configInputState.onChange) {
       configInputState.onChange({
@@ -140,110 +172,23 @@ const Form = ({ data, dialog = false }) => {
     }
   };
 
-  const resetForm = ({ states }) => {
-    // eslint-disable-next-line no-unused-vars
-    Object.entries(states).forEach(([nameKey, state]) => {
-      state._value.setValue('');
-    });
-  };
-
-  // this is for giving format to values for send to the backend
-  const getValues = (states) => {
-    const values = Object.entries(states).reduce(
-      (t, [nameKey, state]) => ({
-        ...t,
-        ...(state.type === 'DatePicker' && {
-          [nameKey]: moment(state._value.value).format(state.format),
-        }),
-        ...(state.type === 'AutoComplete' && {
-          [nameKey]: state._value.value[state.store.idDD],
-        }),
-        ...((state.type === 'Dropdown' || state.type === 'TextField') && {
-          [nameKey]: state._value.value,
-        }),
-      }),
-      {},
-    );
-    return values;
-  };
-
-  const [loadingScreen, setLoadingScreen] = useState(false);
-
-  // this factory is if exist some error then this  send to draw again the input with error or inputs
-  const validateAllValues = (values, states) => {
-    try {
-      schema.validateSync(values, { abortEarly: false });
-    } catch (errors) {
-      errors.inner.forEach((error) => {
-        states[error.path].validate.error.setError({
-          error: true,
-          msg: error.message,
-        });
-      });
-    }
-  };
-
-  const sendData = (values, states) => {
-    setLoadingScreen(true);
-    connection
-      .doRequest({
-        url: onSubmit.url,
-        params: values,
-      })
-      .then((resp) => {
-        if (!resp.error) {
-          // need to reset the form
-          resetForm({ states });
-          enqueueSnackbar('Success', {
-            variant: 'success',
-            action: <Button>See all</Button>,
-          });
-          if (typeof onSubmit.callback === 'function') {
-            onSubmit.callback();
-          }
-        } else {
-          enqueueSnackbar(resp.detail.message, {
-            variant: 'error',
-            action: <Button>See all</Button>,
-          });
-        }
-        setLoadingScreen(false);
-      });
-  };
-
-  // logic for submit button
-  const handleSubmitForm = (e, states) => {
-    e.preventDefault();
-    console.log(onSubmit);
-    const values = {
-      ...getValues(states),
-      ...(onSubmit.extraParams && { ...onSubmit.extraParams }),
-    };
-
-    validateAllValues(values, states);
-
-    schema.isValid(values).then((valid) => {
-      if (valid) {
-        // eslint-disable-next-line no-unused-expressions
-        typeof onSubmit === 'function'
-          ? onSubmit({ values, states })
-          : sendData(values, states);
-      }
-    });
-  };
-
   const handlers = {
     handleChange,
-    handleSubmitForm,
-    resetForm,
   };
+
 
   return (
     <>
-      <DrawForm data={dataInitialized} handlers={handlers} dialog={dialog} />
-      {loadingScreen && <LoadingScreen />}
+      <DrawForm
+        data={dataInitialized}
+        handlers={handlers}
+        dialog={dialog}
+        schema={schema}
+        schemaByGroup={schemaByGroup}
+        ref={ref}
+      />
     </>
   );
-};
+});
 
 export default Form;

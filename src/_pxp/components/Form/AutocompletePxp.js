@@ -22,7 +22,9 @@ const areEqual = (prev, next) =>
   prev.value === next.value &&
   prev.name === next.name &&
   prev.loading === next.loading &&
-  prev.open === next.open;
+  prev.open === next.open &&
+  prev.disabled === next.disabled &&
+  prev.error === next.error;
 
 const AutocompletePxpComponent = ({
   name,
@@ -33,6 +35,8 @@ const AutocompletePxpComponent = ({
   states,
   disabled = false,
   helperText,
+  error,
+  msgError,
 }) => {
   const { label, variant, store, isSearchable, gridForm } = configInput;
 
@@ -60,8 +64,10 @@ const AutocompletePxpComponent = ({
       <Autocomplete
         // key={index}
         id={name}
+        filterSelectedOptions
+        value={value}
         onInputChange={(e) =>
-          handleInputChange(e.target.value, isSearchable, store)
+          handleInputChange(e && e.target.value, isSearchable, store)
         }
         open={store.open}
         onOpen={() => {
@@ -70,15 +76,21 @@ const AutocompletePxpComponent = ({
         onClose={() => {
           store.setOpen(false);
         }}
-        // getOptionSelected={(option, value) => option.value === value.value}
-        getOptionSelected={(option, value) => option.value === value.value}
-        getOptionLabel={(option) => option[store.descDD]}
+        getOptionLabel={(option) => (option ? option[store.descDD] : '')}
+        getOptionSelected={(optionEq, valueEq) => {
+          if (
+            // we need to put this for not generating error when the autocomplete tries to find the value in the option
+            configInput.initialValue &&
+            valueEq[store.idDD] === configInput.initialValue[store.idDD]
+          ) {
+            return true;
+          }
+          return optionEq[store.idDD] === valueEq[store.idDD];
+        }}
         options={
           store.data
             ? store.data.datos.map((i) => ({
                 ...i,
-                value: i[store.idDD],
-                label: i[store.descDD],
               }))
             : [] // we need to send empty array for init form
         }
@@ -86,6 +98,8 @@ const AutocompletePxpComponent = ({
         renderInput={(params) => (
           <TextField
             {...params}
+            error={Boolean(error)}
+            helperText={error ? msgError : helperText}
             label={label}
             variant={variant}
             InputProps={{
@@ -99,7 +113,6 @@ const AutocompletePxpComponent = ({
                 </>
               ),
             }}
-            helperText={helperText}
           />
         )}
         onChange={(event, newValue) => {
