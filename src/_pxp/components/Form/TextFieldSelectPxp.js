@@ -26,14 +26,15 @@ export const TextFieldSelectPxpComponent = ({
   msgError,
   disabled = false,
   helperText,
+  size = 'medium',
 }) => {
   const { label, variant, gridForm } = configInput;
-
 
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
       <TextField
         // key={index}
+        size={size}
         error={Boolean(error)}
         fullWidth
         helperText={error ? msgError : helperText}

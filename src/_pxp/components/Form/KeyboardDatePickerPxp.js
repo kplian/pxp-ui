@@ -42,6 +42,7 @@ export const KeyboardDatePickerPxpComponent = ({
   error, // is used in areEqual
   disabled = false,
   helperText,
+  size = 'medium',
 }) => {
   const classes = useStyles();
 
@@ -58,6 +59,7 @@ export const KeyboardDatePickerPxpComponent = ({
         <KeyboardDatePicker
           className={classes.datePicker}
           autoOk
+          size={size}
           // disableToolbar
           variant={variant}
           format="dd/MM/yyyy"

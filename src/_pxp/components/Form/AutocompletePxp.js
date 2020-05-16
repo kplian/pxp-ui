@@ -36,6 +36,7 @@ const AutocompletePxpComponent = ({
   helperText,
   error,
   msgError,
+  size = 'medium',
 }) => {
   const { label, variant, store, isSearchable, gridForm } = configInput;
 
@@ -63,6 +64,7 @@ const AutocompletePxpComponent = ({
       <Autocomplete
         // key={index}
         id={name}
+        size={size}
         filterSelectedOptions
         value={value}
         onInputChange={(e) =>

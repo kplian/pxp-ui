@@ -15,7 +15,12 @@ const ExampleForm = () => {
   const jsonExample1 = {
     columns: {
       nombre: { type: 'TextField', group: 'groupUser' },
-      ap_paterno: { type: 'TextField' },
+      ap_paterno: {
+        type: 'TextField',
+        validate: {
+          shape: Yup.string().required('Required'),
+        },
+      },
       Checked: { type: 'Switch', initialValue: false },
       genero: {
         type: 'Dropdown',

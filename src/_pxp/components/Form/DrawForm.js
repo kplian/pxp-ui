@@ -121,11 +121,11 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
   };
 
   // todo listening changes in the states for hide
-  Object.entries(states).forEach(([nameKey]) => {
+  /*Object.entries(states).forEach(([nameKey]) => {
     useEffect(() => {
       console.log('states', states[nameKey]);
     }, [states[nameKey].hide]);
-  });
+  });*/
 
   const [loadingScreen, setLoadingScreen] = useState(false);
 
@@ -140,18 +140,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
     // eslint-disable-next-line no-unused-expressions
     event && event.preventDefault(); // in some inputs we dont have event like date pickers
     const stateField = states[name];
-    const { setValue, setError } = stateField;
-
-    /* if (validations[name]) {
-      schema
-        .validateAt(name, { [name]: value })
-        .then(() => {
-          setError({ hasError: false, msg: '' });
-        })
-        .catch((err) => {
-          setError({ hasError: true, msg: err.message });
-        });
-    } */
+    const { setValue } = stateField;
 
     const valueOfType = stateField.type === 'AutoComplete' ? dataValue : value;
 
@@ -165,6 +154,22 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
         stateField,
         states,
       });
+    }
+  };
+  const handleBlur = (name) => {
+    const field = states[name];
+    if (field.yupValidate) {
+      const schemaOnlyField = Yup.object().shape({
+        [name]: states[name].yupValidate.shape,
+      });
+      schemaOnlyField
+        .validateAt(name, { [name]: field.value })
+        .then(() => {
+          field.setError({ hasError: false, msg: '' });
+        })
+        .catch((err) => {
+          field.setError({ hasError: true, msg: err.message });
+        });
     }
   };
 
@@ -266,6 +271,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
             value={values.value}
             configInput={values}
             handleChange={handleChange}
+            handleBlur={handleBlur}
             memoDisabled={values.memoDisabled}
             error={values.error.hasError}
             msgError={values.error.msg}
