@@ -1,5 +1,6 @@
 import React from 'react';
 import ListPxpData from "../../_pxp/components/ListPxp/ListPxpData";
+import ExampleFrom from './ExampleForm';
 
 const ExampleList = () => {
   const options = [
@@ -78,17 +79,18 @@ const ExampleList = () => {
         // }
       },
       detailRender: ( row ) => {
-        return (
-          Object.keys( row ).map( key =>
-            <div key={key}>
-              <div>
-                <label style={{ color: 'red'}}>{key}:  </label>
-                <span>{row[key]}</span>
-              </div>
-              <hr/>
-            </div>
-          )
-        );
+        // return (
+        //   Object.keys( row ).map( key =>
+        //     <div key={key}>
+        //       <div>
+        //         <label style={{ color: 'red'}}>{key}:  </label>
+        //         <span>{row[key]}</span>
+        //       </div>
+        //       <hr/>
+        //     </div>
+        //   )
+        // );
+        return <ExampleFrom></ExampleFrom>
       },
       detail: [
         {
