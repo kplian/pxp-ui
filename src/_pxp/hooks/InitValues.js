@@ -20,6 +20,7 @@ const InitValues = (values) => {
   const [error, setError] = useState({ hasError: false, msg: '' });
   const [disabled, setDisabled] = useState(isDisabled);
   const [hide, setHide] = useState(isHidden);
+  const [yupValidate, setYupValidate] = useState(validate);
 
   let config = {
     ...values,
@@ -28,6 +29,7 @@ const InitValues = (values) => {
     ...{ error, setError },
     ...{ disabled, setDisabled },
     ...{ hide, setHide },
+    ...{ yupValidate, setYupValidate },
   };
 
   if (type === 'AutoComplete' && store) {

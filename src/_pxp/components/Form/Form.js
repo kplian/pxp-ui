@@ -30,18 +30,12 @@
  *     gridGroup: { xs: 12, sm: 12 },
  *   },
  * },
- * @todo allow access to fields for show, hide allowblank or not
- * @todo table id where do we define it? Maybe we need to define multiple id as well
  */
 
 /* eslint-disable no-underscore-dangle */
-import React, {forwardRef, useImperativeHandle} from 'react';
+import React, { forwardRef } from 'react';
 import _ from 'lodash';
 import * as Yup from 'yup';
-import { Button, makeStyles } from '@material-ui/core';
-import connection from 'pxp-client';
-import { useSnackbar } from 'notistack';
-import moment from 'moment';
 import {
   defaultConfig,
   defaultValuesTextField,
@@ -50,14 +44,10 @@ import {
   defaultValuesDatePicker,
   defaultValuesSwitch,
 } from './defaultValues';
-import LoadingScreen from '../LoadingScreen';
 import DrawForm from './DrawForm';
 
 const Form = forwardRef((props, ref) => {
-
   const { data, dialog = false } = props;
-
-
 
   let mergedDataConfig = _.merge({}, defaultConfig, data);
   if (typeof data.groups === 'object') {
@@ -68,19 +58,6 @@ const Form = forwardRef((props, ref) => {
   }
   // get the default group for columns with group undefined
   const defaultGroup = Object.keys(mergedDataConfig.groups)[0];
-
-  // init form data aux like validations and debounce for not processing many times
-  const validations = Object.entries(data.columns)
-    // eslint-disable-next-line no-unused-vars
-    .filter(([nameKey, value]) => typeof value.validate === 'object')
-    .reduce(
-      (t, [nameKey, value]) => ({
-        ...t,
-        [nameKey]: value.validate.shape,
-      }),
-      {},
-    );
-  const schema = Yup.object().shape(validations);
 
   const setupColumn = (nameKey, column) => {
     // we need to init the defaults values too
@@ -103,88 +80,21 @@ const Form = forwardRef((props, ref) => {
       ...t,
       [nameKey]: {
         ...setupColumn(nameKey, value),
-        ...(validations[nameKey] && { shape: validations[nameKey] }),
       },
     }),
     {},
   );
-
-  const schemaByGroup = {};
-  Object.entries(mergedDataConfig.groups).forEach(([nameGroup]) => {
-    const validationsByGroup = Object.entries(configInitialized)
-      // eslint-disable-next-line no-unused-vars
-      .filter(
-        ([nameKey, value]) =>
-          typeof value.shape === 'object' && value.group === nameGroup,
-      )
-      .reduce(
-        (t, [nameKey, value]) => ({
-          ...t,
-          [nameKey]: value.validate.shape,
-        }),
-        {},
-      );
-    const schemaAux = Yup.object().shape(validationsByGroup);
-    schemaByGroup[nameGroup] = schemaAux;
-  });
 
   const dataInitialized = {
     ...mergedDataConfig,
     columns: configInitialized,
   };
 
-  const handleChange = ({
-    event,
-    name,
-    value,
-    dataValue,
-    configInputState,
-    states,
-  }) => {
-    // eslint-disable-next-line no-unused-expressions
-    event && event.preventDefault(); // in some inputs we dont have event like date pickers
-    const { setValue, setError } = configInputState;
-
-    if (validations[name]) {
-      schema
-        .validateAt(name, { [name]: value })
-        .then(() => {
-          setError({ hasError: false, msg: '' });
-        })
-        .catch((err) => {
-          setError({ hasError: true, msg: err.message });
-        });
-    }
-
-    const valueOfType =
-      configInputState.type === 'AutoComplete' ? dataValue : value;
-
-    setValue(valueOfType);
-
-    if (configInputState.onChange) {
-      configInputState.onChange({
-        event,
-        value,
-        dataValue,
-        configInputState,
-        states,
-      });
-    }
-  };
-
-  const handlers = {
-    handleChange,
-  };
-
-
   return (
     <>
       <DrawForm
         data={dataInitialized}
-        handlers={handlers}
         dialog={dialog}
-        schema={schema}
-        schemaByGroup={schemaByGroup}
         ref={ref}
       />
     </>

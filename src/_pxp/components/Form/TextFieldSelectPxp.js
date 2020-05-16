@@ -24,7 +24,6 @@ export const TextFieldSelectPxpComponent = ({
   handleChange,
   error,
   msgError,
-  states,
   disabled = false,
   helperText,
 }) => {
@@ -47,8 +46,6 @@ export const TextFieldSelectPxpComponent = ({
             event,
             name,
             value: event.target.value,
-            configInputState: configInput,
-            states,
           })
         }
         value={value}

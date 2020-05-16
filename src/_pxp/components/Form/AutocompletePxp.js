@@ -32,7 +32,6 @@ const AutocompletePxpComponent = ({
   configInput,
   handleChange,
   loading, // is used in areEqual
-  states,
   disabled = false,
   helperText,
   error,
@@ -121,8 +120,6 @@ const AutocompletePxpComponent = ({
             name,
             value: newValue ? newValue[store.idDD] : '',
             dataValue: newValue,
-            configInputState: configInput,
-            states,
           });
         }}
         renderOption={

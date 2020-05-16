@@ -1,13 +1,13 @@
-import React, {useRef} from 'react';
+import React, { useRef } from 'react';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import moment from 'moment';
 import Form from './Form/Form';
-import ButtonPxp from "./ButtonPxp";
-import IconPxp from "../icons/IconPxp";
-
+import ButtonPxp from './ButtonPxp';
+import IconPxp from '../icons/IconPxp';
+import ExampleAutoComplete from "./Form/examples/ExampleAutoComplete";
 
 const ExampleForm = () => {
 
@@ -26,12 +26,14 @@ const ExampleForm = () => {
         validate: {
           shape: Yup.string().required('Required'),
         },
+        form: false,
       },
       date: {
         type: 'DatePicker',
         label: 'Date',
         initialValue: moment(new Date()).toDate(),
         format: 'DD-MM-YYYY',
+        form: false,
       },
       persona: {
         type: 'AutoComplete',
@@ -292,12 +294,12 @@ const ExampleForm = () => {
     ref.current.states.ap_paterno.setValue('favio figueroa')
   }
   const handleClickSubmit = e => {
-    const states = ref.current.states;
-    ref.current.handleSubmitForm(e,states )
+    ref.current.handleSubmitForm(e)
   }
 
   return (
     <>
+      <ExampleAutoComplete />
       <Form data={jsonExample1} ref={ref} />
       <ButtonPxp icon={<IconPxp />} onClick={handleClickButton} />
       <ButtonPxp icon={<IconPxp />} onClick={handleClickSubmit} />

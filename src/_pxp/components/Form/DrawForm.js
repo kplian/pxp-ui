@@ -6,7 +6,13 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
+import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import { Box, Button } from '@material-ui/core';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -50,232 +56,309 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DrawForm = forwardRef(
-  ({ data, handlers, dialog, schema, schemaByGroup }, ref) => {
-    const classes = useStyles();
+const DrawForm = forwardRef(({ data, dialog }, ref) => {
+  const classes = useStyles();
 
-    const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
-    // separate json for button submit onSubmit
-    const { onSubmit } = data;
+  // separate json for button submit onSubmit
+  const { onSubmit } = data;
 
-    // init the groups
-    const groupsConfig = Object.entries(data.groups).reduce(
-      (t, [nameKey, values]) => ({
-        ...t,
-        [nameKey]: { ...values, children: [] },
-      }),
-      {},
-    );
+  // init the groups
+  const groupsConfig = Object.entries(data.groups).reduce(
+    (t, [nameKey, values]) => ({
+      ...t,
+      [nameKey]: { ...values, children: [] },
+    }),
+    {},
+  );
 
-    // init the draw and the states
-    const states = Object.entries(data.columns).reduce(
-      (t, [nameKey, value]) => ({
-        ...t,
-        [nameKey]: {
-          ...InitValues(value),
-          memoDisabled: !value.onChange,
-        },
-      }),
-      {},
-    );
+  // init the draw and the states
+  const states = Object.entries(data.columns).reduce(
+    (t, [nameKey, value]) => ({
+      ...t,
+      [nameKey]: {
+        ...InitValues(value),
+        memoDisabled: !value.onChange,
+      },
+    }),
+    {},
+  );
 
-    const [loadingScreen, setLoadingScreen] = useState(false);
-
-    const resetForm = ({ states }) => {
-      // eslint-disable-next-line no-unused-vars
-      Object.entries(states).forEach(([nameKey, state]) => {
-        state.setValue(state.initialValue);
+  const getSchemaValidation = (byGroup = false, callback) => {
+    const getValidations = (nameGroup) => {
+      const validations = Object.entries(states)
+        // eslint-disable-next-line no-unused-vars
+        .filter(
+          // eslint-disable-next-line no-unused-vars
+          ([nameKey, value]) =>
+            typeof value.yupValidate === 'object' &&
+            typeof value.yupValidate.shape === 'object' &&
+            ((byGroup === true && value.group === nameGroup) ||
+              byGroup === false) &&
+            value.form &&
+            !value.hide,
+        )
+        .reduce(
+          (t, [nameKey, value]) => ({
+            ...t,
+            [nameKey]: value.yupValidate.shape,
+          }),
+          {},
+        );
+      return validations;
+    };
+    if (byGroup) {
+      const schema = {};
+      Object.entries(data.groups).forEach(([nameGroup]) => {
+        const schemaAux = Yup.object().shape(getValidations(nameGroup));
+        schema[nameGroup] = schemaAux;
       });
-    };
+      return callback(schema);
+    }
+    const schema = Yup.object().shape(getValidations());
+    return callback(schema);
+  };
 
-    // this is for giving format to values for send to the backend
-    const getValues = (states) => {
-      const values = Object.entries(states).reduce(
-        (t, [nameKey, state]) => ({
-          ...t,
-          ...(state.type === 'DatePicker' && {
-            [nameKey]: moment(state.value).format(state.format),
-          }),
-          ...(state.type === 'AutoComplete' && {
-            [nameKey]: (state.value && state.value[state.store.idDD]) || '',
-          }),
-          ...((state.type === 'Dropdown' ||
-            state.type === 'TextField' ||
-            state.type === 'Switch') && {
-            [nameKey]: state.value,
-          }),
-        }),
-        {},
-      );
-      return values;
-    };
+  // todo listening changes in the states for hide
+  Object.entries(states).forEach(([nameKey]) => {
+    useEffect(() => {
+      console.log('states', states[nameKey]);
+    }, [states[nameKey].hide]);
+  });
 
-    // this factory is if exist some error then this  send to draw again the input with error or inputs
-    const validateAllValues = (values, states) => {
-      try {
-        schema.validateSync(values, { abortEarly: false });
-      } catch (errors) {
-        errors.inner.forEach((error) => {
-          states[error.path].setError({
-            hasError: true,
-            msg: error.message,
-          });
-        });
-      }
-    };
+  const [loadingScreen, setLoadingScreen] = useState(false);
 
-    const sendData = (values, states) => {
-      setLoadingScreen(true);
-      connection
-        .doRequest({
-          url: onSubmit.url,
-          params: values,
+  const resetForm = () => {
+    // eslint-disable-next-line no-unused-vars
+    Object.entries(states).forEach(([nameKey, state]) => {
+      state.setValue(state.initialValue);
+    });
+  };
+
+  const handleChange = ({ event, name, value, dataValue }) => {
+    // eslint-disable-next-line no-unused-expressions
+    event && event.preventDefault(); // in some inputs we dont have event like date pickers
+    const stateField = states[name];
+    const { setValue, setError } = stateField;
+
+    /* if (validations[name]) {
+      schema
+        .validateAt(name, { [name]: value })
+        .then(() => {
+          setError({ hasError: false, msg: '' });
         })
-        .then((resp) => {
-          if (!resp.error) {
-            // need to reset the form
-            resetForm({ states });
-            enqueueSnackbar('Success', {
-              variant: 'success',
-              action: <Button>See all</Button>,
-            });
-            if (typeof onSubmit.callback === 'function') {
-              onSubmit.callback();
-            }
-          } else {
-            enqueueSnackbar(resp.detail.message, {
-              variant: 'error',
-              action: <Button>See all</Button>,
-            });
-          }
-          setLoadingScreen(false);
+        .catch((err) => {
+          setError({ hasError: true, msg: err.message });
         });
+    } */
+
+    const valueOfType = stateField.type === 'AutoComplete' ? dataValue : value;
+
+    setValue(valueOfType);
+
+    if (stateField.onChange) {
+      stateField.onChange({
+        event,
+        value,
+        dataValue,
+        stateField,
+        states,
+      });
+    }
+  };
+
+  // this is for giving format to values for send to the backend
+  const getValues = () => {
+    const values = Object.entries(states).reduce(
+      (t, [nameKey, state]) => ({
+        ...t,
+        ...(state.type === 'DatePicker' && {
+          [nameKey]: moment(state.value).format(state.format),
+        }),
+        ...(state.type === 'AutoComplete' && {
+          [nameKey]: (state.value && state.value[state.store.idDD]) || '',
+        }),
+        ...((state.type === 'Dropdown' ||
+          state.type === 'TextField' ||
+          state.type === 'Switch') && {
+          [nameKey]: state.value,
+        }),
+      }),
+      {},
+    );
+    return values;
+  };
+
+  // this factory is if exist some error then this  send to draw again the input with error or inputs
+  const validateAllValues = (schema, values) => {
+    try {
+      schema.validateSync(values, { abortEarly: false });
+    } catch (errors) {
+      errors.inner.forEach((error) => {
+        states[error.path].setError({
+          hasError: true,
+          msg: error.message,
+        });
+      });
+    }
+  };
+
+  const sendData = (values) => {
+    setLoadingScreen(true);
+    connection
+      .doRequest({
+        url: onSubmit.url,
+        params: values,
+      })
+      .then((resp) => {
+        if (!resp.error) {
+          // need to reset the form
+          resetForm();
+          enqueueSnackbar('Success', {
+            variant: 'success',
+            action: <Button>See all</Button>,
+          });
+          if (typeof onSubmit.callback === 'function') {
+            onSubmit.callback();
+          }
+        } else {
+          enqueueSnackbar(resp.detail.message, {
+            variant: 'error',
+            action: <Button>See all</Button>,
+          });
+        }
+        setLoadingScreen(false);
+      });
+  };
+
+  // logic for submit button
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+    const values = {
+      ...getValues(),
+      ...(onSubmit.extraParams && { ...onSubmit.extraParams }),
     };
 
-    // logic for submit button
-    const handleSubmitForm = (e, states) => {
-      e.preventDefault();
-      const values = {
-        ...getValues(states),
-        ...(onSubmit.extraParams && { ...onSubmit.extraParams }),
-      };
-
-      validateAllValues(values, states);
+    getSchemaValidation(false, (schema) => {
+      validateAllValues(schema, values);
 
       schema.isValid(values).then((valid) => {
         if (valid) {
           // eslint-disable-next-line no-unused-expressions
           typeof onSubmit === 'function'
             ? onSubmit({ values, states })
-            : sendData(values, states);
+            : sendData(values);
         }
       });
-    };
+    });
+  };
 
-    Object.entries(states).map(([nameKey, values], index) => {
-      const groupName = values.group || Object.keys(groupsConfig)[0];
-      // if hide is false then showing
-      if (!values.hide) {
-        if (values.type === 'TextField') {
-          groupsConfig[groupName].children.push(
-            <TextFieldPxp
-              key={index}
-              name={nameKey}
-              value={values.value}
-              configInput={values}
-              handleChange={handlers.handleChange}
-              memoDisabled={values.memoDisabled}
-              error={values.error.hasError}
-              msgError={values.error.msg}
-              states={states}
-              disabled={values.disabled}
-              helperText={values.helperText}
-            />,
-          );
-        }
-
-        if (values.type === 'Dropdown') {
-          groupsConfig[groupName].children.push(
-            <TextFieldSelectPxp
-              key={index}
-              name={nameKey}
-              value={values.value}
-              configInput={values}
-              handleChange={handlers.handleChange}
-              memoDisabled={values.memoDisabled}
-              error={values.error.hasError}
-              msgError={values.error.msg}
-              states={states}
-              disabled={values.disabled}
-              helperText={values.helperText}
-            />,
-          );
-        }
-
-        if (values.type === 'AutoComplete') {
-          groupsConfig[groupName].children.push(
-            <AutocompletePxp
-              key={index}
-              name={nameKey}
-              value={values.value}
-              configInput={values}
-              handleChange={handlers.handleChange}
-              loading={values.store.loading}
-              memoDisabled={values.memoDisabled}
-              states={states}
-              open={values.store.open}
-              disabled={values.disabled}
-              helperText={values.helperText}
-              error={values.error.hasError}
-              msgError={values.error.msg}
-            />,
-          );
-        }
-
-        if (values.type === 'DatePicker') {
-          groupsConfig[groupName].children.push(
-            <KeyboardDatePickerPxp
-              key={index}
-              name={nameKey}
-              value={values.value}
-              configInput={values}
-              handleChange={handlers.handleChange}
-              memoDisabled={values.memoDisabled}
-              error={values.error.hasError}
-              states={states}
-              disabled={values.disabled}
-              helperText={values.helperText}
-            />,
-          );
-        }
-        if (values.type === 'Switch') {
-          groupsConfig[groupName].children.push(
-            <SwitchPxp
-              key={index}
-              name={nameKey}
-              value={values.value}
-              configInput={values}
-              handleChange={handlers.handleChange}
-              memoDisabled={values.memoDisabled}
-              states={states}
-              disabled={values.disabled}
-            />,
-          );
-        }
+  Object.entries(states).map(([nameKey, values], index) => {
+    const groupName = values.group || Object.keys(groupsConfig)[0];
+    // if hide is false then showing and the flag form is true
+    if (!values.hide && values.form) {
+      if (values.type === 'TextField') {
+        groupsConfig[groupName].children.push(
+          <TextFieldPxp
+            key={index}
+            name={nameKey}
+            value={values.value}
+            configInput={values}
+            handleChange={handleChange}
+            memoDisabled={values.memoDisabled}
+            error={values.error.hasError}
+            msgError={values.error.msg}
+            states={states}
+            disabled={values.disabled}
+            helperText={values.helperText}
+          />,
+        );
       }
 
-      return null;
-    });
+      if (values.type === 'Dropdown') {
+        groupsConfig[groupName].children.push(
+          <TextFieldSelectPxp
+            key={index}
+            name={nameKey}
+            value={values.value}
+            configInput={values}
+            handleChange={handleChange}
+            memoDisabled={values.memoDisabled}
+            error={values.error.hasError}
+            msgError={values.error.msg}
+            states={states}
+            disabled={values.disabled}
+            helperText={values.helperText}
+          />,
+        );
+      }
 
-    const [activeStep, setActiveStep] = React.useState(0);
+      if (values.type === 'AutoComplete') {
+        groupsConfig[groupName].children.push(
+          <AutocompletePxp
+            key={index}
+            name={nameKey}
+            value={values.value}
+            configInput={values}
+            handleChange={handleChange}
+            loading={values.store.loading}
+            memoDisabled={values.memoDisabled}
+            states={states}
+            open={values.store.open}
+            disabled={values.disabled}
+            helperText={values.helperText}
+            error={values.error.hasError}
+            msgError={values.error.msg}
+          />,
+        );
+      }
 
-    const handleNext = (group) => {
-      const values = {
-        ...getValues(states),
-      };
+      if (values.type === 'DatePicker') {
+        groupsConfig[groupName].children.push(
+          <KeyboardDatePickerPxp
+            key={index}
+            name={nameKey}
+            value={values.value}
+            configInput={values}
+            handleChange={handleChange}
+            memoDisabled={values.memoDisabled}
+            error={values.error.hasError}
+            states={states}
+            disabled={values.disabled}
+            helperText={values.helperText}
+          />,
+        );
+      }
+      if (values.type === 'Switch') {
+        groupsConfig[groupName].children.push(
+          <SwitchPxp
+            key={index}
+            name={nameKey}
+            value={values.value}
+            configInput={values}
+            handleChange={handleChange}
+            memoDisabled={values.memoDisabled}
+            states={states}
+            disabled={values.disabled}
+          />,
+        );
+      }
+    }
+
+    return null;
+  });
+
+  const [activeStep, setActiveStep] = React.useState(0);
+
+  const handleNext = async (group) => {
+    const values = {
+      ...getValues(),
+    };
+
+    getSchemaValidation(true, (shema) => {
       try {
-        schemaByGroup[group].validateSync(values, { abortEarly: false });
+        shema[group].validateSync(values, { abortEarly: false });
       } catch (errors) {
         errors.inner.forEach((error) => {
           states[error.path].setError({
@@ -284,188 +367,185 @@ const DrawForm = forwardRef(
           });
         });
       }
-      schemaByGroup[group].isValid(values).then((valid) => {
+
+      shema[group].isValid(values).then((valid) => {
         if (valid) {
           setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
       });
-    };
-
-    const handleBack = () => {
-      setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-    const handleReset = () => {
-      resetForm({ states });
-      setActiveStep(0);
-    };
-
-    useImperativeHandle(ref, () => {
-      return {
-        states,
-          handleSubmitForm
-      };
     });
+  };
 
-    return (
-      <>
-        {data.typeForm === 'normal' &&
-          dialog &&
-          Object.entries(groupsConfig).map(([nameKey, values], index) => {
-            return (
-              <Grid container spacing={3} key={`group_${index}`}>
-                {values.titleGroup !== '' && (
-                  <>
-                    <Grid item xs={12}>
-                      <Typography variant="subtitle2" color="textSecondary">
-                        {values.titleGroup}
-                      </Typography>
-                    </Grid>
-                  </>
-                )}
-                {values.children}
-              </Grid>
-            );
-          })}
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
 
-        {data.typeForm === 'normal' && !dialog && (
-          <Grid container spacing={3}>
+  const handleReset = () => {
+    resetForm();
+    setActiveStep(0);
+  };
+
+  useImperativeHandle(ref, () => {
+    return {
+      states,
+      handleSubmitForm,
+    };
+  });
+
+  return (
+    <>
+      {data.typeForm === 'normal' &&
+        dialog &&
+        Object.entries(groupsConfig).map(([nameKey, values], index) => {
+          return (
+            <Grid container spacing={3} key={`group_${index}`}>
+              {values.titleGroup !== '' && (
+                <>
+                  <Grid item xs={12}>
+                    <Typography variant="subtitle2" color="textSecondary">
+                      {values.titleGroup}
+                    </Typography>
+                  </Grid>
+                </>
+              )}
+              {values.children}
+            </Grid>
+          );
+        })}
+
+      {data.typeForm === 'normal' && !dialog && (
+        <Grid container spacing={3}>
+          {states &&
+            Object.entries(groupsConfig).map(([nameKey, values], index) => {
+              return (
+                <React.Fragment key={`group_${index}`}>
+                  <Grid item {...values.gridGroup}>
+                    <Box>
+                      <Card>
+                        <CardHeader
+                          title={
+                            values.titleGroup
+                              ? values.titleGroup
+                              : data.nameForm
+                          }
+                        />
+                        <Divider />
+                        <CardContent>
+                          <Grid key={`group_${nameKey}`} container spacing={2}>
+                            {values.children}
+                          </Grid>
+                        </CardContent>
+                      </Card>
+                    </Box>
+                  </Grid>
+                </React.Fragment>
+              );
+            })}
+        </Grid>
+      )}
+
+      {data.typeForm === 'normal' && (
+        <Box
+          mt={2}
+          display="flex"
+          justifyContent="flex-end"
+          className={classes.root}
+        >
+          {data.resetButton && (
+            <Button variant="outlined" onClick={() => resetForm()}>
+              Reset
+            </Button>
+          )}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={(e) => handleSubmitForm(e)}
+          >
+            {data.submitLabel || 'Submit'}
+          </Button>
+        </Box>
+      )}
+
+      {data.typeForm === 'steppers' && (
+        <div className={classes.root}>
+          <Stepper activeStep={activeStep} orientation="vertical">
             {states &&
               Object.entries(groupsConfig).map(([nameKey, values], index) => {
                 return (
-                  <React.Fragment key={`group_${index}`}>
-                    <Grid item {...values.gridGroup}>
-                      <Box>
-                        <Card>
-                          <CardHeader
-                            title={
-                              values.titleGroup
-                                ? values.titleGroup
-                                : data.nameForm
-                            }
-                          />
-                          <Divider />
-                          <CardContent>
-                            <Grid
-                              key={`group_${nameKey}`}
-                              container
-                              spacing={2}
-                            >
-                              {values.children}
+                  <Step key={nameKey}>
+                    {/* eslint-disable-next-line react/jsx-no-undef */}
+                    <StepLabel>{values.titleGroup}</StepLabel>
+                    <StepContent>
+                      <Grid container spacing={3} key={`group_${index}`}>
+                        {values.titleGroup !== '' && (
+                          <>
+                            <Grid item xs={12}>
+                              <Typography
+                                variant="subtitle2"
+                                color="textSecondary"
+                              >
+                                {values.titleGroup}
+                              </Typography>
                             </Grid>
-                          </CardContent>
-                        </Card>
-                      </Box>
-                    </Grid>
-                  </React.Fragment>
+                          </>
+                        )}
+                        {values.children}
+                      </Grid>
+
+                      <div className={classes.actionsContainer}>
+                        <div>
+                          <Button
+                            disabled={activeStep === 0}
+                            onClick={handleBack}
+                            className={classes.button}
+                          >
+                            Back
+                          </Button>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleNext(nameKey)}
+                            className={classes.button}
+                          >
+                            {activeStep ===
+                            Object.values(groupsConfig).length - 1
+                              ? 'Finish'
+                              : 'Next'}
+                          </Button>
+                        </div>
+                      </div>
+                    </StepContent>
+                  </Step>
                 );
               })}
-          </Grid>
-        )}
+          </Stepper>
 
-        {data.typeForm === 'normal' && (
-          <Box
-            mt={2}
-            display="flex"
-            justifyContent="flex-end"
-            className={classes.root}
-          >
-            {data.resetButton && (
-              <Button variant="outlined" onClick={() => resetForm({ states })}>
+          {activeStep === Object.values(groupsConfig).length && (
+            // eslint-disable-next-line react/jsx-no-undef
+            <Paper square elevation={0} className={classes.resetContainer}>
+              <Typography>All steps completed</Typography>
+              <Button
+                onClick={() => handleReset(states)}
+                className={classes.button}
+              >
                 Reset
               </Button>
-            )}
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={(e) => handleSubmitForm(e, states)}
-            >
-              {data.submitLabel || 'Submit'}
-            </Button>
-          </Box>
-        )}
 
-        {data.typeForm === 'steppers' && (
-          <div className={classes.root}>
-            <Stepper activeStep={activeStep} orientation="vertical">
-              {states &&
-                Object.entries(groupsConfig).map(([nameKey, values], index) => {
-                  return (
-                    <Step key={nameKey}>
-                      {/* eslint-disable-next-line react/jsx-no-undef */}
-                      <StepLabel>{values.titleGroup}</StepLabel>
-                      <StepContent>
-                        <Grid container spacing={3} key={`group_${index}`}>
-                          {values.titleGroup !== '' && (
-                            <>
-                              <Grid item xs={12}>
-                                <Typography
-                                  variant="subtitle2"
-                                  color="textSecondary"
-                                >
-                                  {values.titleGroup}
-                                </Typography>
-                              </Grid>
-                            </>
-                          )}
-                          {values.children}
-                        </Grid>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={(e) => handleSubmitForm(e)}
+              >
+                {data.submitLabel || 'Submit'}
+              </Button>
+            </Paper>
+          )}
+        </div>
+      )}
 
-                        <div className={classes.actionsContainer}>
-                          <div>
-                            <Button
-                              disabled={activeStep === 0}
-                              onClick={handleBack}
-                              className={classes.button}
-                            >
-                              Back
-                            </Button>
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={() => handleNext(nameKey)}
-                              className={classes.button}
-                            >
-                              {activeStep ===
-                              Object.values(groupsConfig).length - 1
-                                ? 'Finish'
-                                : 'Next'}
-                            </Button>
-                          </div>
-                        </div>
-                      </StepContent>
-                    </Step>
-                  );
-                })}
-            </Stepper>
-
-            {activeStep === Object.values(groupsConfig).length && (
-              // eslint-disable-next-line react/jsx-no-undef
-              <Paper square elevation={0} className={classes.resetContainer}>
-                <Typography>All steps completed</Typography>
-                <Button
-                  onClick={() => handleReset(states)}
-                  className={classes.button}
-                >
-                  Reset
-                </Button>
-
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={(e) => handleSubmitForm(e, states)}
-                >
-                  {data.submitLabel || 'Submit'}
-                </Button>
-              </Paper>
-            )}
-          </div>
-        )}
-
-        {loadingScreen && <LoadingScreen />}
-      </>
-    );
-  },
-);
+      {loadingScreen && <LoadingScreen />}
+    </>
+  );
+});
 
 export default DrawForm;
