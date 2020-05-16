@@ -35,7 +35,6 @@
 /* eslint-disable no-underscore-dangle */
 import React, { forwardRef } from 'react';
 import _ from 'lodash';
-import * as Yup from 'yup';
 import {
   defaultConfig,
   defaultValuesTextField,

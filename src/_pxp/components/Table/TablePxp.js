@@ -5,7 +5,15 @@
  *
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -29,6 +37,7 @@ import connection from 'pxp-client';
 import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import withWidth from '@material-ui/core/withWidth';
+import useTheme from '@material-ui/core/styles/useTheme';
 import TableToolbarPxp from './TableToolbarPxp';
 import Form from '../Form/Form';
 import DrawTable from './DrawTable';
@@ -100,7 +109,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const TablePxp = ({ dataConfig, width }) => {
+function useWidth() {
+  const theme = useTheme();
+  const keys = [...theme.breakpoints.keys].reverse();
+  return (
+    keys.reduce((output, key) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const matches = useMediaQuery(theme.breakpoints.up(key));
+      return !output && matches ? key : output;
+    }, null) || 'xs'
+  );
+}
+
+const TablePxp = forwardRef((props, ref) => {
+  const { dataConfig } = props;
+  const width = useWidth();
+
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const {
@@ -456,6 +480,13 @@ const TablePxp = ({ dataConfig, width }) => {
     [loading],
   );
 
+  useImperativeHandle(ref, () => {
+    return {
+      jsonStore,
+      handleRefresh,
+    };
+  });
+
   return (
     <>
       <div className={classes.root}>
@@ -539,6 +570,6 @@ const TablePxp = ({ dataConfig, width }) => {
       </Dialog>
     </>
   );
-};
+});
 
-export default withWidth()(TablePxp);
+export default TablePxp;
