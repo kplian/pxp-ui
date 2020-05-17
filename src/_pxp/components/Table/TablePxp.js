@@ -36,7 +36,6 @@ import _ from 'lodash';
 import connection from 'pxp-client';
 import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
-import withWidth from '@material-ui/core/withWidth';
 import useTheme from '@material-ui/core/styles/useTheme';
 import TableToolbarPxp from './TableToolbarPxp';
 import Form from '../Form/Form';
@@ -57,13 +56,7 @@ const ButtonNew = ({ handleClick }) => (
     </IconButton>
   </Tooltip>
 );
-const ButtonEdit = ({ handleClick }) => (
-  <Tooltip title="Edit" aria-label="edit">
-    <IconButton aria-label="edit" onClick={handleClick}>
-      <EditIcon />
-    </IconButton>
-  </Tooltip>
-);
+
 const ButtonDelete = ({ handleClick }) => (
   <Tooltip title="delete" aria-label="delete">
     <IconButton aria-label="delete" onClick={handleClick}>
@@ -130,7 +123,6 @@ const TablePxp = forwardRef((props, ref) => {
   const {
     idStore,
     buttonNew,
-    buttonEdit,
     buttonDel,
     actionsTableCell,
   } = dataConfig;
@@ -229,7 +221,7 @@ const TablePxp = forwardRef((props, ref) => {
         { checkbox_: false },
       ),
     );
-  }, [width]);
+  }, [width, dataConfig.columns]);
 
   // init values pagination
   const [page, setPage] = React.useState(0);
@@ -477,7 +469,7 @@ const TablePxp = forwardRef((props, ref) => {
       });
       if (node) observer.current.observe(node);
     },
-    [loading],
+    [loading, dataConfig, data, jsonStore, state],
   );
 
   useImperativeHandle(ref, () => {

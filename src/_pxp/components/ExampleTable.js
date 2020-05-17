@@ -143,6 +143,7 @@ const ExampleTable = () => {
         dir: 'desc', // for seeing every time the last save
         contenedor: 'docs-per',
       },
+      load: false,
     },
     idStore: 'id_persona',
     buttonDel: true,
@@ -208,6 +209,7 @@ const ExampleTable = () => {
         ...prevData.params,
         otherParam: 'other',
       },
+      load: true,
     }));
   };
 

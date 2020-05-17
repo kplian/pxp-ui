@@ -25,7 +25,7 @@ const TableBodyPxp = ({
   selected,
   lastBookElementRef,
 }) => {
-  const { datos: rows } = data;
+  const { datos: rows } = data || { datos:[], total: 0 };
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   return (

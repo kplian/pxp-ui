@@ -59,6 +59,15 @@ const AutocompletePxpComponent = ({
     }
   }, 500);
 
+  const handleFocus = () => {
+    if (store.state.load === false) {
+      store.set((prevData) => ({
+        ...prevData,
+        load: true,
+      }));
+    }
+  };
+
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
       <Autocomplete
@@ -124,6 +133,7 @@ const AutocompletePxpComponent = ({
             dataValue: newValue,
           });
         }}
+        onFocus={handleFocus}
         renderOption={
           store.renderOption ? (option) => store.renderOption(option) : null
         }

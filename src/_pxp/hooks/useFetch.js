@@ -10,7 +10,7 @@ import connection from 'pxp-client';
 
 const useFetch = (options) => {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const useFetch = (options) => {
     setError(null);
     const abortController = new AbortController();
 
-    if (options !== undefined) {
+    if (options !== undefined && options.load) {
       (async () => {
         setLoading(true);
 

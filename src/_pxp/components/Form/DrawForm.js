@@ -8,7 +8,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, {
   forwardRef,
-  useEffect,
   useImperativeHandle,
   useState,
 } from 'react';
