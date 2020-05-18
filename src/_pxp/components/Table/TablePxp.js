@@ -114,8 +114,7 @@ function useWidth() {
   );
 }
 
-const TablePxp = forwardRef((props, ref) => {
-  const { dataConfig } = props;
+const TablePxp = forwardRef(({dataConfig}, ref) => {
   const width = useWidth();
 
   const classes = useStyles();
@@ -541,7 +540,7 @@ const TablePxp = forwardRef((props, ref) => {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar className={classes.appBar}>
+        <AppBar className={classes.appBar} >
           <Toolbar>
             <IconButton
               edge="start"
