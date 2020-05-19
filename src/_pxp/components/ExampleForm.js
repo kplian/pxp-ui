@@ -7,10 +7,9 @@ import moment from 'moment';
 import Form from './Form/Form';
 import ButtonPxp from './ButtonPxp';
 import IconPxp from '../icons/IconPxp';
-import ExampleAutoComplete from "./Form/examples/ExampleAutoComplete";
+import ExampleAutoComplete from './Form/examples/ExampleAutoComplete';
 
 const ExampleForm = () => {
-
   const ref = useRef();
   const jsonExample1 = {
     columns: {
@@ -296,11 +295,11 @@ const ExampleForm = () => {
   };
 
   const handleClickButton = () => {
-    ref.current.states.ap_paterno.setValue('favio figueroa')
-  }
-  const handleClickSubmit = e => {
-    ref.current.handleSubmitForm(e)
-  }
+    ref.current.states.ap_paterno.setValue('favio figueroa');
+  };
+  const handleClickSubmit = (e) => {
+    ref.current.handleSubmitForm(e);
+  };
 
   return (
     <>
@@ -308,10 +307,10 @@ const ExampleForm = () => {
       <Form data={jsonExample1} ref={ref} />
       <ButtonPxp icon={<IconPxp />} onClick={handleClickButton} />
       <ButtonPxp icon={<IconPxp />} onClick={handleClickSubmit} />
-     {/* <Form data={datePickers} />
+      {/* <Form data={datePickers} />
 
       <Form data={jsonPersona} />
-      <Form data={jsonConfig} />*/}
+      <Form data={jsonConfig} /> */}
     </>
   );
 };

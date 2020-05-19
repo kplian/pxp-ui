@@ -68,17 +68,24 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
     {},
   );
 
+
+
   // init the draw and the states
   const states = Object.entries(data.columns).reduce(
     (t, [nameKey, value]) => ({
       ...t,
       [nameKey]: {
         ...InitValues(value),
+        reset: () => resetState(nameKey),
         memoDisabled: !value.onChange,
       },
     }),
     {},
   );
+
+  const resetState = (name) => {
+    states[name].setValue(states[name].initialValue);
+  }
 
   const getSchemaValidation = (byGroup = false, callback) => {
     const getValidations = (nameGroup) => {
