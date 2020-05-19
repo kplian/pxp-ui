@@ -41,6 +41,7 @@ const AppRouter = ({
   });
   const privatePaths = routes.map((route) => pages[route.component].path);
   const publicRoutes = config.publicRoutes || [];
+
   return (
     <Router history={history}>
       <div>

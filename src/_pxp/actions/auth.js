@@ -60,6 +60,7 @@ export const startSetMenu = () => {
     }).then((resp) => {
       dispatch(setMenu(resp.data));
       dispatch(setRoutes(findRoutes(resp.data)));
+      return resp;
     });
   };
 };

@@ -7,7 +7,6 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/styles';
 import { useMediaQuery } from '@material-ui/core';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import Footer from './components/Footer';
 import Topbar from './components/Topbar';
 import Sidebar from './components/sidebar/Sidebar';
@@ -27,9 +26,10 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flex: '1 1 auto',
-    height: 'calc( 100vh - 64px)',
+    height: 'calc( 100vh - 80px)',
     width: '100%',
-    padding: 10,
+    padding: 16,
+    overflow: 'hidden',
   },
 }));
 
@@ -37,7 +37,7 @@ const MainContainer = ({ children }) => {
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'), {
-    defaultMatches: true
+    defaultMatches: true,
   });
 
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -65,14 +65,12 @@ const MainContainer = ({ children }) => {
         open={shouldOpenSidebar}
         variant={isDesktop ? 'persistent' : 'temporary'}
       />
-      <PerfectScrollbar options={{ suppressScrollX: true }} id="content">
-       
-        <main className={classes.content}>
-          <Breadcrumbs />
-          {children}
-          <Footer />
-        </main>  
-      </PerfectScrollbar>
+
+      <main className={classes.content}>
+        <Breadcrumbs />
+        {children}
+      </main>
+
       <LoginDialog />
     </div>
   );
