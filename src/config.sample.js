@@ -43,6 +43,22 @@
  *     }
  *   }
  * }
+ * @param date Configuration to manage date data
+ * @example
+ * date: {
+ *   backendGetFormat: 'YYYY-MM-DD', // date format we get from backend
+ *   backendSaveFormat: 'Y-m-d', // date format we need to send to backend
+ *   defaultRenderFormat: 'DD-MM-YYYY', // this is format to render dates by default
+ * },
+ *
+ * @param dateTime Configuration to manage dateTime data
+ * @example
+ * dateTime: {
+ *   backendGetFormat: 'YYYY-MM-DD H:mm:ss:S', // date format we get from backend
+ *   backendSaveFormat: 'YYYY-MM-DD H:mm:ss:S', // date format we need to send to backend
+ *   backendTimezone: 'America/Los_Angeles', //backend timezone
+ *   defaultRenderFormat: 'DD-MM-YYYY H:mm:ss', // this is format to render dates by default
+ * }
  */
 
 export default {
@@ -62,5 +78,16 @@ export default {
     system: 'ORGA,WF',
     mobile: 0,
     includeSystemRoot: true,
+  },
+  date: {
+    backendGetFormat: 'YYYY-MM-DD',
+    backendSaveFormat: 'Y-m-d',
+    defaultRenderFormat: 'DD-MM-YYYY',
+  },
+  dateTime: {
+    backendGetFormat: 'YYYY-MM-DD H:mm:ss:S',
+    backendSaveFormat: 'YYYY-MM-DD H:mm:ss:S',
+    backendTimezone: 'America/Los_Angeles',
+    defaultRenderFormat: 'DD-MM-YYYY H:mm:ss',
   },
 };

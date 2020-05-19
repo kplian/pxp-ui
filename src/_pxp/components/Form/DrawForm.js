@@ -6,11 +6,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, {
-  forwardRef,
-  useImperativeHandle,
-  useState,
-} from 'react';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import { Box, Button } from '@material-ui/core';
@@ -124,7 +120,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
     useEffect(() => {
       console.log('states', states[nameKey]);
     }, [states[nameKey].hide]);
-  });*/
+  }); */
 
   const [loadingScreen, setLoadingScreen] = useState(false);
 
@@ -390,10 +386,15 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
     setActiveStep(0);
   };
 
+  const addExtraParam = (name, value) => {
+    onSubmit.extraParams[name] = value;
+  };
+
   useImperativeHandle(ref, () => {
     return {
       states,
       handleSubmitForm,
+      addExtraParam,
     };
   });
 

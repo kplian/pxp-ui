@@ -26,6 +26,12 @@ const useStyles = makeStyles(() => ({
   rootRow: {
     'flex-direction': 'row',
   },
+  collapseVertical: {
+    height: 'calc(50% - 15px)',
+  },
+  collapseHorizontal: {
+    width: 'calc(50% - 15px)',
+  },
   content: {
     flex: '1 1 auto',
     height: '100%',
@@ -42,33 +48,32 @@ const MasterDetailContainer = ({
   onCloseDetail = undefined,
   forceMobileDetail = false,
 }) => {
+  // const containerId = uuidv4();
   const classes = useStyles();
   const theme = useTheme();
-  const containerId = uuidv4();
 
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'), {
     defaultMatches: true,
   });
   const [showMaster, setShowMaster] = useState(true);
   const [showDetail, setShowDetail] = useState(false);
+  const [containerId] = useState(uuidv4());
 
   const dispatch = useDispatch();
 
-  const onBackToMaster = (pageId) => {
-    if (pageId === containerId) {
-      dispatch(setDetail(false));
-      if (onCloseDetail) {
-        onCloseDetail();
-      }
-    }
-  };
-
   useEffect(() => {
-    eventsService.listenEvent('detail_go_back', containerId, onBackToMaster);
+    eventsService.listenEvent('detail_go_back', containerId, (pageId) => {
+      if (pageId === containerId) {
+        dispatch(setDetail(false));
+        if (onCloseDetail) {
+          onCloseDetail();
+        }
+      }
+    });
     return () => {
       eventsService.unlistenEvent('detail_go_back', containerId);
     };
-  }, []);
+  }, [containerId, dispatch, onCloseDetail]);
 
   useEffect(() => {
     if (isDesktop !== undefined) {
@@ -81,7 +86,7 @@ const MasterDetailContainer = ({
         setShowMaster(!openDetail);
       }
     }
-  }, [openDetail, isDesktop]);
+  }, [isDesktop, forceMobileDetail, openDetail, dispatch, containerId]);
 
   return (
     <div
@@ -90,10 +95,18 @@ const MasterDetailContainer = ({
         [classes.rootRow]: orientation === 'horizontal',
       })}
     >
-      <Collapse orientation={orientation} in={showMaster}>
+      <Collapse
+        className={classes.collapseHorizontal}
+        orientation={orientation}
+        in={showMaster}
+      >
         {master}
       </Collapse>
-      <Collapse orientation={orientation} in={showDetail}>
+      <Collapse
+        className={classes.collapseHorizontal}
+        orientation={orientation}
+        in={showDetail}
+      >
         {detail}
       </Collapse>
     </div>
