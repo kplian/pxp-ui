@@ -5,10 +5,14 @@
  *
  */
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import connection from 'pxp-client';
+import { Button } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 
 const useFetch = (options) => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -55,6 +59,28 @@ const useFetch = (options) => {
                   setData(resp);
                 }
 
+                // send msg error
+                if (resp.error) {
+                  enqueueSnackbar(
+                    `url: ${options.url} -> ${resp.detail.message}`,
+                    {
+                      variant: 'error',
+                      action: (
+                        <div>
+                          <pre
+                            style={{
+                              whiteSpace: 'pre-wrap',
+                              wordBreak: 'break-all',
+                            }}
+                          >
+                            {JSON.stringify(resp.detail, null, 2)}
+                          </pre>
+                        </div>
+                      ),
+                    },
+                  );
+                }
+                setError(resp.error);
                 setLoading(false);
               }
             }

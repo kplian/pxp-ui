@@ -65,7 +65,7 @@ const DrawTable = ({
           size={dense ? 'small' : 'medium'}
           aria-label="enhanced table"
         >
-          {data && (
+          {(data && !data.error) && (
             <TableHeadPxp
               classes={classes}
               numSelected={selected.length}

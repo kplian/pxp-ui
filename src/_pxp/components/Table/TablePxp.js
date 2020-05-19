@@ -114,17 +114,12 @@ function useWidth() {
   );
 }
 
-const TablePxp = forwardRef(({dataConfig}, ref) => {
+const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const width = useWidth();
 
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-  const {
-    idStore,
-    buttonNew,
-    buttonDel,
-    actionsTableCell,
-  } = dataConfig;
+  const { idStore, buttonNew, buttonDel, actionsTableCell } = dataConfig;
 
   const { paginationType } = dataConfig;
 
@@ -137,7 +132,7 @@ const TablePxp = forwardRef(({dataConfig}, ref) => {
 
   // get the menu that we will use in the table cell for each one.
   const jsonStore = useJsonStore(dataConfig.getDataTable);
-  const { state, set, data, loading } = jsonStore;
+  const { state, set, data, loading, error } = jsonStore;
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -440,9 +435,11 @@ const TablePxp = forwardRef(({dataConfig}, ref) => {
     handleInputSearchChange,
   };
 
-  const emptyRows = data
-    ? rowsPerPage - Math.min(rowsPerPage, data.datos.total - page * rowsPerPage)
-    : null;
+  const emptyRows =
+    data && !data.error
+      ? rowsPerPage -
+        Math.min(rowsPerPage, data.datos.total - page * rowsPerPage)
+      : null;
 
   const observer = useRef();
   const lastBookElementRef = useCallback(
@@ -480,59 +477,62 @@ const TablePxp = forwardRef(({dataConfig}, ref) => {
 
   return (
     <>
-      <div className={classes.root}>
-        <Paper className={classes.paper}>
-          <TableToolbarPxp
-            numSelected={selected.length}
-            buttonsToolbar={buttonsToolbar}
-            buttonsToolbarBySelections={buttonsToolbarBySelections}
-            rowSelected={selected}
-            statesShowColumn={statesShowColumn}
-            setStatesShowColumn={setStatesShowColumn}
-            handleInputSearchChange={handleInputSearchChange}
-          />
-          {
-            <DrawTable
-              idStore={idStore}
-              dataConfig={dataConfig}
-              data={data}
+
+      {!error && (
+        <div className={classes.root}>
+          <Paper className={classes.paper}>
+            <TableToolbarPxp
+              numSelected={selected.length}
               buttonsToolbar={buttonsToolbar}
               buttonsToolbarBySelections={buttonsToolbarBySelections}
-              emptyRows={emptyRows}
-              dense={dense}
-              handles={handles}
-              order={order}
-              orderBy={orderBy}
-              buttonsTableCell={buttonsTableCell}
+              rowSelected={selected}
               statesShowColumn={statesShowColumn}
-              selected={selected}
-              loading={loading}
-              jsonStore={jsonStore}
-              lastBookElementRef={lastBookElementRef}
+              setStatesShowColumn={setStatesShowColumn}
+              handleInputSearchChange={handleInputSearchChange}
             />
-          }
-
-          {data &&
-            (paginationType === 'pagination' ||
-              paginationType === undefined) && (
-              <TablePagination
-                rowsPerPageOptions={[
-                  parseInt(dataConfig.getDataTable.params.limit, 10),
-                ]}
-                component="div"
-                count={parseInt(data.total, 10)}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
+            {
+              <DrawTable
+                idStore={idStore}
+                dataConfig={dataConfig}
+                data={data}
+                buttonsToolbar={buttonsToolbar}
+                buttonsToolbarBySelections={buttonsToolbarBySelections}
+                emptyRows={emptyRows}
+                dense={dense}
+                handles={handles}
+                order={order}
+                orderBy={orderBy}
+                buttonsTableCell={buttonsTableCell}
+                statesShowColumn={statesShowColumn}
+                selected={selected}
+                loading={loading}
+                jsonStore={jsonStore}
+                lastBookElementRef={lastBookElementRef}
               />
-            )}
-        </Paper>
-        <FormControlLabel
-          control={<Switch checked={dense} onChange={handleChangeDense} />}
-          label="Dense padding"
-        />
-      </div>
+            }
+
+            {data &&
+              (paginationType === 'pagination' ||
+                paginationType === undefined) && (
+                <TablePagination
+                  rowsPerPageOptions={[
+                    parseInt(dataConfig.getDataTable.params.limit, 10),
+                  ]}
+                  component="div"
+                  count={parseInt(data.total, 10)}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onChangePage={handleChangePage}
+                  onChangeRowsPerPage={handleChangeRowsPerPage}
+                />
+              )}
+          </Paper>
+          <FormControlLabel
+            control={<Switch checked={dense} onChange={handleChangeDense} />}
+            label="Dense padding"
+          />
+        </div>
+      )}
 
       <Dialog
         fullScreen

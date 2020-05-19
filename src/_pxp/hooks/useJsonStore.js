@@ -3,7 +3,7 @@
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  */
-import { useState } from 'react';
+import React, { useState } from 'react';
 import useFetch from './useFetch';
 
 const useJsonStore = (optionsRequest) => {
@@ -14,6 +14,9 @@ const useJsonStore = (optionsRequest) => {
   });
   const [open, setOpen] = useState(false);
   const [data, loading, error] = useFetch(state);
+
+
+
   return {
     state,
     set,
