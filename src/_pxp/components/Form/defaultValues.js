@@ -77,6 +77,7 @@ export const defaultValuesAutoComplete = {
       sort: 'id_',
       dir: 'ASC',
     },
+    load: false,
     parFilters: 'alias.column1#alias.column2',
     idDD: 'id_',
     descDD: 'desc',
