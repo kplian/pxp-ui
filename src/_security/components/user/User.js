@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
+import _ from 'lodash';
 // import { useTranslation } from 'react-i18next';
 import SettingsIcon from '@material-ui/icons/Settings';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
@@ -31,6 +35,14 @@ const TabPanel = (props) => {
   );
 };
 
+const ButtonNew = ({ handleClick }) => (
+  <Tooltip title="new" aria-label="new">
+    <IconButton aria-label="new" onClick={handleClick}>
+      <AddIcon />
+    </IconButton>
+  </Tooltip>
+);
+
 const User = () => {
   // init states
   const [openDetail, setOpenDetail] = useState(false);
@@ -38,37 +50,10 @@ const User = () => {
   const [scrollY, setScrollY] = useState(0);
   const refForm = useRef();
   const refTable = useRef();
+  const refUserRoleForm = useRef();
   const refUserRole = useRef();
   const [scrollBarRef, setscrollBarRef] = useState(null);
-
-  useEffect(() => {
-    if (!openDetail && scrollBarRef) {
-      setTimeout(() => {
-        scrollBarRef._container.scrollTop = scrollY;
-      }, 500);
-    }
-  }, [openDetail, scrollBarRef]);
-  /* BEGINT Init configuration objects */
-
-  const configUserForm = {
-    nameForm: 'User Form',
-    columns: userFormFields,
-    onSubmit: {
-      url: am.segu.user.update,
-    },
-    groups: {
-      groupPerson: {
-        titleGroup: 'Persona',
-        gridGroup: { xs: 12, sm: 6 },
-      },
-      groupUser: {
-        titleGroup: 'Usuario',
-        gridGroup: { xs: 12, sm: 6 },
-      },
-    },
-  };
-
-  const configUserRole = {
+  const [configUserRole, setConfigUserRole] = useState({
     nameForm: 'assignrole',
     nameTable: 'assignedroles',
     columns: userRoleFields,
@@ -94,6 +79,43 @@ const User = () => {
     onSubmit: {
       url: am.segu.userRole.save,
     },
+    urlDelete: am.segu.userRole.delete,
+  });
+
+  useEffect(() => {
+    if (!openDetail && scrollBarRef) {
+      setTimeout(() => {
+        scrollBarRef._container.scrollTop = scrollY;
+      }, 500);
+    }
+  }, [openDetail, scrollBarRef]);
+  /* BEGINT Init configuration objects */
+
+  const configUserForm = {
+    nameForm: 'User Form',
+    columns: userFormFields,
+    onSubmit: {
+      url: am.segu.user.save,
+    },
+    groups: {
+      groupPerson: {
+        titleGroup: 'Persona',
+        gridGroup: { xs: 12, sm: 6 },
+      },
+      groupUser: {
+        titleGroup: 'Usuario',
+        gridGroup: { xs: 12, sm: 6 },
+      },
+    },
+  };
+
+  const handleNew = () => {
+    setTabValue(0);
+    setOpenDetail(true);
+    refForm.current.states[fm.person].setDisabled(false);
+    setScrollY(scrollBarRef._container.scrollTop);
+    scrollBarRef._container.scrollTop = 0;
+    scrollBarRef._container.scrollLeft = 0;
   };
 
   const configUserTable = {
@@ -111,8 +133,11 @@ const User = () => {
     },
     idStore: fm.userId,
     buttonDel: false,
-    buttonNew: true,
+    buttonNew: false,
     buttonEdit: false,
+    buttonsToolbar: {
+      buttonAdd: { onClick: handleNew, button: ButtonNew },
+    },
     actionsTableCell: {
       buttonDel: false,
       buttonEdit: false,
@@ -131,9 +156,11 @@ const User = () => {
         refForm.current.states[fm.expireDate].setValue(
           moment(row[fm.expireDate], config.date.backendGetFormat).toDate(),
         );
-        // console.log(row[fm.userId]);
-        // refUserRole.current. = row[fm.userId];
-
+        setConfigUserRole(
+          _.merge(configUserRole, {
+            onSubmit: { extraParams: { [fm.userId]: row[fm.userId] } },
+          }),
+        );
         // update user id for role
         const { set } = refUserRole.current.jsonStore;
         set((prevData) => ({
@@ -144,9 +171,11 @@ const User = () => {
           },
           load: true,
         }));
+        setTabValue(0);
         setOpenDetail(true);
         setScrollY(scrollBarRef._container.scrollTop);
         scrollBarRef._container.scrollTop = 0;
+        scrollBarRef._container.scrollLeft = 0;
       },
     },
   };
@@ -155,6 +184,7 @@ const User = () => {
 
   const onCloseDetail = () => {
     setOpenDetail(false);
+    refTable.current.handleRefresh();
   };
 
   const handleChange = (event, newValue) => {
@@ -187,7 +217,11 @@ const User = () => {
               <Form data={configUserForm} ref={refForm} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
-              <TablePxp dataConfig={configUserRole} ref={refUserRole} />
+              <TablePxp
+                dataConfig={configUserRole}
+                ref={refUserRole}
+                refForm={refUserRoleForm}
+              />
             </TabPanel>
           </div>
         }

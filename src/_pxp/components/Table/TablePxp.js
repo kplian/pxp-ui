@@ -119,7 +119,13 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-  const { idStore, buttonNew, buttonDel, actionsTableCell } = dataConfig;
+  const {
+    idStore,
+    buttonNew,
+    buttonDel,
+    actionsTableCell,
+    buttonsToolbar: addButtonsToolbar,
+  } = dataConfig;
 
   const { paginationType } = dataConfig;
 
@@ -343,6 +349,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const buttonsToolbar = {
     ...(buttonNew && { buttonNew: { onClick: handleNew, button: ButtonNew } }),
     ...{ buttonRefresh: { onClick: handleRefresh, button: ButtonRefresh } },
+    ...addButtonsToolbar,
   };
 
   const buttonsToolbarBySelections = {
@@ -477,7 +484,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
   return (
     <>
-
       {!error && (
         <div className={classes.root}>
           <Paper className={classes.paper}>
@@ -540,7 +546,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar className={classes.appBar} >
+        <AppBar className={classes.appBar}>
           <Toolbar>
             <IconButton
               edge="start"
