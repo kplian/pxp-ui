@@ -41,6 +41,7 @@ import TableToolbarPxp from './TableToolbarPxp';
 import Form from '../Form/Form';
 import DrawTable from './DrawTable';
 import useJsonStore from '../../hooks/useJsonStore';
+import InitButton from "../../hooks/InitButton";
 
 const ButtonRefresh = ({ handleClick }) => (
   <Tooltip title="new" aria-label="new">
@@ -356,11 +357,23 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       });
   };
 
+  // button toolbar
   const buttonsToolbar = {
     ...(buttonNew && { buttonNew: { onClick: handleNew, button: ButtonNew } }),
     ...{ buttonRefresh: { onClick: handleRefresh, button: ButtonRefresh } },
     ...addButtonsToolbar,
   };
+  // init button with some value like state
+  const statesButtonsToolbar = Object.entries(buttonsToolbar).reduce(
+    (t, [nameButton, buttonValues]) => ({
+      ...t,
+      [nameButton]: {
+        ...InitButton(buttonValues),
+      },
+    }),
+    {},
+  );
+  console.log('statesButtonsToolbar', buttonsToolbar);
 
   const buttonsToolbarBySelections = {
     ...(buttonDel && {
@@ -489,6 +502,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     return {
       jsonStore,
       handleRefresh,
+      statesButtonsToolbar,
     };
   });
 
@@ -499,7 +513,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
           <Paper className={classes.paper}>
             <TableToolbarPxp
               numSelected={selected.length}
-              buttonsToolbar={buttonsToolbar}
+              buttonsToolbar={statesButtonsToolbar}
               buttonsToolbarBySelections={buttonsToolbarBySelections}
               rowSelected={selected}
               statesShowColumn={statesShowColumn}
@@ -511,7 +525,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
                 idStore={idStore}
                 dataConfig={dataConfig}
                 data={data}
-                buttonsToolbar={buttonsToolbar}
                 buttonsToolbarBySelections={buttonsToolbarBySelections}
                 emptyRows={emptyRows}
                 dense={dense}

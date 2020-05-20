@@ -464,13 +464,15 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
               Reset
             </Button>
           )}
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={(e) => handleSubmitForm(e)}
-          >
-            {data.submitLabel || 'Submit'}
-          </Button>
+          {(data.submitButton === true || data.submitButton === undefined) && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={(e) => handleSubmitForm(e)}
+            >
+              {data.submitLabel || 'Submit'}
+            </Button>
+          )}
         </Box>
       )}
 
