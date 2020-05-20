@@ -120,6 +120,17 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const { idStore, buttonNew, buttonDel, actionsTableCell } = dataConfig;
+  const columnsForDrawing = Object.entries(dataConfig.columns)
+    .filter(
+      ([nameKey, value]) => value.grid === true || value.grid === undefined,
+    )
+    .reduce(
+      (t, [nameKey, value]) => ({
+        ...t,
+        [nameKey]: value
+      }),
+      {},
+    );
 
   const { paginationType } = dataConfig;
 
@@ -207,7 +218,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     };
     // logic for show columns, create states for column.
     setStatesShowColumn(
-      Object.entries(dataConfig.columns).reduce(
+      Object.entries(columnsForDrawing).reduce(
         (t, [nameKey], index) => ({
           ...t,
           ...columnsForWidth(nameKey, index),
@@ -215,7 +226,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
         { checkbox_: false },
       ),
     );
-  }, [width, dataConfig.columns]);
+  }, [width]);
 
   // init values pagination
   const [page, setPage] = React.useState(0);
@@ -477,7 +488,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
   return (
     <>
-
       {!error && (
         <div className={classes.root}>
           <Paper className={classes.paper}>
@@ -540,7 +550,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar className={classes.appBar} >
+        <AppBar className={classes.appBar}>
           <Toolbar>
             <IconButton
               edge="start"
