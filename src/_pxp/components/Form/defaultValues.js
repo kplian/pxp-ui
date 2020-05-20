@@ -100,7 +100,7 @@ export const defaultValuesAutoComplete = {
 export const defaultValuesDatePicker = {
   type: 'DatePicker',
   label: undefined,
-  initialValue: '', // moment(new Date(), 'DD-MM-YYYY').toDate()
+  initialValue: null, // moment(new Date(), 'DD-MM-YYYY').toDate()
   minDate: null, // moment(new Date(), 'DD-MM-YYYY').subtract(5, 'days').toDate(),
   maxDate: null, // moment(new Date(), 'DD-MM-YYYY').add(1, 'month').toDate(),
   format: 'DD-MM-YYYY',
