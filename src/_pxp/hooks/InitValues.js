@@ -22,6 +22,18 @@ const InitValues = (values) => {
   const [hide, setHide] = useState(isHidden);
   const [yupValidate, setYupValidate] = useState(validate);
 
+  const reset = () => {
+    switch (type) {
+      case 'AutoComplete':
+      case 'DatePicker':
+        setValue(null);
+        break;
+      default:
+        setValue('');
+        break;
+    }
+  };
+
   let config = {
     ...values,
     validate: { ...validate },
@@ -30,6 +42,7 @@ const InitValues = (values) => {
     ...{ disabled, setDisabled },
     ...{ hide, setHide },
     ...{ yupValidate, setYupValidate },
+    reset,
   };
 
   if (type === 'AutoComplete' && store) {
