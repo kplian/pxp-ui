@@ -129,7 +129,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
   const resetForm = () => {
     // eslint-disable-next-line no-unused-vars
     Object.entries(states).forEach(([nameKey, state]) => {
-      state.setValue(state.initialValue);
+      state.reset();
     });
   };
 

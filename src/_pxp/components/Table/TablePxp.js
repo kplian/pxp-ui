@@ -119,7 +119,13 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-  const { idStore, buttonNew, buttonDel, actionsTableCell } = dataConfig;
+  const {
+    idStore,
+    buttonNew,
+    buttonDel,
+    actionsTableCell,
+    buttonsToolbar: addButtonsToolbar,
+  } = dataConfig;
   const columnsForDrawing = Object.entries(dataConfig.columns)
     .filter(
       ([nameKey, value]) => value.grid === true || value.grid === undefined,
@@ -127,11 +133,10 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     .reduce(
       (t, [nameKey, value]) => ({
         ...t,
-        [nameKey]: value
+        [nameKey]: value,
       }),
       {},
     );
-
   const { paginationType } = dataConfig;
 
   // toolbar
@@ -354,6 +359,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const buttonsToolbar = {
     ...(buttonNew && { buttonNew: { onClick: handleNew, button: ButtonNew } }),
     ...{ buttonRefresh: { onClick: handleRefresh, button: ButtonRefresh } },
+    ...addButtonsToolbar,
   };
 
   const buttonsToolbarBySelections = {
