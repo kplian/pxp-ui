@@ -113,6 +113,9 @@ const User = () => {
     setTabValue(0);
     setOpenDetail(true);
     refForm.current.states[fm.person].setDisabled(false);
+    Object.entries(refForm.current.states).forEach(([, value]) => {
+      value.reset();
+    });
     setScrollY(scrollBarRef._container.scrollTop);
     scrollBarRef._container.scrollTop = 0;
     scrollBarRef._container.scrollLeft = 0;

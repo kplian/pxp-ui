@@ -26,6 +26,17 @@ const InitValues = (values) => {
   const enable = () => setDisabled(false);
   const hide = () => setIsHide(true);
   const show = () => setIsHide(false);
+  const reset = () => {
+    switch (type) {
+      case 'AutoComplete':
+      case 'DatePicker':
+        setValue(null);
+        break;
+      default:
+        setValue('');
+        break;
+    }
+  };
   let config = {
     ...values,
     validate: { ...validate },
@@ -38,6 +49,7 @@ const InitValues = (values) => {
     show,
     disable,
     enable,
+    reset,
   };
 
   if (type === 'AutoComplete' && store) {

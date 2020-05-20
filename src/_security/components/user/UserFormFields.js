@@ -31,6 +31,23 @@ export default {
     validate: {
       shape: Yup.string().required('Required'),
     },
+    onChange: ({ value, dataValue: row, states }) => {
+      // value is the value selected
+      // dataValue is the data store
+      // configInputState is the state of the Autocomplete 8
+      // states is all states of this form
+      // disabled AutoComplete9
+      if (value) {
+        states[fm.name].setValue(row[fm.name]);
+        states[fm.surname1].setValue(row[fm.surname1]);
+        states[fm.surname2].setValue(row[fm.surname2]);
+      } else {
+        states[fm.name].setValue('');
+        states[fm.surname1].setValue('');
+        states[fm.surname2].setValue('');
+      }
+      console.log(row);
+    },
     group: 'groupPerson',
   },
 
@@ -77,7 +94,7 @@ export default {
     validate: {
       shape: Yup.string().email().required('Required'),
     },
-    group: 'groupUser',
+    group: 'groupPerson',
   },
   [fm.username]: {
     type: 'TextField',
