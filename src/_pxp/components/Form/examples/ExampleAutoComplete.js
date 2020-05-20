@@ -50,9 +50,6 @@ const ExampleAutoComplete = () => {
         ...configAutoComplete,
         label: 'AutoComplete2',
         isSearchable: true,
-        onChange: ({ value, dataValue, configInputState, states }) => {
-          states['AutoComplete1'].reset();
-        },
         helperText:
           'this AutoComplete is refreshed for each press key with an debounce of 500ms (isSearchable = true), you need to setup "store.parFilters: \'alias.column1#alias.column2\'" ',
       },

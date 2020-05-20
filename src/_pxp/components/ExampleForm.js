@@ -4,10 +4,12 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import moment from 'moment';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 import Form from './Form/Form';
 import ButtonPxp from './ButtonPxp';
 import IconPxp from '../icons/IconPxp';
 import ExampleAutoComplete from './Form/examples/ExampleAutoComplete';
+import ExamplePicker from "./Form/examples/ExamplePicker";
 
 const ExampleForm = () => {
   const ref = useRef();
@@ -303,14 +305,18 @@ const ExampleForm = () => {
 
   return (
     <>
-      <ExampleAutoComplete />
-      <Form data={jsonExample1} ref={ref} />
-      <ButtonPxp icon={<IconPxp />} onClick={handleClickButton} />
-      <ButtonPxp icon={<IconPxp />} onClick={handleClickSubmit} />
-      {/* <Form data={datePickers} />
+      <PerfectScrollbar id="content">
+        {' '}
+        <ExamplePicker />
+        <ExampleAutoComplete />
+        <Form data={jsonExample1} ref={ref} />
+        <ButtonPxp icon={<IconPxp />} onClick={handleClickButton} />
+        <ButtonPxp icon={<IconPxp />} onClick={handleClickSubmit} />
+        {/* <Form data={datePickers} />
 
       <Form data={jsonPersona} />
       <Form data={jsonConfig} /> */}
+      </PerfectScrollbar>
     </>
   );
 };
