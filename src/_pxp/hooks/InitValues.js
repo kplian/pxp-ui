@@ -19,9 +19,13 @@ const InitValues = (values) => {
   const [value, setValue] = useState(initialValue);
   const [error, setError] = useState({ hasError: false, msg: '' });
   const [disabled, setDisabled] = useState(isDisabled);
-  const [hide, setHide] = useState(isHidden);
+  const [isHide, setIsHide] = useState(isHidden);
   const [yupValidate, setYupValidate] = useState(validate);
 
+  const disable = () => setDisabled(true);
+  const enable = () => setDisabled(false);
+  const hide = () => setIsHide(true);
+  const show = () => setIsHide(false);
   const reset = () => {
     switch (type) {
       case 'AutoComplete':
@@ -33,15 +37,18 @@ const InitValues = (values) => {
         break;
     }
   };
-
   let config = {
     ...values,
     validate: { ...validate },
     ...{ value, setValue },
     ...{ error, setError },
     ...{ disabled, setDisabled },
-    ...{ hide, setHide },
+    ...{ isHide, setIsHide },
     ...{ yupValidate, setYupValidate },
+    hide,
+    show,
+    disable,
+    enable,
     reset,
   };
 

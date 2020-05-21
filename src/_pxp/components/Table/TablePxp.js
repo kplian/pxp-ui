@@ -41,6 +41,7 @@ import TableToolbarPxp from './TableToolbarPxp';
 import Form from '../Form/Form';
 import DrawTable from './DrawTable';
 import useJsonStore from '../../hooks/useJsonStore';
+import InitButton from "../../hooks/InitButton";
 
 const ButtonRefresh = ({ handleClick }) => (
   <Tooltip title="new" aria-label="new">
@@ -126,7 +127,17 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     actionsTableCell,
     buttonsToolbar: addButtonsToolbar,
   } = dataConfig;
-
+  const columnsForDrawing = Object.entries(dataConfig.columns)
+    .filter(
+      ([nameKey, value]) => value.grid === true || value.grid === undefined,
+    )
+    .reduce(
+      (t, [nameKey, value]) => ({
+        ...t,
+        [nameKey]: value,
+      }),
+      {},
+    );
   const { paginationType } = dataConfig;
 
   // toolbar
@@ -213,7 +224,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     };
     // logic for show columns, create states for column.
     setStatesShowColumn(
-      Object.entries(dataConfig.columns).reduce(
+      Object.entries(columnsForDrawing).reduce(
         (t, [nameKey], index) => ({
           ...t,
           ...columnsForWidth(nameKey, index),
@@ -221,7 +232,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
         { checkbox_: false },
       ),
     );
-  }, [width, dataConfig.columns]);
+  }, [width]);
 
   // init values pagination
   const [page, setPage] = React.useState(0);
@@ -346,11 +357,23 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       });
   };
 
+  // button toolbar
   const buttonsToolbar = {
     ...(buttonNew && { buttonNew: { onClick: handleNew, button: ButtonNew } }),
     ...{ buttonRefresh: { onClick: handleRefresh, button: ButtonRefresh } },
     ...addButtonsToolbar,
   };
+  // init button with some value like state
+  const statesButtonsToolbar = Object.entries(buttonsToolbar).reduce(
+    (t, [nameButton, buttonValues]) => ({
+      ...t,
+      [nameButton]: {
+        ...InitButton(buttonValues),
+      },
+    }),
+    {},
+  );
+  console.log('statesButtonsToolbar', buttonsToolbar);
 
   const buttonsToolbarBySelections = {
     ...(buttonDel && {
@@ -479,6 +502,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     return {
       jsonStore,
       handleRefresh,
+      statesButtonsToolbar,
     };
   });
 
@@ -489,7 +513,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
           <Paper className={classes.paper}>
             <TableToolbarPxp
               numSelected={selected.length}
-              buttonsToolbar={buttonsToolbar}
+              buttonsToolbar={statesButtonsToolbar}
               buttonsToolbarBySelections={buttonsToolbarBySelections}
               rowSelected={selected}
               statesShowColumn={statesShowColumn}
@@ -501,7 +525,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
                 idStore={idStore}
                 dataConfig={dataConfig}
                 data={data}
-                buttonsToolbar={buttonsToolbar}
                 buttonsToolbarBySelections={buttonsToolbarBySelections}
                 emptyRows={emptyRows}
                 dense={dense}

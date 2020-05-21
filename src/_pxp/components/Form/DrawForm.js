@@ -94,7 +94,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
             ((byGroup === true && value.group === nameGroup) ||
               byGroup === false) &&
             value.form &&
-            !value.hide,
+            !value.isHide,
         )
         .reduce(
           (t, [nameKey, value]) => ({
@@ -129,7 +129,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
   const resetForm = () => {
     // eslint-disable-next-line no-unused-vars
     Object.entries(states).forEach(([nameKey, state]) => {
-      state.setValue(state.initialValue);
+      state.reset();
     });
   };
 
@@ -259,7 +259,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
   Object.entries(states).map(([nameKey, values], index) => {
     const groupName = values.group || Object.keys(groupsConfig)[0];
     // if hide is false then showing and the flag form is true
-    if (!values.hide && values.form) {
+    if (!values.isHide && values.form) {
       if (values.type === 'TextField') {
         groupsConfig[groupName].children.push(
           <TextFieldPxp
@@ -464,13 +464,15 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
               Reset
             </Button>
           )}
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={(e) => handleSubmitForm(e)}
-          >
-            {data.submitLabel || 'Submit'}
-          </Button>
+          {(data.submitButton === true || data.submitButton === undefined) && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={(e) => handleSubmitForm(e)}
+            >
+              {data.submitLabel || 'Submit'}
+            </Button>
+          )}
         </Box>
       )}
 

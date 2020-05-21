@@ -35,6 +35,7 @@ export const defaultValuesTextField = {
   form: true,
   size: 'medium',
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
+  typeTextField: undefined, // this can be number or password
 };
 export const defaultValuesSwitch = {
   type: 'Switch',
