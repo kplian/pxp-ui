@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 const UserBox = ({ row }) => {
   const classes = useStyles();
-  const { t } = useTranslation('segu_user');
+  const { t } = useTranslation('segu,user,user_role');
   return (
     <Box display="flex" alignItems="center">
       <Avatar className={classes.avatar} src={imgAvatar} />

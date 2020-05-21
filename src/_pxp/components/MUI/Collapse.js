@@ -46,7 +46,7 @@ const styles = (theme) => ({
     overflow: 'visible',
     '&$horizontal': {
       height: 'initial',
-      width: 'auto',
+      width: '100%',
     },
   },
   /* Styles applied to the container element when the transition has exited and `collapsedHeight` != 0px. */
@@ -62,7 +62,7 @@ const styles = (theme) => ({
   wrapperInner: {
     width: '100%',
     '&$horizontal': {
-      width: 'initial',
+      width: '100%',
       height: '100%',
     },
   },
@@ -155,7 +155,7 @@ const Collapse = React.forwardRef(function Collapse(props, ref) {
   };
 
   const handleEntered = (node, isAppearing) => {
-    node.style[size] = 'auto';
+    node.style[size] = '100%';
 
     if (onEntered) {
       onEntered(node, isAppearing);
@@ -233,6 +233,7 @@ const Collapse = React.forwardRef(function Collapse(props, ref) {
             },
             className,
           )}
+          test="prueba"
           style={{
             [isHorizontal ? 'minWidth' : 'minHeight']: collapsedSize,
             ...style,
