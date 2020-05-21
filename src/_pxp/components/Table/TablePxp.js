@@ -41,7 +41,7 @@ import TableToolbarPxp from './TableToolbarPxp';
 import Form from '../Form/Form';
 import DrawTable from './DrawTable';
 import useJsonStore from '../../hooks/useJsonStore';
-import InitButton from "../../hooks/InitButton";
+import InitButton from '../../hooks/InitButton';
 
 const ButtonRefresh = ({ handleClick }) => (
   <Tooltip title="new" aria-label="new">
@@ -373,7 +373,18 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     }),
     {},
   );
-  console.log('statesButtonsToolbar', buttonsToolbar);
+  const disableButtonsToolbar = () => {
+    Object.values(statesButtonsToolbar).forEach((stateButton) => {
+      stateButton.disable();
+    });
+  };
+  const enableButtonsToolbar = () => {
+    Object.values(statesButtonsToolbar).forEach((stateButton) => {
+      stateButton.enable();
+    });
+  };
+  // end buttons toolbar
+
 
   const buttonsToolbarBySelections = {
     ...(buttonDel && {
@@ -381,6 +392,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     }),
   };
 
+  // buttonTableCell
   const buttonsTableCell = {
     ...(actionsTableCell.buttonEdit && {
       buttonEdit: {
@@ -398,6 +410,17 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     }),
     ...actionsTableCell.extraButtons,
   };
+  // init button with some value like state
+  const statesButtonsTableCell = Object.entries(buttonsTableCell).reduce(
+    (t, [nameButton, buttonValues]) => ({
+      ...t,
+      [nameButton]: {
+        ...InitButton(buttonValues),
+      },
+    }),
+    {},
+  );
+  // end buttonTableCell
 
   // pagination
   const handleChangePage = (event, newPage) => {
@@ -498,13 +521,17 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     [loading, dataConfig, data, jsonStore, state],
   );
 
-  useImperativeHandle(ref, () => {
-    return {
-      jsonStore,
-      handleRefresh,
-      statesButtonsToolbar,
-    };
-  });
+  if (ref !== null) {
+    useImperativeHandle(ref, () => {
+      return {
+        jsonStore,
+        handleRefresh,
+        statesButtonsToolbar,
+        disableButtonsToolbar,
+        enableButtonsToolbar,
+      };
+    });
+  }
 
   return (
     <>
@@ -531,7 +558,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
                 handles={handles}
                 order={order}
                 orderBy={orderBy}
-                buttonsTableCell={buttonsTableCell}
+                buttonsTableCell={statesButtonsTableCell}
                 statesShowColumn={statesShowColumn}
                 selected={selected}
                 loading={loading}
