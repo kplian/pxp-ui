@@ -30,7 +30,7 @@ const useStyles = makeStyles(() => ({
     height: 'calc(50% - 15px)',
   },
   collapseHorizontal: {
-    width: 'calc(50% - 15px)',
+    width: '100%',
   },
   content: {
     flex: '1 1 auto',

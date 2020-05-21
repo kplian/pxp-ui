@@ -1,3 +1,8 @@
+/**
+ * This file contains api mapper for old and new version of pxp backend
+ * @copyright Kplian Ltda 2020
+ * @uthor Jaime Rivera
+ */
 import _ from 'lodash';
 import config from '../config';
 
