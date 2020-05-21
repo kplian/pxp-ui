@@ -16,7 +16,23 @@ const InitValues = (values) => {
     hide: isHidden = false,
   } = values;
 
-  const [value, setValue] = useState(initialValue);
+  // init value for type because some types has error when we put null or blank
+  // textField and dropdown need to have blank if it is null
+  // AutoComplete and DatePicker need to have null if it is blank
+  let valueField = initialValue;
+  if (!initialValue) {
+    switch (type) {
+      case 'AutoComplete':
+      case 'DatePicker':
+        valueField = null;
+        break;
+      default:
+        valueField = '';
+        break;
+    }
+  }
+
+  const [value, setValue] = useState(valueField);
   const [error, setError] = useState({ hasError: false, msg: '' });
   const [disabled, setDisabled] = useState(isDisabled);
   const [isHide, setIsHide] = useState(isHidden);

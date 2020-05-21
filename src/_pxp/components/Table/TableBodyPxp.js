@@ -53,8 +53,10 @@ const TableBodyPxp = ({
           .local()
           .format(config.date.defaultRenderFormat);
 
-      case 'Autocomplete':
-        return colConfig.descValue ? row[colConfig.descValue] : row[key];
+      case 'AutoComplete':
+        return colConfig.gridDisplayField
+          ? row[colConfig.gridDisplayField]
+          : row[key];
       default:
         return row[key];
     }

@@ -42,6 +42,7 @@ import Form from '../Form/Form';
 import DrawTable from './DrawTable';
 import useJsonStore from '../../hooks/useJsonStore';
 import InitButton from '../../hooks/InitButton';
+import { defaultValuesTextField } from '../Form/defaultValues';
 
 const ButtonRefresh = ({ handleClick }) => (
   <Tooltip title="new" aria-label="new">
@@ -286,9 +287,21 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
   const handleEdit = (row) => {
     const columnsEdit = Object.entries(dataConfigForEdit.columns).reduce(
-      (t, [nameKey, values]) => ({
+      (t, [nameKey, column]) => ({
         ...t,
-        [nameKey]: { ...values, initialValue: row[nameKey] },
+        [nameKey]: {
+          ...column,
+          ...(column.type === 'AutoComplete' && {
+            initialValue:
+              row[column.store.idDD] !== ''
+                ? {
+                    [column.store.idDD]: row[column.store.idDD],
+                    [column.store.descDD]: row[column.gridDisplayField],
+                  }
+                : row[column.store.idDD],
+          }),
+          ...(column.type !== 'AutoComplete' && { initialValue: row[nameKey] }),
+        },
       }),
       {},
     );
@@ -384,7 +397,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     });
   };
   // end buttons toolbar
-
 
   const buttonsToolbarBySelections = {
     ...(buttonDel && {
