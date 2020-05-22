@@ -14,6 +14,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import CheckListColumn from './CheckListColumn';
+import ButtonPxp from '../ButtonPxp';
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
@@ -137,12 +138,13 @@ const TableToolbarPxp = (props) => {
         <>
           {Object.entries(buttonsToolbarBySelections).map(
             ([nameKey, values]) => {
-              const B = values.button;
-
               return (
-                <B
-                  key={`buttons_selections_${nameKey}`}
-                  handleClick={() => values.onClick(rowSelected)}
+                <ButtonPxp
+                  key={nameKey}
+                  title={values.title}
+                  icon={values.icon}
+                  onClick={() => values.onClick(rowSelected)}
+                  disabled={values.disabled}
                 />
               );
             },
@@ -151,11 +153,13 @@ const TableToolbarPxp = (props) => {
       ) : (
         <>
           {Object.entries(buttonsToolbar).map(([nameKey, values]) => {
-            const B = values.button;
             return (
-              <B
-                key={`buttons_toolbar_${nameKey}`}
-                handleClick={() => values.onClick()}
+              <ButtonPxp
+                key={nameKey}
+                title={values.title}
+                icon={values.icon}
+                onClick={() => values.onClick()}
+                disabled={values.disabled}
               />
             );
           })}

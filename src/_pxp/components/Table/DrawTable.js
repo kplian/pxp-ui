@@ -89,6 +89,7 @@ const DrawTable = ({
               idStore={idStore}
               statesShowColumn={statesShowColumn}
               handleCheckInCell={handles.handleCheckInCell}
+              handleClickRow={handles.handleClickRow}
               buttonsTableCell={buttonsTableCell}
               dense={dense}
               emptyRows={emptyRows}
