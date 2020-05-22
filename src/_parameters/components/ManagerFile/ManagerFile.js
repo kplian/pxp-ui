@@ -69,7 +69,7 @@ const ManagerFile = (props) => {
   const [open, setOpen] = React.useState(false);
 
   const jsonItem = {
-    nameForm: 'Manager File',
+    tableName: 'Manager File',
     columns: {
       codigo: {
         label: 'Codigo',
@@ -86,7 +86,12 @@ const ManagerFile = (props) => {
               {row.id_archivo ? (
                 <Avatar className={classes.avatar} src={urlFile} />
               ) : (
-                <Avatar className={classes.avatarYellow} onClick={()=>{setOpen(true)}}>
+                <Avatar
+                  className={classes.avatarYellow}
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                >
                   <CloudUploadIcon />
                 </Avatar>
               )}
@@ -101,8 +106,6 @@ const ManagerFile = (props) => {
         },
       },
     },
-    /* p: {"start":"0","limit":"50","tabla":"titem","id_tabla":"1","sort":"tipar.orden","dir":"ASC"}
-     */
     getDataTable: {
       url: 'parametros/Archivo/listarArchivoCodigo',
       params: {
@@ -113,11 +116,11 @@ const ManagerFile = (props) => {
         id_tabla: id,
         tabla: table,
       },
-      // load: false,
     },
     idStore: 'id_tipo_archivo',
-    buttonDel: true,
-    buttonNew: true,
+    buttonDel: false,
+    buttonNew: false,
+    buttonCheckList: false,
     actionsTableCell: {
       buttonDel: false,
       buttonEdit: false,
@@ -126,8 +129,7 @@ const ManagerFile = (props) => {
           label: 'Upload File',
           buttonIcon: <CloudUploadIcon />,
           onClick: (row) => {
-            alert('llega');
-            console.log(row);
+            setOpen(true);
           },
         },
         viewFile: {
@@ -149,11 +151,6 @@ const ManagerFile = (props) => {
           disabled: true,
         },
       },
-      /* icon: <AddShoppingCartIcon />,
-      onClick: (row) => {
-        alert('llega');
-        console.log(row);
-      }, */
     },
     onClickRow: ({ row, statesButtonsTableCell }) => {
       if (row.id_archivo) {
@@ -164,17 +161,6 @@ const ManagerFile = (props) => {
         statesButtonsTableCell.deleteFile.disable();
       }
     },
-    resetButton: true,
-    onSubmit: {
-      url: 'mercado/Item/insertarItem',
-      extraParams: {
-        formato: '',
-        metros_en_caja: '',
-      },
-      // todo need to add typeSend for change to send all in jsonFormat or normal pxp
-    },
-    urlDelete: 'parametros/Archivo/listarArchivoCodigo',
-    // paginationType: 'infiniteScrolling', // can be infiniteScrolling or pagination
   };
   return (
     <>

@@ -79,6 +79,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 const TableToolbarPxp = (props) => {
   const classes = useToolbarStyles();
   const {
+    tableName,
     numSelected,
     buttonsToolbar,
     buttonsToolbarBySelections,
@@ -86,6 +87,8 @@ const TableToolbarPxp = (props) => {
     statesShowColumn,
     setStatesShowColumn,
     handleInputSearchChange,
+    buttonCheckList,
+    columnForSearchCount,
   } = props;
 
   return (
@@ -111,26 +114,28 @@ const TableToolbarPxp = (props) => {
             id="tableTitle"
             component="div"
           >
-            Table Name
+            {tableName && tableName}
           </Typography>
-          <Tooltip title="This filter only applies for columns: ">
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
+          {columnForSearchCount > 0 && (
+            <Tooltip title="This filter only applies for columns: ">
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Search…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  onChange={(event) =>
+                    handleInputSearchChange(event.target.value)
+                  }
+                  inputProps={{ 'aria-label': 'search' }}
+                />
               </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                onChange={(event) =>
-                  handleInputSearchChange(event.target.value)
-                }
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </div>
-          </Tooltip>
+            </Tooltip>
+          )}
         </>
       )}
 
@@ -170,10 +175,12 @@ const TableToolbarPxp = (props) => {
               <FilterListIcon/>
             </IconButton>
           </Tooltip> */}
-          <CheckListColumn
-            statesShowColumn={statesShowColumn}
-            setStatesShowColumn={setStatesShowColumn}
-          />
+          {(buttonCheckList === true || buttonCheckList === undefined) && (
+            <CheckListColumn
+              statesShowColumn={statesShowColumn}
+              setStatesShowColumn={setStatesShowColumn}
+            />
+          )}
         </>
       )}
     </Toolbar>

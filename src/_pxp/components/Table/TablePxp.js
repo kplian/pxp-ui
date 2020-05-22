@@ -99,9 +99,11 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const {
+    tableName,
     idStore,
     buttonNew,
-    buttonRefres,
+    buttonRefresh,
+    buttonCheckList,
     buttonDel,
     actionsTableCell,
     buttonsToolbar: addButtonsToolbar,
@@ -356,7 +358,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     ...(buttonNew && {
       buttonNew: { onClick: handleNew, icon: <AddIcon />, title: 'new' },
     }),
-    ...(buttonRefres && {
+    ...(buttonRefresh && {
       buttonRefresh: {
         onClick: handleRefresh,
         icon: <RefreshIcon />,
@@ -493,6 +495,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       (t, [nameKey, value]) => ({ ...t, [nameKey]: value.filters.pfiltro }),
       {},
     );
+  const columnForSearchCount = Object.values(columnsForSearch).length;
 
   const handleInputSearchChange = _.debounce(async (value) => {
     set({
@@ -566,6 +569,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
         <div className={classes.root}>
           <Paper className={classes.paper}>
             <TableToolbarPxp
+              tableName={tableName}
               numSelected={selected.length}
               buttonsToolbar={statesButtonsToolbar}
               buttonsToolbarBySelections={statesButtonsToolbarBySelections}
@@ -573,6 +577,8 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
               statesShowColumn={statesShowColumn}
               setStatesShowColumn={setStatesShowColumn}
               handleInputSearchChange={handleInputSearchChange}
+              buttonCheckList={buttonCheckList}
+              columnForSearchCount={columnForSearchCount}
             />
             {
               <DrawTable
