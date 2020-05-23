@@ -44,29 +44,6 @@ import useJsonStore from '../../hooks/useJsonStore';
 import InitButton from '../../hooks/InitButton';
 import { defaultValuesTextField } from '../Form/defaultValues';
 
-const ButtonRefresh = ({ handleClick }) => (
-  <Tooltip title="new" aria-label="new">
-    <IconButton aria-label="new" onClick={handleClick}>
-      <RefreshIcon />
-    </IconButton>
-  </Tooltip>
-);
-const ButtonNew = ({ handleClick }) => (
-  <Tooltip title="new" aria-label="new">
-    <IconButton aria-label="new" onClick={handleClick}>
-      <AddIcon />
-    </IconButton>
-  </Tooltip>
-);
-
-const ButtonDelete = ({ handleClick }) => (
-  <Tooltip title="delete" aria-label="delete">
-    <IconButton aria-label="delete" onClick={handleClick}>
-      <DeleteIcon />
-    </IconButton>
-  </Tooltip>
-);
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -122,8 +99,11 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const {
+    tableName,
     idStore,
     buttonNew,
+    buttonRefresh,
+    buttonCheckList,
     buttonDel,
     actionsTableCell,
     buttonsToolbar: addButtonsToolbar,
@@ -182,6 +162,8 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
     setRowSelected(row);
   };
+
+
 
   useEffect(() => {
     const columnsForWidth = (nameKey, index) => {
@@ -328,6 +310,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   };
 
   const handleDelete = (rowSelectedAux) => {
+    console.log('row',rowSelectedAux)
     // diff if is object or array
     // array is when the delete was executed with selections
     // object is when the delete was executed from actions menu
@@ -372,8 +355,16 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
   // button toolbar
   const buttonsToolbar = {
-    ...(buttonNew && { buttonNew: { onClick: handleNew, button: ButtonNew } }),
-    ...{ buttonRefresh: { onClick: handleRefresh, button: ButtonRefresh } },
+    ...(buttonNew && {
+      buttonNew: { onClick: handleNew, icon: <AddIcon />, title: 'new' },
+    }),
+    ...(buttonRefresh && {
+      buttonRefresh: {
+        onClick: handleRefresh,
+        icon: <RefreshIcon />,
+        title: 'Refresh',
+      },
+    }),
     ...addButtonsToolbar,
   };
   // init button with some value like state
@@ -398,11 +389,29 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   };
   // end buttons toolbar
 
+  // button Toolbar when the row is selected
   const buttonsToolbarBySelections = {
     ...(buttonDel && {
-      buttonDel: { onClick: handleDelete, button: ButtonDelete },
+      buttonDel: {
+        onClick: handleDelete,
+        icon: <DeleteIcon />,
+        title: 'Delete',
+      },
     }),
   };
+  const statesButtonsToolbarBySelections = Object.entries(
+    buttonsToolbarBySelections,
+  ).reduce(
+    (t, [nameButton, buttonValues]) => ({
+      ...t,
+      [nameButton]: {
+        ...InitButton(buttonValues),
+      },
+    }),
+    {},
+  );
+  // end button Toolbar when the row is selected
+
 
   // buttonTableCell
   const buttonsTableCell = {
@@ -433,6 +442,13 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     {},
   );
   // end buttonTableCell
+
+  // listening event click in row
+  const handleClickRow = (event, row) => {
+    if (typeof dataConfig.onClickRow === 'function') {
+      dataConfig.onClickRow({row, statesButtonsTableCell});
+    }
+  }
 
   // pagination
   const handleChangePage = (event, newPage) => {
@@ -479,6 +495,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       (t, [nameKey, value]) => ({ ...t, [nameKey]: value.filters.pfiltro }),
       {},
     );
+  const columnForSearchCount = Object.values(columnsForSearch).length;
 
   const handleInputSearchChange = _.debounce(async (value) => {
     set({
@@ -496,6 +513,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const handles = {
     handleSelectAllClick,
     handleCheckInCell,
+    handleClickRow,
     handleRequestSort,
     handleInputSearchChange,
   };
@@ -551,20 +569,22 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
         <div className={classes.root}>
           <Paper className={classes.paper}>
             <TableToolbarPxp
+              tableName={tableName}
               numSelected={selected.length}
               buttonsToolbar={statesButtonsToolbar}
-              buttonsToolbarBySelections={buttonsToolbarBySelections}
+              buttonsToolbarBySelections={statesButtonsToolbarBySelections}
               rowSelected={selected}
               statesShowColumn={statesShowColumn}
               setStatesShowColumn={setStatesShowColumn}
               handleInputSearchChange={handleInputSearchChange}
+              buttonCheckList={buttonCheckList}
+              columnForSearchCount={columnForSearchCount}
             />
             {
               <DrawTable
                 idStore={idStore}
                 dataConfig={dataConfig}
                 data={data}
-                buttonsToolbarBySelections={buttonsToolbarBySelections}
                 emptyRows={emptyRows}
                 dense={dense}
                 handles={handles}

@@ -20,6 +20,7 @@ const MenuItemTableCell = forwardRef(({ buttons, row }, ref) => {
           <MenuItem
             key={`menuItem_${nameKey}`}
             onClick={() => button.onClick(row)}
+            disabled={button.disabled}
           >
             <ListItemIcon>{button.buttonIcon}</ListItemIcon>
             <Typography variant="inherit">{button.label}</Typography>

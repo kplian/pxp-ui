@@ -14,6 +14,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import CheckListColumn from './CheckListColumn';
+import ButtonPxp from '../ButtonPxp';
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
@@ -78,6 +79,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 const TableToolbarPxp = (props) => {
   const classes = useToolbarStyles();
   const {
+    tableName,
     numSelected,
     buttonsToolbar,
     buttonsToolbarBySelections,
@@ -85,6 +87,8 @@ const TableToolbarPxp = (props) => {
     statesShowColumn,
     setStatesShowColumn,
     handleInputSearchChange,
+    buttonCheckList,
+    columnForSearchCount,
   } = props;
 
   return (
@@ -110,26 +114,28 @@ const TableToolbarPxp = (props) => {
             id="tableTitle"
             component="div"
           >
-            Table Name
+            {tableName && tableName}
           </Typography>
-          <Tooltip title="This filter only applies for columns: ">
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
+          {columnForSearchCount > 0 && (
+            <Tooltip title="This filter only applies for columns: ">
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Search…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  onChange={(event) =>
+                    handleInputSearchChange(event.target.value)
+                  }
+                  inputProps={{ 'aria-label': 'search' }}
+                />
               </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                onChange={(event) =>
-                  handleInputSearchChange(event.target.value)
-                }
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </div>
-          </Tooltip>
+            </Tooltip>
+          )}
         </>
       )}
 
@@ -137,12 +143,13 @@ const TableToolbarPxp = (props) => {
         <>
           {Object.entries(buttonsToolbarBySelections).map(
             ([nameKey, values]) => {
-              const B = values.button;
-
               return (
-                <B
-                  key={`buttons_selections_${nameKey}`}
-                  handleClick={() => values.onClick(rowSelected)}
+                <ButtonPxp
+                  key={nameKey}
+                  title={values.title}
+                  icon={values.icon}
+                  onClick={() => values.onClick(rowSelected)}
+                  disabled={values.disabled}
                 />
               );
             },
@@ -151,11 +158,13 @@ const TableToolbarPxp = (props) => {
       ) : (
         <>
           {Object.entries(buttonsToolbar).map(([nameKey, values]) => {
-            const B = values.button;
             return (
-              <B
-                key={`buttons_toolbar_${nameKey}`}
-                handleClick={() => values.onClick()}
+              <ButtonPxp
+                key={nameKey}
+                title={values.title}
+                icon={values.icon}
+                onClick={() => values.onClick()}
+                disabled={values.disabled}
               />
             );
           })}
@@ -166,10 +175,12 @@ const TableToolbarPxp = (props) => {
               <FilterListIcon/>
             </IconButton>
           </Tooltip> */}
-          <CheckListColumn
-            statesShowColumn={statesShowColumn}
-            setStatesShowColumn={setStatesShowColumn}
-          />
+          {(buttonCheckList === true || buttonCheckList === undefined) && (
+            <CheckListColumn
+              statesShowColumn={statesShowColumn}
+              setStatesShowColumn={setStatesShowColumn}
+            />
+          )}
         </>
       )}
     </Toolbar>

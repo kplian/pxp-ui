@@ -21,6 +21,7 @@ const TableBodyPxp = ({
   idStore,
   statesShowColumn,
   handleCheckInCell,
+  handleClickRow,
   buttonsTableCell,
   dense,
   emptyRows,
@@ -72,6 +73,7 @@ const TableBodyPxp = ({
           <TableRow
             key={`tableRow_${row[idStore]}`}
             hover
+            onClick={(event) => handleClickRow(event, row)}
             role="checkbox"
             aria-checked={isItemSelected}
             tabIndex={-1}
