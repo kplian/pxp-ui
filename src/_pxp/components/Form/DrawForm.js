@@ -6,7 +6,13 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+  useCallback,
+} from 'react';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import { Box, Button } from '@material-ui/core';
@@ -57,7 +63,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
   const { enqueueSnackbar } = useSnackbar();
 
   // separate json for button submit onSubmit
-  const { onSubmit } = data;
+  const { onSubmit, enterSubmit } = data;
 
   // init the groups
   const groupsConfig = Object.entries(data.groups).reduce(
@@ -67,8 +73,6 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
     }),
     {},
   );
-
-
 
   // init the draw and the states
   const states = Object.entries(data.columns).reduce(
@@ -118,7 +122,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
   };
 
   // todo listening changes in the states for hide
-  /*Object.entries(states).forEach(([nameKey]) => {
+  /* Object.entries(states).forEach(([nameKey]) => {
     useEffect(() => {
       console.log('states', states[nameKey]);
     }, [states[nameKey].hide]);
@@ -255,6 +259,20 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
       });
     });
   };
+
+  const handleUserKeyPress = useCallback((event) => {
+    const { keyCode } = event;
+    if (enterSubmit && keyCode === 13) {
+      handleSubmitForm(event);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleUserKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleUserKeyPress);
+    };
+  }, []);
 
   Object.entries(states).map(([nameKey, values], index) => {
     const groupName = values.group || Object.keys(groupsConfig)[0];
