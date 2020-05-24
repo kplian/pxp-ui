@@ -3,7 +3,7 @@
  * @copyright Kplian Ltda 2020
  * @uthor Israel Colque
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -29,13 +29,16 @@ export default ({ open: popen, username }) => {
         setError(errorMsg);
         setLoadingScreen(false);
       }
-      if (username) {
-        setLoadingScreen(false);
-      }
     });
   };
 
-  const handleClose = () => {};
+  useEffect(() => {
+    if (!sessionDied) {
+      setLoadingScreen(false);
+    }
+  }, [sessionDied, loadingScreen]);
+
+  const handleClose = () => { };
 
   const userForm = {
     columns: {
@@ -44,6 +47,7 @@ export default ({ open: popen, username }) => {
         label: 'Username',
         autoFocus: true,
         initialValue: username || '',
+        disabled: !!username,
         gridForm: { xs: 12, sm: 12 },
         variant: 'outlined',
         validate: {
