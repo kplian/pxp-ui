@@ -28,8 +28,11 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 1 auto',
     height: 'calc( 100vh - 80px)',
     width: '100%',
-    padding: 16,
+    padding: '16px',
     overflow: 'hidden',
+    [theme.breakpoints.down('sm')]: {
+      padding: '16px 0px 16px 0px',
+    },
   },
 }));
 
@@ -41,7 +44,6 @@ const MainContainer = ({ children }) => {
   });
   // const user = useSelector((state) => state.auth.currentUser.user);
   const currentUser = useSelector((state) => state.auth.currentUser.user);
-  console.log(currentUser);
   const [openSidebar, setOpenSidebar] = useState(false);
 
   const handleSidebarOpen = () => {
