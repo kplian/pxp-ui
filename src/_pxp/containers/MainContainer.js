@@ -4,10 +4,10 @@
  * @uthor Jaime Rivera
  */
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/styles';
 import { useMediaQuery } from '@material-ui/core';
-import Footer from './components/Footer';
 import Topbar from './components/Topbar';
 import Sidebar from './components/sidebar/Sidebar';
 import LoginDialog from './components/LoginDialog';
@@ -39,7 +39,9 @@ const MainContainer = ({ children }) => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
   });
-
+  // const user = useSelector((state) => state.auth.currentUser.user);
+  const currentUser = useSelector((state) => state.auth.currentUser.user);
+  console.log(currentUser);
   const [openSidebar, setOpenSidebar] = useState(false);
 
   const handleSidebarOpen = () => {
@@ -51,7 +53,6 @@ const MainContainer = ({ children }) => {
   };
 
   const shouldOpenSidebar = isDesktop ? true : openSidebar;
-
   return (
     <div
       className={clsx({
@@ -71,7 +72,7 @@ const MainContainer = ({ children }) => {
         {children}
       </main>
 
-      <LoginDialog />
+      <LoginDialog username={currentUser} />
     </div>
   );
 };
