@@ -117,9 +117,7 @@ const TableBodyPxp = ({
                   onClick={() => dataConfig.actionsTableCell.onClick(row)}
                 />
               ) : (
-                <MenuTableCell>
-                  <MenuItemTableCell buttons={buttonsTableCell} row={row} />
-                </MenuTableCell>
+                <MenuTableCell buttons={buttonsTableCell} row={row} />
               )}
             </TableCell>
           </TableRow>
