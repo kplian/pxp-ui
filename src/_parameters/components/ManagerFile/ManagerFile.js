@@ -48,25 +48,49 @@ const ManagerFile = ({ idTable, table }) => {
     open: false,
     idTypeFile: undefined,
   });
-
   const refManagerFileTable = useRef();
+
+  const getUrlForView = (row) => {
+    let urlFile = '';
+    if (row.id_archivo) {
+      urlFile = row.folder;
+      urlFile = urlFile.split('./../../../')[1];
+      urlFile = `http://34.71.236.75/kerp/${urlFile}${row.nombre_archivo}.${row.extension}`;
+    }
+    return urlFile;
+  };
+
+  // this function is for inactive the file
+  const removeFile = (row) => {
+    connection
+      .doRequest({
+        url: 'parametros/Archivo/removeArchivoGrilla',
+        params: {
+          id_archivo: row.id_archivo,
+          id_tipo_archivo: row.id_tipo_archivo,
+          id_tabla: row.id_tabla,
+        },
+      })
+      .then((resp) => {
+        setLoadingScreen(false);
+        enqueueSnackbar(resp.detail.message, {
+          variant: !resp.error ? 'success' : 'error',
+          action: <Button>See all</Button>,
+        });
+        refManagerFileTable.current.handleRefresh();
+      });
+  };
+
   const jsonItem = {
     tableName: 'Manager File',
     columns: {
       codigo: {
         label: 'Codigo',
         renderColumn: (row) => {
-          let urlFile = '';
-          if (row.id_archivo) {
-            urlFile = row.folder;
-            urlFile = urlFile.split('./../../../')[1];
-            urlFile = `http://34.71.236.75/kerp/${urlFile}${row.nombre_archivo}.${row.extension}`;
-          }
-
           return (
             <Box display="flex" alignItems="center">
-              {row.id_archivo ? (
-                <Avatar className={classes.avatar} src={urlFile} />
+              {row.id_archivo && row.estado_reg !== 'inactivo' ? (
+                <Avatar className={classes.avatar} src={getUrlForView(row)} />
               ) : (
                 <Avatar
                   className={classes.avatarYellow}
@@ -124,7 +148,7 @@ const ManagerFile = ({ idTable, table }) => {
           label: 'View File',
           buttonIcon: <VisibilityIcon />,
           onClick: (row) => {
-            alert('otro2');
+            window.open(getUrlForView(row));
           },
           disabled: true,
         },
@@ -132,14 +156,14 @@ const ManagerFile = ({ idTable, table }) => {
           label: 'Delete File',
           buttonIcon: <DeleteIcon />,
           onClick: (row) => {
-            alert('otro2');
+            removeFile(row);
           },
           disabled: true,
         },
       },
     },
     onClickRow: ({ row, statesButtonsTableCell }) => {
-      if (row.id_archivo) {
+      if (row.id_archivo && row.estado_reg !== 'inactivo') {
         statesButtonsTableCell.viewFile.enable();
         statesButtonsTableCell.deleteFile.enable();
       } else {
