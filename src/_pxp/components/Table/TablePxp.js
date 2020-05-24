@@ -102,7 +102,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     tableName,
     idStore,
     buttonNew,
-    buttonRefresh,
     buttonCheckList,
     buttonDel,
     actionsTableCell,
@@ -162,8 +161,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
     setRowSelected(row);
   };
-
-
 
   useEffect(() => {
     const columnsForWidth = (nameKey, index) => {
@@ -310,7 +307,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   };
 
   const handleDelete = (rowSelectedAux) => {
-    console.log('row',rowSelectedAux)
     // diff if is object or array
     // array is when the delete was executed with selections
     // object is when the delete was executed from actions menu
@@ -358,13 +354,13 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     ...(buttonNew && {
       buttonNew: { onClick: handleNew, icon: <AddIcon />, title: 'new' },
     }),
-    ...(buttonRefresh && {
+    ...{
       buttonRefresh: {
         onClick: handleRefresh,
         icon: <RefreshIcon />,
         title: 'Refresh',
       },
-    }),
+    },
     ...addButtonsToolbar,
   };
   // init button with some value like state
@@ -412,7 +408,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   );
   // end button Toolbar when the row is selected
 
-
   // buttonTableCell
   const buttonsTableCell = {
     ...(actionsTableCell.buttonEdit && {
@@ -446,9 +441,9 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   // listening event click in row
   const handleClickRow = (event, row) => {
     if (typeof dataConfig.onClickRow === 'function') {
-      dataConfig.onClickRow({row, statesButtonsTableCell});
+      dataConfig.onClickRow({ row, statesButtonsTableCell });
     }
-  }
+  };
 
   // pagination
   const handleChangePage = (event, newPage) => {

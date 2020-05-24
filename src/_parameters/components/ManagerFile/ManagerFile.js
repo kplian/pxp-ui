@@ -4,27 +4,21 @@
  * @uthor Favio Figueroa
  *
  */
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import * as Yup from 'yup';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
-import ImageIcon from '@material-ui/icons/Image';
 import Typography from '@material-ui/core/Typography';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import WcIcon from '@material-ui/icons/Wc';
 import { DropzoneDialog } from 'material-ui-dropzone';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import Button from '@material-ui/core/Button';
-import CardActions from '@material-ui/core/CardActions';
+import connection from 'pxp-client';
 import TablePxp from '../../../_pxp/components/Table/TablePxp';
-import Label from '../../../_pxp/components/Label';
+import {Button} from "@material-ui/core";
+import {useSnackbar} from "notistack";
+import LoadingScreen from "../../../_pxp/components/LoadingScreen";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,12 +56,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ManagerFile = (props) => {
+const ManagerFile = ({ idTable, table, cod }) => {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
+  const [loadingScreen, setLoadingScreen] = useState(false);
 
-  const { id = 111, table = 'titem', cod = 'fotoItem' } = props;
-  const [open, setOpen] = React.useState(false);
+  const [dropZone, setDropZone] = React.useState({
+    open: false,
+    idTypeFile: undefined,
+  });
 
+  const refManagerFileTable = useRef();
   const jsonItem = {
     tableName: 'Manager File',
     columns: {
@@ -89,7 +88,10 @@ const ManagerFile = (props) => {
                 <Avatar
                   className={classes.avatarYellow}
                   onClick={() => {
-                    setOpen(true);
+                    setDropZone({
+                      open: true,
+                      idTypeFile: row.id_tipo_archivo,
+                    });
                   }}
                 >
                   <CloudUploadIcon />
@@ -113,7 +115,7 @@ const ManagerFile = (props) => {
         limit: '50',
         sort: 'tipar.orden',
         dir: 'ASC', // for seeing every time the last save
-        id_tabla: id,
+        id_tabla: idTable,
         tabla: table,
       },
     },
@@ -129,7 +131,10 @@ const ManagerFile = (props) => {
           label: 'Upload File',
           buttonIcon: <CloudUploadIcon />,
           onClick: (row) => {
-            setOpen(true);
+            setDropZone({
+              open: true,
+              idTypeFile: row.id_tipo_archivo,
+            });
           },
         },
         viewFile: {
@@ -137,7 +142,6 @@ const ManagerFile = (props) => {
           buttonIcon: <VisibilityIcon />,
           onClick: (row) => {
             alert('otro2');
-            console.log(row);
           },
           disabled: true,
         },
@@ -146,7 +150,6 @@ const ManagerFile = (props) => {
           buttonIcon: <DeleteIcon />,
           onClick: (row) => {
             alert('otro2');
-            console.log(row);
           },
           disabled: true,
         },
@@ -162,25 +165,66 @@ const ManagerFile = (props) => {
       }
     },
   };
+
+  const uploadFile = (files) => {
+    const formData = new FormData();
+    formData.append("archivo", files[0]);
+    formData.append("id_tabla", idTable);
+    formData.append("tabla", table);
+    formData.append("multiple", "");
+    formData.append("id_tipo_archivo", dropZone.idTypeFile);
+    formData.append("nombre_descriptivo", "");
+
+    setLoadingScreen(true);
+    setDropZone({
+      open: false,
+      idTypeFile: undefined,
+    });
+    connection
+      .doRequest({
+        url: 'parametros/Archivo/subirArchivo',
+        params: formData,
+        type: 'upload',
+        redirect: 'follow',
+      })
+      .then((resp) => {
+        setLoadingScreen(false);
+        enqueueSnackbar(resp.detail.message, {
+          variant: !resp.error ? 'success' : 'error',
+          action: <Button>See all</Button>,
+        });
+        refManagerFileTable.current.handleRefresh();
+
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <PerfectScrollbar id="content">
-        <TablePxp dataConfig={jsonItem} />
+        <TablePxp dataConfig={jsonItem} ref={refManagerFileTable} />
         <DropzoneDialog
           acceptedFiles={['image/*']}
           cancelButtonText="cancel"
           submitButtonText="submit"
           maxFileSize={5000000}
-          open={open}
-          onClose={() => setOpen(false)}
+          open={dropZone.open}
+          onClose={() => {
+            setDropZone({
+              open: false,
+              idTypeFile: undefined,
+            });
+          }}
           onSave={(files) => {
-            console.log('Files:', files);
-            setOpen(false);
+            uploadFile(files);
           }}
           showPreviews
           showFileNamesInPreview
         />
       </PerfectScrollbar>
+      {loadingScreen && <LoadingScreen />}
+
     </>
   );
 };
