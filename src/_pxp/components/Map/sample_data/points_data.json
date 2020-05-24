@@ -1,0 +1,26 @@
+[
+	{
+		"id": 1,
+		"city": "La Paz",
+		"type": 1,
+		"latitude": -16.533136,
+		"longitude": -68.086636
+	},
+	{
+		"id": 2,
+		"city": "Cochabamba",
+		"type": 1,
+		"latitude": -17.398306,
+		"longitude": -66.150146
+	},
+	{
+		"id": 3,
+		"city": "Santa Cruz",
+		"type": 1,
+		"latitude": -17.784907,
+		"longitude": -63.089968
+	}
+
+
+
+]
