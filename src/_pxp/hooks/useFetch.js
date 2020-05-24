@@ -44,19 +44,21 @@ const useFetch = (options) => {
               if (resp.status >= 400 && resp.status < 600) {
                 setError(resp);
               } else {
-                // setData(resp);
-                if (options.infinite === true) {
-                  setData((prevData) => {
-                    if (prevData) {
-                      return {
-                        ...prevData,
-                        datos: prevData.datos.concat(resp.datos),
-                      };
-                    }
-                    return resp;
-                  });
-                } else {
-                  setData(resp);
+                if (!resp.error) {
+                  // setData(resp);
+                  if (options.infinite === true) {
+                    setData((prevData) => {
+                      if (prevData) {
+                        return {
+                          ...prevData,
+                          datos: prevData.datos.concat(resp.datos),
+                        };
+                      }
+                      return resp;
+                    });
+                  } else {
+                    setData(resp);
+                  }
                 }
 
                 // send msg error

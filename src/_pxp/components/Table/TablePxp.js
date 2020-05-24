@@ -129,7 +129,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
   // get the menu that we will use in the table cell for each one.
   const jsonStore = useJsonStore(dataConfig.getDataTable);
-  const { state, set, data, loading, error } = jsonStore;
+  const { state, set, data, loading } = jsonStore;
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -560,62 +560,61 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
   return (
     <>
-      {!error && (
-        <div className={classes.root}>
-          <Paper className={classes.paper}>
-            <TableToolbarPxp
-              tableName={tableName}
-              numSelected={selected.length}
-              buttonsToolbar={statesButtonsToolbar}
-              buttonsToolbarBySelections={statesButtonsToolbarBySelections}
-              rowSelected={selected}
-              statesShowColumn={statesShowColumn}
-              setStatesShowColumn={setStatesShowColumn}
-              handleInputSearchChange={handleInputSearchChange}
-              buttonCheckList={buttonCheckList}
-              columnForSearchCount={columnForSearchCount}
-            />
-            {
-              <DrawTable
-                idStore={idStore}
-                dataConfig={dataConfig}
-                data={data}
-                emptyRows={emptyRows}
-                dense={dense}
-                handles={handles}
-                order={order}
-                orderBy={orderBy}
-                buttonsTableCell={statesButtonsTableCell}
-                statesShowColumn={statesShowColumn}
-                selected={selected}
-                loading={loading}
-                jsonStore={jsonStore}
-                lastBookElementRef={lastBookElementRef}
-              />
-            }
-
-            {data &&
-              (paginationType === 'pagination' ||
-                paginationType === undefined) && (
-                <TablePagination
-                  rowsPerPageOptions={[
-                    parseInt(dataConfig.getDataTable.params.limit, 10),
-                  ]}
-                  component="div"
-                  count={parseInt(data.total, 10)}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onChangePage={handleChangePage}
-                  onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
-              )}
-          </Paper>
-          <FormControlLabel
-            control={<Switch checked={dense} onChange={handleChangeDense} />}
-            label="Dense padding"
+      <div className={classes.root}>
+        <Paper className={classes.paper}>
+          <TableToolbarPxp
+            tableName={tableName}
+            numSelected={selected.length}
+            buttonsToolbar={statesButtonsToolbar}
+            buttonsToolbarBySelections={statesButtonsToolbarBySelections}
+            rowSelected={selected}
+            statesShowColumn={statesShowColumn}
+            setStatesShowColumn={setStatesShowColumn}
+            handleInputSearchChange={handleInputSearchChange}
+            buttonCheckList={buttonCheckList}
+            columnForSearchCount={columnForSearchCount}
           />
-        </div>
-      )}
+          {
+            <DrawTable
+              idStore={idStore}
+              dataConfig={dataConfig}
+              data={data}
+              emptyRows={emptyRows}
+              dense={dense}
+              handles={handles}
+              order={order}
+              orderBy={orderBy}
+              buttonsTableCell={statesButtonsTableCell}
+              statesShowColumn={statesShowColumn}
+              selected={selected}
+              loading={loading}
+              jsonStore={jsonStore}
+              lastBookElementRef={lastBookElementRef}
+            />
+          }
+
+          {data &&
+            (paginationType === 'pagination' ||
+              paginationType === undefined) && (
+              <TablePagination
+                rowsPerPageOptions={[
+                  parseInt(dataConfig.getDataTable.params.limit, 10),
+                ]}
+                component="div"
+                count={parseInt(data.total, 10)}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+              />
+            )}
+        </Paper>
+        <FormControlLabel
+          control={<Switch checked={dense} onChange={handleChangeDense} />}
+          label="Dense padding"
+        />
+      </div>
+
 
       <Dialog
         fullScreen
