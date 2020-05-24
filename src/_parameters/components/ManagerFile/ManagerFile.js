@@ -4,7 +4,7 @@
  * @uthor Favio Figueroa
  *
  */
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
@@ -15,10 +15,10 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from '@material-ui/icons/Delete';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import connection from 'pxp-client';
+import { Button } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 import TablePxp from '../../../_pxp/components/Table/TablePxp';
-import {Button} from "@material-ui/core";
-import {useSnackbar} from "notistack";
-import LoadingScreen from "../../../_pxp/components/LoadingScreen";
+import LoadingScreen from '../../../_pxp/components/LoadingScreen';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -168,12 +168,12 @@ const ManagerFile = ({ idTable, table, cod }) => {
 
   const uploadFile = (files) => {
     const formData = new FormData();
-    formData.append("archivo", files[0]);
-    formData.append("id_tabla", idTable);
-    formData.append("tabla", table);
-    formData.append("multiple", "");
-    formData.append("id_tipo_archivo", dropZone.idTypeFile);
-    formData.append("nombre_descriptivo", "");
+    formData.append('archivo', files[0]);
+    formData.append('id_tabla', idTable);
+    formData.append('tabla', table);
+    formData.append('multiple', '');
+    formData.append('id_tipo_archivo', dropZone.idTypeFile);
+    formData.append('nombre_descriptivo', '');
 
     setLoadingScreen(true);
     setDropZone({
@@ -194,7 +194,6 @@ const ManagerFile = ({ idTable, table, cod }) => {
           action: <Button>See all</Button>,
         });
         refManagerFileTable.current.handleRefresh();
-
       })
       .catch((err) => {
         console.log(err);
@@ -224,7 +223,6 @@ const ManagerFile = ({ idTable, table, cod }) => {
         />
       </PerfectScrollbar>
       {loadingScreen && <LoadingScreen />}
-
     </>
   );
 };
