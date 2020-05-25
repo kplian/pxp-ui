@@ -16,18 +16,56 @@ const InitValues = (values) => {
     hide: isHidden = false,
   } = values;
 
-  const [value, setValue] = useState(initialValue);
+  // init value for type because some types has error when we put null or blank
+  // textField and dropdown need to have blank if it is null
+  // AutoComplete and DatePicker need to have null if it is blank
+  let valueField = initialValue;
+  if (!initialValue) {
+    switch (type) {
+      case 'AutoComplete':
+      case 'DatePicker':
+        valueField = null;
+        break;
+      default:
+        valueField = '';
+        break;
+    }
+  }
+
+  const [value, setValue] = useState(valueField);
   const [error, setError] = useState({ hasError: false, msg: '' });
   const [disabled, setDisabled] = useState(isDisabled);
-  const [hide, setHide] = useState(isHidden);
+  const [isHide, setIsHide] = useState(isHidden);
+  const [yupValidate, setYupValidate] = useState(validate);
 
+  const disable = () => setDisabled(true);
+  const enable = () => setDisabled(false);
+  const hide = () => setIsHide(true);
+  const show = () => setIsHide(false);
+  const reset = () => {
+    switch (type) {
+      case 'AutoComplete':
+      case 'DatePicker':
+        setValue(null);
+        break;
+      default:
+        setValue('');
+        break;
+    }
+  };
   let config = {
     ...values,
     validate: { ...validate },
     ...{ value, setValue },
     ...{ error, setError },
     ...{ disabled, setDisabled },
-    ...{ hide, setHide },
+    ...{ isHide, setIsHide },
+    ...{ yupValidate, setYupValidate },
+    hide,
+    show,
+    disable,
+    enable,
+    reset,
   };
 
   if (type === 'AutoComplete' && store) {

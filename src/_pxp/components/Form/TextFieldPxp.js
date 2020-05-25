@@ -22,11 +22,12 @@ export const TextFieldPxpComponent = ({
   value,
   configInput,
   handleChange,
+  handleBlur,
   error,
   msgError,
-  states,
   disabled = false,
   helperText,
+  size = 'medium',
 }) => {
   const {
     label,
@@ -48,20 +49,19 @@ export const TextFieldPxpComponent = ({
         label={label}
         // margin="normal"
         name={name}
-        // onBlur={handleBlur}
         onChange={(event) =>
           handleChange({
             event,
             name,
             value: event.target.value,
-            configInputState: configInput,
-            states,
           })
         }
         value={value}
         variant={variant}
         {...(typeTextField && { type: typeTextField })}
         disabled={disabled}
+        onBlur={() => handleBlur(name)}
+        size={size}
       />
     </Grid>
   );

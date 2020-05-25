@@ -10,6 +10,7 @@ import config from '../../config';
 
 const AuthPublic = ({ children }) => {
   const authenticated = useSelector((state) => state.auth.uid);
+  console.log('aut', authenticated);
   if (authenticated) {
     return <Redirect to={config.privateInitRoute} />;
   }

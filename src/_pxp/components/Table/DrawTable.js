@@ -65,7 +65,7 @@ const DrawTable = ({
           size={dense ? 'small' : 'medium'}
           aria-label="enhanced table"
         >
-          {data && (
+          {(data && !data.error) && (
             <TableHeadPxp
               classes={classes}
               numSelected={selected.length}
@@ -89,6 +89,7 @@ const DrawTable = ({
               idStore={idStore}
               statesShowColumn={statesShowColumn}
               handleCheckInCell={handles.handleCheckInCell}
+              handleClickRow={handles.handleClickRow}
               buttonsTableCell={buttonsTableCell}
               dense={dense}
               emptyRows={emptyRows}

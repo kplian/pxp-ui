@@ -3,7 +3,7 @@
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  */
-import React, {useRef, useState} from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -143,6 +143,8 @@ const ExampleAutoComplete = () => {
           } else {
             states.name.setValue('');
           }
+          states.AutoComplete9.setError({ hasError: true, msg: 'tiene error' });
+          states.AutoComplete3.setHide(true);
 
           // add filter to store to AutoComplete user
           states.AutoComplete10.store.set({

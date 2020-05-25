@@ -13,6 +13,7 @@ export const defaultConfig = {
     url: 'changeSystem/changeControl/changeMethod',
     extraParams: {},
   },
+  enterSubmit: false,
   groups: {
     group1: {
       titleGroup: '',
@@ -27,12 +28,15 @@ export const defaultValuesTextField = {
   initialValue: '',
   maxLength: 255,
   gridForm: { xs: 12, sm: 12 },
-  variant: 'outlined',
+  variant: undefined,
   validate: undefined,
   helperText: undefined,
   disabled: undefined,
   hide: undefined,
+  form: true,
+  size: 'medium',
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
+  typeTextField: undefined, // this can be number or password
 };
 export const defaultValuesSwitch = {
   type: 'Switch',
@@ -40,10 +44,12 @@ export const defaultValuesSwitch = {
   initialValue: false,
   maxLength: 255,
   gridForm: { xs: 12, sm: 12 },
-  variant: 'outlined',
+  variant: undefined,
   validate: undefined,
   disabled: undefined,
   hide: undefined,
+  form: true,
+  size: 'medium',
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };
 export const defaultValuesDropdown = {
@@ -52,11 +58,13 @@ export const defaultValuesDropdown = {
   initialValue: '',
   store: [{ value: '', label: '' }],
   gridForm: { xs: 12, sm: 12 },
-  variant: 'outlined',
+  variant: undefined,
   validate: undefined,
   helperText: undefined,
   disabled: undefined,
   hide: undefined,
+  form: true,
+  size: 'medium',
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };
 export const defaultValuesAutoComplete = {
@@ -71,6 +79,7 @@ export const defaultValuesAutoComplete = {
       sort: 'id_',
       dir: 'ASC',
     },
+    load: false,
     parFilters: 'alias.column1#alias.column2',
     idDD: 'id_',
     descDD: 'desc',
@@ -79,27 +88,31 @@ export const defaultValuesAutoComplete = {
   },
   remote: true,
   gridForm: { xs: 12, sm: 12 },
-  variant: 'outlined',
+  variant: undefined,
   isSearchable: false,
   validate: undefined,
   helperText: undefined,
   disabled: undefined,
   hide: undefined,
+  form: true,
+  size: 'medium',
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };
 
 export const defaultValuesDatePicker = {
   type: 'DatePicker',
   label: undefined,
-  initialValue: '', // moment(new Date(), 'DD-MM-YYYY').toDate()
+  initialValue: null, // moment(new Date(), 'DD-MM-YYYY').toDate()
   minDate: null, // moment(new Date(), 'DD-MM-YYYY').subtract(5, 'days').toDate(),
   maxDate: null, // moment(new Date(), 'DD-MM-YYYY').add(1, 'month').toDate(),
   format: 'DD-MM-YYYY',
   gridForm: { xs: 12, sm: 12 },
-  variant: 'outlined',
+  variant: undefined,
   validate: undefined,
   helperText: undefined,
   disabled: undefined,
   hide: undefined,
+  form: true,
+  size: 'medium',
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };

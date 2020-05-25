@@ -22,8 +22,8 @@ export const SwitchPxpComponent = ({
   value,
   configInput,
   handleChange,
-  states,
   disabled = false,
+  size = 'medium',
 }) => {
   const { gridForm, label } = configInput;
 
@@ -32,6 +32,7 @@ export const SwitchPxpComponent = ({
       <FormControlLabel
         control={
           <Switch
+            siz={size}
             checked={value}
             disabled={disabled}
             onChange={(event) =>
@@ -39,8 +40,6 @@ export const SwitchPxpComponent = ({
                 undefined, // for switch we dont need to do preventDefault
                 name,
                 value: event.target.checked,
-                configInputState: configInput,
-                states,
               })
             }
             name={name}

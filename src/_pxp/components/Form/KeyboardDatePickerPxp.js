@@ -15,7 +15,6 @@ import {
 } from '@material-ui/pickers';
 
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {TextField} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -40,9 +39,9 @@ export const KeyboardDatePickerPxpComponent = ({
   configInput,
   handleChange,
   error, // is used in areEqual
-  states,
   disabled = false,
   helperText,
+  size = 'medium',
 }) => {
   const classes = useStyles();
 
@@ -59,6 +58,7 @@ export const KeyboardDatePickerPxpComponent = ({
         <KeyboardDatePicker
           className={classes.datePicker}
           autoOk
+          size={size}
           // disableToolbar
           variant={variant}
           format="dd/MM/yyyy"
@@ -70,8 +70,6 @@ export const KeyboardDatePickerPxpComponent = ({
             handleChange({
               name,
               value: date,
-              configInputState: configInput,
-              states,
             })
           }
           KeyboardButtonProps={{

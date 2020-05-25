@@ -19,9 +19,10 @@ const findRoutes = (menu) => {
   return routes;
 };
 
-export const login = (uid) => ({
+export const login = (uid, user) => ({
   type: 'LOGIN',
   uid,
+  user,
 });
 
 export const logout = () => ({
@@ -60,6 +61,7 @@ export const startSetMenu = () => {
     }).then((resp) => {
       dispatch(setMenu(resp.data));
       dispatch(setRoutes(findRoutes(resp.data)));
+      return resp;
     });
   };
 };

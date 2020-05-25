@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import * as Yup from 'yup';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Avatar from '@material-ui/core/Avatar';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import WcIcon from '@material-ui/icons/Wc';
 import Label from './Label';
 import TablePxp from './Table/TablePxp';
 import imgAvatar from './Table/avatar.jpeg';
-import WcIcon from '@material-ui/icons/Wc';
+import ButtonPxp from './ButtonPxp';
+import IconPxp from '../icons/IconPxp';
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
@@ -20,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ExampleTable = () => {
   const classes = useStyles();
-
+  const refTable = useRef();
   const jsonPersona = {
     nameForm: 'Formulario Persona',
     columns: {
@@ -140,6 +143,7 @@ const ExampleTable = () => {
         dir: 'desc', // for seeing every time the last save
         contenedor: 'docs-per',
       },
+      load: false,
     },
     idStore: 'id_persona',
     buttonDel: true,
@@ -170,7 +174,7 @@ const ExampleTable = () => {
       onClick: (row) => {
         alert('llega');
         console.log(row);
-      },*/
+      }, */
     },
     resetButton: true,
     onSubmit: {
@@ -195,9 +199,24 @@ const ExampleTable = () => {
     // paginationType: 'infiniteScrolling', // can be infiniteScrolling or pagination
   };
 
+  // example how you can refresh the table from another component
+  const refreshTableFromOtherSide = () => {
+    console.log(refTable);
+    const { set } = refTable.current.jsonStore;
+    set((prevData) => ({
+      ...prevData,
+      params: {
+        ...prevData.params,
+        otherParam: 'other',
+      },
+      load: true,
+    }));
+  };
+
   return (
     <div>
-      <TablePxp dataConfig={jsonPersona} />
+      <ButtonPxp icon={<IconPxp />} onClick={refreshTableFromOtherSide} />
+      <TablePxp dataConfig={jsonPersona} ref={refTable} />
     </div>
   );
 };

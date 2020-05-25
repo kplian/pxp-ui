@@ -1,6 +1,16 @@
-/** eventsService */
-module.exports = {
-  callbacks: {},
+/**
+ * Singleton Events Service object
+ * @copyright Kplian Ltda 2020
+ * @uthor Jaime Rivera
+ */
+class EventsService {
+  constructor() {
+    if (!EventsService.instance) {
+      EventsService.instance = this;
+      this.callbacks = {};
+    }
+    return EventsService.instance;
+  }
 
   /**
    * @param {string} eventName
@@ -12,7 +22,7 @@ module.exports = {
         this.callbacks[eventName][id](data);
       });
     }
-  },
+  }
 
   /**
    * @param {string} eventName name of event
@@ -21,7 +31,7 @@ module.exports = {
    */
   listenEvent(eventName, id, callback) {
     this.callbacks[eventName] = { [id]: callback };
-  },
+  }
 
   /**
    * @param {string} eventName name of event
@@ -29,5 +39,8 @@ module.exports = {
    */
   unlistenEvent(eventName, id) {
     delete this.callbacks[eventName][id];
-  },
-};
+  }
+}
+
+const eventsService = new EventsService();
+export default eventsService;

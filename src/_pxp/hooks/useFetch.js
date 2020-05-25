@@ -5,12 +5,16 @@
  *
  */
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import connection from 'pxp-client';
+import { Button } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 
 const useFetch = (options) => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -18,7 +22,7 @@ const useFetch = (options) => {
     setError(null);
     const abortController = new AbortController();
 
-    if (options !== undefined) {
+    if (options !== undefined && options.load) {
       (async () => {
         setLoading(true);
 
@@ -40,21 +44,45 @@ const useFetch = (options) => {
               if (resp.status >= 400 && resp.status < 600) {
                 setError(resp);
               } else {
-                // setData(resp);
-                if (options.infinite === true) {
-                  setData((prevData) => {
-                    if (prevData) {
-                      return {
-                        ...prevData,
-                        datos: prevData.datos.concat(resp.datos),
-                      };
-                    }
-                    return resp;
-                  });
-                } else {
-                  setData(resp);
+                if (!resp.error) {
+                  // setData(resp);
+                  if (options.infinite === true) {
+                    setData((prevData) => {
+                      if (prevData) {
+                        return {
+                          ...prevData,
+                          datos: prevData.datos.concat(resp.datos),
+                        };
+                      }
+                      return resp;
+                    });
+                  } else {
+                    setData(resp);
+                  }
                 }
 
+                // send msg error
+                if (resp.error) {
+                  enqueueSnackbar(
+                    `url: ${options.url} -> ${resp.detail.message}`,
+                    {
+                      variant: 'error',
+                      action: (
+                        <div>
+                          <pre
+                            style={{
+                              whiteSpace: 'pre-wrap',
+                              wordBreak: 'break-all',
+                            }}
+                          >
+                            {JSON.stringify(resp.detail, null, 2)}
+                          </pre>
+                        </div>
+                      ),
+                    },
+                  );
+                }
+                setError(resp.error);
                 setLoading(false);
               }
             }

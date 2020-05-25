@@ -32,11 +32,11 @@ const AutocompletePxpComponent = ({
   configInput,
   handleChange,
   loading, // is used in areEqual
-  states,
   disabled = false,
   helperText,
   error,
   msgError,
+  size = 'medium',
 }) => {
   const { label, variant, store, isSearchable, gridForm } = configInput;
 
@@ -59,11 +59,21 @@ const AutocompletePxpComponent = ({
     }
   }, 500);
 
+  const handleFocus = () => {
+    if (store.state.load === false) {
+      store.set((prevData) => ({
+        ...prevData,
+        load: true,
+      }));
+    }
+  };
+
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
       <Autocomplete
         // key={index}
         id={name}
+        size={size}
         filterSelectedOptions
         value={value}
         onInputChange={(e) =>
@@ -121,10 +131,9 @@ const AutocompletePxpComponent = ({
             name,
             value: newValue ? newValue[store.idDD] : '',
             dataValue: newValue,
-            configInputState: configInput,
-            states,
           });
         }}
+        onFocus={handleFocus}
         renderOption={
           store.renderOption ? (option) => store.renderOption(option) : null
         }

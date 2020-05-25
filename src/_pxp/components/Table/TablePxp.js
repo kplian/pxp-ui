@@ -5,7 +5,15 @@
  *
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -28,40 +36,13 @@ import _ from 'lodash';
 import connection from 'pxp-client';
 import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
-import withWidth from '@material-ui/core/withWidth';
+import useTheme from '@material-ui/core/styles/useTheme';
 import TableToolbarPxp from './TableToolbarPxp';
 import Form from '../Form/Form';
 import DrawTable from './DrawTable';
 import useJsonStore from '../../hooks/useJsonStore';
-
-const ButtonRefresh = ({ handleClick }) => (
-  <Tooltip title="new" aria-label="new">
-    <IconButton aria-label="new" onClick={handleClick}>
-      <RefreshIcon />
-    </IconButton>
-  </Tooltip>
-);
-const ButtonNew = ({ handleClick }) => (
-  <Tooltip title="new" aria-label="new">
-    <IconButton aria-label="new" onClick={handleClick}>
-      <AddIcon />
-    </IconButton>
-  </Tooltip>
-);
-const ButtonEdit = ({ handleClick }) => (
-  <Tooltip title="Edit" aria-label="edit">
-    <IconButton aria-label="edit" onClick={handleClick}>
-      <EditIcon />
-    </IconButton>
-  </Tooltip>
-);
-const ButtonDelete = ({ handleClick }) => (
-  <Tooltip title="delete" aria-label="delete">
-    <IconButton aria-label="delete" onClick={handleClick}>
-      <DeleteIcon />
-    </IconButton>
-  </Tooltip>
-);
+import InitButton from '../../hooks/InitButton';
+import { defaultValuesTextField } from '../Form/defaultValues';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,18 +55,6 @@ const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 750,
   },
-  visuallyHidden: {
-    border: 0,
-    clip: 'rect(0 0 0 0)',
-    height: 1,
-    margin: -1,
-    overflow: 'hidden',
-    padding: 0,
-    position: 'absolute',
-    top: 20,
-    width: 1,
-  },
-
   appBar: {
     position: 'relative',
   },
@@ -100,17 +69,43 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const TablePxp = ({ dataConfig, width }) => {
+function useWidth() {
+  const theme = useTheme();
+  const keys = [...theme.breakpoints.keys].reverse();
+  return (
+    keys.reduce((output, key) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const matches = useMediaQuery(theme.breakpoints.up(key));
+      return !output && matches ? key : output;
+    }, null) || 'xs'
+  );
+}
+
+const TablePxp = forwardRef(({ dataConfig }, ref) => {
+  const width = useWidth();
+
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const {
+    tableName,
     idStore,
     buttonNew,
-    buttonEdit,
+    buttonCheckList,
     buttonDel,
     actionsTableCell,
+    buttonsToolbar: addButtonsToolbar,
   } = dataConfig;
-
+  const columnsForDrawing = Object.entries(dataConfig.columns)
+    .filter(
+      ([nameKey, value]) => value.grid === true || value.grid === undefined,
+    )
+    .reduce(
+      (t, [nameKey, value]) => ({
+        ...t,
+        [nameKey]: value,
+      }),
+      {},
+    );
   const { paginationType } = dataConfig;
 
   // toolbar
@@ -197,7 +192,7 @@ const TablePxp = ({ dataConfig, width }) => {
     };
     // logic for show columns, create states for column.
     setStatesShowColumn(
-      Object.entries(dataConfig.columns).reduce(
+      Object.entries(columnsForDrawing).reduce(
         (t, [nameKey], index) => ({
           ...t,
           ...columnsForWidth(nameKey, index),
@@ -259,9 +254,21 @@ const TablePxp = ({ dataConfig, width }) => {
 
   const handleEdit = (row) => {
     const columnsEdit = Object.entries(dataConfigForEdit.columns).reduce(
-      (t, [nameKey, values]) => ({
+      (t, [nameKey, column]) => ({
         ...t,
-        [nameKey]: { ...values, initialValue: row[nameKey] },
+        [nameKey]: {
+          ...column,
+          ...(column.type === 'AutoComplete' && {
+            initialValue:
+              row[column.store.idDD] !== ''
+                ? {
+                    [column.store.idDD]: row[column.store.idDD],
+                    [column.store.descDD]: row[column.gridDisplayField],
+                  }
+                : row[column.store.idDD],
+          }),
+          ...(column.type !== 'AutoComplete' && { initialValue: row[nameKey] }),
+        },
       }),
       {},
     );
@@ -330,17 +337,66 @@ const TablePxp = ({ dataConfig, width }) => {
       });
   };
 
+  // button toolbar
   const buttonsToolbar = {
-    ...(buttonNew && { buttonNew: { onClick: handleNew, button: ButtonNew } }),
-    ...{ buttonRefresh: { onClick: handleRefresh, button: ButtonRefresh } },
+    ...(buttonNew && {
+      buttonNew: { onClick: handleNew, icon: <AddIcon />, title: 'new' },
+    }),
+    ...{
+      buttonRefresh: {
+        onClick: handleRefresh,
+        icon: <RefreshIcon />,
+        title: 'Refresh',
+      },
+    },
+    ...addButtonsToolbar,
   };
+  // init button with some value like state
+  const statesButtonsToolbar = Object.entries(buttonsToolbar).reduce(
+    (t, [nameButton, buttonValues]) => ({
+      ...t,
+      [nameButton]: {
+        ...InitButton(buttonValues),
+      },
+    }),
+    {},
+  );
+  const disableButtonsToolbar = () => {
+    Object.values(statesButtonsToolbar).forEach((stateButton) => {
+      stateButton.disable();
+    });
+  };
+  const enableButtonsToolbar = () => {
+    Object.values(statesButtonsToolbar).forEach((stateButton) => {
+      stateButton.enable();
+    });
+  };
+  // end buttons toolbar
 
+  // button Toolbar when the row is selected
   const buttonsToolbarBySelections = {
     ...(buttonDel && {
-      buttonDel: { onClick: handleDelete, button: ButtonDelete },
+      buttonDel: {
+        onClick: handleDelete,
+        icon: <DeleteIcon />,
+        title: 'Delete',
+      },
     }),
   };
+  const statesButtonsToolbarBySelections = Object.entries(
+    buttonsToolbarBySelections,
+  ).reduce(
+    (t, [nameButton, buttonValues]) => ({
+      ...t,
+      [nameButton]: {
+        ...InitButton(buttonValues),
+      },
+    }),
+    {},
+  );
+  // end button Toolbar when the row is selected
 
+  // buttonTableCell
   const buttonsTableCell = {
     ...(actionsTableCell.buttonEdit && {
       buttonEdit: {
@@ -357,6 +413,24 @@ const TablePxp = ({ dataConfig, width }) => {
       },
     }),
     ...actionsTableCell.extraButtons,
+  };
+  // init button with some value like state
+  const statesButtonsTableCell = Object.entries(buttonsTableCell).reduce(
+    (t, [nameButton, buttonValues]) => ({
+      ...t,
+      [nameButton]: {
+        ...InitButton(buttonValues),
+      },
+    }),
+    {},
+  );
+  // end buttonTableCell
+
+  // listening event click in row
+  const handleClickRow = (event, row) => {
+    if (typeof dataConfig.onClickRow === 'function') {
+      dataConfig.onClickRow({ row, statesButtonsTableCell });
+    }
   };
 
   // pagination
@@ -404,6 +478,7 @@ const TablePxp = ({ dataConfig, width }) => {
       (t, [nameKey, value]) => ({ ...t, [nameKey]: value.filters.pfiltro }),
       {},
     );
+  const columnForSearchCount = Object.values(columnsForSearch).length;
 
   const handleInputSearchChange = _.debounce(async (value) => {
     set({
@@ -421,13 +496,16 @@ const TablePxp = ({ dataConfig, width }) => {
   const handles = {
     handleSelectAllClick,
     handleCheckInCell,
+    handleClickRow,
     handleRequestSort,
     handleInputSearchChange,
   };
 
-  const emptyRows = data
-    ? rowsPerPage - Math.min(rowsPerPage, data.datos.total - page * rowsPerPage)
-    : null;
+  const emptyRows =
+    data && !data.error
+      ? rowsPerPage -
+        Math.min(rowsPerPage, data.datos.total - page * rowsPerPage)
+      : null;
 
   const observer = useRef();
   const lastBookElementRef = useCallback(
@@ -453,35 +531,48 @@ const TablePxp = ({ dataConfig, width }) => {
       });
       if (node) observer.current.observe(node);
     },
-    [loading],
+    [loading, dataConfig, data, jsonStore, state],
   );
+
+  if (ref !== null) {
+    useImperativeHandle(ref, () => {
+      return {
+        jsonStore,
+        handleRefresh,
+        statesButtonsToolbar,
+        disableButtonsToolbar,
+        enableButtonsToolbar,
+      };
+    });
+  }
 
   return (
     <>
       <div className={classes.root}>
         <Paper className={classes.paper}>
           <TableToolbarPxp
+            tableName={tableName}
             numSelected={selected.length}
-            buttonsToolbar={buttonsToolbar}
-            buttonsToolbarBySelections={buttonsToolbarBySelections}
+            buttonsToolbar={statesButtonsToolbar}
+            buttonsToolbarBySelections={statesButtonsToolbarBySelections}
             rowSelected={selected}
             statesShowColumn={statesShowColumn}
             setStatesShowColumn={setStatesShowColumn}
             handleInputSearchChange={handleInputSearchChange}
+            buttonCheckList={buttonCheckList}
+            columnForSearchCount={columnForSearchCount}
           />
           {
             <DrawTable
               idStore={idStore}
               dataConfig={dataConfig}
               data={data}
-              buttonsToolbar={buttonsToolbar}
-              buttonsToolbarBySelections={buttonsToolbarBySelections}
               emptyRows={emptyRows}
               dense={dense}
               handles={handles}
               order={order}
               orderBy={orderBy}
-              buttonsTableCell={buttonsTableCell}
+              buttonsTableCell={statesButtonsTableCell}
               statesShowColumn={statesShowColumn}
               selected={selected}
               loading={loading}
@@ -512,6 +603,7 @@ const TablePxp = ({ dataConfig, width }) => {
         />
       </div>
 
+
       <Dialog
         fullScreen
         open={openDialog}
@@ -539,6 +631,6 @@ const TablePxp = ({ dataConfig, width }) => {
       </Dialog>
     </>
   );
-};
+});
 
-export default withWidth()(TablePxp);
+export default TablePxp;

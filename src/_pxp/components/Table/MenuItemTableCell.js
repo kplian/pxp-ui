@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
 
 // eslint-disable-next-line no-unused-vars
-const MenuItemTableCell = forwardRef(({ buttons, row }, ref) => {
+const MenuItemTableCell = forwardRef(({ buttons, row, handleClose }, ref) => {
   return (
     <>
       {Object.entries(buttons).map(([nameKey, button]) => {
@@ -19,7 +19,10 @@ const MenuItemTableCell = forwardRef(({ buttons, row }, ref) => {
         return (
           <MenuItem
             key={`menuItem_${nameKey}`}
-            onClick={() => button.onClick(row)}
+            onClick={() => {
+              handleClose(() => button.onClick(row));
+            }}
+            disabled={button.disabled}
           >
             <ListItemIcon>{button.buttonIcon}</ListItemIcon>
             <Typography variant="inherit">{button.label}</Typography>

@@ -3,7 +3,7 @@
  * @copyright Kplian Ltda 2020
  * @uthor Israel Colque
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -16,7 +16,7 @@ import Form from '../../components/Form/Form';
 import LoadingScreen from '../../components/LoadingScreen';
 import { startLogin } from '../../actions/auth';
 
-export default ({ open: popen, login: plogin }) => {
+export default ({ open: popen, username }) => {
   const [loadingScreen, setLoadingScreen] = useState(false);
   const [open] = React.useState(popen);
   const [error, setError] = React.useState('');
@@ -32,7 +32,13 @@ export default ({ open: popen, login: plogin }) => {
     });
   };
 
-  const handleClose = () => {};
+  useEffect(() => {
+    if (!sessionDied) {
+      setLoadingScreen(false);
+    }
+  }, [sessionDied, loadingScreen]);
+
+  const handleClose = () => { };
 
   const userForm = {
     columns: {
@@ -40,7 +46,8 @@ export default ({ open: popen, login: plogin }) => {
         type: 'TextField',
         label: 'Username',
         autoFocus: true,
-        initialValue: plogin || '',
+        initialValue: username || '',
+        disabled: !!username,
         gridForm: { xs: 12, sm: 12 },
         variant: 'outlined',
         validate: {

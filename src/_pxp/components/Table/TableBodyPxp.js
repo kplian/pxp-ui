@@ -5,6 +5,7 @@
  *
  */
 import React from 'react';
+import moment from 'moment';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -12,6 +13,7 @@ import TableBody from '@material-ui/core/TableBody';
 import MenuTableCell from './MenuTableCell';
 import MenuItemTableCell from './MenuItemTableCell';
 import ButtonPxp from '../ButtonPxp';
+import config from '../../../config';
 
 const TableBodyPxp = ({
   dataConfig,
@@ -19,14 +21,47 @@ const TableBodyPxp = ({
   idStore,
   statesShowColumn,
   handleCheckInCell,
+  handleClickRow,
   buttonsTableCell,
   dense,
   emptyRows,
   selected,
   lastBookElementRef,
 }) => {
-  const { datos: rows } = data;
+  const { datos: rows } = data || { datos: [], total: 0 };
   const isSelected = (id) => selected.indexOf(id) !== -1;
+
+  // render column according to renderColumn or column type
+  const renderColumn = (key, colConfig, row) => {
+    if (colConfig.renderColumn) {
+      return colConfig.renderColumn(row);
+    }
+    switch (colConfig.type) {
+      case 'DatePicker':
+        return moment(moment(row[key], config.date.backendGetFormat)).format(
+          config.date.defaultRenderFormat,
+        );
+
+      // this renderer will change timezone automatically, if different behaviour is required you can add renderColumn in your config
+      case 'DateTimePicker':
+        return moment(
+          moment.tz(
+            row[key],
+            config.dateTime.backendGetFormat,
+            config.dateTime.backendTimezone,
+          ),
+        )
+          .local()
+          .format(config.date.defaultRenderFormat);
+
+      case 'AutoComplete':
+        return colConfig.gridDisplayField
+          ? row[colConfig.gridDisplayField]
+          : row[key];
+      default:
+        return row[key];
+    }
+  };
 
   return (
     <TableBody>
@@ -36,8 +71,9 @@ const TableBodyPxp = ({
 
         return (
           <TableRow
-            key={`tableRow_${row[idStore]}`}
+            key={`tableRow_${idStore}_${row[idStore]}`}
             hover
+            onClick={(event) => handleClickRow(event, row)}
             role="checkbox"
             aria-checked={isItemSelected}
             tabIndex={-1}
@@ -65,9 +101,7 @@ const TableBodyPxp = ({
                   <React.Fragment key={`cell_${indexColumn}_${nameKey}`}>
                     {statesShowColumn[nameKey] && (
                       <TableCell align="left">
-                        {values.renderColumn
-                          ? values.renderColumn(row)
-                          : row[nameKey]}
+                        {renderColumn(nameKey, values, row)}
                       </TableCell>
                     )}
                   </React.Fragment>
@@ -83,9 +117,7 @@ const TableBodyPxp = ({
                   onClick={() => dataConfig.actionsTableCell.onClick(row)}
                 />
               ) : (
-                <MenuTableCell>
-                  <MenuItemTableCell buttons={buttonsTableCell} row={row} />
-                </MenuTableCell>
+                <MenuTableCell buttons={buttonsTableCell} row={row} />
               )}
             </TableCell>
           </TableRow>
