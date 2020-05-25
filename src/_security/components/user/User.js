@@ -10,7 +10,6 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-// import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Form from '../../../_pxp/components/Form/Form';
 import TablePxp from '../../../_pxp/components/Table/TablePxp';

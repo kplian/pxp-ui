@@ -8,7 +8,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer, Box, Hidden } from '@material-ui/core';
-// import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Scrollbars } from 'react-custom-scrollbars';
 import clsx from 'clsx';
 import Profile from './Profile';

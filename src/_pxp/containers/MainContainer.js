@@ -42,7 +42,7 @@ const MainContainer = ({ children }) => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
   });
-  // const user = useSelector((state) => state.auth.currentUser.user);
+
   const currentUser = useSelector((state) => state.auth.currentUser.user);
   const [openSidebar, setOpenSidebar] = useState(false);
 

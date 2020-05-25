@@ -45,7 +45,6 @@ import PxpClient from 'pxp-client';
 // import external styles
 import CssBaseline from '@material-ui/core/CssBaseline';
 import 'typeface-roboto';
-import 'react-perfect-scrollbar/dist/css/styles.css';
 
 // import configs and pxp contexts
 import config from './config';
@@ -55,6 +54,7 @@ import { restoreSettings } from './_pxp/context/settings-store';
 import { PagesProvider } from './_pxp/context/PagesContext';
 
 import AppRouter from './_pxp/routers/AppRouter';
+import history from './_pxp/routers/History';
 import { login, startSetMenu } from './_pxp/actions/auth';
 
 // import pxp pages only if you are using any
@@ -87,7 +87,7 @@ const jsx = (
     <Suspense fallback={<LoadingScreen />}>
       <SettingsProvider settings={settings}>
         <PagesProvider
-          pages={{ ...pxpPages /*, ...contaPages, ...presuPages */ }}
+          pages={{ ...pxpPages /* , ...contaPages, ...presuPages */ }}
         >
           <CssBaseline />
           <SnackbarProvider maxSnack={1}>
@@ -110,9 +110,15 @@ const renderApp = () => {
 ReactDOM.render(<div>loading... </div>, document.getElementById('root'));
 PxpClient.onAuthStateChanged((user) => {
   if (user) {
-    store.dispatch(startSetMenu()).then(() => {
-      store.dispatch(login(user.id_usuario));
-      renderApp();
+    store.dispatch(startSetMenu()).then((resp) => {
+      // if menu returns error usually is session error
+      if (resp.error) {
+        renderApp();
+        history.push('/login');
+      } else {
+        store.dispatch(login(user.id_usuario, user));
+        renderApp();
+      }
     });
   } else if (PxpClient.sessionDied) {
     store.dispatch({ type: 'SESSION_DIED' });

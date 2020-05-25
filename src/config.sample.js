@@ -67,6 +67,7 @@ export default {
   mode: process.env.REACT_APP_MODE,
   port: process.env.REACT_APP_PORT,
   protocol: process.env.REACT_APP_PROTOCOL,
+  backendVersion: 'v1',
   backendRestVersion: '2',
   applicationName: 'ERP KPLIAN',
   privateInitRoute: '/segu/init',
