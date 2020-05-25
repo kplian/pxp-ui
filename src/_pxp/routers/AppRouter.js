@@ -99,7 +99,9 @@ const AppRouter = ({
                       exact
                       path={pages[route].path}
                       render={() => (
-                        <AuthPublic><Component/></AuthPublic>
+                        <AuthPublic>
+                          <Component />
+                        </AuthPublic>
                       )}
                     />
                   );
