@@ -31,7 +31,9 @@ const TabPanel = (props) => {
       id={`scrollable-auto-tabpanel-${index}`}
       aria-labelledby={`scrollable-auto-tab-${index}`}
     >
-      <Box p={3}>{children}</Box>
+      <Box p={0} pt={1}>
+        {children}
+      </Box>
     </div>
   );
 };
