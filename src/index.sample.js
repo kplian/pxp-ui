@@ -61,7 +61,7 @@ import { login, startSetMenu } from './_pxp/actions/auth';
 import pxpPages from './_pxp/pxpPages';
 
 // import your custom pages
-// import contaPages from './contabilidad/components';
+import examplePages from './_examples/components';
 // import presuPages from './presupuestos/components';
 
 // init translations
@@ -87,7 +87,10 @@ const jsx = (
     <Suspense fallback={<LoadingScreen />}>
       <SettingsProvider settings={settings}>
         <PagesProvider
-          pages={{ ...pxpPages /* , ...contaPages, ...presuPages */ }}
+          pages={{
+            ...pxpPages,
+            ...examplePages /* , ...contaPages, ...presuPages */,
+          }}
         >
           <CssBaseline />
           <SnackbarProvider maxSnack={1}>

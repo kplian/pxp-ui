@@ -18,7 +18,7 @@
  * @param {string} applicationName
  * @example applicationName: 'ERP KPLIAN'
  * @param {string} privateInitRoute If this is not defined will be redirected to /main
- * @example privateInitRoute: '/segu/init'
+ * @example privateInitRoute: '/exa/masterdetail'
  * @param {string} publicInitRoute If this is not defined will be redireccted to /login
  * @example publicInitRoute: '/login'
  * @param {array} publicRoutes If there is no public route keep it as a empty array
@@ -70,13 +70,13 @@ export default {
   backendVersion: 'v1',
   backendRestVersion: '2',
   applicationName: 'ERP KPLIAN',
-  privateInitRoute: '/segu/init',
+  privateInitRoute: '/exa/masterdetail',
   translations: {
     defaultNS: 'common',
     fallbackLng: 'en',
   },
   menu: {
-    system: 'ORGA,WF',
+    system: 'EXA',
     mobile: 0,
     includeSystemRoot: true,
   },
