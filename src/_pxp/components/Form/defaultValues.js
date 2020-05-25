@@ -13,6 +13,7 @@ export const defaultConfig = {
     url: 'changeSystem/changeControl/changeMethod',
     extraParams: {},
   },
+  enterSubmit: false,
   groups: {
     group1: {
       titleGroup: '',
