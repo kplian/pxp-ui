@@ -87,7 +87,7 @@ const OptionsFilter = ( { filters, handleFilter }) => {
                             <React.Fragment>
                                 <div className={ classes.circle }>
                                     { item.image && 
-                                        <img src={ item.image } className={ classes.image }/> 
+                                        <img src={ item.image } className={ classes.image } alt="filter option"/> 
                                     }
                                     { item.icon && !item.image &&
                                         <Icon className={ classes.icon }>{ item.icon }</Icon>

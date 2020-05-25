@@ -62,14 +62,14 @@ const ListPxpData = ({ config }) => {
               resp.datos.forEach( item => configData.data.push(item));
               
               const length = configData.data.length;
-              const hasMore = length < parseInt(resp.total) && resp.total != '0' ? true: false;
+              const hasMore = length < parseInt(resp.total) && resp.total !== '0' ? true: false;
 
               setConfigData( prev => {
                 return {
                 ...prev,
                 total: parseInt(resp.total),
                 hasMore,
-                data: configData.start == 0 ? resp.datos : prev.data
+                data: configData.start === 0 ? resp.datos : prev.data
               }});            
           }              
         } else {
@@ -88,7 +88,7 @@ const ListPxpData = ({ config }) => {
     }, [start, value]);
 
     return (
-        <ListPxp data={ configData.data } config={ config }></ListPxp>
+        <ListPxp data={ configData.data } config={ config } />
     );
 }
 
