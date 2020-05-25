@@ -11,7 +11,7 @@ import { Button, Collapse, ListItem, makeStyles } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import Icon from '@material-ui/core/Icon';
-import iconsPxp from '../../../icons';
+import PagesContext  from '../../../context/PagesContext';
 
 const useStyles = makeStyles((theme) => ({
   item: {
@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     marginRight: theme.spacing(1),
+    fontFamily: 'Material Icons Outlined',
   },
   title: {
     marginRight: 'auto',
@@ -87,6 +88,10 @@ const NavItem = ({
 }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(openProp);
+  const { icons: iconsPxp } = React.useContext(PagesContext);
+  console.log('icons', iconsPxp);
+  
+
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -106,7 +111,7 @@ const NavItem = ({
           <IconPxp /> 
         </div>
         :
-        <Icon className={classes.icon}>{icon + '_outline'}</Icon>
+        <Icon className={classes.icon}>{icon}</Icon>
       } 
     </React.Fragment>
   };
