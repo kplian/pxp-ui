@@ -8,7 +8,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer, Box, Hidden } from '@material-ui/core';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+// import PerfectScrollbar from 'react-perfect-scrollbar';
+import { Scrollbars } from 'react-custom-scrollbars';
 import clsx from 'clsx';
 import Profile from './Profile';
 import SidebarNav from './SideBarNav';
@@ -59,7 +60,7 @@ const Sidebar = (props) => {
         flexDirection="column"
         className={clsx(classes.boxDrawer, className)}
       >
-        <PerfectScrollbar options={{ suppressScrollX: true }}>
+        <Scrollbars>
           <Hidden lgUp>
             <Box p={2} display="flex" justifyContent="center">
               <RouterLink to="/">
@@ -74,7 +75,7 @@ const Sidebar = (props) => {
           <Box p={2}>
             <SidebarNav className={classes.nav} menu={menu} />
           </Box>
-        </PerfectScrollbar>
+        </Scrollbars>
       </Box>
     </Drawer>
   );

@@ -10,7 +10,8 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+// import PerfectScrollbar from 'react-perfect-scrollbar';
+import { Scrollbars } from 'react-custom-scrollbars';
 import Form from '../../../_pxp/components/Form/Form';
 import TablePxp from '../../../_pxp/components/Table/TablePxp';
 import MasterDetailContainer from '../../../_pxp/containers/MasterDetailContainer';
@@ -52,7 +53,7 @@ const User = () => {
   const refTable = useRef();
   const refUserRoleForm = useRef();
   const refUserRole = useRef();
-  const [scrollBarRef, setscrollBarRef] = useState(null);
+  const scrollBarRef = useRef();
   const [configUserRole, setConfigUserRole] = useState({
     nameForm: 'assignrole',
     nameTable: 'assignedroles',
@@ -85,7 +86,7 @@ const User = () => {
   useEffect(() => {
     if (!openDetail && scrollBarRef) {
       setTimeout(() => {
-        scrollBarRef._container.scrollTop = scrollY;
+        scrollBarRef.current.scrollTop(scrollY);
       }, 500);
     }
   }, [openDetail, scrollBarRef]);
@@ -116,9 +117,9 @@ const User = () => {
     Object.entries(refForm.current.states).forEach(([, value]) => {
       value.reset();
     });
-    setScrollY(scrollBarRef._container.scrollTop);
-    scrollBarRef._container.scrollTop = 0;
-    scrollBarRef._container.scrollLeft = 0;
+    setScrollY(scrollBarRef.current.getScrollTop());
+    scrollBarRef.current.scrollTop(0);
+    scrollBarRef.current.scrollLeft(0);
   };
 
   const configUserTable = {
@@ -176,9 +177,9 @@ const User = () => {
         }));
         setTabValue(0);
         setOpenDetail(true);
-        setScrollY(scrollBarRef._container.scrollTop);
-        scrollBarRef._container.scrollTop = 0;
-        scrollBarRef._container.scrollLeft = 0;
+        setScrollY(scrollBarRef.current.getScrollTop());
+        scrollBarRef.current.scrollTop(0);
+        scrollBarRef.current.scrollLeft(0);
       },
     },
   };
@@ -195,12 +196,7 @@ const User = () => {
   };
 
   return (
-    <PerfectScrollbar
-      ref={(ref) => {
-        setscrollBarRef(ref);
-      }}
-      id="content"
-    >
+    <Scrollbars ref={scrollBarRef} autoHide>
       <MasterDetailContainer
         master={<TablePxp dataConfig={configUserTable} ref={refTable} />}
         detail={
@@ -233,7 +229,7 @@ const User = () => {
         onCloseDetail={onCloseDetail}
         forceMobileDetail
       />
-    </PerfectScrollbar>
+    </Scrollbars>
   );
 };
 
