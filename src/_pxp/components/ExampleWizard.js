@@ -5,6 +5,7 @@ import ExampleFormW from './ExampleFormW';
 import ExampleTable from './ExampleTable';
 import ExampleList from './ExampleList';
 import { useHistory } from "react-router-dom";
+import { FileIcon, UserSettings, IconPxp } from '../icons';
 
  const ExampleWizard = () => {
     const ref1 = React.useRef(null);
@@ -22,16 +23,16 @@ import { useHistory } from "react-router-dom";
     return (
         <div>
             <Wizard complete={ complete } orientation="vertical">
-                <WizardStep title="Create Person" valid={ valid1 } onNext={ nextStep1 }>
+                <WizardStep title="Create Person" valid={ true } onNext={ nextStep1 } icon="person">
                     <ExampleFormW ref={ref1} setValid={setValid1}/>
                 </WizardStep>
-                <WizardStep title="Create User" valid={ true } onNext={ nextStep2 }>
+                <WizardStep title="Create User" valid={ true } onNext={ nextStep2 } icon={<FileIcon/>}>
                     <ExampleTable/>
                 </WizardStep>
-                <WizardStep title="Assing Role" valid={ true } onNext={ nextStep3 }>
+                <WizardStep title="Assing Role" valid={ true } onNext={ nextStep3 } icon={'security'}>
                     <ExampleList/>
                 </WizardStep>
-                <WizardStep title="Step 4" valid={ true } onNext={ nextStep3 }>
+                <WizardStep title="Step 4" valid={ true } onNext={ nextStep3 } icon="vpn_lock">
                     <h1><div className="Container" dangerouslySetInnerHTML={{__html: 
                         '<div><strong>blablabla<strong><p>another blbla</p/></div>'}}></div></h1>
                 </WizardStep>

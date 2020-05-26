@@ -41,6 +41,7 @@ const AppRouter = ({
   });
   const privatePaths = routes.map((route) => pages[route.component].path);
   const publicRoutes = config.publicRoutes || [];
+  const publicPaths = publicRoutes.map((route) => pages[route].path);
 
   return (
     <Router history={history}>
@@ -87,17 +88,20 @@ const AppRouter = ({
               </Switch>
             </MainContainer>
           </Route>
-          <Route exact path={config.publicRoutes}>
+          <Route exact path={publicPaths}>
             <PublicContainer>
               <Switch>
                 {publicRoutes.map((route) => {
+                  const Component = pages[route].component;
                   return (
                     <Route
-                      key={route.id}
+                      key={route}
                       exact
-                      path={`/${route.component}`}
+                      path={pages[route].path}
                       render={() => (
-                        <AuthPublic>{pages[route.component]}</AuthPublic>
+                        <AuthPublic>
+                          <Component />
+                        </AuthPublic>
                       )}
                     />
                   );

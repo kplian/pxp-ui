@@ -4,16 +4,19 @@
  * @uthor Jaime Rivera
  */
 import React, { createContext, useState } from 'react';
+import iconsPxp from '../icons';
 
 const PagesContext = createContext({
   pages: {},
   savePages: (updatedPages) => {
     this.pages = updatedPages;
   },
+  icons: {},
 });
 
-export function PagesProvider({ pages, children }) {
+export function PagesProvider({ pages, icons, children }) {
   const [currentPages, setCurrentPages] = useState(pages || {});
+  const currentIcons = {...iconsPxp, ...icons };
 
   const handleSavePages = (updatedPages = {}) => {
     const mergedPages = { ...currentPages, ...updatedPages };
@@ -24,7 +27,8 @@ export function PagesProvider({ pages, children }) {
     <PagesContext.Provider
       value={{
         pages: currentPages,
-        savePages: handleSavePages,
+        savePages:handleSavePages,
+        icons: currentIcons,
       }}
     >
       {children}

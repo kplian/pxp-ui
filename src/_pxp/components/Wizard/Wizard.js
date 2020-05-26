@@ -3,14 +3,14 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
+import StepIcon from '@material-ui/core/StepIcon';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import Icon from '@material-ui/core/Icon';
 import StepConnector from '@material-ui/core/StepConnector';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import clsx from 'clsx';
-import SettingsIcon from '@material-ui/icons/Settings';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import VideoLabelIcon from '@material-ui/icons/VideoLabel';
 import { FileIcon, UserSettings, IconPxp } from '../../icons';
 
@@ -70,8 +70,11 @@ const useStyles = makeStyles((theme) => ({
    },
    vStep: {
     width: '100%',
-    paddingTop: '50%',
+    paddingTop: '25%',
     boxShadow: theme.shadows[3]
+  },
+  activeStep: {
+    borderRight: `2px solid ${ theme.palette.primary.main }`,
   }
 }));
 
@@ -103,7 +106,7 @@ const ColorlibConnector = withStyles({
 
 })(StepConnector);
 
-const getSteps = children => children.map(({props}) => props.title);
+const getSteps = children => children.map(({props}) => props);
 
 const Wizard = ({children, complete, orientation = 'horizontal'}) => {
   const classes = useStyles();
@@ -137,9 +140,13 @@ const Wizard = ({children, complete, orientation = 'horizontal'}) => {
           className={ isVertical() ? classes.verticalStepper: classes.horizontalStepper }
           connector={ !isVertical() ? <ColorlibConnector /> : null }
         >
-          {steps.map((label) => (
-            <Step key={label} className={ isVertical() ? classes.vStep: classes.hstep }>
-              <StepLabel StepIconComponent={ ColorlibStepIcon }>{label}</StepLabel>
+          {steps.map((step, i) => (
+            <Step key={step.title} 
+              className={ clsx( 
+                isVertical() ? classes.vStep: classes.hstep,
+                {[classes.activeStep]: activeStep === i && isVertical() }
+                )}>
+              <StepLabel StepIconComponent={ ColorlibStepIcon } StepIconProps={{ icon: step.icon }}>{step.title}</StepLabel>
             </Step>
           ))}
         </Stepper>
@@ -201,19 +208,11 @@ const useColorlibStepIconStyles = makeStyles({
       'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
   },
 });
+
 function ColorlibStepIcon(props) {
   const classes = useColorlibStepIconStyles();
   const { active, completed } = props;
-
-  console.log('prorp', props);
   
-  const icons = {
-    1: <UserSettings />,
-    2: <FileIcon />,
-    3: <VideoLabelIcon />,
-    4: <IconPxp />
-  };
-
   return (
     <div
       className={clsx(classes.root, {
@@ -221,7 +220,7 @@ function ColorlibStepIcon(props) {
         [classes.completed]: completed,
       })}
     >
-      {icons[String(props.icon)]}
+      <Icon>{ props.icon }</Icon>
     </div>
   );
 }

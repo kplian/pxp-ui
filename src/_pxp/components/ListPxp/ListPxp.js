@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import Skeleton from '@material-ui/lab/Skeleton';
-
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -142,8 +140,8 @@ const ListPxp = ({ data = [], actions=[], config = {} }) => {
             <List dense={true} className={ classes.list }>
               <Divider/>
               
-              { data && data.length == 0 && configAll.infiniteScroll.hasMore && <SkeletonItems length={5}/> }
-              { data && data.length == 0 && !configAll.infiniteScroll.hasMore && <h3>No items to show...</h3> }
+              { data && data.length === 0 && configAll.infiniteScroll.hasMore && <SkeletonItems length={5}/> }
+              { data && data.length === 0 && !configAll.infiniteScroll.hasMore && <h3>No items to show...</h3> }
               <InfiniteScroll
                   useWindow={false}
                   pageStart={0}

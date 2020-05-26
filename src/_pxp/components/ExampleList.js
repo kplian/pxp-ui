@@ -43,10 +43,10 @@ const ExampleList = () => {
     }];
 
   const listConfig = {
-    showActions: false,
+    showActions: true,
     showDetail: true,
-    showSearch: false,
-    showFilter: true,
+    showSearch: true,
+    showFilter: false,
     filters: options,
     columns: {
       render: (row) => {
@@ -78,20 +78,20 @@ const ExampleList = () => {
         //   return <div>Render</div>
         // }
       },
-      detailRender: ( row ) => {
-        // return (
-        //   Object.keys( row ).map( key =>
-        //     <div key={key}>
-        //       <div>
-        //         <label style={{ color: 'red'}}>{key}:  </label>
-        //         <span>{row[key]}</span>
-        //       </div>
-        //       <hr/>
-        //     </div>
-        //   )
-        // );
-        return <ExampleFrom></ExampleFrom>
-      },
+      // detailRender: ( row ) => {
+      //   // return (
+      //   //   Object.keys( row ).map( key =>
+      //   //     <div key={key}>
+      //   //       <div>
+      //   //         <label style={{ color: 'red'}}>{key}:  </label>
+      //   //         <span>{row[key]}</span>
+      //   //       </div>
+      //   //       <hr/>
+      //   //     </div>
+      //   //   )
+      //   // );
+      //   return <ExampleFrom></ExampleFrom>
+      // },
       detail: [
         {
           field: 'fecha_reg',
