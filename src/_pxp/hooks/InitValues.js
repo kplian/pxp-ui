@@ -26,6 +26,9 @@ const InitValues = (values) => {
       case 'DatePicker':
         valueField = null;
         break;
+      case 'Switch':
+        valueField = false;
+        break;
       default:
         valueField = '';
         break;
