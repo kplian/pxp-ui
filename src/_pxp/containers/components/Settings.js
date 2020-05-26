@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 function Settings() {
   const classes = useStyles();
   const ref = useRef(null);
-  const { t } = useTranslation('segu_user');
+  const { t } = useTranslation();
 
   const { settings, saveSettings } = useSettings();
 

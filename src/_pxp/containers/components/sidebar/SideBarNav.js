@@ -56,7 +56,8 @@ function renderChildRoutes({
         })}
       </NavItem>,
     );
-  } else {
+  } else if (components[item.component]) {
+    // only add if component exist in pages
     acum.push(
       <NavItem
         depth={depth}

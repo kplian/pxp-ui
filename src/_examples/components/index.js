@@ -28,4 +28,9 @@ pages.EXA__MapExample = {
   component: lazy(() => import('../../_pxp/components/Map/CustomMapMarkers')),
 };
 
+pages.EXA__CustomComponent = {
+  path: '/exa/custom',
+  component: lazy(() => import('./CustomComponent')),
+};
+
 export default pages;
