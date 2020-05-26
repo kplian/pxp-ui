@@ -6,7 +6,8 @@
 import React, { Suspense } from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { CircularProgress } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+import i18n from '../i18n';
 import history from './History';
 import PxpLoginContainer from '../containers/LoginContainer';
 import PxpMainContainer from '../containers/MainContainer';
@@ -17,6 +18,12 @@ import AuthPrivate from './AuthPrivate';
 import config from '../../config';
 import usePages from '../hooks/usePages';
 import LoadingScreen from '../components/LoadingScreen';
+
+const useStyles = makeStyles(() => ({
+  loading: {
+    position: 'static',
+  },
+}));
 
 const AppRouter = ({
   LoginContainer: MyLoginContainer = undefined,
@@ -36,6 +43,8 @@ const AppRouter = ({
   );
   const publicRoutes = config.publicRoutes || [];
   const publicPaths = publicRoutes.map((route) => pages[route].path);
+
+  const classes = useStyles();
 
   return (
     <Router history={history}>
@@ -63,7 +72,9 @@ const AppRouter = ({
 
           <Route exact path={privatePaths}>
             <MainContainer>
-              <Suspense fallback={<CircularProgress />}>
+              <Suspense
+                fallback={<LoadingScreen className={classes.loading} />}
+              >
                 <Switch>
                   {filteredRoutes.map((route) => {
                     const Component = pages[route.component].component;
@@ -72,11 +83,19 @@ const AppRouter = ({
                         key={route.id}
                         exact
                         path={pages[route.component].path}
-                        render={() => (
-                          <AuthPrivate>
-                            <Component />
-                          </AuthPrivate>
-                        )}
+                        render={() => {
+                          // this is only to lazy loading page translations
+                          if (pages[route.component].translationsNS) {
+                            i18n.loadNamespaces(
+                              pages[route.component].translationsNS,
+                            );
+                          }
+                          return (
+                            <AuthPrivate>
+                              <Component />
+                            </AuthPrivate>
+                          );
+                        }}
                       />
                     );
                   })}
@@ -86,7 +105,9 @@ const AppRouter = ({
           </Route>
           <Route exact path={publicPaths}>
             <PublicContainer>
-              <Suspense fallback={<CircularProgress />}>
+              <Suspense
+                fallback={<LoadingScreen className={classes.loading} />}
+              >
                 <Switch>
                   {publicRoutes.map((route) => {
                     const Component = pages[route].component;
@@ -95,11 +116,19 @@ const AppRouter = ({
                         key={route}
                         exact
                         path={pages[route].path}
-                        render={() => (
-                          <AuthPublic>
-                            <Component />
-                          </AuthPublic>
-                        )}
+                        render={() => {
+                          // this is only to lazy loading page translations
+                          if (pages[route.component].translationsNS) {
+                            i18n.loadNamespaces(
+                              pages[route.component].translationsNS,
+                            );
+                          }
+                          return (
+                            <AuthPublic>
+                              <Component />
+                            </AuthPublic>
+                          );
+                        }}
                       />
                     );
                   })}

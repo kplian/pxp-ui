@@ -1,5 +1,5 @@
 /**
- * Lazy load of pxp pages
+ * Lazy load of example pages
  * @copyright Kplian Ltda 2020
  * @uthor Jaime Rivera
  */
@@ -20,6 +20,7 @@ pages.EXA_TableExample = {
 
 pages.EXA_MasterDetailExample = {
   path: '/exa/masterdetail',
+  translationsNS: ['segu'],
   component: lazy(() => import('../../_security/components/user/User')),
 };
 
@@ -31,6 +32,11 @@ pages.EXA__MapExample = {
 pages.EXA__CustomComponent = {
   path: '/exa/custom',
   component: lazy(() => import('./CustomComponent')),
+};
+
+pages.EXA__CustomComponent2 = {
+  path: '/exa/custom2',
+  component: lazy(() => import('./CustomComponent2')),
 };
 
 export default pages;
