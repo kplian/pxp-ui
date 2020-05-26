@@ -51,6 +51,9 @@ const InitValues = (values) => {
       case 'DatePicker':
         setValue(null);
         break;
+      case 'Switch':
+        setValue(false);
+        break;
       default:
         setValue('');
         break;
