@@ -14,11 +14,11 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from '@material-ui/icons/Delete';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import connection from 'pxp-client';
 import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import TablePxp from '../../../_pxp/components/Table/TablePxp';
 import LoadingScreen from '../../../_pxp/components/LoadingScreen';
+import Pxp from '../../../Pxp';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,7 +62,7 @@ const ManagerFile = ({ idTable, table }) => {
 
   // this function is for inactive the file
   const removeFile = (row) => {
-    connection
+    Pxp.apiClient
       .doRequest({
         url: 'parametros/Archivo/removeArchivoGrilla',
         params: {

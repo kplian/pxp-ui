@@ -6,9 +6,9 @@
  * @todo add last login attempt date
  * @todo add number of login fails
  */
-import config from '../../../config';
+import Pxp from '../../../Pxp';
 
-const isV1 = config.backendVersion === 'v1';
+const isV1 = Pxp.config.backendVersion === 'v1';
 export default {
   userId: isV1 ? 'id_usuario' : 'user_id',
   personId: isV1 ? 'id_persona' : 'person_id',

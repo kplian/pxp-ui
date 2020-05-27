@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FormHelperText } from '@material-ui/core';
 
 import * as Yup from 'yup';
-import config from '../../../config';
+import Pxp from '../../../Pxp';
 import Form from '../../components/Form/Form';
 import LoadingScreen from '../../components/LoadingScreen';
 import { startLogin } from '../../actions/auth';
@@ -38,7 +38,7 @@ export default ({ open: popen, username }) => {
     }
   }, [sessionDied, loadingScreen]);
 
-  const handleClose = () => { };
+  const handleClose = () => {};
 
   const userForm = {
     columns: {
@@ -82,7 +82,7 @@ export default ({ open: popen, username }) => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">
-          Sign in {config.applicationName}
+          Sign in {Pxp.config.applicationName}
         </DialogTitle>
         <DialogContent>
           <Form data={userForm} dialog />

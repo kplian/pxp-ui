@@ -6,13 +6,12 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import config from '../../config';
+import Pxp from '../../Pxp';
 
 const AuthPublic = ({ children }) => {
   const authenticated = useSelector((state) => state.auth.uid);
-  console.log('aut', authenticated);
   if (authenticated) {
-    return <Redirect to={config.privateInitRoute} />;
+    return <Redirect to={Pxp.config.privateInitRoute} />;
   }
   return children;
 };

@@ -15,7 +15,7 @@ import PxpPublicContainer from '../containers/PublicContainer';
 import NotFoundPage from '../components/NotFoundPage';
 import AuthPublic from './AuthPublic';
 import AuthPrivate from './AuthPrivate';
-import config from '../../config';
+import Pxp from '../../Pxp';
 import usePages from '../hooks/usePages';
 import LoadingScreen from '../components/LoadingScreen';
 
@@ -41,7 +41,7 @@ const AppRouter = ({
   const privatePaths = filteredRoutes.map(
     (route) => pages[route.component].path,
   );
-  const publicRoutes = config.publicRoutes || [];
+  const publicRoutes = Pxp.config.publicRoutes || [];
   const publicPaths = publicRoutes.map((route) => pages[route].path);
 
   const classes = useStyles();
@@ -54,7 +54,7 @@ const AppRouter = ({
             path="/"
             exact
             component={() => (
-              <Redirect to={config.publicInitRoute || '/login'} />
+              <Redirect to={Pxp.config.publicInitRoute || '/login'} />
             )}
           />
 
