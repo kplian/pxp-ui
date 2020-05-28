@@ -226,7 +226,7 @@ const ManagerFile = ({ idTable, table }) => {
       open: false,
       idTypeFile: undefined,
     });
-    connection
+    Pxp.apiClient
       .doRequest({
         url: 'parametros/Archivo/subirArchivo',
         params: formData,
