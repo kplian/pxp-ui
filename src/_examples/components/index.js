@@ -18,11 +18,11 @@ pages.EXA_TableExample = {
   component: lazy(() => import('./table/ExampleTable')),
 };
 
-/* pages.EXA_MasterDetailExample = {
+pges.EXA_MasterDetailExample = {
   path: '/exa/masterdetail',
   translationsNS: ['segu'],
   component: lazy(() => import('../../_security/components/user/User')),
-}; */
+};
 
 pages.EXA__MapExample = {
   path: '/exa/map',
