@@ -38,14 +38,32 @@ const setRoutes = (routes) => ({
   routes,
 });
 
-export const startLogin = ({ login: username, password }) => {
+export const startLogin = ({ login: username, password, language }) => {
   return () => {
-    return Pxp.apiClient.login(username, password).then((data) => {
+    return Pxp.apiClient.login(username, password, language).then((data) => {
       if (data.ROOT) {
         return data.ROOT.detalle.mensaje;
       }
       return 'success';
     });
+  };
+};
+
+export const startSetLanguage = ({ language }) => {
+  return () => {
+    return Pxp.apiClient
+      .doRequest({
+        url: 'parametros/Lenguaje/setLanguage',
+        params: {
+          language,
+        },
+      })
+      .then((data) => {
+        if (data.ROOT) {
+          return data.ROOT.detalle.mensaje;
+        }
+        return 'success';
+      });
   };
 };
 

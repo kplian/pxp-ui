@@ -39,4 +39,9 @@ pages.EXA__CustomComponent2 = {
   component: lazy(() => import('./CustomComponent2')),
 };
 
+pages.EXA__Form1 = {
+  path: '/exa/custom3',
+  component: lazy(() => import('./CustomComponent2')),
+};
+
 export default pages;
