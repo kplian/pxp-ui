@@ -71,7 +71,7 @@ export default ({ open: popen, username }) => {
     },
     resetButton: true,
     submitLabel: 'Login', // this is optional
-    enterSubmit: true,
+    onEnterSubmit: true,
     onSubmit: ({ values }) => {
       setLoadingScreen(true);
       handleLogin(values.username, values.password);

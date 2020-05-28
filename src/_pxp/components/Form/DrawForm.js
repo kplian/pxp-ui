@@ -62,7 +62,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
   const { enqueueSnackbar } = useSnackbar();
 
   // separate json for button submit onSubmit
-  const { onSubmit, enterSubmit } = data;
+  const { onSubmit, onEnterSubmit } = data;
 
   // init the groups
   const groupsConfig = Object.entries(data.groups).reduce(
@@ -259,19 +259,22 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
     });
   };
 
-  const handleUserKeyPress = useCallback((event) => {
+  const handleUserKeyPress = (event) => {
     const { keyCode } = event;
-    if (enterSubmit && keyCode === 13) {
+    if (onEnterSubmit && keyCode === 13) {
       handleSubmitForm(event);
     }
-  }, []);
+  };
 
-  useEffect(() => {
-    window.addEventListener('keydown', handleUserKeyPress);
-    return () => {
-      window.removeEventListener('keydown', handleUserKeyPress);
-    };
-  }, []);
+  if (onEnterSubmit) {
+    useEffect(() => {
+      window.addEventListener('keydown', handleUserKeyPress);
+      return () => {
+        window.removeEventListener('keydown', handleUserKeyPress);
+      };
+    }, [states]);
+  }
+
 
   Object.entries(states).map(([nameKey, values], index) => {
     const groupName = values.group || Object.keys(groupsConfig)[0];
