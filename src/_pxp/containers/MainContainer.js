@@ -24,14 +24,17 @@ const useStyles = makeStyles((theme) => ({
   shiftContent: {
     paddingLeft: 256,
   },
+  breadcrumbs: {
+    padding: '16px 0px 16px 0px',
+  },
   content: {
     flex: '1 1 auto',
     height: 'calc( 100vh - 80px)',
     width: '100%',
-    padding: '16px',
+    padding: '0px 16px 16px 16px',
     overflow: 'hidden',
     [theme.breakpoints.down('sm')]: {
-      padding: '16px 0px 16px 0px',
+      padding: '0px 0px 16px 0px',
     },
   },
 }));
@@ -45,7 +48,7 @@ const MainContainer = ({ children }) => {
 
   const currentUser = useSelector((state) => state.auth.currentUser.user);
   const [openSidebar, setOpenSidebar] = useState(false);
-
+  const detail = useSelector((state) => state.app.detailPage);
   const handleSidebarOpen = () => {
     setOpenSidebar(true);
   };
@@ -70,7 +73,7 @@ const MainContainer = ({ children }) => {
       />
 
       <main className={classes.content}>
-        <Breadcrumbs />
+        {!detail.isDetail && <Breadcrumbs className={classes.breadcrumbs} />}
         {children}
       </main>
 
