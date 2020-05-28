@@ -19,7 +19,7 @@ import userTableFields from './UserTableFields';
 import userFormFields from './UserFormFields';
 import userRoleFields from './UserRoleFields';
 import fm from './UserFieldMapping';
-import config from '../../../config';
+import Pxp from '../../../Pxp';
 
 const TabPanel = (props) => {
   const { children, value, index } = props;
@@ -159,7 +159,7 @@ const User = () => {
         refForm.current.states[fm.username].setValue(row[fm.username]);
         refForm.current.states[fm.person].setDisabled(true);
         refForm.current.states[fm.expireDate].setValue(
-          moment(row[fm.expireDate], config.date.backendGetFormat).toDate(),
+          moment(row[fm.expireDate], Pxp.config.date.backendGetFormat).toDate(),
         );
         setConfigUserRole(
           _.merge(configUserRole, {

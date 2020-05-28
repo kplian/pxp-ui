@@ -1,15 +1,27 @@
 /**
- * Singleton Events Service object
+ * This singleton contains common pxp-ui functionality and information such as:
+ * Config
+ * ApiClient
+ * EventsHandler
  * @copyright Kplian Ltda 2020
  * @uthor Jaime Rivera
- */
-class EventsService {
+ * */
+import config from './config';
+
+class Pxp {
   constructor() {
-    if (!EventsService.instance) {
-      EventsService.instance = this;
+    if (!Pxp.instance) {
+      Pxp.instance = this;
+      // envents callbacks
       this.callbacks = {};
+
+      // config
+      this.config = config;
+
+      //
+      this.apiClient = null;
     }
-    return EventsService.instance;
+    return Pxp.instance;
   }
 
   /**
@@ -40,7 +52,13 @@ class EventsService {
   unlistenEvent(eventName, id) {
     delete this.callbacks[eventName][id];
   }
-}
 
-const eventsService = new EventsService();
-export default eventsService;
+  /**
+   * @param {Object} client api client to be used in the application
+   */
+  setApiClient(client) {
+    this.apiClient = client;
+  }
+}
+const pxp = new Pxp();
+export default pxp;

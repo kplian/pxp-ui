@@ -3,8 +3,7 @@
  * @copyright Kplian Ltda 2020
  * @uthor Jaime Rivera
  */
-import PxpClient from 'pxp-client';
-import config from '../../config';
+import Pxp from '../../Pxp';
 import history from '../routers/History';
 
 const findRoutes = (menu) => {
@@ -39,9 +38,9 @@ const setRoutes = (routes) => ({
   routes,
 });
 
-export const startLogin = ({ login: username, password }) => {
+export const startLogin = ({ login: username, password, language }) => {
   return () => {
-    return PxpClient.login(username, password).then((data) => {
+    return Pxp.apiClient.login(username, password, language).then((data) => {
       if (data.ROOT) {
         return data.ROOT.detalle.mensaje;
       }
@@ -50,25 +49,45 @@ export const startLogin = ({ login: username, password }) => {
   };
 };
 
+export const startSetLanguage = ({ language }) => {
+  return () => {
+    return Pxp.apiClient
+      .doRequest({
+        url: 'parametros/Lenguaje/setLanguage',
+        params: {
+          language,
+        },
+      })
+      .then((data) => {
+        if (data.ROOT) {
+          return data.ROOT.detalle.mensaje;
+        }
+        return 'success';
+      });
+  };
+};
+
 export const startSetMenu = () => {
   return (dispatch) => {
-    return PxpClient.doRequest({
-      url: 'seguridad/Menu/getMenuJSON',
-      params: {
-        system: config.menu.system,
-        mobile: config.menu.mobile,
-      },
-    }).then((resp) => {
-      dispatch(setMenu(resp.data));
-      dispatch(setRoutes(findRoutes(resp.data)));
-      return resp;
-    });
+    return Pxp.apiClient
+      .doRequest({
+        url: 'seguridad/Menu/getMenuJSON',
+        params: {
+          system: Pxp.config.menu.system,
+          mobile: Pxp.config.menu.mobile,
+        },
+      })
+      .then((resp) => {
+        dispatch(setMenu(resp.data));
+        dispatch(setRoutes(findRoutes(resp.data)));
+        return resp;
+      });
   };
 };
 
 export const startLogout = () => {
   return (dispatch) => {
-    return PxpClient.logout().then(() => {
+    return Pxp.apiClient.logout().then(() => {
       dispatch(logout());
       history.push('/login');
       dispatch(setMenu([]));

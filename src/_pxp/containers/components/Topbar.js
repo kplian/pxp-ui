@@ -14,7 +14,7 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import { useDispatch, useSelector } from 'react-redux';
 import { startLogout } from '../../actions/auth';
 import Logo from './Logo';
-import eventsService from '../../eventsService';
+import Pxp from '../../../Pxp';
 
 import Settings from './Settings';
 
@@ -58,7 +58,7 @@ const Topbar = (props) => {
   const detail = useSelector((state) => state.app.detailPage);
 
   const onGoBackButton = () => {
-    eventsService.triggerEvent('detail_go_back', detail.masterDetailId);
+    Pxp.triggerEvent('detail_go_back', detail.masterDetailId);
   };
 
   return (

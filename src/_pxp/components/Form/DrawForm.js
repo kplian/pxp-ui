@@ -5,7 +5,6 @@
  */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable react/jsx-props-no-spreading */
 import React, {
   forwardRef,
   useEffect,
@@ -27,7 +26,6 @@ import StepContent from '@material-ui/core/StepContent';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Paper from '@material-ui/core/Paper';
-import connection from 'pxp-client';
 import moment from 'moment';
 import { useSnackbar } from 'notistack';
 import InitValues from '../../hooks/InitValues';
@@ -37,6 +35,7 @@ import AutocompletePxp from './AutocompletePxp';
 import KeyboardDatePickerPxp from './KeyboardDatePickerPxp';
 import SwitchPxp from './SwitchPxp';
 import LoadingScreen from '../LoadingScreen';
+import Pxp from '../../../Pxp';
 // @todo see the way for send the state in the handles only verify if it is correct and test
 
 const useStyles = makeStyles((theme) => ({
@@ -212,7 +211,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
 
   const sendData = (values) => {
     setLoadingScreen(true);
-    connection
+    Pxp.apiClient
       .doRequest({
         url: onSubmit.url,
         params: values,

@@ -11,20 +11,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FormHelperText } from '@material-ui/core';
 
 import * as Yup from 'yup';
-import config from '../../../config';
+import Pxp from '../../../Pxp';
 import Form from '../../components/Form/Form';
 import LoadingScreen from '../../components/LoadingScreen';
 import { startLogin } from '../../actions/auth';
+import useSettings from '../../hooks/useSettings';
 
 export default ({ open: popen, username }) => {
+  const { settings } = useSettings();
   const [loadingScreen, setLoadingScreen] = useState(false);
   const [open] = React.useState(popen);
   const [error, setError] = React.useState('');
   const sessionDied = useSelector((state) => state.auth.sessionDied);
   const dispatch = useDispatch();
-
   const handleLogin = (login, password) => {
-    dispatch(startLogin({ login, password })).then((errorMsg) => {
+    const { language } = settings;
+    dispatch(startLogin({ login, password, language })).then((errorMsg) => {
       if (errorMsg !== 'success') {
         setError(errorMsg);
         setLoadingScreen(false);
@@ -33,12 +35,12 @@ export default ({ open: popen, username }) => {
   };
 
   useEffect(() => {
-    if (!sessionDied) {
+    if (!sessionDied && !!username) {
       setLoadingScreen(false);
     }
   }, [sessionDied, loadingScreen]);
 
-  const handleClose = () => { };
+  const handleClose = () => {};
 
   const userForm = {
     columns: {
@@ -61,6 +63,7 @@ export default ({ open: popen, username }) => {
         initialValue: '',
         gridForm: { xs: 12, sm: 12 },
         variant: 'outlined',
+        autoFocus: !!username,
         validate: {
           shape: Yup.string().required('Password is Required'),
         },
@@ -68,6 +71,7 @@ export default ({ open: popen, username }) => {
     },
     resetButton: true,
     submitLabel: 'Login', // this is optional
+    enterSubmit: true,
     onSubmit: ({ values }) => {
       setLoadingScreen(true);
       handleLogin(values.username, values.password);
@@ -82,7 +86,7 @@ export default ({ open: popen, username }) => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">
-          Sign in {config.applicationName}
+          Sign in {Pxp.config.applicationName}
         </DialogTitle>
         <DialogContent>
           <Form data={userForm} dialog />

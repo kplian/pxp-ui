@@ -33,10 +33,10 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import _ from 'lodash';
-import connection from 'pxp-client';
 import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import useTheme from '@material-ui/core/styles/useTheme';
+import Pxp from '../../../Pxp';
 import TableToolbarPxp from './TableToolbarPxp';
 import Form from '../Form/Form';
 import DrawTable from './DrawTable';
@@ -313,7 +313,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       {},
     );
 
-    connection
+    Pxp.apiClient
       .doRequest({
         url: dataConfig.urlDelete,
         params: {
@@ -602,7 +602,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
           label="Dense padding"
         />
       </div>
-
 
       <Dialog
         fullScreen
