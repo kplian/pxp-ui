@@ -19,6 +19,8 @@ import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import TablePxp from '../../../_pxp/components/Table/TablePxp';
 import LoadingScreen from '../../../_pxp/components/LoadingScreen';
+import DrawGridListImage from "../../../_pxp/components/GridListImage/DrawGridListImage";
+import GridListImage from "../../../_pxp/components/GridListImage/GridListImage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,6 +49,10 @@ const ManagerFile = ({ idTable, table }) => {
   const [dropZone, setDropZone] = React.useState({
     open: false,
     idTypeFile: undefined,
+    extensionsAllowed: undefined,
+    multiple: false,
+    typeFile: undefined,
+    acceptedFiles: undefined,
   });
   const refManagerFileTable = useRef();
 
@@ -59,6 +65,10 @@ const ManagerFile = ({ idTable, table }) => {
     }
     return urlFile;
   };
+
+  const getAlbumData = () => {
+
+  }
 
   // this function is for inactive the file
   const removeFile = (row) => {
@@ -87,9 +97,12 @@ const ManagerFile = ({ idTable, table }) => {
       codigo: {
         label: 'Codigo',
         renderColumn: (row) => {
+          console.log(row);
           return (
             <Box display="flex" alignItems="center">
-              {row.id_archivo && row.estado_reg !== 'inactivo' ? (
+              {row.id_archivo &&
+              row.estado_reg !== 'inactivo' &&
+              row.tipo_archivo === 'imagen' ? (
                 <Avatar className={classes.avatar} src={getUrlForView(row)} />
               ) : (
                 <Avatar
@@ -98,6 +111,12 @@ const ManagerFile = ({ idTable, table }) => {
                     setDropZone({
                       open: true,
                       idTypeFile: row.id_tipo_archivo,
+                      extensionsAllowed: row.extensiones_permitidas,
+                      multiple: row.multiple === 'si',
+                      acceptedFiles:
+                        row.tipo_archivo === 'imagen'
+                          ? ['image/*']
+                          : ['image/*', 'video/*', 'application/*'],
                     });
                   }}
                 >
@@ -109,6 +128,18 @@ const ManagerFile = ({ idTable, table }) => {
                 <Typography variant="body2" color="inherit">
                   {row.codigo}
                 </Typography>
+                {row.id_archivo &&
+                  row.estado_reg !== 'inactivo' &&
+                  row.tipo_archivo === 'documento' && (
+                    <Typography variant="caption" display="block" gutterBottom>
+                      ver Documento
+                    </Typography>
+                  )}
+                {row.multiple === 'si' && row.tipo_archivo === 'imagen' && (
+                  <Typography variant="caption" display="block" gutterBottom >
+                    ver Album
+                  </Typography>
+                )}
               </div>
             </Box>
           );
@@ -116,7 +147,7 @@ const ManagerFile = ({ idTable, table }) => {
       },
     },
     getDataTable: {
-      url: 'parametros/Archivo/listarArchivoCodigo',
+      url: 'parametros/Archivo/getTypeFile',
       params: {
         start: '0',
         limit: '50',
@@ -141,6 +172,13 @@ const ManagerFile = ({ idTable, table }) => {
             setDropZone({
               open: true,
               idTypeFile: row.id_tipo_archivo,
+              extensionsAllowed: row.extensiones_permitidas,
+              multiple: row.multiple === 'si',
+              typeFile: row.tipo_archivo,
+              acceptedFiles:
+                row.tipo_archivo === 'imagen'
+                  ? ['image/*']
+                  : ['image/*', 'video/*', 'application/*'],
             });
           },
         },
@@ -162,6 +200,7 @@ const ManagerFile = ({ idTable, table }) => {
         },
       },
     },
+    paginationType: 'infiniteScrolling',
     onClickRow: ({ row, statesButtonsTableCell }) => {
       if (row.id_archivo && row.estado_reg !== 'inactivo') {
         statesButtonsTableCell.viewFile.enable();
@@ -206,12 +245,15 @@ const ManagerFile = ({ idTable, table }) => {
         console.log(err);
       });
   };
+
   return (
     <>
       <PerfectScrollbar id="content">
         <TablePxp dataConfig={jsonItem} ref={refManagerFileTable} />
+        <GridListImage />
         <DropzoneDialog
-          acceptedFiles={['image/*']}
+          {...(!dropZone.multiple && { filesLimit: 1 })}
+          acceptedFiles={dropZone.acceptedFiles}
           cancelButtonText="cancel"
           submitButtonText="submit"
           maxFileSize={5000000}
