@@ -6,11 +6,11 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Avatar from '@material-ui/core/Avatar';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import WcIcon from '@material-ui/icons/Wc';
-import Label from './Label';
-import TablePxp from './Table/TablePxp';
-import imgAvatar from './Table/avatar.jpeg';
-import ButtonPxp from './ButtonPxp';
-import IconPxp from '../icons/IconPxp';
+import Label from '../../../_pxp/components/Label';
+import TablePxp from '../../../_pxp/components/Table/TablePxp';
+import imgAvatar from '../../../_pxp/components/Table/avatar.jpeg';
+import ButtonPxp from '../../../_pxp/components/ButtonPxp';
+import IconPxp from '../../../_pxp/icons/IconPxp';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
