@@ -18,7 +18,7 @@ pages.EXA_TableExample = {
   component: lazy(() => import('./table/ExampleTable')),
 };
 
-pges.EXA_MasterDetailExample = {
+pages.EXA_MasterDetailExample = {
   path: '/exa/masterdetail',
   translationsNS: ['segu'],
   component: lazy(() => import('../../_security/components/user/User')),
