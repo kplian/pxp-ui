@@ -6,14 +6,30 @@
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Toolbar, IconButton } from '@material-ui/core';
+import Fab from '@material-ui/core/Fab';
 import { makeStyles } from '@material-ui/styles';
 import { Scrollbars } from 'react-custom-scrollbars';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Pxp from '../../Pxp';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   backBar: {
     backgroundColor: 'transparent',
+  },
+  content: {
+    height: 'calc(100vh - 60px)',
+  },
+  fabContainer: {
+    width: '0px',
+    height: '0px',
+    position: 'relative',
+  },
+  fab: {
+    position: 'absolute',
+    top: theme.spacing(5),
+    left: theme.spacing(3),
+    zIndex: '100',
+    // backgroundColor: 'transparent',
   },
 }));
 
@@ -28,13 +44,23 @@ const BasicContainer = ({ scrollBarRef, children }) => {
   return (
     <>
       {detail.isDetail && (
-        <Toolbar className={classes.backBar}>
-          <IconButton color="inherit" onClick={onGoBackButton}>
+        <div className={classes.fabContainer}>
+          <Fab
+            className={classes.fab}
+            size="small"
+            aria-label="back"
+            color="primary"
+            onClick={onGoBackButton}
+          >
             <ArrowBack />
-          </IconButton>
-        </Toolbar>
+          </Fab>
+        </div>
       )}
-      <Scrollbars ref={scrollBarRef || myScrollBarRef} autoHide>
+      <Scrollbars
+        className={classes.content}
+        ref={scrollBarRef || myScrollBarRef}
+        autoHide
+      >
         {children}
       </Scrollbars>
     </>
