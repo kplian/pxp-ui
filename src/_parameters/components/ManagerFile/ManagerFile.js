@@ -20,6 +20,8 @@ import LoadingScreen from '../../../_pxp/components/LoadingScreen';
 import GridListImage from '../../../_pxp/components/GridListImage/GridListImage';
 import Pxp from '../../../Pxp';
 import DialogPxp from '../../../_pxp/components/DialogPxp';
+import File from '../../../_pxp/icons/File';
+import TypeFile from "../TypeFile/TypeFile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,6 +60,7 @@ const ManagerFile = ({ idTable, table }) => {
     open: false,
     idTypeFile: undefined,
   });
+  const [openTypeFile, setOpenTypeFile] = useState(false);
   const refManagerFileTable = useRef();
 
   const getUrlForView = (row) => {
@@ -175,6 +178,15 @@ const ManagerFile = ({ idTable, table }) => {
     buttonDel: false,
     buttonNew: false,
     buttonCheckList: false,
+    buttonsToolbar: {
+      buttonFileType: {
+        onClick: () => {
+          setOpenTypeFile(true);
+        },
+        icon: <File />,
+        title: 'Type File',
+      },
+    },
     actionsTableCell: {
       buttonDel: false,
       buttonEdit: false,
@@ -275,6 +287,9 @@ const ManagerFile = ({ idTable, table }) => {
       open: false,
     });
   };
+  const handleCloseDialogTypeFile = () => {
+    setOpenTypeFile(false);
+  };
   return (
     <>
       <TablePxp dataConfig={jsonItem} ref={refManagerFileTable} />
@@ -306,6 +321,13 @@ const ManagerFile = ({ idTable, table }) => {
           idTable={idTable}
           idTypeFile={gridListImage.idTypeFile}
         />
+      </DialogPxp>
+      <DialogPxp
+        titleToolbar="Type File"
+        onClose={handleCloseDialogTypeFile}
+        open={openTypeFile}
+      >
+        <TypeFile table={table} />
       </DialogPxp>
       {loadingScreen && <LoadingScreen />}
     </>
