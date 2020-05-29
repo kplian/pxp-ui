@@ -9,21 +9,23 @@ import React from 'react';
 import TablePxp from '../../../_pxp/components/Table/TablePxp';
 import BasicContainer from '../../../_pxp/containers/BasicContainer';
 
-const TypeFile = ({ table }) => {
+const TypeFile = ({ table, idTableDesc }) => {
   const jsonTypeFile = {
     nameForm: 'Formulario Type File',
     columns: {
       tabla: {
         type: 'TextField',
-        initialValue: '',
+        initialValue: table || '',
         label: 'Tabla',
         gridForm: { xs: 12, sm: 12 },
+        ...(table && { disabled: true }),
       },
       nombre_id: {
         type: 'TextField',
-        initialValue: '',
+        initialValue: idTableDesc || '',
         label: 'Nombre Id',
         gridForm: { xs: 12, sm: 12 },
+        ...(idTableDesc && { disabled: true }),
       },
       tipo_archivo: {
         type: 'Dropdown',
@@ -39,6 +41,22 @@ const TypeFile = ({ table }) => {
         ],
         gridForm: { xs: 12, sm: 6 },
         variant: 'outlined',
+        onChange: ({ value, states }) => {
+          if (value === 'imagen') {
+            states.extensiones_permitidas.setValue('png,jpeg,jpg');
+          } else {
+            states.extensiones_permitidas.setValue(
+              'png,jpeg,jpg,doc,docx,pdf,PDF,DOC,DOCX,xls,xlsx,XLS,XLSX,rar',
+            );
+          }
+        },
+      },
+      extensiones_permitidas: {
+        type: 'TextField',
+        initialValue: '',
+        label: 'extensiones_permitidas',
+        gridForm: { xs: 12, sm: 12 },
+        hide: true,
       },
       codigo: {
         type: 'TextField',
@@ -117,6 +135,7 @@ const TypeFile = ({ table }) => {
     onSubmit: {
       url: 'parametros/TipoArchivo/insertarTipoArchivo',
       extraParams: {
+        ruta_guardar: '',
         ...(table && { tabla: table }),
       },
     },

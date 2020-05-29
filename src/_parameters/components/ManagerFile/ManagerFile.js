@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ManagerFile = ({ idTable, table }) => {
+const ManagerFile = ({ idTable, table, idTableDesc }) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [loadingScreen, setLoadingScreen] = useState(false);
@@ -327,7 +327,7 @@ const ManagerFile = ({ idTable, table }) => {
         onClose={handleCloseDialogTypeFile}
         open={openTypeFile}
       >
-        <TypeFile table={table} />
+        <TypeFile table={table} idTableDesc={idTableDesc} />
       </DialogPxp>
       {loadingScreen && <LoadingScreen />}
     </>
