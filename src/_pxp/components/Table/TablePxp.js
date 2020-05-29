@@ -351,7 +351,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     },
     ...addButtonsToolbar,
   };
-  console.log(addButtonsToolbar)
   // init button with some value like state
   const statesButtonsToolbar = Object.entries(buttonsToolbar).reduce(
     (t, [nameButton, buttonValues]) => ({
