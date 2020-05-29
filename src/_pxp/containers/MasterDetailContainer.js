@@ -14,6 +14,7 @@ import Collapse from '../components/MUI/Collapse';
 // import Collapse from '@material-ui/core/Collapse';
 import { setDetail } from '../actions/app';
 import Pxp from '../../Pxp';
+import BasicContainer from './BasicContainer';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -41,6 +42,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const MasterDetailContainer = ({
+  scrollBarRef,
   master,
   detail,
   orientation = 'horizontal',
@@ -89,27 +91,29 @@ const MasterDetailContainer = ({
   }, [isDesktop, forceMobileDetail, openDetail, dispatch, containerId]);
 
   return (
-    <div
-      className={clsx(classes.root, {
-        [classes.rootColumn]: orientation === 'vertical',
-        [classes.rootRow]: orientation === 'horizontal',
-      })}
-    >
-      <Collapse
-        className={classes.collapseHorizontal}
-        orientation={orientation}
-        in={showMaster}
+    <BasicContainer scrollBarRef={scrollBarRef}>
+      <div
+        className={clsx(classes.root, {
+          [classes.rootColumn]: orientation === 'vertical',
+          [classes.rootRow]: orientation === 'horizontal',
+        })}
       >
-        {master}
-      </Collapse>
-      <Collapse
-        className={classes.collapseHorizontal}
-        orientation={orientation}
-        in={showDetail}
-      >
-        {detail}
-      </Collapse>
-    </div>
+        <Collapse
+          className={classes.collapseHorizontal}
+          orientation={orientation}
+          in={showMaster}
+        >
+          {master}
+        </Collapse>
+        <Collapse
+          className={classes.collapseHorizontal}
+          orientation={orientation}
+          in={showDetail}
+        >
+          {detail}
+        </Collapse>
+      </div>
+    </BasicContainer>
   );
 };
 

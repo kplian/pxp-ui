@@ -11,9 +11,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { simpleForm, configAutoComplete, configTextField } from './config';
-import Form from '../Form';
-import imgAvatar from '../../Table/avatar.jpeg';
-import Label from '../../Label';
+import Form from '../../../_pxp/components/Form/Form';
+import imgAvatar from '../../../_pxp/components/Table/avatar.jpeg';
+import Label from '../../../_pxp/components/Label';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
