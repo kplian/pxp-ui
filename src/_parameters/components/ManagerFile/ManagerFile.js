@@ -5,7 +5,6 @@
  *
  */
 import React, { useRef, useState } from 'react';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
@@ -18,9 +17,11 @@ import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import TablePxp from '../../../_pxp/components/Table/TablePxp';
 import LoadingScreen from '../../../_pxp/components/LoadingScreen';
-import DrawGridListImage from "../../../_pxp/components/GridListImage/DrawGridListImage";
-import GridListImage from "../../../_pxp/components/GridListImage/GridListImage";
+import DrawGridListImage from '../../../_pxp/components/GridListImage/DrawGridListImage';
+import GridListImage from '../../../_pxp/components/GridListImage/GridListImage';
 import Pxp from '../../../Pxp';
+import DialogPxp from '../../../_pxp/components/DialogPxp';
+import BranchOffice from '../../../sales/components/branchOffice/BranchOffice';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,6 +55,11 @@ const ManagerFile = ({ idTable, table }) => {
     typeFile: undefined,
     acceptedFiles: undefined,
   });
+
+  const [gridListImage, setGridListImage] = useState({
+    open: false,
+    idTypeFile: undefined,
+  });
   const refManagerFileTable = useRef();
 
   const getUrlForView = (row) => {
@@ -66,9 +72,12 @@ const ManagerFile = ({ idTable, table }) => {
     return urlFile;
   };
 
-  const getAlbumData = () => {
-
-  }
+  const viewAlbumData = ({ idTypeFile }) => {
+    setGridListImage({
+      open: true,
+      idTypeFile,
+    });
+  };
 
   // this function is for inactive the file
   const removeFile = (row) => {
@@ -136,7 +145,14 @@ const ManagerFile = ({ idTable, table }) => {
                     </Typography>
                   )}
                 {row.multiple === 'si' && row.tipo_archivo === 'imagen' && (
-                  <Typography variant="caption" display="block" gutterBottom >
+                  <Typography
+                    variant="caption"
+                    display="block"
+                    gutterBottom
+                    onClick={() =>
+                      viewAlbumData({ idTypeFile: row.id_tipo_archivo })
+                    }
+                  >
                     ver Album
                   </Typography>
                 )}
@@ -213,8 +229,18 @@ const ManagerFile = ({ idTable, table }) => {
   };
 
   const uploadFile = (files) => {
+    let methodUpload;
     const formData = new FormData();
-    formData.append('archivo', files[0]);
+    if (files.length > 1) {
+      methodUpload = 'subirArchivoMultiple';
+      for (let i = 0; i < files.length; i++) {
+        formData.append('archivo[]', files[i]);
+      }
+    } else {
+      formData.append('archivo', files[0]);
+      methodUpload = 'subirArchivo';
+    }
+
     formData.append('id_tabla', idTable);
     formData.append('tabla', table);
     formData.append('multiple', '');
@@ -228,7 +254,7 @@ const ManagerFile = ({ idTable, table }) => {
     });
     Pxp.apiClient
       .doRequest({
-        url: 'parametros/Archivo/subirArchivo',
+        url: `parametros/Archivo/${methodUpload}`,
         params: formData,
         type: 'upload',
         redirect: 'follow',
@@ -246,31 +272,43 @@ const ManagerFile = ({ idTable, table }) => {
       });
   };
 
+  const handleCloseDialog = () => {
+    setGridListImage({
+      open: false,
+    });
+  };
   return (
     <>
-      <PerfectScrollbar id="content">
-        <TablePxp dataConfig={jsonItem} ref={refManagerFileTable} />
-        <GridListImage />
-        <DropzoneDialog
-          {...(!dropZone.multiple && { filesLimit: 1 })}
-          acceptedFiles={dropZone.acceptedFiles}
-          cancelButtonText="cancel"
-          submitButtonText="submit"
-          maxFileSize={5000000}
-          open={dropZone.open}
-          onClose={() => {
-            setDropZone({
-              open: false,
-              idTypeFile: undefined,
-            });
-          }}
-          onSave={(files) => {
-            uploadFile(files);
-          }}
-          showPreviews
-          showFileNamesInPreview
+      <TablePxp dataConfig={jsonItem} ref={refManagerFileTable} />
+      <DropzoneDialog
+        {...(!dropZone.multiple && { filesLimit: 1 })}
+        acceptedFiles={dropZone.acceptedFiles}
+        cancelButtonText="cancel"
+        submitButtonText="submit"
+        maxFileSize={5000000}
+        open={dropZone.open}
+        onClose={() => {
+          setDropZone({
+            open: false,
+            idTypeFile: undefined,
+          });
+        }}
+        onSave={(files) => {
+          uploadFile(files);
+        }}
+        showPreviews
+        showFileNamesInPreview
+      />
+      <DialogPxp
+        titleToolbar="BranchOffice (Sucursal)"
+        onClose={handleCloseDialog}
+        open={gridListImage.open}
+      >
+        <GridListImage
+          idTable={idTable}
+          idTypeFile={gridListImage.idTypeFile}
         />
-      </PerfectScrollbar>
+      </DialogPxp>
       {loadingScreen && <LoadingScreen />}
     </>
   );
