@@ -17,11 +17,9 @@ import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import TablePxp from '../../../_pxp/components/Table/TablePxp';
 import LoadingScreen from '../../../_pxp/components/LoadingScreen';
-import DrawGridListImage from '../../../_pxp/components/GridListImage/DrawGridListImage';
 import GridListImage from '../../../_pxp/components/GridListImage/GridListImage';
 import Pxp from '../../../Pxp';
 import DialogPxp from '../../../_pxp/components/DialogPxp';
-import BranchOffice from '../../../sales/components/branchOffice/BranchOffice';
 
 const useStyles = makeStyles((theme) => ({
   root: {
