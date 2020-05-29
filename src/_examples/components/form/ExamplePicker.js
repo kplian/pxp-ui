@@ -1,6 +1,11 @@
+/**
+ * Examples Pickers
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ */
 import React from 'react';
 import moment from 'moment';
-import Form from '../Form';
+import Form from '../../../_pxp/components/Form/Form';
 
 const ExamplePicker = () => {
   const config = {
@@ -27,7 +32,7 @@ const ExamplePicker = () => {
         format: 'DD-MM-YYYY',
         onChange: ({ value, dataValue, configInputState, states }) => {
           console.log(states);
-        }
+        },
       },
     },
     resetButton: true,

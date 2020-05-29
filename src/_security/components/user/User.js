@@ -10,7 +10,6 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import { Scrollbars } from 'react-custom-scrollbars';
 import Form from '../../../_pxp/components/Form/Form';
 import TablePxp from '../../../_pxp/components/Table/TablePxp';
 import MasterDetailContainer from '../../../_pxp/containers/MasterDetailContainer';
@@ -197,40 +196,39 @@ const User = () => {
   };
 
   return (
-    <Scrollbars ref={scrollBarRef} autoHide>
-      <MasterDetailContainer
-        master={<TablePxp dataConfig={configUserTable} ref={refTable} />}
-        detail={
-          <div>
-            <Paper square>
-              <Tabs
-                value={tabValue}
-                onChange={handleChange}
-                indicatorColor="primary"
-                textColor="primary"
-              >
-                <Tab label="User" />
-                <Tab label="Roles" />
-              </Tabs>
-            </Paper>
-            <TabPanel value={tabValue} index={0}>
-              <Form data={configUserForm} ref={refForm} />
-            </TabPanel>
-            <TabPanel value={tabValue} index={1}>
-              <TablePxp
-                dataConfig={configUserRole}
-                ref={refUserRole}
-                refForm={refUserRoleForm}
-              />
-            </TabPanel>
-          </div>
-        }
-        orientation="horizontal"
-        openDetail={openDetail}
-        onCloseDetail={onCloseDetail}
-        forceMobileDetail
-      />
-    </Scrollbars>
+    <MasterDetailContainer
+      scrollBarRef={scrollBarRef}
+      master={<TablePxp dataConfig={configUserTable} ref={refTable} />}
+      detail={
+        <div>
+          <Paper square>
+            <Tabs
+              value={tabValue}
+              onChange={handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+            >
+              <Tab label="User" />
+              <Tab label="Roles" />
+            </Tabs>
+          </Paper>
+          <TabPanel value={tabValue} index={0}>
+            <Form data={configUserForm} ref={refForm} />
+          </TabPanel>
+          <TabPanel value={tabValue} index={1}>
+            <TablePxp
+              dataConfig={configUserRole}
+              ref={refUserRole}
+              refForm={refUserRoleForm}
+            />
+          </TabPanel>
+        </div>
+      }
+      orientation="horizontal"
+      openDetail={openDetail}
+      onCloseDetail={onCloseDetail}
+      forceMobileDetail
+    />
   );
 };
 

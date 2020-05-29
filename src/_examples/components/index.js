@@ -9,13 +9,13 @@ const pages = {};
 
 pages.EXA_FormExample = {
   path: '/exa/form',
-  component: lazy(() => import('./ExampleForm')),
+  component: lazy(() => import('./form/ExampleForm')),
 };
 
 // @todo all examples must be in examples folder
 pages.EXA_TableExample = {
   path: '/exa/table',
-  component: lazy(() => import('../../_pxp/components/ExampleTable')),
+  component: lazy(() => import('./table/ExampleTable')),
 };
 
 pages.EXA_MasterDetailExample = {
