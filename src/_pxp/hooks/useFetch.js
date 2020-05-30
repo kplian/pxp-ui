@@ -98,7 +98,7 @@ const useFetch = (options) => {
       abortController.abort();
     };
     return clean;
-  }, [options]);
+  }, [options, enqueueSnackbar]);
 
   return [data, loading, error];
 };

@@ -10,7 +10,6 @@ import React, {
   useEffect,
   useImperativeHandle,
   useState,
-  useCallback,
 } from 'react';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
@@ -259,22 +258,21 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
     });
   };
 
-  const handleUserKeyPress = (event) => {
-    const { keyCode } = event;
-    if (onEnterSubmit && keyCode === 13) {
-      handleSubmitForm(event);
-    }
-  };
-
   if (onEnterSubmit) {
+    const handleUserKeyPress = (event) => {
+      const { keyCode } = event;
+      if (onEnterSubmit && keyCode === 13) {
+        handleSubmitForm(event);
+      }
+    };
+
     useEffect(() => {
       window.addEventListener('keydown', handleUserKeyPress);
       return () => {
         window.removeEventListener('keydown', handleUserKeyPress);
       };
-    }, [states]);
+    }, [states, handleUserKeyPress]);
   }
-
 
   Object.entries(states).map(([nameKey, values], index) => {
     const groupName = values.group || Object.keys(groupsConfig)[0];
