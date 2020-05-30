@@ -68,7 +68,7 @@ const ManagerFile = ({ idTable, table, idTableDesc }) => {
     if (row.id_archivo) {
       urlFile = row.folder;
       urlFile = urlFile.split('./../../../')[1];
-      urlFile = `http://34.71.236.75/kerp/${urlFile}${row.nombre_archivo}.${row.extension}`;
+      urlFile = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOST}/${urlFile}${row.nombre_archivo}.${row.extension}`;
     }
     return urlFile;
   };
