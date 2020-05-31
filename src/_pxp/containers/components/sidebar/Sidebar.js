@@ -3,16 +3,16 @@
  * @copyright Kplian Ltda 2020
  * @uthor Jaime Rivera
  */
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
-import { Divider, Drawer, Box, Hidden } from '@material-ui/core';
+import { Divider, Drawer, Box, IconButton } from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import clsx from 'clsx';
 import Profile from './Profile';
 import SidebarNav from './SideBarNav';
-import Logo from '../Logo';
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -41,9 +41,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Sidebar = (props) => {
-  const { open, variant, onClose, className } = props;
+  const { open, variant, onClose, className, isDesktop } = props;
   const classes = useStyles();
   const menu = useSelector((state) => state.auth.menu);
+
+  const location = useLocation();
+  // close menu on path change
+  useEffect(() => {
+    if (!isDesktop && open && onClose) {
+      onClose();
+    }
+  }, [location.pathname]);
 
   return (
     <Drawer
@@ -60,13 +68,17 @@ const Sidebar = (props) => {
         className={clsx(classes.boxDrawer, className)}
       >
         <Scrollbars>
-          <Hidden lgUp>
-            <Box p={2} display="flex" justifyContent="center">
-              <RouterLink to="/">
-                <Logo />
-              </RouterLink>
-            </Box>
-          </Hidden>
+          <Box p={2} display="flex" justifyContent="center">
+            <IconButton
+              color="inherit"
+              onClick={() => {
+                onClose();
+              }}
+            >
+              <ArrowBackIosIcon />
+            </IconButton>
+          </Box>
+
           <Box p={2}>
             <Profile />
           </Box>

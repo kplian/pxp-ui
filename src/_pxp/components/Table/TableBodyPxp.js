@@ -11,7 +11,6 @@ import TableCell from '@material-ui/core/TableCell';
 import Checkbox from '@material-ui/core/Checkbox';
 import TableBody from '@material-ui/core/TableBody';
 import MenuTableCell from './MenuTableCell';
-import MenuItemTableCell from './MenuItemTableCell';
 import ButtonPxp from '../ButtonPxp';
 import config from '../../../config';
 

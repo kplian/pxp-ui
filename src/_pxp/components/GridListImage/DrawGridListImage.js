@@ -29,12 +29,14 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
   },
 }));
-const DrawGridListImage = ({ state, set, data, loading }) => {
+const DrawGridListImage = ({ data }) => {
   const classes = useStyles();
 
-  console.log(data)
   const getUrl = (row) => {
-    const  urlFile = `http://34.71.236.75/kerp/uploaded_files/sis_parametros/Archivo/mediano/${row.nombre_archivo}.${row.extension}`;
+    let urlFile = row.folder;
+    // eslint-disable-next-line prefer-destructuring
+    urlFile = urlFile.split('./../../../')[1];
+    urlFile = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOST}/${urlFile}/mediano/${row.nombre_archivo}.${row.extension}`;
     return urlFile;
   };
 

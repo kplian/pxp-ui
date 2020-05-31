@@ -8,7 +8,6 @@ import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { TextField } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   iconWithLabel: {
@@ -21,8 +20,7 @@ const useStyles = makeStyles((theme) => ({
   label: {
     fontSize: '0.75rem',
     opacity: '1',
-  }
-
+  },
 }));
 
 const ButtonPxp = ({

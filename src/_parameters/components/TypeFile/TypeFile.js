@@ -13,6 +13,18 @@ const TypeFile = ({ table, idTableDesc }) => {
   const jsonTypeFile = {
     nameForm: 'Formulario Type File',
     columns: {
+      codigo: {
+        type: 'TextField',
+        initialValue: '',
+        label: 'Codigo',
+        gridForm: { xs: 12, sm: 12 },
+      },
+      nombre: {
+        type: 'TextField',
+        initialValue: '',
+        label: 'Nombre',
+        gridForm: { xs: 12, sm: 12 },
+      },
       tabla: {
         type: 'TextField',
         initialValue: table || '',
@@ -58,18 +70,7 @@ const TypeFile = ({ table, idTableDesc }) => {
         gridForm: { xs: 12, sm: 12 },
         hide: true,
       },
-      codigo: {
-        type: 'TextField',
-        initialValue: '',
-        label: 'Codigo',
-        gridForm: { xs: 12, sm: 12 },
-      },
-      nombre: {
-        type: 'TextField',
-        initialValue: '',
-        label: 'Nombre',
-        gridForm: { xs: 12, sm: 12 },
-      },
+
       multiple: {
         type: 'Dropdown',
         label: 'Multiple',
@@ -119,10 +120,9 @@ const TypeFile = ({ table, idTableDesc }) => {
         start: '0',
         limit: '10',
         sort: 'id_tipo_archivo',
-        dir: 'desc', // for seeing every time the last save
+        dir: 'desc',
         ...(table && { tabla: table }),
       },
-      // load: false,
     },
     idStore: 'id_tipo_archivo',
     buttonDel: true,
@@ -140,7 +140,6 @@ const TypeFile = ({ table, idTableDesc }) => {
       },
     },
     urlDelete: 'parametros/TipoArchivo/eliminarTipoArchivo',
-    // paginationType: 'infiniteScrolling', // can be infiniteScrolling or pagination
   };
 
   return (

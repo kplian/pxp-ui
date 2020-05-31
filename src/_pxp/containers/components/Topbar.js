@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Topbar = (props) => {
-  const { onSidebarOpen } = props;
+  const { onSidebarOpen, openSidebar } = props;
 
   const classes = useStyles();
   // get notifications from redux
@@ -57,16 +57,16 @@ const Topbar = (props) => {
   return (
     <AppBar className={classes.root}>
       <Toolbar>
-        <Hidden mdUp>
+        {!openSidebar && (
           <IconButton color="inherit" onClick={onSidebarOpen}>
             <MenuIcon />
           </IconButton>
-        </Hidden>
-        <Hidden smDown>
+        )}
+        {openSidebar && (
           <RouterLink to="/" className={classes.logo}>
             <Logo />
           </RouterLink>
-        </Hidden>
+        )}
         <div className={classes.flexGrow} />
 
         <IconButton color="inherit">
