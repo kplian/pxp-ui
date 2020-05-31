@@ -17,11 +17,11 @@ import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import TablePxp from '../../../_pxp/components/Table/TablePxp';
 import LoadingScreen from '../../../_pxp/components/LoadingScreen';
-import DrawGridListImage from '../../../_pxp/components/GridListImage/DrawGridListImage';
 import GridListImage from '../../../_pxp/components/GridListImage/GridListImage';
 import Pxp from '../../../Pxp';
 import DialogPxp from '../../../_pxp/components/DialogPxp';
-import BranchOffice from '../../../sales/components/branchOffice/BranchOffice';
+import File from '../../../_pxp/icons/File';
+import TypeFile from "../TypeFile/TypeFile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ManagerFile = ({ idTable, table }) => {
+const ManagerFile = ({ idTable, table, idTableDesc }) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [loadingScreen, setLoadingScreen] = useState(false);
@@ -60,6 +60,7 @@ const ManagerFile = ({ idTable, table }) => {
     open: false,
     idTypeFile: undefined,
   });
+  const [openTypeFile, setOpenTypeFile] = useState(false);
   const refManagerFileTable = useRef();
 
   const getUrlForView = (row) => {
@@ -67,7 +68,7 @@ const ManagerFile = ({ idTable, table }) => {
     if (row.id_archivo) {
       urlFile = row.folder;
       urlFile = urlFile.split('./../../../')[1];
-      urlFile = `http://34.71.236.75/kerp/${urlFile}${row.nombre_archivo}.${row.extension}`;
+      urlFile = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOST}/${urlFile}${row.nombre_archivo}.${row.extension}`;
     }
     return urlFile;
   };
@@ -177,6 +178,15 @@ const ManagerFile = ({ idTable, table }) => {
     buttonDel: false,
     buttonNew: false,
     buttonCheckList: false,
+    buttonsToolbar: {
+      buttonFileType: {
+        onClick: () => {
+          setOpenTypeFile(true);
+        },
+        icon: <File />,
+        title: 'Type File',
+      },
+    },
     actionsTableCell: {
       buttonDel: false,
       buttonEdit: false,
@@ -277,6 +287,9 @@ const ManagerFile = ({ idTable, table }) => {
       open: false,
     });
   };
+  const handleCloseDialogTypeFile = () => {
+    setOpenTypeFile(false);
+  };
   return (
     <>
       <TablePxp dataConfig={jsonItem} ref={refManagerFileTable} />
@@ -308,6 +321,13 @@ const ManagerFile = ({ idTable, table }) => {
           idTable={idTable}
           idTypeFile={gridListImage.idTypeFile}
         />
+      </DialogPxp>
+      <DialogPxp
+        titleToolbar="Type File"
+        onClose={handleCloseDialogTypeFile}
+        open={openTypeFile}
+      >
+        <TypeFile table={table} idTableDesc={idTableDesc} />
       </DialogPxp>
       {loadingScreen && <LoadingScreen />}
     </>

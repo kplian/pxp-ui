@@ -8,8 +8,7 @@ import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import MenuItemTableCell from "./MenuItemTableCell";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import MenuItemTableCell from './MenuItemTableCell';
 
 const ITEM_HEIGHT = 48;
 const MenuTableCell = ({ buttons, row, icon }) => {
@@ -23,10 +22,10 @@ const MenuTableCell = ({ buttons, row, icon }) => {
   };
 
   const handleClose = (callback) => {
-    console.log('asdasdasd')
+    console.log('asdasdasd');
     setAnchorEl(null);
     if (typeof callback === 'function') {
-      callback()
+      callback();
     }
   };
 
@@ -53,11 +52,11 @@ const MenuTableCell = ({ buttons, row, icon }) => {
           },
         }}
       >
-          <MenuItemTableCell
-            buttons={buttons}
-            row={row}
-            handleClose={handleClose}
-          />
+        <MenuItemTableCell
+          buttons={buttons}
+          row={row}
+          handleClose={handleClose}
+        />
       </Menu>
     </div>
   );
