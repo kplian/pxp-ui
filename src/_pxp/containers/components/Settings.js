@@ -26,6 +26,7 @@ import useSettings from '../../hooks/useSettings';
 
 const THEMES = {
   LIGHT: 'LIGHT',
+  PINK: 'PINK',
   ONE_DARK: 'ONE_DARK',
   KPLIAN: 'KPLIAN',
 };

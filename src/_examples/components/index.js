@@ -9,7 +9,8 @@ const pages = {};
 
 pages.EXA_FormExample = {
   path: '/exa/form',
-  component: lazy(() => import('./ExampleForm')),
+  // component: lazy(() => import('./ExampleForm')),
+  component: lazy(() => import('./ExampleProductsSlider')),
 };
 
 // @todo all examples must be in examples folder
@@ -27,5 +28,19 @@ pages.EXA__MapExample = {
   path: '/exa/map',
   component: lazy(() => import('../../_pxp/components/Map/CustomMapMarkers')),
 };
+
+
+/** LIST COMPONENT */
+pages.EXALIST__options= {
+  path: '/exa/list/options',
+  component: lazy(() => import('./List/ExampleList')),
+};
+
+pages.EXALIST__search= {
+  path: '/exa/list/search',
+  component: lazy(() => import('./List/ExampleList')),
+};
+
+
 
 export default pages;

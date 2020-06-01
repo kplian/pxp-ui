@@ -68,7 +68,7 @@ const Sidebar = (props) => {
             </Box>
           </Hidden>
           <Box p={2}>
-            <Profile />
+            <Profile /> 
           </Box>
           <Divider className={classes.divider} />
           <Box p={2}>
