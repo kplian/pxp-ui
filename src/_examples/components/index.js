@@ -12,7 +12,21 @@ pages.EXA_FormExample = {
   component: lazy(() => import('./form/ExampleForm')),
 };
 
-// @todo all examples must be in examples folder
+pages.EXA_PickerExample = {
+  path: '/exa/form-datepicker',
+  component: lazy(() => import('./form/ExamplePicker')),
+};
+
+pages.EXA_TextFieldExample = {
+  path: '/exa/text-field',
+  component: lazy(() => import('./form/ExampleTextField')),
+};
+
+pages.EXA_AutocompleteExample = {
+  path: '/exa/autocomplete',
+  component: lazy(() => import('./form/ExampleAutoComplete')),
+};
+
 pages.EXA_TableExample = {
   path: '/exa/table',
   component: lazy(() => import('./table/ExampleTable')),

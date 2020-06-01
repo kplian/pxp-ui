@@ -6,6 +6,7 @@
 import React from 'react';
 import moment from 'moment';
 import Form from '../../../_pxp/components/Form/Form';
+import BasicContainer from '../../../_pxp/containers/BasicContainer';
 
 const ExamplePicker = () => {
   const config = {
@@ -41,7 +42,11 @@ const ExamplePicker = () => {
       console.log(values);
     },
   };
-  return <Form data={config} />;
+  return (
+    <BasicContainer>
+      <Form data={config} />;
+    </BasicContainer>
+  );
 };
 
 export default ExamplePicker;

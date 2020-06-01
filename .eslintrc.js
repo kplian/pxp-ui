@@ -25,6 +25,7 @@ module.exports = {
     "react/forbid-prop-types": [0, { forbid: ["any"] }],
     "react/prop-types": 0,
     "react/jsx-props-no-spreading": "off",
+    "linebreak-style": 0
   },
   env: {
     jest: true,

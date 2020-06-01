@@ -14,6 +14,7 @@ import { simpleForm, configAutoComplete, configTextField } from './config';
 import Form from '../../../_pxp/components/Form/Form';
 import imgAvatar from '../../../_pxp/components/Table/avatar.jpeg';
 import Label from '../../../_pxp/components/Label';
+import BasicContainer from '../../../_pxp/containers/BasicContainer';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -220,7 +221,12 @@ const ExampleAutoComplete = () => {
       },
     },
   };
-  return <Form data={config} />;
+  return (
+    <BasicContainer>
+      {' '}
+      <Form data={config} />;
+    </BasicContainer>
+  );
 };
 
 export default ExampleAutoComplete;
