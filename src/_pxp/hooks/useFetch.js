@@ -6,9 +6,8 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import connection from 'pxp-client';
-import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import Pxp from '../../Pxp';
 
 const useFetch = (options) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -34,7 +33,7 @@ const useFetch = (options) => {
 
         setLoading(true);
 
-        connection
+        Pxp.apiClient
           .doRequest({
             url: options.url,
             params: options.params,
@@ -99,7 +98,7 @@ const useFetch = (options) => {
       abortController.abort();
     };
     return clean;
-  }, [options]);
+  }, [options, enqueueSnackbar]);
 
   return [data, loading, error];
 };

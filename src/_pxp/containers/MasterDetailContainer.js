@@ -13,7 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Collapse from '../components/MUI/Collapse';
 // import Collapse from '@material-ui/core/Collapse';
 import { setDetail } from '../actions/app';
-import eventsService from '../eventsService';
+import Pxp from '../../Pxp';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -62,7 +62,7 @@ const MasterDetailContainer = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    eventsService.listenEvent('detail_go_back', containerId, (pageId) => {
+    Pxp.listenEvent('detail_go_back', containerId, (pageId) => {
       if (pageId === containerId) {
         dispatch(setDetail(false));
         if (onCloseDetail) {
@@ -71,7 +71,7 @@ const MasterDetailContainer = ({
       }
     });
     return () => {
-      eventsService.unlistenEvent('detail_go_back', containerId);
+      Pxp.unlistenEvent('detail_go_back', containerId);
     };
   }, [containerId, dispatch, onCloseDetail]);
 

@@ -3,9 +3,11 @@
  * @copyright Kplian Ltda 2020
  * @uthor Jaime Rivera
  */
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { makeStyles } from '@material-ui/core';
+import i18n from '../i18n';
 import history from './History';
 import PxpLoginContainer from '../containers/LoginContainer';
 import PxpMainContainer from '../containers/MainContainer';
@@ -13,13 +15,15 @@ import PxpPublicContainer from '../containers/PublicContainer';
 import NotFoundPage from '../components/NotFoundPage';
 import AuthPublic from './AuthPublic';
 import AuthPrivate from './AuthPrivate';
-import config from '../../config';
+import Pxp from '../../Pxp';
 import usePages from '../hooks/usePages';
+import LoadingScreen from '../components/LoadingScreen';
 
-function RouteException(message) {
-  this.message = message;
-  this.title = 'RouteException';
-}
+const useStyles = makeStyles(() => ({
+  loading: {
+    position: 'static',
+  },
+}));
 
 const AppRouter = ({
   LoginContainer: MyLoginContainer = undefined,
@@ -32,15 +36,15 @@ const AppRouter = ({
 
   const { pages } = usePages();
   const routes = useSelector((state) => state.auth.routes);
-  routes.forEach((element) => {
-    if (!pages[element.component]) {
-      throw new RouteException(
-        `Does not exists a component for ${element.component} in your pages object. Ensure that your component is lazy loaded from index file`,
-      );
-    }
-  });
-  const privatePaths = routes.map((route) => pages[route.component].path);
-  const publicRoutes = config.publicRoutes || [];
+
+  const filteredRoutes = routes.filter((element) => !!pages[element.component]);
+  const privatePaths = filteredRoutes.map(
+    (route) => pages[route.component].path,
+  );
+  const publicRoutes = Pxp.config.publicRoutes || [];
+  const publicPaths = publicRoutes.map((route) => pages[route].path);
+
+  const classes = useStyles();
 
   return (
     <Router history={history}>
@@ -50,7 +54,7 @@ const AppRouter = ({
             path="/"
             exact
             component={() => (
-              <Redirect to={config.publicInitRoute || '/login'} />
+              <Redirect to={Pxp.config.publicInitRoute || '/login'} />
             )}
           />
 
@@ -68,41 +72,68 @@ const AppRouter = ({
 
           <Route exact path={privatePaths}>
             <MainContainer>
-              <Switch>
-                {routes.map((route) => {
-                  const Component = pages[route.component].component;
-                  return (
-                    <Route
-                      key={route.id}
-                      exact
-                      path={pages[route.component].path}
-                      render={() => (
-                        <AuthPrivate>
-                          <Component />
-                        </AuthPrivate>
-                      )}
-                    />
-                  );
-                })}
-              </Switch>
+              <Suspense
+                fallback={<LoadingScreen className={classes.loading} />}
+              >
+                <Switch>
+                  {filteredRoutes.map((route) => {
+                    const Component = pages[route.component].component;
+                    return (
+                      <Route
+                        key={route.id}
+                        exact
+                        path={pages[route.component].path}
+                        render={() => {
+                          // this is only to lazy loading page translations
+                          if (pages[route.component].translationsNS) {
+                            i18n.loadNamespaces(
+                              pages[route.component].translationsNS,
+                            );
+                          }
+                          return (
+                            <AuthPrivate>
+                              <Component />
+                            </AuthPrivate>
+                          );
+                        }}
+                      />
+                    );
+                  })}
+                </Switch>
+              </Suspense>
             </MainContainer>
           </Route>
-          <Route exact path={config.publicRoutes}>
+          <Route exact path={publicPaths}>
             <PublicContainer>
-              <Switch>
-                {publicRoutes.map((route) => {
-                  return (
-                    <Route
-                      key={route.id}
-                      exact
-                      path={`/${route.component}`}
-                      render={() => (
-                        <AuthPublic>{pages[route.component]}</AuthPublic>
-                      )}
-                    />
-                  );
-                })}
-              </Switch>
+              <Suspense
+                fallback={<LoadingScreen className={classes.loading} />}
+              >
+                <Switch>
+                  {publicRoutes.map((route) => {
+                    const Component = pages[route].component;
+                    return (
+                      <Route
+                        key={route}
+                        exact
+                        path={pages[route].path}
+                        render={() => {
+                          // this is only to lazy loading page translations
+                          if (pages[route.component].translationsNS) {
+                            i18n.loadNamespaces(
+                              pages[route.component].translationsNS,
+                            );
+                          }
+                          return (
+                            <AuthPublic>
+                              <Component />
+                            </AuthPublic>
+                          );
+                        }}
+                      />
+                    );
+                  })}
+                </Switch>
+              </Suspense>
             </PublicContainer>
           </Route>
           <Route component={NotFoundPage} />

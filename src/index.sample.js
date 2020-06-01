@@ -40,6 +40,7 @@ import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
+// import pxp-client (you can replace this by any client)
 import PxpClient from 'pxp-client';
 
 // import external styles
@@ -47,7 +48,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import 'typeface-roboto';
 
 // import configs and pxp contexts
-import config from './config';
+import Pxp from './Pxp';
 import configureStore from './_pxp/configureStore';
 import { SettingsProvider } from './_pxp/context/SettingsContext';
 import { restoreSettings } from './_pxp/context/settings-store';
@@ -69,14 +70,18 @@ import examplePages from './_examples/components';
 import i18n from './_pxp/i18n';
 import LoadingScreen from './_pxp/components/LoadingScreen';
 
+// init client (you can replace this for any api client)
 PxpClient.init(
-  config.host,
-  config.baseUrl,
-  config.mode,
-  config.port,
-  config.protocol,
-  config.backendRestVersion,
+  Pxp.config.host,
+  Pxp.config.baseUrl,
+  Pxp.config.mode,
+  Pxp.config.port,
+  Pxp.config.protocol,
+  Pxp.config.backendRestVersion,
 );
+
+// this will make available the api from any place we have access to Pxp
+Pxp.setApiClient(PxpClient);
 
 // init store and settings
 const store = configureStore();
@@ -110,7 +115,7 @@ const renderApp = () => {
   }
 };
 
-ReactDOM.render(<div>loading... </div>, document.getElementById('root'));
+ReactDOM.render(<LoadingScreen />, document.getElementById('root'));
 PxpClient.onAuthStateChanged((user) => {
   if (user) {
     store.dispatch(startSetMenu()).then((resp) => {

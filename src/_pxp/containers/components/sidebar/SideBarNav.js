@@ -3,7 +3,7 @@
  * @copyright Kplian Ltda 2020
  * @uthor Israel Colque
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
@@ -56,7 +56,8 @@ function renderChildRoutes({
         })}
       </NavItem>,
     );
-  } else {
+  } else if (components[item.component]) {
+    // only add if component exist in pages
     acum.push(
       <NavItem
         depth={depth}
@@ -96,10 +97,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SidebarNav = (props) => {
-  const { menu, className } = props;
+  const { menu, className, onClose, open } = props;
   const location = useLocation();
   const classes = useStyles();
   const { pages: components } = usePages();
+
+  /*useEffect(() => {
+    console.log('llega', open, onClose);
+    if (open && onClose) {
+      onClose();
+    }
+    // eslint-disable-next-line
+  }, [location.pathname]); */
 
   return (
     <div>

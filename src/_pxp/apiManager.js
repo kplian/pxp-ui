@@ -4,9 +4,9 @@
  * @uthor Jaime Rivera
  */
 import _ from 'lodash';
-import config from '../config';
+import Pxp from '../Pxp';
 
-const ver = config.backendVersion || 'v1';
+const ver = Pxp.config.backendVersion || 'v1';
 const api = {
   segu: {
     user: {
@@ -48,4 +48,4 @@ const api = {
     },
   },
 };
-export default _.merge(api, config.pxpApi);
+export default _.merge(api, Pxp.config.pxpApi);

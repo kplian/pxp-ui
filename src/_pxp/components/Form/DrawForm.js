@@ -5,13 +5,11 @@
  */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable react/jsx-props-no-spreading */
 import React, {
   forwardRef,
   useEffect,
   useImperativeHandle,
   useState,
-  useCallback,
 } from 'react';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
@@ -27,7 +25,6 @@ import StepContent from '@material-ui/core/StepContent';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Paper from '@material-ui/core/Paper';
-import connection from 'pxp-client';
 import moment from 'moment';
 import { useSnackbar } from 'notistack';
 import InitValues from '../../hooks/InitValues';
@@ -37,6 +34,7 @@ import AutocompletePxp from './AutocompletePxp';
 import KeyboardDatePickerPxp from './KeyboardDatePickerPxp';
 import SwitchPxp from './SwitchPxp';
 import LoadingScreen from '../LoadingScreen';
+import Pxp from '../../../Pxp';
 // @todo see the way for send the state in the handles only verify if it is correct and test
 
 const useStyles = makeStyles((theme) => ({
@@ -63,7 +61,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
   const { enqueueSnackbar } = useSnackbar();
 
   // separate json for button submit onSubmit
-  const { onSubmit, enterSubmit } = data;
+  const { onSubmit, onEnterSubmit } = data;
 
   // init the groups
   const groupsConfig = Object.entries(data.groups).reduce(
@@ -212,7 +210,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
 
   const sendData = (values) => {
     setLoadingScreen(true);
-    connection
+    Pxp.apiClient
       .doRequest({
         url: onSubmit.url,
         params: values,
@@ -260,19 +258,21 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
     });
   };
 
-  const handleUserKeyPress = useCallback((event) => {
-    const { keyCode } = event;
-    if (enterSubmit && keyCode === 13) {
-      handleSubmitForm(event);
-    }
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleUserKeyPress);
-    return () => {
-      window.removeEventListener('keydown', handleUserKeyPress);
+  if (onEnterSubmit) {
+    const handleUserKeyPress = (event) => {
+      const { keyCode } = event;
+      if (onEnterSubmit && keyCode === 13) {
+        handleSubmitForm(event);
+      }
     };
-  }, []);
+
+    useEffect(() => {
+      window.addEventListener('keydown', handleUserKeyPress);
+      return () => {
+        window.removeEventListener('keydown', handleUserKeyPress);
+      };
+    }, [states, handleUserKeyPress]);
+  }
 
   Object.entries(states).map(([nameKey, values], index) => {
     const groupName = values.group || Object.keys(groupsConfig)[0];

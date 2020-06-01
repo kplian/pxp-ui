@@ -26,6 +26,9 @@ const InitValues = (values) => {
       case 'DatePicker':
         valueField = null;
         break;
+      case 'Switch':
+        valueField = false;
+        break;
       default:
         valueField = '';
         break;
@@ -47,6 +50,9 @@ const InitValues = (values) => {
       case 'AutoComplete':
       case 'DatePicker':
         setValue(null);
+        break;
+      case 'Switch':
+        setValue(false);
         break;
       default:
         setValue('');

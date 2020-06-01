@@ -4,6 +4,7 @@
  * @uthor Israel Colque
  */
 import React, { useState, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { capitalCase } from 'change-case';
 import { useTranslation } from 'react-i18next';
 import {
@@ -22,6 +23,7 @@ import {
 } from '@material-ui/core';
 import { Settings as SettingsIcon } from '@material-ui/icons';
 import useSettings from '../../hooks/useSettings';
+import { startSetLanguage } from '../../actions/auth';
 // import { THEMES } from 'src/constants';
 
 const THEMES = {
@@ -53,7 +55,8 @@ const useStyles = makeStyles((theme) => ({
 function Settings() {
   const classes = useStyles();
   const ref = useRef(null);
-  const { t } = useTranslation('segu_user');
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const { settings, saveSettings } = useSettings();
 
@@ -81,8 +84,16 @@ function Settings() {
   };
 
   const handleSave = () => {
+    const { language } = values;
+    if (settings.language !== language) {
+      saveSettings(values);
+      dispatch(startSetLanguage({ language })).then((errorMsg) => {
+        if (errorMsg === 'success') {
+          window.location.reload(false);
+        }
+      });
+    }
     saveSettings(values);
-    setOpen(false);
   };
 
   return (

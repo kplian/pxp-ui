@@ -10,11 +10,9 @@ import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { startLogout } from '../../actions/auth';
 import Logo from './Logo';
-import eventsService from '../../eventsService';
 
 import Settings from './Settings';
 
@@ -49,62 +47,48 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Topbar = (props) => {
-  const { onSidebarOpen } = props;
+  const { onSidebarOpen, openSidebar } = props;
 
   const classes = useStyles();
   // get notifications from redux
   const [notifications] = useState([]);
   const dispatch = useDispatch();
-  const detail = useSelector((state) => state.app.detailPage);
-
-  const onGoBackButton = () => {
-    eventsService.triggerEvent('detail_go_back', detail.masterDetailId);
-  };
 
   return (
     <AppBar className={classes.root}>
-      {detail.isDetail && (
-        <Toolbar>
-          <IconButton color="inherit" onClick={onGoBackButton}>
-            <ArrowBack />
+      <Toolbar>
+        {!openSidebar && (
+          <IconButton color="inherit" onClick={onSidebarOpen}>
+            <MenuIcon />
           </IconButton>
-        </Toolbar>
-      )}
-      {!detail.isDetail && (
-        <Toolbar>
-          <Hidden mdUp>
-            <IconButton color="inherit" onClick={onSidebarOpen}>
-              <MenuIcon />
-            </IconButton>
-          </Hidden>
-          <Hidden smDown>
-            <RouterLink to="/" className={classes.logo}>
-              <Logo />
-            </RouterLink>
-          </Hidden>
-          <div className={classes.flexGrow} />
+        )}
+        {openSidebar && (
+          <RouterLink to="/" className={classes.logo}>
+            <Logo />
+          </RouterLink>
+        )}
+        <div className={classes.flexGrow} />
 
-          <IconButton color="inherit">
-            <Badge
-              badgeContent={notifications.length}
-              color="primary"
-              variant="dot"
-            >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <Settings />
-          <IconButton
-            className={classes.signOutButton}
-            color="inherit"
-            onClick={() => {
-              dispatch(startLogout());
-            }}
+        <IconButton color="inherit">
+          <Badge
+            badgeContent={notifications.length}
+            color="primary"
+            variant="dot"
           >
-            <InputIcon />
-          </IconButton>
-        </Toolbar>
-      )}
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
+        <Settings />
+        <IconButton
+          className={classes.signOutButton}
+          color="inherit"
+          onClick={() => {
+            dispatch(startLogout());
+          }}
+        >
+          <InputIcon />
+        </IconButton>
+      </Toolbar>
     </AppBar>
   );
 };

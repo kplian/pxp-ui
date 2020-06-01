@@ -3,7 +3,7 @@
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import useFetch from './useFetch';
 
 const useJsonStore = (optionsRequest) => {

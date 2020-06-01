@@ -22,7 +22,7 @@
  * @param {string} publicInitRoute If this is not defined will be redireccted to /login
  * @example publicInitRoute: '/login'
  * @param {array} publicRoutes If there is no public route keep it as a empty array
- * @example publicRoutes: ['/web/about', '/web/contact', '/web/home']
+ * @example publicRoutes: ['WEB__Home', 'WEB__About', 'WEB__Contact']
  * @param translations translations should be in json format in (public/locales/{lan}/{namespace}.json)
  * @example
  * translations: {

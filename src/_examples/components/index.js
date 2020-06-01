@@ -1,5 +1,5 @@
 /**
- * Lazy load of pxp pages
+ * Lazy load of example pages
  * @copyright Kplian Ltda 2020
  * @uthor Jaime Rivera
  */
@@ -9,18 +9,18 @@ const pages = {};
 
 pages.EXA_FormExample = {
   path: '/exa/form',
-  // component: lazy(() => import('./ExampleForm')),
-  component: lazy(() => import('./ExampleProductsSlider')),
+  component: lazy(() => import('./form/ExampleForm')),
 };
 
 // @todo all examples must be in examples folder
 pages.EXA_TableExample = {
   path: '/exa/table',
-  component: lazy(() => import('../../_pxp/components/ExampleTable')),
+  component: lazy(() => import('./table/ExampleTable')),
 };
 
 pages.EXA_MasterDetailExample = {
   path: '/exa/masterdetail',
+  translationsNS: ['segu'],
   component: lazy(() => import('../../_security/components/user/User')),
 };
 
@@ -28,7 +28,6 @@ pages.EXA__MapExample = {
   path: '/exa/map',
   component: lazy(() => import('../../_pxp/components/Map/CustomMapMarkers')),
 };
-
 
 /** LIST COMPONENT */
 pages.EXALIST__options= {
@@ -41,6 +40,14 @@ pages.EXALIST__search= {
   component: lazy(() => import('./List/ExampleList')),
 };
 
+pages.EXA__CustomComponent = {
+  path: '/exa/custom',
+  component: lazy(() => import('./CustomComponent')),
+};
 
+pages.EXA__CustomComponent2 = {
+  path: '/exa/custom2',
+  component: lazy(() => import('./CustomComponent2')),
+};
 
 export default pages;

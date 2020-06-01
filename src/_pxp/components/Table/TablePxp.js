@@ -24,7 +24,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import AppBar from '@material-ui/core/AppBar';
@@ -33,16 +32,15 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import _ from 'lodash';
-import connection from 'pxp-client';
 import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import useTheme from '@material-ui/core/styles/useTheme';
+import Pxp from '../../../Pxp';
 import TableToolbarPxp from './TableToolbarPxp';
 import Form from '../Form/Form';
 import DrawTable from './DrawTable';
 import useJsonStore from '../../hooks/useJsonStore';
 import InitButton from '../../hooks/InitButton';
-import { defaultValuesTextField } from '../Form/defaultValues';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -313,7 +311,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       {},
     );
 
-    connection
+    Pxp.apiClient
       .doRequest({
         url: dataConfig.urlDelete,
         params: {
@@ -602,7 +600,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
           label="Dense padding"
         />
       </div>
-
 
       <Dialog
         fullScreen

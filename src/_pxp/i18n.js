@@ -7,7 +7,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-xhr-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import config from '../config';
+import Pxp from '../Pxp';
 
 i18n
   // learn more: https://github.com/i18next/i18next-xhr-backend
@@ -18,9 +18,9 @@ i18n
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     debug: true,
-    fallbackLng: config.translations.fallbackLng,
-    ns: config.translations.defaultNS,
-    defaultNS: config.translations.defaultNS,
+    fallbackLng: Pxp.config.translations.fallbackLng,
+    ns: Pxp.config.translations.defaultNS,
+    defaultNS: Pxp.config.translations.defaultNS,
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },

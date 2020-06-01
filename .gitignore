@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # pxp-ui excludes
-config.js
+/src/config.js
 /src/*/
 !/src/_*/
 /src/index.js
@@ -29,5 +29,7 @@ config.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+yarn.lock
+package-lock.json
 
 /.idea

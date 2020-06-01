@@ -10,7 +10,6 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import { Scrollbars } from 'react-custom-scrollbars';
 import Form from '../../../_pxp/components/Form/Form';
 import TablePxp from '../../../_pxp/components/Table/TablePxp';
 import MasterDetailContainer from '../../../_pxp/containers/MasterDetailContainer';
@@ -19,7 +18,8 @@ import userTableFields from './UserTableFields';
 import userFormFields from './UserFormFields';
 import userRoleFields from './UserRoleFields';
 import fm from './UserFieldMapping';
-import config from '../../../config';
+import Pxp from '../../../Pxp';
+import BasicContainer from '../../../_pxp/containers/BasicContainer';
 
 const TabPanel = (props) => {
   const { children, value, index } = props;
@@ -159,7 +159,7 @@ const User = () => {
         refForm.current.states[fm.username].setValue(row[fm.username]);
         refForm.current.states[fm.person].setDisabled(true);
         refForm.current.states[fm.expireDate].setValue(
-          moment(row[fm.expireDate], config.date.backendGetFormat).toDate(),
+          moment(row[fm.expireDate], Pxp.config.date.backendGetFormat).toDate(),
         );
         setConfigUserRole(
           _.merge(configUserRole, {
@@ -197,7 +197,7 @@ const User = () => {
   };
 
   return (
-    <Scrollbars ref={scrollBarRef} autoHide>
+    <BasicContainer scrollBarRef={scrollBarRef}>
       <MasterDetailContainer
         master={<TablePxp dataConfig={configUserTable} ref={refTable} />}
         detail={
@@ -230,7 +230,7 @@ const User = () => {
         onCloseDetail={onCloseDetail}
         forceMobileDetail
       />
-    </Scrollbars>
+    </BasicContainer>
   );
 };
 

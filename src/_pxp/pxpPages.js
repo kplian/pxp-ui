@@ -9,6 +9,7 @@ const pages = {};
 
 pages.SEGU_User = {
   path: '/segu/user',
+  translationsNS: ['segu'],
   component: lazy(() => import('../_security/components/user/User')),
 };
 
