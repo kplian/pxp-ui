@@ -43,6 +43,29 @@ pages.EXA__MapExample = {
   component: lazy(() => import('../../_pxp/components/Map/CustomMapMarkers')),
 };
 
+/** LIST COMPONENT */
+pages.EXALIST__options= {
+  path: '/exa/list/options',
+  component: lazy(() => import('./List/ExampleList')),
+};
+
+pages.EXALIST__search= {
+  path: '/exa/list/search',
+  component: lazy(() => import('./List/ExampleList')),
+};
+
+/** WIZARD COMPONENT */
+pages.WZD__Vertical= {
+  path: '/exa/wizard/vertical',
+  component: lazy(() => import('./Wizard/ExampleWizardVertical')),
+};
+
+pages.WZD__Horizontal= {
+  path: '/exa/wizard/horizontal',
+  component: lazy(() => import('./Wizard/ExampleWizard')),
+};
+
+
 pages.EXA__CustomComponent = {
   path: '/exa/custom',
   component: lazy(() => import('./CustomComponent')),

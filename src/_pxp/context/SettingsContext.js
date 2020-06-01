@@ -13,6 +13,7 @@ import { createTheme } from '../themes';
 
 const THEMES = {
   LIGHT: 'LIGHT',
+  PINK: 'PINK',
   ONE_DARK: 'ONE_DARK',
   KPLIAN: 'KPLIAN',
 };
@@ -20,7 +21,7 @@ const THEMES = {
 const defaultSettings = {
   direction: 'ltr',
   responsiveFontSizes: true,
-  theme: THEMES.LIGHT,
+  theme: THEMES.PINK,
   language: undefined,
   defaultLanguage: undefined,
 };

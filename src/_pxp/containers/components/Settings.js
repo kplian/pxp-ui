@@ -28,6 +28,7 @@ import { startSetLanguage } from '../../actions/auth';
 
 const THEMES = {
   LIGHT: 'LIGHT',
+  PINK: 'PINK',
   ONE_DARK: 'ONE_DARK',
   KPLIAN: 'KPLIAN',
 };

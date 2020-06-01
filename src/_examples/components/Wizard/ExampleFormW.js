@@ -1,6 +1,6 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
 import * as Yup from 'yup';
-import Form from './Form/Form';
+import Form from '../../../_pxp/components/Form/Form';
 
 const ExampleFormW = forwardRef((props, ref ) => {
   const jsonPersona = {

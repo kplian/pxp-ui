@@ -9,9 +9,11 @@ import typography from './typography';
 import LIGHT from './light';
 import ONE_DARK from './dark';
 import KPLIAN from './kplian';
+import PINK from './pink';
 
 export const THEMES = {
   LIGHT: 'LIGHT',
+  PINK: 'PINK',
   ONE_DARK: 'ONE_DARK',
   KPLIAN: 'KPLIAN',
 };
@@ -39,7 +41,7 @@ const baseConfig = {
   },
 };
 
-const themeConfigs = [LIGHT, ONE_DARK, KPLIAN];
+const themeConfigs = [LIGHT, ONE_DARK, KPLIAN, PINK];
 
 export function createTheme(settings = {}) {
   let themeConfig = themeConfigs.find((theme) => theme.name === settings.theme);

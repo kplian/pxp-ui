@@ -1,11 +1,8 @@
 import React from 'react';
-import Wizard from './Wizard/Wizard';
-import WizardStep from './Wizard/WizardStep';
+import Wizard from '../../../_pxp/components/Wizard/Wizard';
+import WizardStep from '../../../_pxp/components/Wizard/WizardStep';
 import ExampleFormW from './ExampleFormW';
-import ExampleTable from './ExampleTable';
-import ExampleList from './ExampleList';
 import { useHistory } from "react-router-dom";
-import { FileIcon, UserSettings, IconPxp } from '../icons';
 
  const ExampleWizard = () => {
     const ref1 = React.useRef(null);
@@ -22,15 +19,15 @@ import { FileIcon, UserSettings, IconPxp } from '../icons';
 
     return (
         <div>
-            <Wizard complete={ complete } orientation="vertical">
+            <Wizard complete={ complete }>
                 <WizardStep title="Create Person" valid={ true } onNext={ nextStep1 } icon="person">
                     <ExampleFormW ref={ref1} setValid={setValid1}/>
                 </WizardStep>
-                <WizardStep title="Create User" valid={ true } onNext={ nextStep2 } icon={<FileIcon/>}>
-                    <ExampleTable/>
+                <WizardStep title="Create User" valid={ true } onNext={ nextStep2 } icon={'user'}>
+                    <ExampleFormW/>
                 </WizardStep>
                 <WizardStep title="Assing Role" valid={ true } onNext={ nextStep3 } icon={'security'}>
-                    <ExampleList/>
+                    <ExampleFormW/>
                 </WizardStep>
                 <WizardStep title="Step 4" valid={ true } onNext={ nextStep3 } icon="vpn_lock">
                     <h1><div className="Container" dangerouslySetInnerHTML={{__html: 
