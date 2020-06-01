@@ -40,6 +40,18 @@ pages.EXALIST__search= {
   component: lazy(() => import('./List/ExampleList')),
 };
 
+/** WIZARD COMPONENT */
+pages.WZD__Vertical= {
+  path: '/exa/wizard/vertical',
+  component: lazy(() => import('./Wizard/ExampleWizardVertical')),
+};
+
+pages.WZD__Horizontal= {
+  path: '/exa/wizard/horizontal',
+  component: lazy(() => import('./Wizard/ExampleWizard')),
+};
+
+
 pages.EXA__CustomComponent = {
   path: '/exa/custom',
   component: lazy(() => import('./CustomComponent')),

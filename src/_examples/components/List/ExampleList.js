@@ -1,6 +1,5 @@
 import React from 'react';
-import ListPxpData from "../../_pxp/components/ListPxp/ListPxpData";
-import ExampleFrom from './ExampleForm';
+import ListPxpData from "../../../_pxp/components/ListPxp/ListPxpData";
 
 const ExampleList = () => {
   const options = [

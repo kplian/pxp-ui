@@ -19,7 +19,7 @@ import { useHistory } from "react-router-dom";
 
     return (
         <div>
-            <Wizard complete={ complete }>
+            <Wizard complete={ complete } orientation="vertical">
                 <WizardStep title="Create Person" valid={ true } onNext={ nextStep1 } icon="person">
                     <ExampleFormW ref={ref1} setValid={setValid1}/>
                 </WizardStep>
