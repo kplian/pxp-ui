@@ -5,6 +5,7 @@
 /src/*/
 !/src/_*/
 /src/index.js
+/src/App.js
 
 # dependencies
 /node_modules
