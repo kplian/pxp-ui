@@ -25,6 +25,7 @@ export const DropzoneAreaPxpComponent = ({
   msgError,
   disabled = false,
   filesLimit,
+  acceptedFiles,
 }) => {
   const { label, gridForm } = configInput;
 
@@ -32,7 +33,7 @@ export const DropzoneAreaPxpComponent = ({
     <Grid key={`grid_${name}`} item {...gridForm}>
       <DropzoneArea
         fileObjects={value}
-        acceptedFiles={['image/*']}
+        acceptedFiles={acceptedFiles}
         dropzoneText={label}
         filesLimit={filesLimit}
         onChange={(files) =>

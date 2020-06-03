@@ -123,6 +123,7 @@ export const defaultValuesDropzoneArea = {
   initialValue: null, // moment(new Date(), 'DD-MM-YYYY').toDate()
   gridForm: { xs: 12, sm: 12 },
   filesLimit: 1,
+  acceptedFiles: ['image/*'],
   disabled: undefined,
   hide: undefined,
   form: true,

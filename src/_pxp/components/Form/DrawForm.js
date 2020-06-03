@@ -410,6 +410,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
             states={states}
             disabled={values.disabled}
             filesLimit={values.filesLimit}
+            acceptedFiles={values.acceptedFiles}
           />,
         );
       }
