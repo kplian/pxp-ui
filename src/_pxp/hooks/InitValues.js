@@ -64,6 +64,7 @@ const InitValues = (values) => {
         setValue('');
         break;
     }
+    setError({ hasError: false, msg: '' });
   };
   let config = {
     ...values,
