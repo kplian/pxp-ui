@@ -10,7 +10,12 @@ const ExampleDropzoneAreaBase = () => {
       dropzoneForOnlyImage: {
         type: 'DropzoneArea',
         label: 'Drag and drop an image here or click', // this is for dropzone text
-        acceptedFiles: ['image/*'], // you can see the documentation about dropzone for see more
+        propsDropZoneArea: {
+          // for this you can see the documentation about that
+          filesLimit: 1,
+          acceptedFiles: ['image/*'],
+          useChipsForPreview: true,
+        },
         gridForm: { xs: 12, sm: 6 },
       },
       name: configTextField,

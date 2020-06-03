@@ -122,8 +122,7 @@ export const defaultValuesDropzoneArea = {
   label: 'Drag and drop an image here or click',
   initialValue: null, // moment(new Date(), 'DD-MM-YYYY').toDate()
   gridForm: { xs: 12, sm: 12 },
-  filesLimit: 1,
-  acceptedFiles: ['image/*'],
+  propsDropZoneArea: {},
   disabled: undefined,
   hide: undefined,
   form: true,
