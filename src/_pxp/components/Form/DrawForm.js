@@ -553,14 +553,14 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
                     <StepLabel>{values.titleGroup}</StepLabel>
                     <StepContent>
                       <Grid container spacing={3} key={`group_${index}`}>
-                        {values.titleGroup !== '' && (
+                        {values.descGroup && (
                           <>
                             <Grid item xs={12}>
                               <Typography
                                 variant="subtitle2"
                                 color="textSecondary"
                               >
-                                {values.titleGroup}
+                                {values.descGroup}
                               </Typography>
                             </Grid>
                           </>
