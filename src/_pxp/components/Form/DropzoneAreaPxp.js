@@ -32,6 +32,7 @@ export const DropzoneAreaPxpComponent = ({
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
       <DropzoneArea
+        id={name}
         fileObjects={value}
         acceptedFiles={acceptedFiles}
         dropzoneText={label}
