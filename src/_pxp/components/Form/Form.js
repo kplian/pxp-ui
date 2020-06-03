@@ -42,6 +42,7 @@ import {
   defaultValuesAutoComplete,
   defaultValuesDatePicker,
   defaultValuesSwitch,
+  defaultValuesDropzoneArea,
 } from './defaultValues';
 import DrawForm from './DrawForm';
 
@@ -66,6 +67,7 @@ const Form = forwardRef((props, ref) => {
       ...(column.type === 'Dropdown' && { ...defaultValuesDropdown }),
       ...(column.type === 'AutoComplete' && { ...defaultValuesAutoComplete }),
       ...(column.type === 'DatePicker' && { ...defaultValuesDatePicker }),
+      ...(column.type === 'DropzoneArea' && { ...defaultValuesDropzoneArea }),
       label: nameKey,
       ...(column.group === undefined && { group: defaultGroup }),
     };
