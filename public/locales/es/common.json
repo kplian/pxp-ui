@@ -1,7 +1,21 @@
 {
-    "hello": "Hola {{ name }}",    
-    "settings": "Herramientas",
-    "mipagina":{
-        "hello":"Hola propio"
-    }    
+    "name": "Nombre",
+    "alias": "Alias",
+    "account": "Cuenta",
+    "emergency_phone": "Telefono de Emergencia",
+    "email": "Email",
+    "featured": "Destacado",
+    "required": "Este campo es requerido",
+    "active": "Activo",
+    "surname1": "Primer Apellido",
+    "surname2": "Segundo Apellido",
+    "identification_id": "Doc. de Identificacion",
+    "provide_positive": "Registre un numero positivo",
+    "provide_integer": "Registre un numero entero",
+    "age": "Edad",
+    "height": "Altura",
+    "personal_info": "Informacion Personal",
+    "user_info": "Informacion de Usuario",
+    "user": "Usuario",
+    "images": "Imagenes"
 }

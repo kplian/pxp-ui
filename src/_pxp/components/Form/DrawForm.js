@@ -188,8 +188,8 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
           state.type === 'TextField' ||
           state.type === 'DropzoneArea' ||
           state.type === 'Switch') && {
-          [nameKey]: state.value,
-        }),
+            [nameKey]: state.value,
+          }),
       }),
       {},
     );
@@ -459,11 +459,16 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
     onSubmit.extraParams[name] = value;
   };
 
+  const removeExtraParam = (name) => {
+    delete onSubmit.extraParams[name];
+  };
+
   useImperativeHandle(ref, () => {
     return {
       states,
       handleSubmitForm,
       addExtraParam,
+      removeExtraParam,
     };
   });
 
@@ -585,7 +590,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
                             className={classes.button}
                           >
                             {activeStep ===
-                            Object.values(groupsConfig).length - 1
+                              Object.values(groupsConfig).length - 1
                               ? 'Finish'
                               : 'Next'}
                           </Button>
