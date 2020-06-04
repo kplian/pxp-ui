@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Yup from 'yup';
 import { configTextField, simpleForm } from './config';
 import BasicContainer from '../../../_pxp/containers/BasicContainer';
 import Form from '../../../_pxp/components/Form/Form';
@@ -19,6 +20,15 @@ const ExampleDropzoneAreaBase = () => {
         gridForm: { xs: 12, sm: 6 },
       },
       name: configTextField,
+      ap_paterno: {
+        type: 'TextField',
+        validate: {
+          shape: Yup.number()
+            .transform((value) => (isNaN(value) ? undefined : value))
+            .notRequired()
+            .positive(),
+        },
+      },
     },
   };
   return (

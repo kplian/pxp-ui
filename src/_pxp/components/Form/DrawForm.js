@@ -247,7 +247,8 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
         .then((resp) => {
           if (!resp.error) {
             // need to reset the form
-            resetForm();
+            // eslint-disable-next-line no-unused-expressions
+            onSubmit.resetForm !== false && resetForm();
             enqueueSnackbar('Success', {
               variant: 'success',
               action: <Button>See all</Button>,
