@@ -313,7 +313,7 @@ const ManagerFile = ({ idTable, table, idTableDesc }) => {
         showFileNamesInPreview
       />
       <DialogPxp
-        titleToolbar="BranchOffice (Sucursal)"
+        titleToolbar="Galeria"
         onClose={handleCloseDialog}
         open={gridListImage.open}
       >

@@ -22,6 +22,7 @@ const ExampleDropzoneAreaBase = () => {
       name: configTextField,
       ap_paterno: {
         type: 'TextField',
+        typeTextField: 'number',
         validate: {
           shape: Yup.number()
             .transform((value) => (isNaN(value) ? undefined : value))
