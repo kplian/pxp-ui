@@ -16,6 +16,7 @@ import TablePxp from '../../../_pxp/components/Table/TablePxp';
 import imgAvatar from '../../../_pxp/components/Table/avatar.jpeg';
 import ButtonPxp from '../../../_pxp/components/ButtonPxp';
 import IconPxp from '../../../_pxp/icons/IconPxp';
+import BasicContainer from '../../../_pxp/containers/BasicContainer';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -201,7 +202,7 @@ const ExampleTable = () => {
       // todo need to add typeSend for change to send all in jsonFormat or normal pxp
     },
     urlDelete: 'seguridad/Persona/eliminarPersona',
-    // paginationType: 'infiniteScrolling', // can be infiniteScrolling or pagination
+    //paginationType: 'infiniteScrolling', // can be infiniteScrolling or pagination
   };
 
   // example how you can refresh the table from another component
@@ -219,10 +220,10 @@ const ExampleTable = () => {
   };
 
   return (
-    <div>
+    <BasicContainer>
       <ButtonPxp icon={<IconPxp />} onClick={refreshTableFromOtherSide} />
       <TablePxp dataConfig={jsonPersona} ref={refTable} />
-    </div>
+    </BasicContainer>
   );
 };
 
