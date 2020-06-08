@@ -136,7 +136,9 @@ const AppRouter = ({
               </Suspense>
             </PublicContainer>
           </Route>
-          <Route component={NotFoundPage} />
+          <Route>
+            {Pxp.config.notFoundRoute ? <Redirect to={Pxp.config.notFoundRoute} /> : <NotFoundPage />}
+          </Route>
         </Switch>
       </div>
     </Router>

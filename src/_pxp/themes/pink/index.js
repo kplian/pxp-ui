@@ -17,6 +17,11 @@ export default {
         },
       },
     },
+    MuiIcon: {
+      root:{
+        fontFamily: 'Material Icons Outlined',
+      }
+    }
   },
   palette: {
     type: 'light',
@@ -26,12 +31,12 @@ export default {
     background: {
       default: '#f4f6f8',
       dark: '#f4f6f8',
-      paper: colors.common.white
+      paper: '#ffffff'
     },
     primary: {
       main: colors.pink[600],
-      light: '#ff5c8d', 
-      dark: '#a00037'
+      light: colors.pink[100],
+      dark: colors.pink[800],
     },
     secondary: {
       main: colors.cyan[400],
@@ -40,7 +45,7 @@ export default {
     },
     text: {
       primary: colors.blueGrey[900],
-      secondary: colors.blueGrey[100],
+      secondary: colors.blueGrey[600],
     },
   },
   shadows: softShadows,

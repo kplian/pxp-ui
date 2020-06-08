@@ -99,7 +99,6 @@ const ExampleFormW = forwardRef((props, ref ) => {
     },
     resetButton: true,
     onSubmit: (data) => {
-      console.log('ok', data);
       return { a:1, b:2};
     }
     // onSubmit: {

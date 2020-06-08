@@ -58,7 +58,6 @@ const OptionsFilter = ( { filters, handleFilter }) => {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
-        console.log(value);
         setValue(newValue);
         handleFilter( tabs[newValue].value );
     };
