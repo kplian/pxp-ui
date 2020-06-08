@@ -92,7 +92,6 @@ const useStyles = makeStyles((theme)=>({
 
 export default function Tree(props) {
    const { config, data } = props;
-   console.log('data', data);
    
   const classes = useStyles();
 

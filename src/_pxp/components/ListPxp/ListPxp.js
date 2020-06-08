@@ -124,12 +124,10 @@ const ListPxp = ({ data = [], actions=[], config = {} }) => {
     );
 
     const handleSearch = _.debounce((value) => {
-      console.log(value)
       config.onSearch( value );
     }, 500);
 
     const handleFilter = (value) => {
-      console.log(value)
       config.onSearch( value );
     }
     

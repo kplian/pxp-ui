@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { ThemeProvider } from '@material-ui/core';
 import { storeSettings } from './settings-store';
 import { createTheme } from '../themes';
+import config from '../../config'
 
 const THEMES = {
   LIGHT: 'LIGHT',
@@ -21,7 +22,7 @@ const THEMES = {
 const defaultSettings = {
   direction: 'ltr',
   responsiveFontSizes: true,
-  theme: THEMES.PINK,
+  theme: config.defaultTheme || THEMES.LIGHT,
   language: undefined,
   defaultLanguage: undefined,
 };

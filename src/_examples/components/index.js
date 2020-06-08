@@ -57,9 +57,14 @@ pages.EXA__CustomComponent = {
   component: lazy(() => import('./CustomComponent')),
 };
 
+// pages.EXA__CustomComponent2 = {
+//   path: '/exa/custom2',
+//   component: lazy(() => import('./CustomComponent2')),
+// };
+
 pages.EXA__CustomComponent2 = {
-  path: '/exa/custom2',
-  component: lazy(() => import('./CustomComponent2')),
+  path: '/list',
+  component: lazy(() => import('./Products/Example')),
 };
 
 export default pages;
