@@ -253,7 +253,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
               action: <Button>See all</Button>,
             });
             if (typeof onSubmit.callback === 'function') {
-              onSubmit.callback();
+              onSubmit.callback(resp);
             }
           } else {
             enqueueSnackbar(resp.detail.message, {
