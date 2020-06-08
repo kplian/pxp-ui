@@ -29,6 +29,9 @@ const InitValues = (values) => {
       case 'Switch':
         valueField = false;
         break;
+      case 'DropzoneArea':
+        valueField = [];
+        break;
       default:
         valueField = '';
         break;
@@ -54,10 +57,14 @@ const InitValues = (values) => {
       case 'Switch':
         setValue(false);
         break;
+      case 'DropzoneArea':
+        setValue([]);
+        break;
       default:
         setValue('');
         break;
     }
+    setError({ hasError: false, msg: '' });
   };
   let config = {
     ...values,

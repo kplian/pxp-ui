@@ -1,0 +1,19 @@
+{
+    "price_by_hour": "Precio por hora",
+    "featured_girl": "Chica destacada",
+    "about_me": "Acerca de mi",
+    "build_type": "Constitucion",
+    "regular": "Normal",
+    "slim": "Delgada",
+    "thick": "Gruesa",
+    "chest_measurement": "Medida Pecho",
+    "waist_measurement": "Medida Cintura",
+    "hip_measurement": "Medida Cadera",
+    "skin_type": "Tipo de piel",
+    "white": "Blanca",
+    "brunette": "Trigueña",
+    "black": "Morena",
+    "girl_info": "Informacion de la Chica",
+    "add_girl": "Añadir Chica",
+    "featured": "Destacada"
+}

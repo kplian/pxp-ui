@@ -35,6 +35,7 @@ import KeyboardDatePickerPxp from './KeyboardDatePickerPxp';
 import SwitchPxp from './SwitchPxp';
 import LoadingScreen from '../LoadingScreen';
 import Pxp from '../../../Pxp';
+import DropzoneAreaPxp from './DropzoneAreaPxp';
 // @todo see the way for send the state in the handles only verify if it is correct and test
 
 const useStyles = makeStyles((theme) => ({
@@ -185,9 +186,10 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
         }),
         ...((state.type === 'Dropdown' ||
           state.type === 'TextField' ||
+          state.type === 'DropzoneArea' ||
           state.type === 'Switch') && {
-          [nameKey]: state.value,
-        }),
+            [nameKey]: state.value,
+          }),
       }),
       {},
     );
@@ -208,32 +210,61 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
     }
   };
 
-  const sendData = (values) => {
-    setLoadingScreen(true);
-    Pxp.apiClient
-      .doRequest({
-        url: onSubmit.url,
-        params: values,
-      })
-      .then((resp) => {
-        if (!resp.error) {
-          // need to reset the form
-          resetForm();
-          enqueueSnackbar('Success', {
-            variant: 'success',
-            action: <Button>See all</Button>,
-          });
-          if (typeof onSubmit.callback === 'function') {
-            onSubmit.callback();
+  const getDataForSending = (values, callback) => {
+    let dataForSending;
+    let type;
+    const thereIsDropZoneArea = Object.entries(states).find(
+      ([nameKey, value]) => value.type === 'DropzoneArea',
+    );
+    if (thereIsDropZoneArea) {
+      const formData = new FormData();
+      Object.entries(values).forEach(([nameKey, value]) => {
+        if (states[nameKey].type === 'DropzoneArea') {
+          for (let i = 0; i < value.length; i++) {
+            formData.append(`${nameKey}[]`, value[i]);
           }
         } else {
-          enqueueSnackbar(resp.detail.message, {
-            variant: 'error',
-            action: <Button>See all</Button>,
-          });
+          formData.append(nameKey, value);
         }
-        setLoadingScreen(false);
       });
+      dataForSending = formData;
+      type = 'upload';
+    } else {
+      dataForSending = values;
+    }
+    callback(dataForSending, type);
+  };
+  const sendData = (values) => {
+    setLoadingScreen(true);
+
+    getDataForSending(values, (dataForSending, type) => {
+      Pxp.apiClient
+        .doRequest({
+          url: onSubmit.url,
+          params: dataForSending,
+          ...(type && { type }),
+        })
+        .then((resp) => {
+          if (!resp.error) {
+            // need to reset the form
+            // eslint-disable-next-line no-unused-expressions
+            onSubmit.resetForm !== false && resetForm();
+            enqueueSnackbar('Success', {
+              variant: 'success',
+              action: <Button>See all</Button>,
+            });
+            if (typeof onSubmit.callback === 'function') {
+              onSubmit.callback(resp);
+            }
+          } else {
+            enqueueSnackbar(resp.detail.message, {
+              variant: 'error',
+              action: <Button>See all</Button>,
+            });
+          }
+          setLoadingScreen(false);
+        });
+    });
   };
 
   // logic for submit button
@@ -276,6 +307,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
 
   Object.entries(states).map(([nameKey, values], index) => {
     const groupName = values.group || Object.keys(groupsConfig)[0];
+
     // if hide is false then showing and the flag form is true
     if (!values.isHide && values.form) {
       if (values.type === 'TextField') {
@@ -365,6 +397,23 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
           />,
         );
       }
+      if (values.type === 'DropzoneArea') {
+        groupsConfig[groupName].children.push(
+          <DropzoneAreaPxp
+            key={index}
+            name={nameKey}
+            value={values.value}
+            configInput={values}
+            handleChange={handleChange}
+            memoDisabled={values.memoDisabled}
+            error={values.error.hasError}
+            msgError={values.error.msg}
+            states={states}
+            disabled={values.disabled}
+            propsDropZoneArea={values.propsDropZoneArea}
+          />,
+        );
+      }
     }
 
     return null;
@@ -410,11 +459,16 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
     onSubmit.extraParams[name] = value;
   };
 
+  const removeExtraParam = (name) => {
+    delete onSubmit.extraParams[name];
+  };
+
   useImperativeHandle(ref, () => {
     return {
       states,
       handleSubmitForm,
       addExtraParam,
+      removeExtraParam,
     };
   });
 
@@ -505,14 +559,14 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
                     <StepLabel>{values.titleGroup}</StepLabel>
                     <StepContent>
                       <Grid container spacing={3} key={`group_${index}`}>
-                        {values.titleGroup !== '' && (
+                        {values.descGroup && (
                           <>
                             <Grid item xs={12}>
                               <Typography
                                 variant="subtitle2"
                                 color="textSecondary"
                               >
-                                {values.titleGroup}
+                                {values.descGroup}
                               </Typography>
                             </Grid>
                           </>
@@ -536,7 +590,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
                             className={classes.button}
                           >
                             {activeStep ===
-                            Object.values(groupsConfig).length - 1
+                              Object.values(groupsConfig).length - 1
                               ? 'Finish'
                               : 'Next'}
                           </Button>

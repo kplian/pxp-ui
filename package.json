@@ -48,7 +48,10 @@
     "redux-thunk": "^2.3.0",
     "typeface-roboto": "^0.0.75",
     "uuid": "^8.0.0",
-    "yup": "^0.28.3"
+    "yup": "^0.28.3",
+    "react-image-gallery": "0.8.18",
+    "react-slick": "0.25.2",
+    "classnames": "2.2.6"
   },
   "scripts": {
     "start": "react-scripts start",

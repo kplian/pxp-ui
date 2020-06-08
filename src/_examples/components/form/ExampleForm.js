@@ -9,8 +9,8 @@ import moment from 'moment';
 import Form from '../../../_pxp/components/Form/Form';
 import ButtonPxp from '../../../_pxp/components/ButtonPxp';
 import IconPxp from '../../../_pxp/icons/IconPxp';
-import ExampleAutoComplete from './ExampleAutoComplete';
-import ExamplePicker from './ExamplePicker';
+// import ExampleAutoComplete from './ExampleAutoComplete';
+// import ExamplePicker from './ExamplePicker';
 import BasicContainer from '../../../_pxp/containers/BasicContainer';
 
 const ExampleForm = () => {
@@ -90,12 +90,11 @@ const ExampleForm = () => {
   const handleClickSubmit = (e) => {
     ref.current.handleSubmitForm(e);
   };
-
+  //   <ExamplePicker /> <ExampleAutoComplete />
   return (
     <BasicContainer>
-      <ExamplePicker />
-      <ExampleAutoComplete />
       <Form data={jsonExample1} ref={ref} />
+
       <ButtonPxp icon={<IconPxp />} onClick={handleClickButton} />
       <ButtonPxp icon={<IconPxp />} onClick={handleClickSubmit} />
     </BasicContainer>

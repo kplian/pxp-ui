@@ -21,6 +21,8 @@
  * @example privateInitRoute: '/exa/masterdetail'
  * @param {string} publicInitRoute If this is not defined will be redireccted to /login
  * @example publicInitRoute: '/login'
+ * @param {string} notFoundRoute When a not found route is found will be redirected to this route (usually in applications should redirect to login)
+ * @example notFoundRoute: '/login'
  * @param {array} publicRoutes If there is no public route keep it as a empty array
  * @example publicRoutes: ['WEB__Home', 'WEB__About', 'WEB__Contact']
  * @param translations translations should be in json format in (public/locales/{lan}/{namespace}.json)
@@ -35,6 +37,7 @@
  *   system: 'ORGA,WF', // system name(sis_contabilidad), comma separated systems(sis_seguridad,sis_presupuestos), all
  *   mobile: 0, // mobile flag [0,1]
  *   includeSystemRoot: true, // show systems menu [true,false]
+ *   folder: 'CODE', // If you only want to get menu items in a folder add folder code here
  *   customRequest: { //this request will be used to load dynamic menu instead of regular request
  *     url:'mysystem/mymenu',
  *     params: {
@@ -71,6 +74,7 @@ export default {
   backendRestVersion: '2',
   applicationName: 'ERP KPLIAN',
   privateInitRoute: '/exa/masterdetail',
+  notFoundRoute: '/login',
   translations: {
     defaultNS: 'common',
     fallbackLng: 'en',
@@ -79,6 +83,7 @@ export default {
     system: 'EXA',
     mobile: 0,
     includeSystemRoot: true,
+    folder: 'NTA',
   },
   date: {
     backendGetFormat: 'YYYY-MM-DD',

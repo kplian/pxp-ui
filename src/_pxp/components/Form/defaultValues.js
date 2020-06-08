@@ -116,3 +116,15 @@ export const defaultValuesDatePicker = {
   size: 'medium',
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };
+
+export const defaultValuesDropzoneArea = {
+  type: 'DropzoneArea',
+  label: 'Drag and drop an image here or click',
+  initialValue: null, // moment(new Date(), 'DD-MM-YYYY').toDate()
+  gridForm: { xs: 12, sm: 12 },
+  propsDropZoneArea: {},
+  disabled: undefined,
+  hide: undefined,
+  form: true,
+  group: undefined, // the default group ever is group1 or the first position in the object of the groups
+};
