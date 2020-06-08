@@ -37,6 +37,7 @@
  *   system: 'ORGA,WF', // system name(sis_contabilidad), comma separated systems(sis_seguridad,sis_presupuestos), all
  *   mobile: 0, // mobile flag [0,1]
  *   includeSystemRoot: true, // show systems menu [true,false]
+ *   folder: 'CODE', // If you only want to get menu items in a folder add folder code here
  *   customRequest: { //this request will be used to load dynamic menu instead of regular request
  *     url:'mysystem/mymenu',
  *     params: {
@@ -82,6 +83,7 @@ export default {
     system: 'EXA',
     mobile: 0,
     includeSystemRoot: true,
+    folder: 'NTA',
   },
   date: {
     backendGetFormat: 'YYYY-MM-DD',

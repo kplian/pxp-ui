@@ -75,6 +75,7 @@ export const startSetMenu = () => {
         params: {
           system: Pxp.config.menu.system,
           mobile: Pxp.config.menu.mobile,
+          folder: Pxp.config.menu.folder || '',
         },
       })
       .then((resp) => {
