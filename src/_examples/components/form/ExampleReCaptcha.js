@@ -15,7 +15,7 @@ const ExampleTextField = () => {
       names: configTextField,
       captcha: {
         type: 'GoogleReCaptcha',
-        sitekey: '6LetlQEVAAAAAD0jRgtS7qJAl2mGtyn9K5-DAhGL',
+        sitekey: 'your-siteKey',
       },
     },
   };
