@@ -36,6 +36,7 @@ import SwitchPxp from './SwitchPxp';
 import LoadingScreen from '../LoadingScreen';
 import Pxp from '../../../Pxp';
 import DropzoneAreaPxp from './DropzoneAreaPxp';
+import GoogleReCaptchaPxpComponent from './GoogleReCaptcha';
 // @todo see the way for send the state in the handles only verify if it is correct and test
 
 const useStyles = makeStyles((theme) => ({
@@ -187,9 +188,10 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
         ...((state.type === 'Dropdown' ||
           state.type === 'TextField' ||
           state.type === 'DropzoneArea' ||
+          state.type === 'GoogleReCaptcha' ||
           state.type === 'Switch') && {
-            [nameKey]: state.value,
-          }),
+          [nameKey]: state.value,
+        }),
       }),
       {},
     );
@@ -270,6 +272,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
   // logic for submit button
   const handleSubmitForm = (e) => {
     e.preventDefault();
+
     const values = {
       ...getValues(),
       ...(onSubmit.extraParams && { ...onSubmit.extraParams }),
@@ -403,6 +406,24 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
             key={index}
             name={nameKey}
             value={values.value}
+            configInput={values}
+            handleChange={handleChange}
+            memoDisabled={values.memoDisabled}
+            error={values.error.hasError}
+            msgError={values.error.msg}
+            states={states}
+            disabled={values.disabled}
+            propsDropZoneArea={values.propsDropZoneArea}
+          />,
+        );
+      }
+      if (values.type === 'GoogleReCaptcha') {
+        groupsConfig[groupName].children.push(
+          <GoogleReCaptchaPxpComponent
+            key={index}
+            name={nameKey}
+            sitekey={values.sitekey}
+            ref={values.ref}
             configInput={values}
             handleChange={handleChange}
             memoDisabled={values.memoDisabled}
@@ -590,7 +611,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
                             className={classes.button}
                           >
                             {activeStep ===
-                              Object.values(groupsConfig).length - 1
+                            Object.values(groupsConfig).length - 1
                               ? 'Finish'
                               : 'Next'}
                           </Button>
