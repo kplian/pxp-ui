@@ -7,7 +7,9 @@ import React, { useState, useEffect } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
+import Link from '@material-ui/core/Link';
 import { useSelector, useDispatch } from 'react-redux';
+import Typography from '@material-ui/core/Typography';
 import { FormHelperText } from '@material-ui/core';
 
 import * as Yup from 'yup';
@@ -83,14 +85,17 @@ export default ({ open: popen, username }) => {
       <Dialog
         open={open || sessionDied}
         onClose={handleClose}
-        aria-labelledby="form-dialog-title"
+        aria-labelledby="login-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">
-          Sign in {Pxp.config.applicationName}
+        <DialogTitle id="login-dialog-title">
+          <Typography variant="h3">
+            Sign in {Pxp.config.applicationName}
+          </Typography>
         </DialogTitle>
         <DialogContent>
           <Form data={userForm} dialog />
           {error && <FormHelperText error>{error}</FormHelperText>}
+          <Link href="/forgot">Forgot password?</Link>
         </DialogContent>
       </Dialog>
       {loadingScreen && <LoadingScreen />}

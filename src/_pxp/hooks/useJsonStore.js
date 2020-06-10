@@ -15,8 +15,6 @@ const useJsonStore = (optionsRequest) => {
   const [open, setOpen] = useState(false);
   const [data, loading, error] = useFetch(state);
 
-
-
   return {
     state,
     set,

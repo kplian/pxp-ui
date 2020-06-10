@@ -4,14 +4,12 @@
  * @uthor Jaime Rivera
  */
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 
-const PublicContainer = () => {
+const PublicContainer = ({ children }) => {
   return (
     <div>
-      <Typography variant="h1" component="h2" gutterBottom>
-        Public container
-      </Typography>
+      <h1>Override your public container</h1>
+      <main>{children}</main>
     </div>
   );
 };

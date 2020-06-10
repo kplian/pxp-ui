@@ -26,7 +26,7 @@ const useFetch = (options) => {
         setLoading(true);
 
         const params = new URLSearchParams();
-        // eslint-disable-next-line guard-for-in
+        // eslint-disable-next-line no-restricted-syntax
         for (const key in options) {
           params.append(key, options[key]);
         }

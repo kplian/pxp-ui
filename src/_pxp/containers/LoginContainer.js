@@ -4,23 +4,38 @@
  * @uthor Jaime Rivera
  */
 import React from 'react';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import LoginDialog from './components/LoginDialog';
+import { makeStyles } from '@material-ui/core';
+import TopBar from './components/LoginTopBar';
+import BottomBar from './components/LoginBottomBar';
 
-const LoginContainer = () => {
-  const PxpLoginPage = () => (
-    <div>
-      <Typography variant="h1" component="h2" gutterBottom>
-        PXP Login Page
-      </Typography>
-    </div>
-  );
+const useStyles = makeStyles((theme) => ({
+  root: {
+    paddingTop: 54,
+    height: '100%',
+    [theme.breakpoints.up('sm')]: {
+      paddingTop: 70,
+    },
+  },
+  content: {
+    flex: '1 1 auto',
+    height: 'calc( 100vh - 70px)',
+    width: '100%',
+    padding: '0px 16px 16px 16px',
+    overflow: 'hidden',
+    [theme.breakpoints.down('sm')]: {
+      padding: '0px 0px 16px 0px',
+    },
+  },
+}));
+
+const LoginContainer = ({ children }) => {
+  const classes = useStyles();
   return (
-    <Container maxWidth="sm">
-      <PxpLoginPage />
-      <LoginDialog open />
-    </Container>
+    <div className={classes.root}>
+      <TopBar />
+      <main className={classes.content}>{children}</main>
+      <BottomBar />
+    </div>
   );
 };
 
