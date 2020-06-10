@@ -4,6 +4,9 @@
  * @uthor Favio Figueroa
  *
  */
+
+import * as Yup from 'yup';
+
 export const defaultConfig = {
   nameForm: 'NameForm',
   columns: {},
@@ -126,5 +129,17 @@ export const defaultValuesDropzoneArea = {
   disabled: undefined,
   hide: undefined,
   form: true,
+  group: undefined, // the default group ever is group1 or the first position in the object of the groups
+};
+
+export const defaultValuesGoogleReCaptcha = {
+  type: 'GoogleReCaptcha',
+  gridForm: { xs: 12, sm: 12 },
+  sitekey: '',
+  validate: {
+    shape: Yup.string().required('Required'), // for validate you can see YUM
+  },
+  form: true,
+  grid: false,
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };

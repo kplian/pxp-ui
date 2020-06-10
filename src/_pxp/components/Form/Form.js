@@ -43,6 +43,7 @@ import {
   defaultValuesDatePicker,
   defaultValuesSwitch,
   defaultValuesDropzoneArea,
+  defaultValuesGoogleReCaptcha,
 } from './defaultValues';
 import DrawForm from './DrawForm';
 
@@ -68,6 +69,9 @@ const Form = forwardRef((props, ref) => {
       ...(column.type === 'AutoComplete' && { ...defaultValuesAutoComplete }),
       ...(column.type === 'DatePicker' && { ...defaultValuesDatePicker }),
       ...(column.type === 'DropzoneArea' && { ...defaultValuesDropzoneArea }),
+      ...(column.type === 'GoogleReCaptcha' && {
+        ...defaultValuesGoogleReCaptcha,
+      }),
       label: nameKey,
       ...(column.group === undefined && { group: defaultGroup }),
     };

@@ -3,8 +3,9 @@
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  */
-import { useState } from 'react';
+import {React, useRef, useState} from 'react';
 import useJsonStore from './useJsonStore';
+import {defaultValuesTextField} from "../components/Form/defaultValues";
 
 const InitValues = (values) => {
   const {
@@ -44,6 +45,9 @@ const InitValues = (values) => {
   const [isHide, setIsHide] = useState(isHidden);
   const [yupValidate, setYupValidate] = useState(validate);
 
+  // init useRef for some component
+  const ref = useRef();
+
   const disable = () => setDisabled(true);
   const enable = () => setDisabled(false);
   const hide = () => setIsHide(true);
@@ -60,12 +64,20 @@ const InitValues = (values) => {
       case 'DropzoneArea':
         setValue([]);
         break;
+      case 'GoogleReCaptcha':
+        ref.current && ref.current.reset();
+        setValue(null);
+        break;
       default:
         setValue('');
         break;
     }
     setError({ hasError: false, msg: '' });
   };
+
+
+
+
   let config = {
     ...values,
     validate: { ...validate },
@@ -74,6 +86,8 @@ const InitValues = (values) => {
     ...{ disabled, setDisabled },
     ...{ isHide, setIsHide },
     ...{ yupValidate, setYupValidate },
+    ...(type === 'GoogleReCaptcha' && { ref }),
+
     hide,
     show,
     disable,
