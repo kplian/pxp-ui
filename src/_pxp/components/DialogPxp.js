@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     width: '100%',
-    marginBottom: theme.spacing(2),
+    //marginBottom: theme.spacing(2),
+    //marginBottom: theme.spacing(2),
   },
   table: {
     minWidth: 750,
@@ -68,7 +69,7 @@ const DialogPxp = ({
           </Typography>
         </Toolbar>
       </AppBar>
-      <DialogContent>{children}</DialogContent>
+      {children}
     </Dialog>
   );
 };

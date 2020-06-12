@@ -13,7 +13,7 @@ const useJsonStore = (optionsRequest) => {
     load: optionsRequest.load === undefined ? true : optionsRequest.load,
   });
   const [open, setOpen] = useState(false);
-  const [data, loading, error] = useFetch(state);
+  const [data, setData, loading, error] = useFetch(state);
 
 
 
@@ -23,6 +23,7 @@ const useJsonStore = (optionsRequest) => {
     open,
     setOpen,
     data,
+    setData,
     loading,
     error,
     ...optionsRequest,

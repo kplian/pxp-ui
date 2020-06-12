@@ -100,7 +100,7 @@ const useFetch = (options) => {
     return clean;
   }, [options, enqueueSnackbar]);
 
-  return [data, loading, error];
+  return [data, setData, loading, error];
 };
 
 export default useFetch;
