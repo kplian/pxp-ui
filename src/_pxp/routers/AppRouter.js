@@ -20,6 +20,8 @@ import usePages from '../hooks/usePages';
 import LoadingScreen from '../components/LoadingScreen';
 import LoginDialog from '../containers/components/LoginDialog';
 import ForgotDialog from '../containers/components/ForgotDialog';
+import ConfirmDialog from '../containers/components/ConfirmDialog';
+import UpdatePasswordDialog from '../containers/components/UpdatePasswordDialog';
 
 const useStyles = makeStyles(() => ({
   loading: {
@@ -83,6 +85,34 @@ const AppRouter = ({
                 <LoginContainer>
                   <AuthPublic>
                     <ForgotDialog />
+                  </AuthPublic>
+                </LoginContainer>
+              );
+            }}
+          />
+
+          <Route
+            path="/forgot/confirm"
+            exact
+            render={() => {
+              return (
+                <LoginContainer>
+                  <AuthPublic>
+                    <ConfirmDialog />
+                  </AuthPublic>
+                </LoginContainer>
+              );
+            }}
+          />
+
+          <Route
+            path="/forgot/update/:token"
+            exact
+            render={() => {
+              return (
+                <LoginContainer>
+                  <AuthPublic>
+                    <UpdatePasswordDialog />
                   </AuthPublic>
                 </LoginContainer>
               );
