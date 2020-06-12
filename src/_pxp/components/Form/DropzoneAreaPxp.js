@@ -35,7 +35,7 @@ export const DropzoneAreaPxpComponent = ({
         fileObjects={value}
         dropzoneText={label}
         {...propsDropZoneArea}
-        onChange={(files) =>
+        onChange={(files,otro) =>
           handleChange({
             undefined,
             name,

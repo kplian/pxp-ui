@@ -17,6 +17,8 @@
  * @example backendRestVersion: '2'
  * @param {string} applicationName
  * @example applicationName: 'ERP KPLIAN'
+ * @param {string} recaptchaKey (use of environment var is recommended see env.sample for details)
+ * @example recaptchaKey: '5456dsad45fsafsa'
  * @param {string} privateInitRoute If this is not defined will be redirected to /main
  * @example privateInitRoute: '/exa/masterdetail'
  * @param {string} publicInitRoute If this is not defined will be redireccted to /login
@@ -70,6 +72,7 @@ export default {
   mode: process.env.REACT_APP_MODE,
   port: process.env.REACT_APP_PORT,
   protocol: process.env.REACT_APP_PROTOCOL,
+  recaptchaKey: process.env.REACT_APP_RECAPTCHA_KEY,
   backendVersion: 'v1',
   backendRestVersion: '2',
   applicationName: 'ERP KPLIAN',

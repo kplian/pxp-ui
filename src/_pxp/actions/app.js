@@ -8,7 +8,15 @@ export const setDetail = (status, masterDetailId = undefined) => ({
   isDetail: status,
   masterDetailId,
 });
-export const setPage = ({ page, pageStatus }) => ({
-  type: 'SET_PAGE',
-  [page]: pageStatus,
+export const setScrollState = (route, scrollY, scrollX = 0) => ({
+  type: 'SET_SCROLL_STATE',
+  route,
+  scrollX,
+  scrollY,
+});
+
+export const setTableState = (route, state) => ({
+  type: 'SET_TABLE_STATE',
+  route,
+  state,
 });

@@ -16,7 +16,7 @@ export const GoogleReCaptchaPxpComponent = forwardRef(
       <Grid key={`grid_${name}`} item {...gridForm}>
         <ReCAPTCHA
           ref={ref}
-          theme="dark"
+          theme="white"
           sitekey={sitekey}
           onChange={(captchaValue) =>
             handleChange({

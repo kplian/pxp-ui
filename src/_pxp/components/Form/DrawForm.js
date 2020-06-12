@@ -138,6 +138,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
   };
 
   const handleChange = ({ event, name, value, dataValue }) => {
+    console.log('value in handlechange',value)
     // eslint-disable-next-line no-unused-expressions
     event && event.preventDefault(); // in some inputs we dont have event like date pickers
     const stateField = states[name];
@@ -218,15 +219,23 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
     const thereIsDropZoneArea = Object.entries(states).find(
       ([nameKey, value]) => value.type === 'DropzoneArea',
     );
+    console.log('thereIsDropZoneArea',thereIsDropZoneArea)
     if (thereIsDropZoneArea) {
       const formData = new FormData();
       Object.entries(values).forEach(([nameKey, value]) => {
-        if (states[nameKey].type === 'DropzoneArea') {
-          for (let i = 0; i < value.length; i++) {
-            formData.append(`${nameKey}[]`, value[i]);
+        if(states[nameKey]) { // only the input in state , no extraParams
+          console.log(states[nameKey])
+          if (states[nameKey].type === 'DropzoneArea') {
+            console.log('valor de imagen',value)
+            for (let i = 0; i < value.length; i++) {
+              //formData.append(`${nameKey}[]`, value[i]);
+              formData.append(nameKey, value[i]);
+            }
+          } else {
+            formData.append(nameKey, value);
           }
         } else {
-          formData.append(nameKey, value);
+          formData.append(nameKey, value); // added extraParams
         }
       });
       dataForSending = formData;
@@ -602,7 +611,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
                             onClick={handleBack}
                             className={classes.button}
                           >
-                            Back
+                            {(data.steppersConfig && data.steppersConfig.backButton) ? data.steppersConfig.backButton : 'Back'}
                           </Button>
                           <Button
                             variant="contained"
@@ -612,8 +621,8 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
                           >
                             {activeStep ===
                             Object.values(groupsConfig).length - 1
-                              ? 'Finish'
-                              : 'Next'}
+                              ? (data.steppersConfig && data.steppersConfig.finishButton) ? data.steppersConfig.finishButton : 'Finish'
+                              : (data.steppersConfig && data.steppersConfig.nextButton) ? data.steppersConfig.nextButton : 'Next'}
                           </Button>
                         </div>
                       </div>
@@ -626,7 +635,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
           {activeStep === Object.values(groupsConfig).length && (
             // eslint-disable-next-line react/jsx-no-undef
             <Paper square elevation={0} className={classes.resetContainer}>
-              <Typography>All steps completed</Typography>
+              <Typography>{(data.steppersConfig && data.steppersConfig.stepsCompleted) ? data.steppersConfig.stepsCompleted : 'All steps completed'}</Typography>
               <Button
                 onClick={() => handleReset(states)}
                 className={classes.button}

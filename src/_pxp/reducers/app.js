@@ -3,6 +3,8 @@
  * @copyright Kplian Ltda 2020
  * @uthor Jaime Rivera
  */
+import _ from 'lodash';
+
 const defaultState = {
   detailPage: {
     isDetail: false,
@@ -20,8 +22,18 @@ export default (state = defaultState, action) => {
           masterDetailId: action.masterDetailId,
         },
       };
-    case 'SET_PAGE':
-      return { count: state.count - 1 };
+    case 'SET_SCROLL_STATE':
+      return _.merge(state, {
+        pages: {
+          [action.route]: { scrollX: action.scrollX, scrollY: action.scrollY },
+        },
+      });
+    case 'SET_TABLE_STATE':
+      return _.merge(state, {
+        pages: {
+          [action.route]: { table: action.state },
+        },
+      });
     default:
       return state;
   }

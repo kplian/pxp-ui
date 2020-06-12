@@ -49,6 +49,44 @@ export const startLogin = ({ login: username, password, language }) => {
   };
 };
 
+export const startResetPassword = ({ login: username, captcha }) => {
+  return () => {
+    return Pxp.apiClient
+      .doRequest({
+        url: 'seguridad/Auten/resetPassword',
+        params: {
+          username,
+          captcha,
+        },
+      })
+      .then((data) => {
+        if (data.error) {
+          return data.detail.message;
+        }
+        return 'success';
+      });
+  };
+};
+
+export const startUpdatePassword = ({ password1, token }) => {
+  return () => {
+    return Pxp.apiClient
+      .doRequest({
+        url: 'seguridad/Auten/updatePassword',
+        params: {
+          password: password1,
+          token,
+        },
+      })
+      .then((data) => {
+        if (data.error) {
+          return data.detail.message;
+        }
+        return 'success';
+      });
+  };
+};
+
 export const startSetLanguage = ({ language }) => {
   return () => {
     return Pxp.apiClient

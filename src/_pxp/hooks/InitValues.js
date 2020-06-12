@@ -65,7 +65,7 @@ const InitValues = (values) => {
         setValue([]);
         break;
       case 'GoogleReCaptcha':
-        ref.current.reset();
+        ref.current && ref.current.reset();
         setValue(null);
         break;
       default:
