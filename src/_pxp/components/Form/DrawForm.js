@@ -138,7 +138,6 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
   };
 
   const handleChange = ({ event, name, value, dataValue }) => {
-    console.log('value in handlechange',value)
     // eslint-disable-next-line no-unused-expressions
     event && event.preventDefault(); // in some inputs we dont have event like date pickers
     const stateField = states[name];
@@ -219,14 +218,11 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
     const thereIsDropZoneArea = Object.entries(states).find(
       ([nameKey, value]) => value.type === 'DropzoneArea',
     );
-    console.log('thereIsDropZoneArea',thereIsDropZoneArea)
     if (thereIsDropZoneArea) {
       const formData = new FormData();
       Object.entries(values).forEach(([nameKey, value]) => {
         if(states[nameKey]) { // only the input in state , no extraParams
-          console.log(states[nameKey])
           if (states[nameKey].type === 'DropzoneArea') {
-            console.log('valor de imagen',value)
             for (let i = 0; i < value.length; i++) {
               //formData.append(`${nameKey}[]`, value[i]);
               formData.append(nameKey, value[i]);
