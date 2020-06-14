@@ -136,6 +136,18 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
       state.reset();
     });
   };
+  // hide group by name
+  const hideGroup = (nameGroup) => {
+    Object.values(states).filter((value) => (value.group === nameGroup)).forEach((field)=>{
+      field.hide();
+    })
+  }
+  const showGroup = (nameGroup) => {
+    Object.values(states).filter((value) => (value.group === nameGroup)).forEach((field)=>{
+      field.show();
+    })
+  }
+  const eventsForm = {hideGroup, showGroup};
 
   const handleChange = ({ event, name, value, dataValue }) => {
     // eslint-disable-next-line no-unused-expressions
@@ -154,6 +166,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
         dataValue,
         stateField,
         states,
+        eventsForm
       });
     }
   };
@@ -503,6 +516,10 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
       {data.typeForm === 'normal' &&
         dialog &&
         Object.entries(groupsConfig).map(([nameKey, values], index) => {
+          const continueRenderGroup = Object.values(states).filter((value) => (value.group === nameKey && !value.isHide));
+          if(continueRenderGroup.length === 0) {
+            return '';
+          }
           return (
             <Grid container spacing={3} key={`group_${index}`}>
               {values.titleGroup !== '' && (
