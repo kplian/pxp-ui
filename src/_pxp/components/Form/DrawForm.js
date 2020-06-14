@@ -602,6 +602,8 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
           <Stepper activeStep={activeStep} orientation="vertical">
             {states &&
               Object.entries(groupsConfig).map(([nameKey, values], index) => {
+                //const continueRenderGroup = Object.values(states).filter((value) => (value.group === nameKey && !value.isHide));
+                // todo for continue render Group when the form is steppers
                 return (
                   <Step key={nameKey}>
                     {/* eslint-disable-next-line react/jsx-no-undef */}
