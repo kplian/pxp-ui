@@ -542,6 +542,10 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
         <Grid container spacing={3}>
           {states &&
             Object.entries(groupsConfig).map(([nameKey, values], index) => {
+              const continueRenderGroup = Object.values(states).filter((value) => (value.group === nameKey && !value.isHide));
+              if(continueRenderGroup.length === 0) {
+                return '';
+              }
               return (
                 <React.Fragment key={`group_${index}`}>
                   <Grid item {...values.gridGroup}>
