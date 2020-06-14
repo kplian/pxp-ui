@@ -508,6 +508,8 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
       handleSubmitForm,
       addExtraParam,
       removeExtraParam,
+      hideGroup,
+      showGroup
     };
   });
 
