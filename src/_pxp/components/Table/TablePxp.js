@@ -13,6 +13,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination';
@@ -41,6 +43,7 @@ import Form from '../Form/Form';
 import DrawTable from './DrawTable';
 import useJsonStore from '../../hooks/useJsonStore';
 import InitButton from '../../hooks/InitButton';
+import { setTableState } from '../../actions/app';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,7 +66,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  // eslint-disable-next-line react/jsx-props-no-spreading
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
@@ -83,6 +85,8 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const width = useWidth();
 
   const classes = useStyles();
+  const location = useLocation();
+  const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const {
     tableName,
@@ -92,11 +96,10 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     buttonDel,
     actionsTableCell,
     buttonsToolbar: addButtonsToolbar,
+    afterRefresh,
   } = dataConfig;
   const columnsForDrawing = Object.entries(dataConfig.columns)
-    .filter(
-      ([nameKey, value]) => value.grid === true || value.grid === undefined,
-    )
+    .filter(([, value]) => value.grid === true || value.grid === undefined)
     .reduce(
       (t, [nameKey, value]) => ({
         ...t,
@@ -147,6 +150,12 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
     setRowSelected(row);
   };
+
+  useEffect(() => {
+    if (afterRefresh && data) {
+      afterRefresh(data);
+    }
+  }, [afterRefresh, data]);
 
   useEffect(() => {
     const columnsForWidth = (nameKey, index) => {
@@ -231,6 +240,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       }), // reset to start 0 when the pagination is scrolling
       refresh: true,
     });
+    console.log('after refresh');
   };
 
   const handleNew = () => {
@@ -246,6 +256,10 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       },
     });
     setOpenDialog(true);
+  };
+
+  const saveState = () => {
+    dispatch(setTableState(location.pathname, state.params));
   };
 
   let dataConfigForEdit = { ...dataConfig };
@@ -537,6 +551,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       return {
         jsonStore,
         handleRefresh,
+        saveState,
         statesButtonsToolbar,
         disableButtonsToolbar,
         enableButtonsToolbar,
@@ -559,6 +574,9 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
             handleInputSearchChange={handleInputSearchChange}
             buttonCheckList={buttonCheckList}
             columnForSearchCount={columnForSearchCount}
+            defaultFilterValue={
+              dataConfig.getDataTable.params.bottom_filter_value || ''
+            }
           />
           {
             <DrawTable

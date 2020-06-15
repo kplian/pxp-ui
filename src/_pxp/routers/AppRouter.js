@@ -18,6 +18,10 @@ import AuthPrivate from './AuthPrivate';
 import Pxp from '../../Pxp';
 import usePages from '../hooks/usePages';
 import LoadingScreen from '../components/LoadingScreen';
+import LoginDialog from '../containers/components/LoginDialog';
+import ForgotDialog from '../containers/components/ForgotDialog';
+import ConfirmDialog from '../containers/components/ConfirmDialog';
+import UpdatePasswordDialog from '../containers/components/UpdatePasswordDialog';
 
 const useStyles = makeStyles(() => ({
   loading: {
@@ -41,6 +45,7 @@ const AppRouter = ({
   const privatePaths = filteredRoutes.map(
     (route) => pages[route.component].path,
   );
+
   const publicRoutes = Pxp.config.publicRoutes || [];
   const publicPaths = publicRoutes.map((route) => pages[route].path);
 
@@ -63,14 +68,58 @@ const AppRouter = ({
             exact
             render={() => {
               return (
-                <AuthPublic>
-                  <LoginContainer />
-                </AuthPublic>
+                <LoginContainer>
+                  <AuthPublic>
+                    <LoginDialog open />
+                  </AuthPublic>
+                </LoginContainer>
               );
             }}
           />
 
-          <Route exact path={privatePaths}>
+          <Route
+            path="/forgot"
+            exact
+            render={() => {
+              return (
+                <LoginContainer>
+                  <AuthPublic>
+                    <ForgotDialog />
+                  </AuthPublic>
+                </LoginContainer>
+              );
+            }}
+          />
+
+          <Route
+            path="/forgot/confirm"
+            exact
+            render={() => {
+              return (
+                <LoginContainer>
+                  <AuthPublic>
+                    <ConfirmDialog />
+                  </AuthPublic>
+                </LoginContainer>
+              );
+            }}
+          />
+
+          <Route
+            path="/forgot/update/:token"
+            exact
+            render={() => {
+              return (
+                <LoginContainer>
+                  <AuthPublic>
+                    <UpdatePasswordDialog />
+                  </AuthPublic>
+                </LoginContainer>
+              );
+            }}
+          />
+
+          <Route path={privatePaths}>
             <MainContainer>
               <Suspense
                 fallback={<LoadingScreen className={classes.loading} />}
@@ -80,7 +129,6 @@ const AppRouter = ({
                     const Component = pages[route.component].component;
                     return (
                       <Route
-                        key={route.id}
                         exact
                         path={pages[route.component].path}
                         render={() => {
@@ -99,6 +147,28 @@ const AppRouter = ({
                       />
                     );
                   })}
+                  {
+                    // this will create detailPages for a page only if main page was created from menu
+                    filteredRoutes.reduce((subroutes, route) => {
+                      if (pages[route.component].detailPages) {
+                        pages[route.component].detailPages.forEach((page) => {
+                          const Component = page.component;
+                          subroutes.push(
+                            <Route
+                              exact
+                              path={pages[route.component].path + page.path}
+                              render={() => (
+                                <AuthPrivate>
+                                  <Component />
+                                </AuthPrivate>
+                              )}
+                            />,
+                          );
+                        });
+                      }
+                      return subroutes;
+                    }, [])
+                  }
                 </Switch>
               </Suspense>
             </MainContainer>
@@ -113,15 +183,12 @@ const AppRouter = ({
                     const Component = pages[route].component;
                     return (
                       <Route
-                        key={route}
                         exact
                         path={pages[route].path}
                         render={() => {
                           // this is only to lazy loading page translations
-                          if (pages[route.component].translationsNS) {
-                            i18n.loadNamespaces(
-                              pages[route.component].translationsNS,
-                            );
+                          if (pages[route].translationsNS) {
+                            i18n.loadNamespaces(pages[route].translationsNS);
                           }
                           return (
                             <AuthPublic>
@@ -137,7 +204,11 @@ const AppRouter = ({
             </PublicContainer>
           </Route>
           <Route>
-            {Pxp.config.notFoundRoute ? <Redirect to={Pxp.config.notFoundRoute} /> : <NotFoundPage />}
+            {Pxp.config.notFoundRoute ? (
+              <Redirect to={Pxp.config.notFoundRoute} />
+            ) : (
+              <NotFoundPage />
+            )}
           </Route>
         </Switch>
       </div>

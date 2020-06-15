@@ -11,7 +11,6 @@ import { useMediaQuery } from '@material-ui/core';
 import Topbar from './components/Topbar';
 import Sidebar from './components/sidebar/Sidebar';
 import LoginDialog from './components/LoginDialog';
-import Breadcrumbs from '../utils/Breadcrumbs';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flex: '1 1 auto',
-    height: 'calc( 100vh - 80px)',
+    height: 'calc( 100vh - 70px)',
     width: '100%',
     padding: '0px 16px 16px 16px',
     overflow: 'hidden',
@@ -48,7 +47,6 @@ const MainContainer = ({ children }) => {
 
   const currentUser = useSelector((state) => state.auth.currentUser.user);
   const [openSidebar, setOpenSidebar] = useState(isDesktop);
-  const detail = useSelector((state) => state.app.detailPage);
   const handleSidebarOpen = () => {
     setOpenSidebar(true);
   };
@@ -75,10 +73,7 @@ const MainContainer = ({ children }) => {
         variant={isDesktop && openSidebar ? 'permanent' : 'temporary'}
       />
 
-      <main className={classes.content}>
-        {!detail.isDetail && <Breadcrumbs className={classes.breadcrumbs} />}
-        {children}
-      </main>
+      <main className={classes.content}>{children}</main>
 
       <LoginDialog username={currentUser} />
     </div>

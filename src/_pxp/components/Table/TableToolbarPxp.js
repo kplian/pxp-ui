@@ -89,6 +89,7 @@ const TableToolbarPxp = (props) => {
     handleInputSearchChange,
     buttonCheckList,
     columnForSearchCount,
+    defaultFilterValue,
   } = props;
 
   return (
@@ -131,6 +132,7 @@ const TableToolbarPxp = (props) => {
                   onChange={(event) =>
                     handleInputSearchChange(event.target.value)
                   }
+                  defaultValue={defaultFilterValue}
                   inputProps={{ 'aria-label': 'search' }}
                 />
               </div>
