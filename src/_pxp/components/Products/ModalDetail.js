@@ -9,10 +9,13 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 
+import Features from './Features';
+
 import AwesomeSlider from 'react-awesome-slider';
 import 'react-awesome-slider/dist/styles.css';
 import 'react-awesome-slider/dist/custom-animations/cube-animation.css';
 import withAutoplay from 'react-awesome-slider/dist/autoplay';
+
 const AutoplaySlider = withAutoplay(AwesomeSlider);
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +32,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const ModalDetail = ({ open, handleClose }) => {
+const ModalDetail = ({ open, handleClose, item }) => {
     const classes = useStyles();
 
     return (
@@ -40,7 +43,7 @@ const ModalDetail = ({ open, handleClose }) => {
               <CloseIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              Annai
+              { item.alias }
             </Typography>
             <Button autoFocus color="secondary" variant="contained" onClick={handleClose}>
               Fijar Cita
@@ -56,6 +59,23 @@ const ModalDetail = ({ open, handleClose }) => {
             <div data-src="https://www.ctvnews.ca/polopoly_fs/1.4169897.1574420912!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg" />
             <div data-src="https://c4.wallpaperflare.com/wallpaper/105/218/545/angels-barefoot-blondes-commercial-wallpaper-preview.jpg" />
         </AutoplaySlider>
+        <Features item={item} features={
+          [
+            {
+              label: 'Precio',
+              pipe: (item ) => 
+                  Math.round((parseFloat(item.precio_hora) + Number.EPSILON) * 100) / 100 + 'Bs'
+          },
+          {
+            label: 'Ciudad',
+            field: 'ciudad'
+          },
+          {
+              label: 'Distancia',
+              pipe: (item) => Math.round((parseFloat(item.distancia) + Number.EPSILON) * 100) / 100 + 'Km'
+          },
+          ]  
+        }/>
       </Dialog>
     )
 };

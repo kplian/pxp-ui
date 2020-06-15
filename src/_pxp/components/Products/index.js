@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Box } from '@material-ui/core';
 import Item from './Item';
 import BasicFilters from './BasicFilters';
-import InfiniteScroll from 'react-infinite-scroller';
 import useObserver from '../../hooks/useObserver';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import _ from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,40 +45,45 @@ const Loader = (props) => (
 
 const Products = ({ data = [], filters, config }) => {
   const classes = useStyles();
-  const [ filter, setFilter ] = React.useState(null);
-  const [ page, setPage ] = React.useState( -1 );
+  const [ filter, setFilter ] = useState(null);
+  const [ page, setPage ]     = useState( -1 );
   const [ observer, setElement, entry ] = useObserver({
     threshold: 0.9,
     root: null,
     rootMargin: '10px'
   });
   
-  const handleFilter = (currentFilter) => {
-    console.log('filter', currentFilter);
+  const handleFilter = _.debounce((currentFilter) => {
     setFilter( currentFilter );
-  };
+  }, 500);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const loaderRef = document.getElementById('loader');
-
-    console.log('loader',loaderRef)
     setElement(loaderRef);
-  }, [])
+  }, [config.pagination.hasMore]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (entry && entry.isIntersecting && config.pagination.hasMore) {
       setPage( prev => prev + 1);
 
-      const element = entry.target;
+      // const element = entry.target;
       // observer.unobserve(element);
     }
   }, [entry]);
 
-  React.useEffect((args) => {
+  useEffect(() => {
     if( page >= 0 && config.pagination.hasMore ) {
-      config.pagination.onLoadMore(page);
+      config.pagination.onLoadMore(page, filter);
     } 
-  }, [page])
+  }, [page]);
+
+  useEffect(() => {
+    if( page === 0 ) {
+      config.pagination.onLoadMore(page, filter);
+    } else {
+      setPage(0);
+    }
+  }, [filter]);
 
   return (
     <Box>
@@ -98,9 +102,8 @@ const Products = ({ data = [], filters, config }) => {
             .map((item, i) => (
               <Grid 
                 item 
-                key={item }
                 xs={6}
-                md={4}
+                md={3}
                 lg={3}
                 xl={2}
                 key={i} 
@@ -119,31 +122,31 @@ const Products = ({ data = [], filters, config }) => {
 
 export default Products;
 
-const valueFilter = ( item, filter ) => {
-  if( filter.field === '*') {
-    return allFilter( item, filter.value, filter.criteria );
-  } else {
-    switch( filter.criteria ) {
-      case 'equal' : return item[filter.field] === filter.value;
-      case 'greater' : return item[filter.field] > filter.value;
-      case 'less' : return item[filter.field] < filter.value;
-    }    
-  }
-};
+// const valueFilter = ( item, filter ) => {
+//   if( filter.field === '*') {
+//     return allFilter( item, filter.value, filter.criteria );
+//   } else {
+//     switch( filter.criteria ) {
+//       case 'equal' : return item[filter.field] === filter.value;
+//       case 'greater' : return item[filter.field] > filter.value;
+//       case 'less' : return item[filter.field] < filter.value;
+//     }    
+//   }
+// };
 
-const allFilter = ( item, value, criteria ) => {
-  let isValid = false;
+// const allFilter = ( item, value, criteria ) => {
+//   let isValid = false;
   
-  Object.keys(item).filter( key => key !== 'urlImage').forEach( key => {
-    let aux;
+//   Object.keys(item).filter( key => key !== 'urlImage').forEach( key => {
+//     let aux;
 
-      switch( criteria ) {
-        case 'equal' : aux = value ? item[key] === value : true ; break;
-        case 'greater' : aux = value ? item[key] > value : true ; break;
-        case 'less' : aux = value ? item[key] < value : true ; break;
-        case 'contains' : aux = value ? item[key].toString().toLowerCase().includes( value.toString().toLowerCase()): true ; break;
-      };
-      isValid = isValid ? isValid : aux;
-  });
-  return isValid;
-};
+//       switch( criteria ) {
+//         case 'equal' : aux = value ? item[key] === value : true ; break;
+//         case 'greater' : aux = value ? item[key] > value : true ; break;
+//         case 'less' : aux = value ? item[key] < value : true ; break;
+//         case 'contains' : aux = value ? item[key].toString().toLowerCase().includes( value.toString().toLowerCase()): true ; break;
+//       };
+//       isValid = isValid ? isValid : aux;
+//   });
+//   return isValid;
+// };

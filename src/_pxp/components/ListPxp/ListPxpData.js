@@ -18,8 +18,6 @@ const ListPxpData = ({ config }) => {
     hasMore: configData.hasMore,
     parent: document.getElementById('content'),
     onLoadMore: (page) => {
-      console.log('load me volvi a activar', page);
-
       setStart(page * configData.limit);
     },
   };

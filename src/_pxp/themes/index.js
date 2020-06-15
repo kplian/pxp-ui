@@ -9,14 +9,11 @@ import typography from './typography';
 import LIGHT from './light';
 import ONE_DARK from './dark';
 import KPLIAN from './kplian';
-import PINK from './pink';
+import { THEMES } from '../utils/themes';
+import config from '../../config';
 
-export const THEMES = {
-  LIGHT: 'LIGHT',
-  PINK: 'PINK',
-  ONE_DARK: 'ONE_DARK',
-  KPLIAN: 'KPLIAN',
-};
+const CUSTOM_THEMES = config.customThemesList || [];
+
 
 const baseConfig = {
   direction: 'ltr',
@@ -41,7 +38,7 @@ const baseConfig = {
   },
 };
 
-const themeConfigs = [LIGHT, ONE_DARK, KPLIAN, PINK];
+const themeConfigs = [LIGHT, ONE_DARK, KPLIAN, ...CUSTOM_THEMES ];
 
 export function createTheme(settings = {}) {
   let themeConfig = themeConfigs.find((theme) => theme.name === settings.theme);

@@ -3,7 +3,7 @@
  * @copyright Kplian Ltda 2020
  * @uthor Israel Colque
  */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SidebarNav = (props) => {
-  const { menu, className, onClose, open } = props;
+  const { menu, className } = props;
   const location = useLocation();
   const classes = useStyles();
   const { pages: components } = usePages();

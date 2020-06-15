@@ -2,7 +2,7 @@ import React from 'react';
 import Products from './index';
 import useJsonStore from '../../hooks/useJsonStore';
 
-const params = {
+const defaultParams = {
     start: 0,
     limit: 50,
     dir: 'desc',
@@ -10,30 +10,43 @@ const params = {
 
 const ProductsPxp = ({ config, filters }) => {
     const jsonStore = useJsonStore({
-        ...config.getDataTable
+        ...config.getDataTable,
+        params: {...defaultParams, ...config.getDataTable.params},
     });
     
     const { state, set, data, loading } = jsonStore;
-    console.log('data', data);
 
     const pagination = {
         hasMore: true,
+        pageInit: -1,
         parent: document.getElementById('content'),
-        onLoadMore: (page) => {
-          console.log('load me volvi a activar', page);
-          handleLoadMore(page);
+        onLoadMore: (page, filter) => {
+          handleLoadMore(page, filter);
         },
     };
 
-    const handleLoadMore = ( page ) => {
+    const handleLoadMore = ( page, filter = null ) => {
+        let filterConfig = { 
+            sort: state.params.sort,
+            limit: state.params.limit,
+            start: state.params.start,
+         };
+
+        if( filter && filter.search === true ) {
+            filterConfig.bottom_filter_fields = [ filter.field ].join();
+            filterConfig.bottom_filter_value  = filter.value;
+        } else if( filter) {
+            filterConfig[filter.field] = filter.value;            
+        } 
+
         set({
             ...state,
             params: {
-              ...state.params,
+              ...filterConfig,
               start: parseInt(page * state.params.limit, 10),
             },
             load: true,
-            infinite: true,
+            infinite: page === 0 ? false : true,
         });
     }; 
 

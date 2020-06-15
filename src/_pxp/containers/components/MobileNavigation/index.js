@@ -74,7 +74,7 @@ const useStylesAction = makeStyles((theme) => ({
 
 
 const generateItems = ( menu, components ) => {
-  return menu[0].childrens[1].childrens.map( item => {
+  return menu.map( item => {
     return {
       icon: item.icon,
       label: item.text,
@@ -91,8 +91,6 @@ const MobileNavigation = ({ actions }) => {
   const { pages: components } = usePages();
   
   const options = actions || generateItems(menu, components);
-
-
   // const options = actions || [
   //   {
   //     label: 'Discover',

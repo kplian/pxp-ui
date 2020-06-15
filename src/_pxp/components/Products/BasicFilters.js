@@ -32,11 +32,15 @@ const BasicFilters = ({filters, handleFilter }) => {
         setSearch(!search);
     };
 
-    const handleSearch = ( e ) => {        
-        handleFilter( {
+    const handleSearch = ( e ) => {  
+        let searchFitler = filters.filter( flr => flr.search )[0] || null;    
+        searchFitler = { ...searchFitler, value: e.target.value };
+
+        handleFilter( searchFitler || {
             field: '*',
             value: e.target.value,
-            criteria: 'contains'
+            criteria: 'contains',
+            search: true,
         })
     };
 
@@ -65,7 +69,7 @@ const BasicFilters = ({filters, handleFilter }) => {
                     
                 >
                     {
-                        filters.map( filter => 
+                        filters.filter( filter => !filter.search ).map( filter => 
                             <Tab key={filter.label} label={ filter.label }/>    
                         )
                     }

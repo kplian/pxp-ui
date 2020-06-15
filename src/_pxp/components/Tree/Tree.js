@@ -124,7 +124,6 @@ const RecursiveMap = ({data, level = 0} ) => {
     };
 
     const checkedItem = (item) => {
-      console.log( item );
       recursiveChecked(item);
       setTreeData([...auxData]);
     }

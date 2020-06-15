@@ -10,19 +10,16 @@ import { useTranslation } from 'react-i18next';
 import { ThemeProvider } from '@material-ui/core';
 import { storeSettings } from './settings-store';
 import { createTheme } from '../themes';
-import config from '../../config'
+import config from '../../config';
+import { THEMES } from '../utils/themes';
 
-const THEMES = {
-  LIGHT: 'LIGHT',
-  PINK: 'PINK',
-  ONE_DARK: 'ONE_DARK',
-  KPLIAN: 'KPLIAN',
-};
+const activeDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+const themeDefault = activeDark ? config.darkTheme || THEMES.ONE_DARK : config.defaultTheme || THEMES.LIGHT;
 
 const defaultSettings = {
   direction: 'ltr',
   responsiveFontSizes: true,
-  theme: config.defaultTheme || THEMES.LIGHT,
+  theme: themeDefault,
   language: undefined,
   defaultLanguage: undefined,
 };
