@@ -24,14 +24,14 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
   },
 }));
-const ChatView = ({ table, idTable, idTableDesc, typeChat, idComponent }) => {
+const ChatView = ({ table, idTable, idTableDesc, typeChat, idChat, idComponent }) => {
   const classes = useStyles();
 
-  const event = `${typeChat}_${idTableDesc}_${idTable}`;
+  const event = `${typeChat}_${idTableDesc}_${idTable}_${idChat}`;
 
   return (
     <div className={classes.root}>
-      <ThreadDetails eventWs={event} idComponent={idComponent} />
+      <ThreadDetails eventWs={event} idChat={idChat} idComponent={idComponent} />
     </div>
   );
 };

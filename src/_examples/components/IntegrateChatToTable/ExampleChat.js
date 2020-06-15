@@ -27,11 +27,13 @@ const ExampleChat = () => {
     idTableDesc: 'id_data_example', // change that for another id
     idTable: undefined,
     typeChat: 'CHAT_DATA_EXAMPLE', // Code of tipo_chat
+    idChat: undefined,
   });
-  const openChatView = ({ idTable }) => {
+  const openChatView = ({ idTable, idChat }) => {
     setChatView((prev) => ({
       ...prev,
       idTable,
+      idChat,
       open: true,
       idComponent: uuIdV4(),
     }));
@@ -52,7 +54,6 @@ const ExampleChat = () => {
         setLoadingScreen(false);
         enqueueSnackbar(resp.detail.message, {
           variant: !resp.error ? 'success' : 'error',
-          //action: <Button>See all</Button>,
         });
         refTable.current.handleRefresh();
       });
@@ -97,6 +98,7 @@ const ExampleChat = () => {
           onClick: (row) => {
             openChatView({
               idTable: row.id_tipo_chat,
+              idChat: row.id_chat,
             });
           },
         },
@@ -137,6 +139,7 @@ const ExampleChat = () => {
           idTableDesc={chatView.idTableDesc}
           typeChat={chatView.typeChat}
           idComponent={chatView.idComponent}
+          idChat={chatView.idChat}
         />
       </DialogPxp>
       {loadingScreen && <LoadingScreen />}
