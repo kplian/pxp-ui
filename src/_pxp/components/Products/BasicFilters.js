@@ -1,93 +1,98 @@
 import React, { useState, useEffect } from 'react';
-import { Tabs, Tab, Box, IconButton, Icon, InputBase, Grow } from '@material-ui/core';
+import {
+  Tabs,
+  Tab,
+  Box,
+  IconButton,
+  Icon,
+  InputBase,
+  Grow,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import clsx from 'clsx';
 
-const useStyles = makeStyles( theme => ({
-    root: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignContent: 'center',
-        // backgroundColor: theme.palette.primary.light
-    },
-    container: {
-        width: 'calc( 100% - 48px)',
-    },
-    tabs: {
-        // width: 'calc( 100% - 48px)',
-    },
-    input: {
-        width: 'calc( 100% - 48px)',
-        paddingLeft: '10px !important',
-    }
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignContent: 'center',
+    // backgroundColor: theme.palette.primary.light
+  },
+  container: {
+    width: 'calc( 100% - 48px)',
+  },
+  tabs: {
+    // width: 'calc( 100% - 48px)',
+  },
+  input: {
+    width: 'calc( 100% - 48px)',
+    paddingLeft: '10px !important',
+  },
 }));
 
-const BasicFilters = ({filters, handleFilter }) => {
-    const classes = useStyles();
-    const [ value, setValue ] = useState(0);
-    const [ search, setSearch ] = useState(false);
-    const handleChange = (event, newValue) => setValue(newValue);
+const BasicFilters = ({ filters, handleFilter }) => {
+  const classes = useStyles();
+  const [value, setValue] = useState(0);
+  const [search, setSearch] = useState(false);
+  const handleChange = (event, newValue) => setValue(newValue);
 
-    const toggleSearch = () => {
-        setSearch(!search);
-    };
+  const toggleSearch = () => {
+    setSearch(!search);
+  };
 
-    const handleSearch = ( e ) => {        
-        handleFilter( {
-            field: '*',
-            value: e.target.value,
-            criteria: 'contains'
-        })
-    };
+  const handleSearch = (e) => {
+    handleFilter({
+      field: '*',
+      value: e.target.value,
+      criteria: 'contains',
+    });
+  };
 
-    useEffect(() => {
-        handleFilter( filters[value] );
-    }, [value]);
+  useEffect(() => {
+    handleFilter(filters[value]);
+  }, [value]);
 
-    useEffect(() => {
-        if( !search ) {
-            handleFilter( filters[value] );   
-            // inputSearch.value = '';       
-        }
-    }, [search]);
+  useEffect(() => {
+    if (!search) {
+      handleFilter(filters[value]);
+      // inputSearch.value = '';
+    }
+  }, [search]);
 
-    return (
-        <Box className={ classes.root }>
-            { !search && <Grow in={!search} timeout={700} className={classes.container}>
-                <Tabs
-                    value={value}
-                    onChange={ handleChange }
-                    indicatorColor="primary"
-                    textColor="primary"
-                    variant="fullWidth"
-                    aria-label="Filters"
-                    className={ classes.tabs }
-                    
-                >
-                    {
-                        filters.map( filter => 
-                            <Tab key={filter.label} label={ filter.label }/>    
-                        )
-                    }
-                </Tabs>
-            </Grow> 
-            }
-            { search && <Grow in={search} timeout={700} className={classes.input}>
-                <InputBase
-                    className={classes.input}
-                    placeholder="Search" 
-                    autoFocus 
-                    inputProps={{ 'aria-label': 'search' }}
-                    onKeyUp={ handleSearch }
-                />
-            </Grow> 
-            }               
-            <IconButton onClick={ toggleSearch } >
-                <Icon>{ !search ? 'search' : 'close' }</Icon>
-            </IconButton>
-        </Box>
-        
-    )
+  return (
+    <Box className={classes.root}>
+      {!search && (
+        <Grow in={!search} timeout={700} className={classes.container}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="fullWidth"
+            aria-label="Filters"
+            className={classes.tabs}
+          >
+            {filters.map((filter) => (
+              <Tab key={filter.label} label={filter.label} />
+            ))}
+          </Tabs>
+        </Grow>
+      )}
+      {search && (
+        <Grow in={search} timeout={700} className={classes.input}>
+          <InputBase
+            className={classes.input}
+            placeholder="Search"
+            autoFocus
+            inputProps={{ 'aria-label': 'search' }}
+            onKeyUp={handleSearch}
+          />
+        </Grow>
+      )}
+      <IconButton onClick={toggleSearch}>
+        <Icon>{!search ? 'search' : 'close'}</Icon>
+      </IconButton>
+    </Box>
+  );
 };
 
 export default BasicFilters;
