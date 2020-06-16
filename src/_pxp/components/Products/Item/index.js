@@ -6,9 +6,13 @@ import {
   Typography, IconButton, Icon
 } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
-import ModalDetail from './ModalDetail';
-import Features from './Features';
+import ModalDetail from '../ModalDetail';
+import Features from '../Features';
 import clsx from 'clsx';
+
+import ItemTitle from './ItemTitle';
+import ItemDescription from './ItemDescription';
+import ItemRating from './ItemRating';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,35 +56,10 @@ const useStyles = makeStyles((theme) => ({
   actions:{
     justifyContent: 'center'
   },
-  badge: {
-    height: 10,
-    width: 10,
-    borderRadius: 5,
-    marginTop: 10,
-    marginRight: -12,
-    backgroundColor: 'rgb(66, 183, 42)',
-    border: 'solid 1px ' + theme.palette.background.dark,
-  },
 }));
 
-const useStylesRating = makeStyles((theme) => ({
-  root: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-  },
-  iconFilled: {
 
-  },
-  iconEmpty: {
-    color: 'white'
-  },
-}));
 
-const capitalizeFirst = ( cad, separator=' ' ) => {
-  const capilatizeWord = ( string ) => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-  return cad.split(separator).reduce( ( acc, curr) => acc + capilatizeWord(curr) + separator, '');
-};
 const Item = ({item, config}) => {
   const classes = useStyles();
   const [openDetail, setOpenDetail] = React.useState(false);
@@ -98,7 +77,7 @@ const Item = ({item, config}) => {
     <Card className={classes.root}>
       <CardMedia
         className={classes.media}
-        image={ imagesDemo[parseInt(Math.random() * imagesDemo.length)] }
+        image={ config.urlImage(item) || imagesDemo[parseInt(Math.random() * imagesDemo.length)] }
         title="Image"
       />
       <CardContent>
@@ -108,7 +87,7 @@ const Item = ({item, config}) => {
             subtitle={  item[ columns.subtitle ] } 
             active={ typeof columns.active === 'function' ? columns.active(item) : item[ columns.active ] }
           />
-       }
+        }
         <ItemDescription description={ item[ columns.description ] }/>
         
       </CardContent>
@@ -129,62 +108,16 @@ const Item = ({item, config}) => {
         ))}
       </CardActions>
       <ItemRating rating={ item[columns.rating]}/>
-      <ModalDetail open={ openDetail } item={ item } handleClose={ handleClose }/>
+      <ModalDetail open={ openDetail } item={ item } handleClose={ handleClose } columns={columns}/>
     </Card>
   )
 };
 
 export default Item;
- 
-/** TITLE
- * {
- *    title: string
- *    active: boolean
- *    description: string,
- *    actions: array object
- * }
- */
 
-const ItemTitle = ({title, subtitle, active}) => {
-  // const header = title + (subtitle ? ', ' + subtitle : '');
-  const classes = useStyles();
 
-  const titleRender = (title, subtitle) => (
-    <Typography gutterBottom variant="h4" component="h2"> 
-        { capitalizeFirst(title) }
-      <Typography variant="subtitle2" component="span" color="textSecondary">
-        { ', ' + capitalizeFirst(subtitle) }
-      </Typography>
-    </Typography>
-  );
 
-  return (
-    <Badge color="secondary" variant="dot" invisible={!active} classes={{ badge: classes.badge }}>
-      {titleRender( title, subtitle )}
-    </Badge>
-  )
-};
 
-const ItemDescription = ( {description} ) => {
-  return (
-    <Typography variant="body2" color="textSecondary" component="p">
-      { description }
-    </Typography>
-  )
-};
-
-const ItemRating = ({ rating }) => {
-  return (
-    <Rating
-        name="rating"
-        value={ parseInt(rating) || 0 }
-        classes={useStylesRating()}
-        precision={0.5}
-        size="small"
-        readOnly
-      />
-  )
-};
 
 const imagesDemo = [
   'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTcFYKy7CrMvjbL4hEu0JH4865Qk4zLv9AI58koNxq3HPDkio4Z&usqp=CAU',
