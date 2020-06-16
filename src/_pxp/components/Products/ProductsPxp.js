@@ -2,33 +2,51 @@ import React from 'react';
 import Products from './index';
 import useJsonStore from '../../hooks/useJsonStore';
 
+const defaultParams = {
+  start: 0,
+  limit: 50,
+  dir: 'desc',
+};
+
 const ProductsPxp = ({ config, filters }) => {
   const jsonStore = useJsonStore({
     ...config.getDataTable,
+    params: { ...defaultParams, ...config.getDataTable.params },
   });
 
   const { state, set, data } = jsonStore;
-  console.log('data', data);
+  const handleLoadMore = (page, filter = null) => {
+    const filterConfig = {
+      sort: state.params.sort,
+      limit: state.params.limit,
+      start: state.params.start,
+    };
 
-  const pagination = {
-    hasMore: true,
-    parent: document.getElementById('content'),
-    onLoadMore: (page) => {
-      console.log('load me volvi a activar', page);
-      handleLoadMore(page);
-    },
-  };
+    if (filter && filter.search === true) {
+      filterConfig.bottom_filter_fields = [filter.field].join();
+      filterConfig.bottom_filter_value = filter.value;
+    } else if (filter) {
+      filterConfig[filter.field] = filter.value;
+    }
 
-  const handleLoadMore = (page) => {
     set({
       ...state,
       params: {
-        ...state.params,
+        ...filterConfig,
         start: parseInt(page * state.params.limit, 10),
       },
       load: true,
-      infinite: true,
+      infinite: page !== 0,
     });
+  };
+
+  const pagination = {
+    hasMore: true,
+    pageInit: -1,
+    parent: document.getElementById('content'),
+    onLoadMore: (page, filter) => {
+      handleLoadMore(page, filter);
+    },
   };
 
   config.pagination = pagination;

@@ -99,4 +99,11 @@ export default {
     backendTimezone: 'America/Los_Angeles',
     defaultRenderFormat: 'DD-MM-YYYY H:mm:ss',
   },
+  defaultTheme: 'KPLIAN',
+  // darkTheme: 'PINK_DARK',
+  // customThemes: [
+  //   'PINK',
+  //   'PINK_DARK'
+  // ],
+  // customThemesList: CUSTOM_THEMES
 };

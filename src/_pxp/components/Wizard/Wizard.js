@@ -3,7 +3,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import StepIcon from '@material-ui/core/StepIcon';
+
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -11,8 +11,7 @@ import Icon from '@material-ui/core/Icon';
 import StepConnector from '@material-ui/core/StepConnector';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import clsx from 'clsx';
-import VideoLabelIcon from '@material-ui/icons/VideoLabel';
-import { FileIcon, UserSettings, IconPxp } from '../../icons';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {

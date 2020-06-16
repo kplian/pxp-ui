@@ -40,11 +40,17 @@ const BasicFilters = ({ filters, handleFilter }) => {
   };
 
   const handleSearch = (e) => {
-    handleFilter({
-      field: '*',
-      value: e.target.value,
-      criteria: 'contains',
-    });
+    let searchFitler = filters.filter((flr) => flr.search)[0] || null;
+    searchFitler = { ...searchFitler, value: e.target.value };
+
+    handleFilter(
+      searchFitler || {
+        field: '*',
+        value: e.target.value,
+        criteria: 'contains',
+        search: true,
+      },
+    );
   };
 
   useEffect(() => {
@@ -71,9 +77,11 @@ const BasicFilters = ({ filters, handleFilter }) => {
             aria-label="Filters"
             className={classes.tabs}
           >
-            {filters.map((filter) => (
-              <Tab key={filter.label} label={filter.label} />
-            ))}
+            {filters
+              .filter((filter) => !filter.search)
+              .map((filter) => (
+                <Tab key={filter.label} label={filter.label} />
+              ))}
           </Tabs>
         </Grow>
       )}

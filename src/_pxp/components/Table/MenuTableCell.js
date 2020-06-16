@@ -22,7 +22,6 @@ const MenuTableCell = ({ buttons, row, icon }) => {
   };
 
   const handleClose = (callback) => {
-    console.log('asdasdasd');
     setAnchorEl(null);
     if (typeof callback === 'function') {
       callback();

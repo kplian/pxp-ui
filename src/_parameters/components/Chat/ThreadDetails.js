@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.dark,
   },
 }));
-const ThreadDetails = ({ eventWs, idComponent }) => {
+const ThreadDetails = ({ eventWs, idChat, idComponent }) => {
   const classes = useStyles();
   const messagesRef = useRef(null);
 
@@ -39,8 +39,8 @@ const ThreadDetails = ({ eventWs, idComponent }) => {
       start: '0',
       limit: '10',
       sort: 'id_mensaje',
-      dir: 'asc', // for seeing every time the last save
-      contenedor: 'docs-per',
+      dir: 'asc',
+      id_chat: idChat,
     },
   };
 
@@ -66,6 +66,9 @@ const ThreadDetails = ({ eventWs, idComponent }) => {
   };
   useEffect(() => {
     console.log('data', data);
+    if(data) {
+      messagesRef.current.scrollToBottom(0);
+    }
   }, [data]);
   // mount
   useEffect(() => {
@@ -110,6 +113,7 @@ const ThreadDetails = ({ eventWs, idComponent }) => {
     sendMessageWs({
       event: eventWs,
       msg: message,
+      idChat,
     });
     setTimeout(() => {
       messagesRef.current.scrollToBottom(0);

@@ -51,9 +51,9 @@ function Message({ className, avatar ,user, userNameFrom, idFrom, message, ...re
             borderRadius="borderRadius"
             boxShadow={1}
           >
-            <Link color="inherit" component={RouterLink} to="#" variant="h6">
+            <Typography color="inherit" variant="h6">
               {userNameFrom}
-            </Link>
+            </Typography>
             <Box mt={1}>
               <Typography color="inherit" variant="body1">
                 {message}

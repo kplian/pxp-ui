@@ -24,14 +24,7 @@ import {
 import { Settings as SettingsIcon } from '@material-ui/icons';
 import useSettings from '../../hooks/useSettings';
 import { startSetLanguage } from '../../actions/auth';
-// import { THEMES } from 'src/constants';
-
-const THEMES = {
-  LIGHT: 'LIGHT',
-  PINK: 'PINK',
-  ONE_DARK: 'ONE_DARK',
-  KPLIAN: 'KPLIAN',
-};
+import { THEMES } from '../../utils/themes';
 
 const LANGUAGES = {
   ENGLISH: 'en',
