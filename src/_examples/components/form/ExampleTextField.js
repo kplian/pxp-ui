@@ -41,6 +41,15 @@ const ExampleTextField = () => {
         typeTextField: 'password',
         hide: true,
       },
+      textArea: {
+        ...configTextField,
+        label: 'textFieldPassword',
+        gridForm: { xs: 12, sm: 6 },
+        inputProps: {
+          multiline: true,
+            rows: 5
+        },
+      },
     },
   };
   return (

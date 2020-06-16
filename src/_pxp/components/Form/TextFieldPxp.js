@@ -28,6 +28,7 @@ export const TextFieldPxpComponent = ({
   disabled = false,
   helperText,
   size = 'medium',
+  inputProps,
 }) => {
   const {
     label,
@@ -62,6 +63,7 @@ export const TextFieldPxpComponent = ({
         disabled={disabled}
         onBlur={() => handleBlur(name)}
         size={size}
+        {...inputProps}
       />
     </Grid>
   );

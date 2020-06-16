@@ -37,7 +37,7 @@ const ThreadDetails = ({ eventWs, idChat, idComponent }) => {
     url: 'parametros/Mensaje/listarMensaje',
     params: {
       start: '0',
-      limit: '10',
+      limit: '10000',
       sort: 'id_mensaje',
       dir: 'asc',
       id_chat: idChat,
