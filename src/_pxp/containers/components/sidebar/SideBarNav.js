@@ -102,14 +102,6 @@ const SidebarNav = (props) => {
   const classes = useStyles();
   const { pages: components } = usePages();
 
-  /*useEffect(() => {
-    console.log('llega', open, onClose);
-    if (open && onClose) {
-      onClose();
-    }
-    // eslint-disable-next-line
-  }, [location.pathname]); */
-
   return (
     <div>
       {menu.map((page) => {
