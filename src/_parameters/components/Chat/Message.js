@@ -39,6 +39,7 @@ function Message({
   ...rest
 }) {
   const classes = useStyles();
+  const dateMessage = date || new Date();
   return (
     <div className={clsx(classes.root, className)} {...rest}>
       <Box display="flex" maxWidth={500} ml={user === idFrom ? 'auto' : 0}>
@@ -70,7 +71,7 @@ function Message({
           </Box>
           <Box mt={1} display="flex" justifyContent="flex-end">
             <Typography noWrap color="textSecondary" variant="caption">
-              {moment(date).fromNow()}
+              {moment(dateMessage).fromNow()}
             </Typography>
           </Box>
         </Box>
