@@ -139,6 +139,7 @@ const ThreadDetails = ({ eventWs, idChat, idComponent }) => {
               userNameFrom={i.user_name_from}
               idFrom={i.id_usuario_from}
               message={i.mensaje}
+              date={i.fecha_reg}
             />
           ))}
       </Box>

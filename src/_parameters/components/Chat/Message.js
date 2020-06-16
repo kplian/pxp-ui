@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import { Avatar, Box, Link, Typography, makeStyles } from '@material-ui/core';
-
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,24 +28,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Message({ className, avatar ,user, userNameFrom, idFrom, message, ...rest }) {
+function Message({
+  className,
+  avatar,
+  user,
+  userNameFrom,
+  idFrom,
+  message,
+  date,
+  ...rest
+}) {
   const classes = useStyles();
   return (
     <div className={clsx(classes.root, className)} {...rest}>
-      <Box
-        display="flex"
-        maxWidth={500}
-        ml={user === idFrom ? 'auto' : 0}
-      >
+      <Box display="flex" maxWidth={500} ml={user === idFrom ? 'auto' : 0}>
         <Avatar className={classes.avatar} src={avatar} />
         <Box ml={2}>
           <Box
-            bgcolor={
-              user === idFrom ? 'secondary.main' : 'background.default'
-            }
-            color={
-              user === idFrom ? 'secondary.contrastText' : 'text.primary'
-            }
+            bgcolor={user === idFrom ? 'secondary.main' : 'background.default'}
+            color={user === idFrom ? 'secondary.contrastText' : 'text.primary'}
             py={1}
             px={2}
             borderRadius="borderRadius"
@@ -55,15 +56,21 @@ function Message({ className, avatar ,user, userNameFrom, idFrom, message, ...re
               {userNameFrom}
             </Typography>
             <Box mt={1}>
-              <Typography color="inherit" variant="body1">
+              <Typography
+                color="inherit"
+                variant="body1"
+                style={{
+                  whiteSpace: 'pre-wrap',
+                  wordBreak: 'break-all',
+                }}
+              >
                 {message}
               </Typography>
             </Box>
           </Box>
           <Box mt={1} display="flex" justifyContent="flex-end">
             <Typography noWrap color="textSecondary" variant="caption">
-              {/* {moment(message.createdAt).fromNow()} */}
-              30 min ago
+              {moment(date).fromNow()}
             </Typography>
           </Box>
         </Box>
