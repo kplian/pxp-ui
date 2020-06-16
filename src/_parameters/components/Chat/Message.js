@@ -71,7 +71,8 @@ function Message({
           </Box>
           <Box mt={1} display="flex" justifyContent="flex-end">
             <Typography noWrap color="textSecondary" variant="caption">
-              {moment(dateMessage).fromNow()}
+             {/* {moment(date).fromNow()}*/}
+              {moment.utc(dateMessage).local().fromNow()}
             </Typography>
           </Box>
         </Box>
