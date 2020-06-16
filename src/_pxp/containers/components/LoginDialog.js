@@ -40,7 +40,7 @@ export default ({ open: popen, username }) => {
     if (!sessionDied && !!username) {
       setLoadingScreen(false);
     }
-  }, [sessionDied, loadingScreen]);
+  }, [sessionDied, loadingScreen, username]);
 
   const handleClose = () => {};
 

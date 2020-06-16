@@ -31,9 +31,9 @@ const TableBodyPxp = ({
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   // render column according to renderColumn or column type
-  const renderColumn = (key, colConfig, row) => {
+  const renderColumn = (key, colConfig, row, index) => {
     if (colConfig.renderColumn) {
-      return colConfig.renderColumn(row);
+      return colConfig.renderColumn(row, index);
     }
     switch (colConfig.type) {
       case 'DatePicker':
@@ -100,7 +100,7 @@ const TableBodyPxp = ({
                   <React.Fragment key={`cell_${indexColumn}_${nameKey}`}>
                     {statesShowColumn[nameKey] && (
                       <TableCell align="left">
-                        {renderColumn(nameKey, values, row)}
+                        {renderColumn(nameKey, values, row, index)}
                       </TableCell>
                     )}
                   </React.Fragment>
