@@ -38,6 +38,17 @@ const setRoutes = (routes) => ({
   routes,
 });
 
+export const startSocialLogin = ({ usuario, code, type, language}) => {
+  return () => {
+    return Pxp.apiClient.oauthLogin(usuario, code, type, language).then((data) => {
+      if (data.ROOT) {
+        return data.ROOT.detalle.mensaje;
+      }
+      return 'success';
+    });
+  };
+};
+
 export const startLogin = ({ login: username, password, language }) => {
   return () => {
     return Pxp.apiClient.login(username, password, language).then((data) => {
