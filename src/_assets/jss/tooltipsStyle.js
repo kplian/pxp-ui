@@ -1,3 +1,8 @@
+/**
+ * Tooltip Style
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ */
 import { whiteColor, blackColor, grayColor, hexToRgb } from './pxp-ui';
 
 const tooltipsStyle = {

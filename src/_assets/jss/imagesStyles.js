@@ -1,3 +1,8 @@
+/**
+ * Images Style
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ */
 import { blackColor, hexToRgb } from './pxp-ui';
 
 const imagesStyles = {

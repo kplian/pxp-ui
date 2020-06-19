@@ -1,3 +1,8 @@
+/**
+ * Button Style
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ */
 import {
   grayColor,
   roseColor,
