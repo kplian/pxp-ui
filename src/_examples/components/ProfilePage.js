@@ -1,3 +1,8 @@
+/**
+ * Example for Profile page
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ */
 import React from 'react';
 import classNames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
