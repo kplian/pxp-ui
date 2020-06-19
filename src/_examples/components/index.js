@@ -70,4 +70,9 @@ pages.EXA__Chat = {
   component: lazy(() => import('./IntegratedChatToTable/ExampleChat')),
 };
 
+pages.EXA__ProfilePage = {
+  path: '/exa/profile',
+  component: lazy(() => import('./ProfilePage')),
+};
+
 export default pages;
