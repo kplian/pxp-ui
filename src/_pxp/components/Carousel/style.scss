@@ -1,0 +1,23 @@
+.awssld__content {
+  // display: block !important;
+  // background-color: transparent !important;
+  // flex-direction: row;
+  // justify-content: start;
+  // align-items: baseline;
+  // width: 100%;
+  // height: 100%;
+  // div {
+  //     width: 100%;
+  //     height: 100%;
+  // }
+}
+
+.awssld__bullets {
+  bottom: 10px;
+  z-index: 100;
+  button {
+    border-radius: 2px !important;
+    width: 24px;
+    height: 4px;
+  }
+}
