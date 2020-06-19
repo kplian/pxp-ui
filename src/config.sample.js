@@ -72,6 +72,8 @@ export default {
   mode: process.env.REACT_APP_MODE,
   port: process.env.REACT_APP_PORT,
   protocol: process.env.REACT_APP_PROTOCOL,
+  webSocket: process.env.REACT_APP_WEB_SOCKET,
+  portWebSocket: process.env.REACT_APP_PORT_WEB_SOCKET,
   recaptchaKey: process.env.REACT_APP_RECAPTCHA_KEY,
   backendVersion: 'v1',
   backendRestVersion: '2',
