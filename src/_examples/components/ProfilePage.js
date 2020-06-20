@@ -7,11 +7,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 
-// @material-ui/icons
-import Camera from '@material-ui/icons/Camera';
-import Palette from '@material-ui/icons/Palette';
-import People from '@material-ui/icons/People';
-import Add from '@material-ui/icons/Add';
 import Favorite from '@material-ui/icons/Favorite';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -23,12 +18,10 @@ import GridContainer from '../../_pxp/components/Grid/GridContainer';
 import GridItem from '../../_pxp/components/Grid/GridItem';
 import Clearfix from '../../_pxp/components/Clearfix/Clearfix';
 import favio from '../../_assets/img/favio.jpeg';
-import ButtonPxp from '../../_pxp/components/ButtonPxp';
 import CustomButton from '../../_pxp/components/CustomButtons/Button';
 import ImageGallery from '../../_assets/icons/ImageGallery';
 import GoogleMaps from '../../_assets/icons/GoogleMaps';
 import HealthCalendar from '../../_assets/icons/HealthCalendar';
-import { blackColor, hexToRgb } from '../../_assets/jss/pxp-ui';
 
 const useStyles = makeStyles(profilePageStyle);
 
@@ -50,7 +43,7 @@ const ProfilePage = () => {
           className={classes.parallax}
         >
           <GridContainer className={classes.pullRight}>
-            <CustomButton color="primary">
+            <CustomButton color="successColor">
               <HealthCalendar style={{ width: '25px', height: '25px' }} /> Fijar
               Cita
             </CustomButton>
@@ -91,7 +84,7 @@ const ProfilePage = () => {
                     <CustomButton
                       justIcon
                       round
-                      color="primary"
+                      color="successColor"
                       className={classes.followButton}
                     >
                       <Favorite className={classes.followIcon} />
@@ -117,7 +110,7 @@ const ProfilePage = () => {
                 <GoogleMaps fontSize="large" /> Mapa
               </CustomButton>
               <Clearfix />
-              <CustomButton justIcon round color="primary">
+              <CustomButton justIcon round color="successColor">
                 <HealthCalendar style={{ width: '30px', height: '30px' }} />
               </CustomButton>
               <Clearfix />

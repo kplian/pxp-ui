@@ -67,7 +67,7 @@ pages.WZD__Horizontal = {
 
 pages.EXA__Chat = {
   path: '/exa/chat',
-  component: lazy(() => import('./IntegratedChatToTable/ExampleChat')),
+  component: lazy(() => import('./IntegrateChatToTable/ExampleChat')),
 };
 
 pages.EXA__ProfilePage = {
