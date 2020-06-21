@@ -3,6 +3,9 @@
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  */
+
+import { useTheme } from '@material-ui/core/styles';
+
 // ##############################
 // // // Function that converts from hex color to rgb color
 // // // Example: input = #9c27b0 => output = 156, 39, 176
