@@ -11,9 +11,9 @@ import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
+  KeyboardTimePicker, KeyboardDatePicker,
 } from '@material-ui/pickers';
-
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
@@ -56,7 +56,11 @@ export const KeyboardTimePickerPxpComponent = ({
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid key={`grid_${name}`} item {...gridForm}>
         <KeyboardTimePicker
+          fullWidth
           margin="normal"
+          autoOk
+          size={size}
+          inputVariant={variant}
           id={name}
           label={label}
           value={value}
@@ -69,6 +73,7 @@ export const KeyboardTimePickerPxpComponent = ({
           KeyboardButtonProps={{
             'aria-label': 'change time',
           }}
+          keyboardIcon={<AccessTimeIcon/>}
         />
         {/*<KeyboardDatePicker
           className={classes.datePicker}

@@ -30,14 +30,7 @@ export const TextFieldPxpComponent = ({
   size = 'medium',
   inputProps,
 }) => {
-  const {
-    label,
-    variant,
-    gridForm,
-    typeTextField,
-    autoFocus,
-  } = configInput;
-
+  const { label, variant, gridForm, typeTextField, autoFocus } = configInput;
 
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>

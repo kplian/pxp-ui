@@ -56,11 +56,12 @@ export const KeyboardDatePickerPxpComponent = ({
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid key={`grid_${name}`} item {...gridForm}>
         <KeyboardDatePicker
+          fullWidth
           className={classes.datePicker}
           autoOk
           size={size}
           // disableToolbar
-          variant={variant}
+          //variant={variant}
           format="dd/MM/yyyy"
           margin="normal"
           id={name}
@@ -75,7 +76,7 @@ export const KeyboardDatePickerPxpComponent = ({
           KeyboardButtonProps={{
             'aria-label': 'change date',
           }}
-          inputVariant="outlined"
+          inputVariant={variant}
           {...minMaxDate}
           disabled={disabled}
           helperText={helperText}

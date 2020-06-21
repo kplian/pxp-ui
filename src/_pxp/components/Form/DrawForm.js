@@ -355,6 +355,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
             states={states}
             disabled={values.disabled}
             helperText={values.helperText}
+            inputProps={values.inputProps}
           />,
         );
       }
