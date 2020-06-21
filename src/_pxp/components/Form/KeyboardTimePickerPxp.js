@@ -1,5 +1,5 @@
 /**
- * DatePicker Component
+ * TimePicker Component
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  */
@@ -11,9 +11,9 @@ import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker,
+  KeyboardTimePicker, KeyboardDatePicker,
 } from '@material-ui/pickers';
-
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +33,7 @@ const areEqual = (prev, next) =>
   prev.error === next.error;
 
 // eslint-disable-next-line react/prop-types
-export const KeyboardDatePickerPxpComponent = ({
+export const KeyboardTimePickerPxpComponent = ({
   name,
   value,
   configInput,
@@ -55,13 +55,32 @@ export const KeyboardDatePickerPxpComponent = ({
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid key={`grid_${name}`} item {...gridForm}>
-        <KeyboardDatePicker
+        <KeyboardTimePicker
           fullWidth
+          margin="normal"
+          autoOk
+          size={size}
+          inputVariant={variant}
+          id={name}
+          label={label}
+          value={value}
+          onChange={(date) =>
+            handleChange({
+              name,
+              value: date,
+            })
+          }
+          KeyboardButtonProps={{
+            'aria-label': 'change time',
+          }}
+          keyboardIcon={<AccessTimeIcon/>}
+        />
+        {/*<KeyboardDatePicker
           className={classes.datePicker}
           autoOk
           size={size}
           // disableToolbar
-          //variant={variant}
+          variant={variant}
           format="dd/MM/yyyy"
           margin="normal"
           id={name}
@@ -76,11 +95,11 @@ export const KeyboardDatePickerPxpComponent = ({
           KeyboardButtonProps={{
             'aria-label': 'change date',
           }}
-          inputVariant={variant}
+          inputVariant="outlined"
           {...minMaxDate}
           disabled={disabled}
           helperText={helperText}
-        />
+        />*/}
       </Grid>
     </MuiPickersUtilsProvider>
   );
@@ -89,9 +108,9 @@ export const KeyboardDatePickerPxpComponent = ({
 /**
  * A memoized component that will re-render only one of props described in areEqual change.
  */
-const KeyboardDatePickerPxp = React.memo(
-  (props) => <KeyboardDatePickerPxpComponent {...props} />,
+const KeyboardTimePickerPxp = React.memo(
+  (props) => <KeyboardTimePickerPxpComponent {...props} />,
   areEqual,
 );
 
-export default KeyboardDatePickerPxp;
+export default KeyboardTimePickerPxp;

@@ -119,6 +119,23 @@ export const defaultValuesDatePicker = {
   size: 'medium',
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };
+export const defaultValuesTimePicker = {
+  type: 'DatePicker',
+  label: undefined,
+  initialValue: null, // moment(new Date(), 'DD-MM-YYYY').toDate()
+  minDate: null, // moment(new Date(), 'DD-MM-YYYY').subtract(5, 'days').toDate(),
+  maxDate: null, // moment(new Date(), 'DD-MM-YYYY').add(1, 'month').toDate(),
+  format: 'HH:mm',
+  gridForm: { xs: 12, sm: 12 },
+  variant: undefined,
+  validate: undefined,
+  helperText: undefined,
+  disabled: undefined,
+  hide: undefined,
+  form: true,
+  size: 'medium',
+  group: undefined, // the default group ever is group1 or the first position in the object of the groups
+};
 
 export const defaultValuesDropzoneArea = {
   type: 'DropzoneArea',

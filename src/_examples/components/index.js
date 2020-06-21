@@ -44,41 +44,35 @@ pages.EXA__MapExample = {
 };
 
 /** LIST COMPONENT */
-pages.EXALIST__options= {
+pages.EXALIST__options = {
   path: '/exa/list/options',
   component: lazy(() => import('./List/ExampleList')),
 };
 
-pages.EXALIST__search= {
+pages.EXALIST__search = {
   path: '/exa/list/search',
   component: lazy(() => import('./List/ExampleList')),
 };
 
 /** WIZARD COMPONENT */
-pages.WZD__Vertical= {
+pages.WZD__Vertical = {
   path: '/exa/wizard/vertical',
   component: lazy(() => import('./Wizard/ExampleWizardVertical')),
 };
 
-pages.WZD__Horizontal= {
+pages.WZD__Horizontal = {
   path: '/exa/wizard/horizontal',
   component: lazy(() => import('./Wizard/ExampleWizard')),
 };
 
-
-pages.EXA__CustomComponent = {
-  path: '/exa/custom',
-  component: lazy(() => import('./CustomComponent')),
+pages.EXA__Chat = {
+  path: '/exa/chat',
+  component: lazy(() => import('./IntegrateChatToTable/ExampleChat')),
 };
 
-// pages.EXA__CustomComponent2 = {
-//   path: '/exa/custom2',
-//   component: lazy(() => import('./CustomComponent2')),
-// };
-
-pages.EXA__CustomComponent2 = {
-  path: '/list',
-  component: lazy(() => import('./Products/Example')),
+pages.EXA__ProfilePage = {
+  path: '/exa/profile',
+  component: lazy(() => import('./ProfilePage')),
 };
 
 export default pages;

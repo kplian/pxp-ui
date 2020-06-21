@@ -41,6 +41,7 @@ import {
   defaultValuesDropdown,
   defaultValuesAutoComplete,
   defaultValuesDatePicker,
+  defaultValuesTimePicker,
   defaultValuesSwitch,
   defaultValuesDropzoneArea,
   defaultValuesGoogleReCaptcha,
@@ -68,6 +69,7 @@ const Form = forwardRef((props, ref) => {
       ...(column.type === 'Dropdown' && { ...defaultValuesDropdown }),
       ...(column.type === 'AutoComplete' && { ...defaultValuesAutoComplete }),
       ...(column.type === 'DatePicker' && { ...defaultValuesDatePicker }),
+      ...(column.type === 'TimePicker' && { ...defaultValuesTimePicker }),
       ...(column.type === 'DropzoneArea' && { ...defaultValuesDropzoneArea }),
       ...(column.type === 'GoogleReCaptcha' && {
         ...defaultValuesGoogleReCaptcha,

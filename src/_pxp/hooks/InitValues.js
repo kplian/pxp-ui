@@ -25,6 +25,7 @@ const InitValues = (values) => {
     switch (type) {
       case 'AutoComplete':
       case 'DatePicker':
+      case 'TimePicker':
         valueField = null;
         break;
       case 'Switch':
@@ -56,6 +57,7 @@ const InitValues = (values) => {
     switch (type) {
       case 'AutoComplete':
       case 'DatePicker':
+      case 'TimePicker':
         setValue(null);
         break;
       case 'Switch':

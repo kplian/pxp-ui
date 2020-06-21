@@ -78,6 +78,8 @@ PxpClient.init(
   Pxp.config.port,
   Pxp.config.protocol,
   Pxp.config.backendRestVersion,
+  Pxp.config.webSocket,
+  Pxp.config.portWebSocket,
 );
 
 // this will make available the api from any place we have access to Pxp

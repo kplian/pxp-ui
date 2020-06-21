@@ -32,6 +32,7 @@ import TextFieldPxp from './TextFieldPxp';
 import TextFieldSelectPxp from './TextFieldSelectPxp';
 import AutocompletePxp from './AutocompletePxp';
 import KeyboardDatePickerPxp from './KeyboardDatePickerPxp';
+import KeyboardTimePickerPxp from './KeyboardTimePickerPxp';
 import SwitchPxp from './SwitchPxp';
 import LoadingScreen from '../LoadingScreen';
 import Pxp from '../../../Pxp';
@@ -138,16 +139,20 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
   };
   // hide group by name
   const hideGroup = (nameGroup) => {
-    Object.values(states).filter((value) => (value.group === nameGroup)).forEach((field)=>{
-      field.hide();
-    })
-  }
+    Object.values(states)
+      .filter((value) => value.group === nameGroup)
+      .forEach((field) => {
+        field.hide();
+      });
+  };
   const showGroup = (nameGroup) => {
-    Object.values(states).filter((value) => (value.group === nameGroup)).forEach((field)=>{
-      field.show();
-    })
-  }
-  const eventsForm = {hideGroup, showGroup};
+    Object.values(states)
+      .filter((value) => value.group === nameGroup)
+      .forEach((field) => {
+        field.show();
+      });
+  };
+  const eventsForm = { hideGroup, showGroup };
 
   const handleChange = ({ event, name, value, dataValue }) => {
     // eslint-disable-next-line no-unused-expressions
@@ -166,7 +171,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
         dataValue,
         stateField,
         states,
-        eventsForm
+        eventsForm,
       });
     }
   };
@@ -193,6 +198,9 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
       (t, [nameKey, state]) => ({
         ...t,
         ...(state.type === 'DatePicker' && {
+          [nameKey]: moment(state.value).format(state.format),
+        }),
+        ...(state.type === 'TimePicker' && {
           [nameKey]: moment(state.value).format(state.format),
         }),
         ...(state.type === 'AutoComplete' && {
@@ -234,10 +242,11 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
     if (thereIsDropZoneArea) {
       const formData = new FormData();
       Object.entries(values).forEach(([nameKey, value]) => {
-        if(states[nameKey]) { // only the input in state , no extraParams
+        if (states[nameKey]) {
+          // only the input in state , no extraParams
           if (states[nameKey].type === 'DropzoneArea') {
             for (let i = 0; i < value.length; i++) {
-              //formData.append(`${nameKey}[]`, value[i]);
+              // formData.append(`${nameKey}[]`, value[i]);
               formData.append(nameKey, value[i]);
             }
           } else {
@@ -346,6 +355,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
             states={states}
             disabled={values.disabled}
             helperText={values.helperText}
+            inputProps={values.inputProps}
           />,
         );
       }
@@ -391,6 +401,22 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
       if (values.type === 'DatePicker') {
         groupsConfig[groupName].children.push(
           <KeyboardDatePickerPxp
+            key={index}
+            name={nameKey}
+            value={values.value}
+            configInput={values}
+            handleChange={handleChange}
+            memoDisabled={values.memoDisabled}
+            error={values.error.hasError}
+            states={states}
+            disabled={values.disabled}
+            helperText={values.helperText}
+          />,
+        );
+      }
+      if (values.type === 'TimePicker') {
+        groupsConfig[groupName].children.push(
+          <KeyboardTimePickerPxp
             key={index}
             name={nameKey}
             value={values.value}
@@ -509,7 +535,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
       addExtraParam,
       removeExtraParam,
       hideGroup,
-      showGroup
+      showGroup,
     };
   });
 
@@ -518,8 +544,10 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
       {data.typeForm === 'normal' &&
         dialog &&
         Object.entries(groupsConfig).map(([nameKey, values], index) => {
-          const continueRenderGroup = Object.values(states).filter((value) => (value.group === nameKey && !value.isHide));
-          if(continueRenderGroup.length === 0) {
+          const continueRenderGroup = Object.values(states).filter(
+            (value) => value.group === nameKey && !value.isHide,
+          );
+          if (continueRenderGroup.length === 0) {
             return '';
           }
           return (
@@ -542,8 +570,10 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
         <Grid container spacing={3}>
           {states &&
             Object.entries(groupsConfig).map(([nameKey, values], index) => {
-              const continueRenderGroup = Object.values(states).filter((value) => (value.group === nameKey && !value.isHide));
-              if(continueRenderGroup.length === 0) {
+              const continueRenderGroup = Object.values(states).filter(
+                (value) => value.group === nameKey && !value.isHide,
+              );
+              if (continueRenderGroup.length === 0) {
                 return '';
               }
               return (
@@ -602,7 +632,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
           <Stepper activeStep={activeStep} orientation="vertical">
             {states &&
               Object.entries(groupsConfig).map(([nameKey, values], index) => {
-                //const continueRenderGroup = Object.values(states).filter((value) => (value.group === nameKey && !value.isHide));
+                // const continueRenderGroup = Object.values(states).filter((value) => (value.group === nameKey && !value.isHide));
                 // todo for continue render Group when the form is steppers
                 return (
                   <Step key={nameKey}>
@@ -632,7 +662,10 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
                             onClick={handleBack}
                             className={classes.button}
                           >
-                            {(data.steppersConfig && data.steppersConfig.backButton) ? data.steppersConfig.backButton : 'Back'}
+                            {data.steppersConfig &&
+                            data.steppersConfig.backButton
+                              ? data.steppersConfig.backButton
+                              : 'Back'}
                           </Button>
                           <Button
                             variant="contained"
@@ -642,8 +675,14 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
                           >
                             {activeStep ===
                             Object.values(groupsConfig).length - 1
-                              ? (data.steppersConfig && data.steppersConfig.finishButton) ? data.steppersConfig.finishButton : 'Finish'
-                              : (data.steppersConfig && data.steppersConfig.nextButton) ? data.steppersConfig.nextButton : 'Next'}
+                              ? data.steppersConfig &&
+                                data.steppersConfig.finishButton
+                                ? data.steppersConfig.finishButton
+                                : 'Finish'
+                              : data.steppersConfig &&
+                                data.steppersConfig.nextButton
+                              ? data.steppersConfig.nextButton
+                              : 'Next'}
                           </Button>
                         </div>
                       </div>
@@ -656,7 +695,11 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
           {activeStep === Object.values(groupsConfig).length && (
             // eslint-disable-next-line react/jsx-no-undef
             <Paper square elevation={0} className={classes.resetContainer}>
-              <Typography>{(data.steppersConfig && data.steppersConfig.stepsCompleted) ? data.steppersConfig.stepsCompleted : 'All steps completed'}</Typography>
+              <Typography>
+                {data.steppersConfig && data.steppersConfig.stepsCompleted
+                  ? data.steppersConfig.stepsCompleted
+                  : 'All steps completed'}
+              </Typography>
               <Button
                 onClick={() => handleReset(states)}
                 className={classes.button}
