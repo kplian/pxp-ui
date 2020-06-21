@@ -18,7 +18,7 @@ export default {
       },
     },
     MuiIcon: {
-      root:{
+      root: {
         fontFamily: 'Material Icons Outlined',
       }
     }
@@ -40,7 +40,7 @@ export default {
     },
     secondary: {
       main: colors.cyan[400],
-      light: '#7efcff', 
+      light: '#7efcff',
       dark: '#0098a7'
     },
     text: {
