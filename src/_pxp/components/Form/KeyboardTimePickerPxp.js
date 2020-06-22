@@ -11,7 +11,8 @@ import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker, KeyboardDatePicker,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
 } from '@material-ui/pickers';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -73,9 +74,9 @@ export const KeyboardTimePickerPxpComponent = ({
           KeyboardButtonProps={{
             'aria-label': 'change time',
           }}
-          keyboardIcon={<AccessTimeIcon/>}
+          keyboardIcon={<AccessTimeIcon />}
         />
-        {/*<KeyboardDatePicker
+        {/* <KeyboardDatePicker
           className={classes.datePicker}
           autoOk
           size={size}
@@ -99,7 +100,7 @@ export const KeyboardTimePickerPxpComponent = ({
           {...minMaxDate}
           disabled={disabled}
           helperText={helperText}
-        />*/}
+        /> */}
       </Grid>
     </MuiPickersUtilsProvider>
   );
