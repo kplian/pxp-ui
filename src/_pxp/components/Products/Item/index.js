@@ -106,8 +106,7 @@ const Item = ({ item, config }) => {
       </CardContent>
       <Features item={item} features={config.features} />
       <CardActions disableSpacing className={classes.actions}>
-        {stateActions.map((action, i) => {
-          console.log(action)
+        {Object.entries(stateActions).map(([nameAction, action], i) => {
           return (
             <IconButton
               key={i}
