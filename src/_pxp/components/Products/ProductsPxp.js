@@ -14,7 +14,7 @@ const ProductsPxp = ({ config, filters }) => {
     params: { ...defaultParams, ...config.getDataTable.params },
   });
 
-  const { state, set, data } = jsonStore;
+  const { state, set, data, setData } = jsonStore;
   const handleLoadMore = (page, filter = null) => {
     const filterConfig = {
       sort: state.params.sort,
@@ -51,7 +51,7 @@ const ProductsPxp = ({ config, filters }) => {
 
   config.pagination = pagination;
   config.pagination.hasMore =
-    data && data.total ? data.datos.length < parseInt(data.total) : true;
+    data && data.total ? data.datos.length < parseInt(data.total, 10) : true;
 
   // React.useEffect(() => {
 
