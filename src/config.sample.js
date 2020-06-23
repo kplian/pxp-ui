@@ -64,6 +64,21 @@
  *   backendTimezone: 'America/Los_Angeles', //backend timezone
  *   defaultRenderFormat: 'DD-MM-YYYY H:mm:ss', // this is format to render dates by default
  * }
+ *
+ * @param accountManagement Configure logina nd recover password options
+ * @example
+ * accountManagement: {
+ *  recoverPassword: false, // recover password links and routes are created
+ *  socialLogin: false, // social login buttons are created
+ *  signup: false, // create user link and route is created
+ *  loginDialog: 'CTA__Login', //Login dialog to use instead of pxp ui login dialog
+ *  forgotDialog: 'CTA__Forgot', //Forgot dialog to use instead of pxp ui dialog
+ *  forgotConfirmDialog: 'CTA__ForgotConfirm', //Forgot confirm dialog to use instead of pxp ui dialog
+ *  updatePasswordDialog: 'CTA__UpdatePassword', //Update password dialog to use instead of pxp ui dialog
+ *  signupDialog: 'CTA__CreateUser', //signup dialog to use instead of pxp ui dialog
+ *  signupMailDialog: 'CTA__CreateUserMailSent', //signup and mail sent dialog to use instead of pxp ui dialog
+ *  signupConfirmDialog: 'CTA__ConfirmCreation', //Email confirmation dialog to use instead of pxp ui dialog
+ * }
  */
 
 export default {
@@ -102,6 +117,12 @@ export default {
     defaultRenderFormat: 'DD-MM-YYYY H:mm:ss',
   },
   defaultTheme: 'KPLIAN',
+  accountManagement: {
+    recoverPassword: false,
+    socialLogin: false,
+    signup: false,
+    loginDialog: 'CTA__Login',
+  },
   // darkTheme: 'PINK_DARK',
   // customThemes: [
   //   'PINK',

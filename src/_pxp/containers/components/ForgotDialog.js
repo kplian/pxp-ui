@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import { FormHelperText } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
+
 import Form from '../../components/Form/Form';
 import LoadingScreen from '../../components/LoadingScreen';
 import { startResetPassword } from '../../actions/auth';
@@ -23,6 +25,7 @@ const Forgot = () => {
   const dispatch = useDispatch();
   const [loadingScreen, setLoadingScreen] = useState(false);
   const history = useHistory();
+  const { t } = useTranslation();
 
   const handleForgot = (login, captcha) => {
     dispatch(startResetPassword({ login, captcha })).then((errorMsg) => {
@@ -38,12 +41,12 @@ const Forgot = () => {
     columns: {
       username: {
         type: 'TextField',
-        label: 'Username or Email',
+        label: t('username_or_email'),
         autoFocus: true,
         gridForm: { xs: 12, sm: 12 },
         variant: 'outlined',
         validate: {
-          shape: Yup.string().required('Username  or Email is Required'),
+          shape: Yup.string().required(t('username_or_email_required')),
         },
       },
       captcha: {
@@ -52,7 +55,7 @@ const Forgot = () => {
       },
     },
     resetButton: false,
-    submitLabel: 'Send Reset Email', // this is optional
+    submitLabel: t('send_reset_email'), // this is optional
     onEnterSubmit: true,
     onSubmit: ({ values }) => {
       setLoadingScreen(true);
@@ -64,15 +67,13 @@ const Forgot = () => {
     <>
       <Dialog open onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle disableTypography id="forgot-dialog-title">
-          <Typography variant="h3">Reset your Password</Typography>
+          <Typography variant="h3">{t('reset_your_password')}</Typography>
         </DialogTitle>
         <DialogContent>
           <Form data={forgotForm} dialog />
           {error && <FormHelperText error>{error}</FormHelperText>}
-          <Typography variant="body2">
-            Don&apos;t want to reset your password?
-          </Typography>
-          <Link href="/login"> Login</Link>
+          <Typography variant="body2">{t('dont_reset_password')}</Typography>
+          <Link href="/login"> {t('login')}</Link>
         </DialogContent>
       </Dialog>
       {loadingScreen && <LoadingScreen />}

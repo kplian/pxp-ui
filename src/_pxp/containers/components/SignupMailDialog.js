@@ -10,32 +10,34 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-const Confirm = () => {
+const SignUpMailDialog = () => {
   const history = useHistory();
+  const params = useParams();
+  const { t } = useTranslation();
   const handleClose = () => {
     history.push('/login');
   };
-  const { t } = useTranslation();
-
   return (
     <>
       <Dialog open onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle disableTypography id="forgot-dialog-title">
-          <Typography variant="h3">{t('email_sent')}</Typography>
+          <Typography variant="h3">{t('verify_email_proceed')}</Typography>
         </DialogTitle>
         <DialogContent dividers>
-          <Typography gutterBottom>{t('confirm_reset_msg')}</Typography>
+          <Typography gutterBottom>
+            {t('sent_email_signup_msg', { email: params.email })}
+          </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} variant="contained" color="primary">
-            {t('continue_to_login')}
+            {t('resend_verification_email')}
           </Button>
         </DialogActions>
       </Dialog>
     </>
   );
 };
-export default Confirm;
+export default SignUpMailDialog;

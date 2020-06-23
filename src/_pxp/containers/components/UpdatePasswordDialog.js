@@ -12,6 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import { FormHelperText } from '@material-ui/core';
 import { useHistory, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
+
 import Form from '../../components/Form/Form';
 import LoadingScreen from '../../components/LoadingScreen';
 import { startUpdatePassword } from '../../actions/auth';
@@ -22,6 +24,7 @@ const UpdatePassword = () => {
   const [loadingScreen, setLoadingScreen] = useState(false);
   const history = useHistory();
   const params = useParams();
+  const { t } = useTranslation();
 
   const handleUpdate = (password1, token) => {
     dispatch(startUpdatePassword({ password1, token })).then((errorMsg) => {
@@ -38,37 +41,37 @@ const UpdatePassword = () => {
       password1: {
         type: 'TextField',
         typeTextField: 'password',
-        label: 'New Password',
+        label: t('new_password'),
         autoFocus: true,
         gridForm: { xs: 12, sm: 12 },
         variant: 'outlined',
         validate: {
           shape: Yup.string()
-            .required('New password is Required')
-            .min(8, 'Password should be at least 8 characters')
+            .required(t('new_password_required'))
+            .min(8, t('password_8_characters'))
             .matches(
               /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
-              'Password should include at least 2 letters (one upper and one lower case) and at least 1 number',
+              t('password_letters_number'),
             ),
         },
       },
       password2: {
         type: 'TextField',
         typeTextField: 'password',
-        label: 'Re-type Password',
+        label: t('retype_password'),
         gridForm: { xs: 12, sm: 12 },
         variant: 'outlined',
         validate: {
-          shape: Yup.string().required('Re-type password is Required'),
+          shape: Yup.string().required(t('retype_password_required')),
         },
       },
     },
     resetButton: false,
-    submitLabel: 'Update Password', // this is optional
+    submitLabel: t('update_password'), // this is optional
     onEnterSubmit: true,
     onSubmit: ({ values }) => {
       if (values.password1 !== values.password2) {
-        setError('Passwords do not match');
+        setError(t('passwords_not_match'));
       } else {
         setLoadingScreen(true);
         handleUpdate(values.password1, params.token);
@@ -80,21 +83,17 @@ const UpdatePassword = () => {
     <>
       <Dialog open onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle disableTypography id="forgot-dialog-title">
-          <Typography variant="h3">Reset your Password</Typography>
+          <Typography variant="h3">{t('reset_your_password')}</Typography>
         </DialogTitle>
         <DialogContent>
           {!!params.token && (
             <>
+              <Typography gutterBottom>{t('password_must_contain')}</Typography>
               <Typography gutterBottom>
-                Your password must contain the following:
+                1. {t('password_8_characters_msg')}
               </Typography>
               <Typography gutterBottom>
-                1. At least 8 characters (a strong password has at least 14
-                characters)
-              </Typography>
-              <Typography gutterBottom>
-                2. At least 2 letters (one upper and one lower case) and at
-                least 1 number
+                2. {t('password_letters_number_msg')}
               </Typography>
               <br />
               <Form data={updateForm} dialog />
@@ -106,9 +105,7 @@ const UpdatePassword = () => {
             </>
           )}
           {!params.token && (
-            <Typography variant="h4">
-              No token was provided to reset password!!!
-            </Typography>
+            <Typography variant="h4">{t('no_token_reset_password')}</Typography>
           )}
         </DialogContent>
       </Dialog>
