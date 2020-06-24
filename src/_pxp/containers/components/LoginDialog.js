@@ -85,7 +85,6 @@ export default ({ open: popen, username }) => {
   }, [sessionDied, loadingScreen, username]);
 
   const handleClose = () => {};
-  const handleSignUp = () => {};
 
   const userForm = {
     columns: {

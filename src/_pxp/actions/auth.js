@@ -43,6 +43,7 @@ export const startSocialLogin = ({ usuario, code, type, language }) => {
     return Pxp.apiClient
       .oauthLogin(usuario, code, type, language)
       .then((data) => {
+        console.log(data);
         if (data.ROOT) {
           return data.ROOT.detalle.mensaje;
         }
