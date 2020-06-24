@@ -38,14 +38,17 @@ const setRoutes = (routes) => ({
   routes,
 });
 
-export const startSocialLogin = ({ usuario, code, type, language}) => {
+export const startSocialLogin = ({ usuario, code, type, language }) => {
   return () => {
-    return Pxp.apiClient.oauthLogin(usuario, code, type, language).then((data) => {
-      if (data.ROOT) {
-        return data.ROOT.detalle.mensaje;
-      }
-      return 'success';
-    });
+    return Pxp.apiClient
+      .oauthLogin(usuario, code, type, language)
+      .then((data) => {
+        console.log(data);
+        if (data.ROOT) {
+          return data.ROOT.detalle.mensaje;
+        }
+        return 'success';
+      });
   };
 };
 
@@ -75,6 +78,51 @@ export const startResetPassword = ({ login: username, captcha }) => {
           return data.detail.message;
         }
         return 'success';
+      });
+  };
+};
+
+export const startSignup = ({
+  email,
+  name,
+  surname,
+  username,
+  password,
+  captcha,
+}) => {
+  return () => {
+    return Pxp.apiClient
+      .doRequest({
+        url: 'seguridad/Auten/signUp',
+        params: {
+          email,
+          name,
+          surname,
+          username,
+          password,
+          captcha,
+        },
+      })
+      .then((data) => {
+        if (data.error) {
+          return data.detail.message;
+        }
+        return 'success';
+      });
+  };
+};
+
+export const startSignupConfirm = ({ token }) => {
+  return () => {
+    return Pxp.apiClient
+      .doRequest({
+        url: 'seguridad/Auten/signupConfirm',
+        params: {
+          token,
+        },
+      })
+      .then((data) => {
+        return data;
       });
   };
 };

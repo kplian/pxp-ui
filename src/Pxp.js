@@ -58,6 +58,35 @@ class Pxp {
    */
   setApiClient(client) {
     this.apiClient = client;
+    global.callMethodFromDevice = (method, data) => {
+      switch (method) {
+        case 'googleLogin':
+          // this.nativeLogin(data);
+          break;
+        case 'facebookSignIn':
+          this.nativeSignIn(data);
+          break;
+        case 'facebookSignUp':
+          this.nativeSignUp(data);
+          break;
+        default:
+          break;
+      }
+    };
+  }
+
+  nativeSignIn(data) {
+    const response = JSON.parse(data);
+    this.apiClient
+      .oauthLogin(response.usuario, response.code, response.type)
+      .then(() => {});
+  }
+
+  nativeSignUp(data) {
+    const dataObj = JSON.parse(data);
+    this.apiClient.createTokenUser(dataObj).then(() => {
+      console.log(data);
+    });
   }
 }
 const pxp = new Pxp();

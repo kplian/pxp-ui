@@ -1,16 +1,16 @@
 import React from 'react';
-import MobileNavigation from './components/MobileNavigation';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/styles';
 import zIndex from '@material-ui/core/styles/zIndex';
 import { Scrollbars } from 'react-custom-scrollbars';
+import MobileNavigation from './components/MobileNavigation';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
     maxHeight: '100%',
     maxWidth: '100%',
-    position: 'relative'
+    position: 'relative',
     //   [theme.breakpoints.up('sm')]: {
     //     paddingTop: 64,
     //   },
@@ -71,6 +71,5 @@ const MobileContainer = ({ children }) => {
     </div>
   )
 };
-
 
 export default MobileContainer;
