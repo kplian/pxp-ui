@@ -280,7 +280,6 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
             onSubmit.resetForm !== false && resetForm();
             enqueueSnackbar('Success', {
               variant: 'success',
-              action: <Button>See all</Button>,
             });
             if (typeof onSubmit.callback === 'function') {
               onSubmit.callback(resp);
@@ -288,7 +287,6 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
           } else {
             enqueueSnackbar(resp.detail.message, {
               variant: 'error',
-              action: <Button>See all</Button>,
             });
           }
           setLoadingScreen(false);
