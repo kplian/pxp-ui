@@ -48,6 +48,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import 'typeface-roboto';
 
 // import configs and pxp contexts
+import Button from '@material-ui/core/Button';
 import Pxp from './Pxp';
 import configureStore from './_pxp/configureStore';
 import { SettingsProvider } from './_pxp/context/SettingsContext';
@@ -89,6 +90,11 @@ Pxp.setApiClient(PxpClient);
 const store = configureStore();
 const settings = restoreSettings();
 
+const snackBarRef = React.createRef();
+const onClickDismiss = (key) => () => {
+  snackBarRef.current.closeSnackbar(key);
+};
+
 const jsx = (
   <Provider store={store}>
     <Suspense fallback={<LoadingScreen />}>
@@ -100,7 +106,13 @@ const jsx = (
           }}
         >
           <CssBaseline />
-          <SnackbarProvider maxSnack={1}>
+          <SnackbarProvider
+            maxSnack={1}
+            ref={snackBarRef}
+            action={(key) => (
+              <Button onClick={onClickDismiss(key)}>Close</Button>
+            )}
+          >
             <AppRouter />
           </SnackbarProvider>
         </PagesProvider>
