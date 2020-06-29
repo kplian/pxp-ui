@@ -12,3 +12,9 @@ export const getUrlForView = ({ nameFile, folder, extension }) => {
   }
   return urlFile;
 };
+
+
+export const capitalizeFirst = (cad, separator = ' ') => {
+  const capilatizeWord = (string) => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  return cad ? cad.split(separator).reduce((acc, curr) => acc + capilatizeWord(curr) + separator, '') : null;
+};

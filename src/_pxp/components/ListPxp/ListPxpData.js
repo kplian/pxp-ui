@@ -44,6 +44,7 @@ const ListPxpData = ({ config }) => {
       const resp = await Pxp.apiClient.doRequest({
         url: config.getDataTable.url,
         params: {
+          ...params,
           start,
           limit: params.limit || 50,
           sort: params.sort || '',
@@ -57,7 +58,7 @@ const ListPxpData = ({ config }) => {
       if (resp && resp.datos) {
         resp.datos.forEach((item) => configData.data.push(item));
 
-        const {length} = configData.data;
+        const { length } = configData.data;
         const hasMore =
           !!(length < parseInt(resp.total) && resp.total !== '0');
 
