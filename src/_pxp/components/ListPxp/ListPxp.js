@@ -20,6 +20,8 @@ import InfiniteScroll from 'react-infinite-scroller';
 import SkeletonItems from './SkeletonItems';
 import SearchFab from './SearchFab';
 import OptionsFilter from '../filters/OptionsFilter';
+import { Scrollbars } from 'react-custom-scrollbars';
+
 import _ from 'lodash';
 
 import { defaultConfig } from './defaultConfig';
@@ -132,110 +134,120 @@ const ListPxp = ({ data = [], actions = [], config = {}, FilterComponent = Optio
   }, 500);
 
   return (
+
     <div className={classes.root}>
       {configAll.showSearch && <SearchFab handleSearch={handleSearch}></SearchFab>}
       {configAll.showFilter && <FilterComponent filters={configAll.filters} handleFilter={handleFilter} />}
-      <List dense={true} className={classes.list}>
-        <Divider />
+      <Scrollbars
+        // ref={scrollRef}
+        autoHide
+        renderView={props => (
+          <div {...props} style={{ ...props.style, overflowX: 'hidden', marginBottom: 0 }} />
+        )}
+        style={{ height: 'calc(100vh - 110px)' }}
+      >
+        <List dense={true} className={classes.list}>
+          <Divider />
 
-        {data && data.length === 0 && configAll.infiniteScroll.hasMore && <SkeletonItems length={5} />}
-        {data && data.length === 0 && !configAll.infiniteScroll.hasMore && <h3>No items to show...</h3>}
-        <InfiniteScroll
-          useWindow={false}
-          pageStart={0}
-          initialLoad={false}
-          getScrollParent={() => config.infiniteScroll.parent}
-          loadMore={config.infiniteScroll.onLoadMore}
-          hasMore={config.infiniteScroll.hasMore}
-          loader={<SkeletonItems length={1} key={0} />}
-        >
-          {data && data.length > 0 && data.map((item, index) => (<div key={index} >
-            <ListItem button onClick={() => handleClick(index)}>
-              {configAll.showDetail && <ListItemIcon>
-                {state[index] ? <ExpandLess /> : <ExpandMore />}
-              </ListItemIcon>
-              }
-              {configAll.columns.render && configAll.columns.render(item)}
-              {!configAll.columns.render &&
-                <ListItemText
-                  primary={<React.Fragment>
-                    <Box display="flex"
-                      flexWrap="wrap">
-                      <Box flexGrow={1}>
-                        {columns.primary.renderOption && columns.primary.renderOption(item)}
-                        {!columns.primary.renderOption &&
-                          <Typography
-                            component="span"
-                            variant="subtitle1"
-                            className={classes.inline}
-                            color="inherit"
-                          >
-                            {item[columns.primary.field]}
-                          </Typography>
-                        }
-                      </Box>
-                      <Box>
-                        {columns.terciary.renderOption && columns.terciary.renderOption(item)}
-                        {!columns.terciary.renderOption &&
-                          <Typography
-                            component="span"
-                            variant="overline"
-                            color="secondary"
-                          >
-                            <b>
-                              {columns.terciary.text}:&nbsp;
+          {data && data.length === 0 && configAll.infiniteScroll.hasMore && <SkeletonItems length={5} />}
+          {data && data.length === 0 && !configAll.infiniteScroll.hasMore && <h3>No items to show...</h3>}
+          <InfiniteScroll
+            useWindow={false}
+            pageStart={0}
+            initialLoad={false}
+            getScrollParent={() => config.infiniteScroll.parent}
+            loadMore={config.infiniteScroll.onLoadMore}
+            hasMore={config.infiniteScroll.hasMore}
+            loader={<SkeletonItems length={1} key={0} />}
+          >
+            {data && data.length > 0 && data.map((item, index) => (<div key={index} >
+              <ListItem button onClick={() => handleClick(index)}>
+                {configAll.showDetail && <ListItemIcon>
+                  {state[index] ? <ExpandLess /> : <ExpandMore />}
+                </ListItemIcon>
+                }
+                {configAll.columns.render && configAll.columns.render(item)}
+                {!configAll.columns.render &&
+                  <ListItemText
+                    primary={<React.Fragment>
+                      <Box display="flex"
+                        flexWrap="wrap">
+                        <Box flexGrow={1}>
+                          {columns.primary.renderOption && columns.primary.renderOption(item)}
+                          {!columns.primary.renderOption &&
+                            <Typography
+                              component="span"
+                              variant="subtitle1"
+                              className={classes.inline}
+                              color="inherit"
+                            >
+                              {item[columns.primary.field]}
+                            </Typography>
+                          }
+                        </Box>
+                        <Box>
+                          {columns.terciary.renderOption && columns.terciary.renderOption(item)}
+                          {!columns.terciary.renderOption &&
+                            <Typography
+                              component="span"
+                              variant="overline"
+                              color="secondary"
+                            >
+                              <b>
+                                {columns.terciary.text}:&nbsp;
                                     </b>
-                            {item[columns.terciary.field]}
+                              {item[columns.terciary.field]}
+                            </Typography>
+                          }
+                        </Box>
+                      </Box>
+                    </React.Fragment>
+                    }
+                    secondary={
+                      <React.Fragment>
+                        {columns.secondary.renderOption && columns.secondary.renderOption(item)}
+                        {!columns.secondary.renderOption &&
+                          <Typography
+                            component="span"
+                            variant="caption"
+                            className={classes.inline}
+                            color="primary"
+                          >
+                            {item[columns.secondary.field]}
                           </Typography>
                         }
-                      </Box>
-                    </Box>
-                  </React.Fragment>
-                  }
-                  secondary={
-                    <React.Fragment>
-                      {columns.secondary.renderOption && columns.secondary.renderOption(item)}
-                      {!columns.secondary.renderOption &&
-                        <Typography
-                          component="span"
-                          variant="caption"
-                          className={classes.inline}
-                          color="primary"
-                        >
-                          {item[columns.secondary.field]}
-                        </Typography>
-                      }
+                      </React.Fragment>
+                    }
+                  />
+                }
+                {configAll.showActions && <ListItemSecondaryAction>
+                  <IconButton edge="end" aria-label="options" color="primary" onClick={toggleDrawer('bottom', true)}>
+                    <MoreVert />
+                  </IconButton>
+                </ListItemSecondaryAction>
+                }
+              </ListItem>
+              <Collapse in={state[index]} timeout="auto" unmountOnExit>
+                <Grid container spacing={0} className={classes.detail}>
+                  {!columns.detailRender && columns.detail && columns.detail.map((option, index) =>
+                    <React.Fragment key={index}>
+                      <Grid item xs={4} sm={3} md={2} xl={1} className={classes.detailTitle}>
+                        <b>{option.text}</b>
+                      </Grid>
+                      <Grid item xs={8} sm={9} md={4} xl={3} className={classes.detailText}>
+                        {item[option.field]}
+                      </Grid>
                     </React.Fragment>
-                  }
-                />
-              }
-              {configAll.showActions && <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="options" color="primary" onClick={toggleDrawer('bottom', true)}>
-                  <MoreVert />
-                </IconButton>
-              </ListItemSecondaryAction>
-              }
-            </ListItem>
-            <Collapse in={state[index]} timeout="auto" unmountOnExit>
-              <Grid container spacing={0} className={classes.detail}>
-                {!columns.detailRender && columns.detail && columns.detail.map((option, index) =>
-                  <React.Fragment key={index}>
-                    <Grid item xs={4} sm={3} md={2} xl={1} className={classes.detailTitle}>
-                      <b>{option.text}</b>
-                    </Grid>
-                    <Grid item xs={8} sm={9} md={4} xl={3} className={classes.detailText}>
-                      {item[option.field]}
-                    </Grid>
-                  </React.Fragment>
-                )}
-                {columns.detailRender && columns.detailRender(item)}
-              </Grid>
-            </Collapse>
-            <Divider />
-          </div>
-          ))}
-        </InfiniteScroll>
-      </List>
+                  )}
+                  {columns.detailRender && columns.detailRender(item)}
+                </Grid>
+              </Collapse>
+              <Divider />
+            </div>
+            ))}
+          </InfiniteScroll>
+        </List>
+      </Scrollbars>
       <Drawer anchor="bottom" open={state.bottom} onClose={toggleDrawer('bottom', false)}>
         {fullList('bottom')}
       </Drawer>

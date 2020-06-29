@@ -96,14 +96,13 @@ const Products = ({ data = [], filters, config }) => {
   }, [filter]);
 
   return (
-    <Box>
+    <Box component={Scrollbars} style={{ height: 'calc(100vh - 110px)' }}>
       <Box className={classes.filters}>
         <BasicFilters filters={filters} handleFilter={handleFilter} />
       </Box>
       <Box
         flexGrow={1}
         p={2}
-        component={Scrollbars}
         style={{ height: 'calc(100vh - 110px)' }}
       >
         <Grid container spacing={2} className={classes.root}>
