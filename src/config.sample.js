@@ -19,7 +19,7 @@
  * @example applicationName: 'ERP KPLIAN'
  * @param {string} recaptchaKey (use of environment var is recommended see env.sample for details)
  * @example recaptchaKey: '5456dsad45fsafsa'
- * @param {string} privateInitRoute If this is not defined will be redirected to /main
+ * @param {string} privateInitRoute If this is not defined will be redirected to /main ("first" value is allowed and will redirect to first option in menu)
  * @example privateInitRoute: '/exa/masterdetail'
  * @param {string} publicInitRoute If this is not defined will be redireccted to /login
  * @example publicInitRoute: '/login'

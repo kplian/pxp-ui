@@ -109,7 +109,7 @@ const Item = ({ item, config }) => {
         {Object.entries(stateActions).map(([nameAction, action], i) => {
           return (
             <IconButton
-              key={i}
+              key={`button_${item[config.idStore]}_${nameAction}`}
               onClick={
                 action.showDetail
                   ? () => handleOpen()

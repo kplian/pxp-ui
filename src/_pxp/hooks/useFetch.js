@@ -7,6 +7,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack';
+import { Button } from '@material-ui/core';
 import Pxp from '../../Pxp';
 
 const useFetch = (options) => {
@@ -63,21 +64,20 @@ const useFetch = (options) => {
                 // send msg error
                 if (resp.error) {
                   enqueueSnackbar(
-                    `url: ${options.url} -> ${resp.detail.message}`,
+                    <div>
+                      url: ${options.url} -> ${resp.detail.message}
+                      <pre
+                        style={{
+                          whiteSpace: 'pre-wrap',
+                          wordBreak: 'break-all',
+                        }}
+                      >
+                        {JSON.stringify(resp.detail, null, 2)}
+                      </pre>
+                    </div>,
                     {
                       variant: 'error',
-                      action: (
-                        <div>
-                          <pre
-                            style={{
-                              whiteSpace: 'pre-wrap',
-                              wordBreak: 'break-all',
-                            }}
-                          >
-                            {JSON.stringify(resp.detail, null, 2)}
-                          </pre>
-                        </div>
-                      ),
+                      persist: false,
                     },
                   );
                 }

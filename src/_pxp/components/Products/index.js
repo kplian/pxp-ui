@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Grid, Box } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import _ from 'lodash';
+import { Scrollbars } from 'react-custom-scrollbars';
 import Item from './Item';
 import BasicFilters from './BasicFilters';
 import useObserver from '../../hooks/useObserver';
@@ -54,8 +55,15 @@ const Products = ({ data = [], filters, config }) => {
     rootMargin: '10px',
   });
 
-  const handleFilter = _.debounce((currentFilter) => {
-    setFilter(currentFilter);
+  const handleFilter = _.debounce((currentFilter, tab = false) => {
+    if (tab) {
+      // if the handle is active from tab then we need to return the page to 0
+      // todo change this logic
+      setPage(0);
+      setFilter(currentFilter);
+    } else {
+      setFilter(currentFilter);
+    }
   }, 500);
 
   useEffect(() => {
@@ -79,6 +87,7 @@ const Products = ({ data = [], filters, config }) => {
   }, [page]);
 
   useEffect(() => {
+    console.log('change tab tambien', page);
     if (page === 0) {
       config.pagination.onLoadMore(page, filter);
     } else {
@@ -91,23 +100,38 @@ const Products = ({ data = [], filters, config }) => {
       <Box className={classes.filters}>
         <BasicFilters filters={filters} handleFilter={handleFilter} />
       </Box>
-      <Grid container spacing={2} className={classes.root}>
-        {data
-          //   .filter( item => {
-          //   if( filter ) {
-          //     return valueFilter( item, filter);
-          //   }
-          //   return true;
-          // })
-          .map((item, i) => (
-            <Grid item xs={6} md={3} lg={3} xl={2} key={item[config.idStore]}>
-              <div className={classes.item}>
-                <Item item={item} config={config} />
-              </div>
-            </Grid>
-          ))}
-      </Grid>
-      {config.pagination.hasMore && <Loader id="loader" />}
+      <Box
+        flexGrow={1}
+        p={2}
+        component={Scrollbars}
+        style={{ height: 'calc(100vh - 110px)' }}
+      >
+        <Grid container spacing={2} className={classes.root}>
+          {data.length > 0 &&
+            data
+              //   .filter( item => {
+              //   if( filter ) {
+              //     return valueFilter( item, filter);
+              //   }
+              //   return true;
+              // })
+              .map((item, i) => (
+                <Grid
+                  item
+                  xs={6}
+                  md={3}
+                  lg={3}
+                  xl={2}
+                  key={`${item[config.idStore]}_${i}`}
+                >
+                  <div className={classes.item}>
+                    <Item item={item} config={config} />
+                  </div>
+                </Grid>
+              ))}
+        </Grid>
+        {config.pagination.hasMore && <Loader id="loader" />}
+      </Box>
     </Box>
   );
 };

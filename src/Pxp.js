@@ -60,8 +60,11 @@ class Pxp {
     this.apiClient = client;
     global.callMethodFromDevice = (method, data) => {
       switch (method) {
-        case 'googleLogin':
-          // this.nativeLogin(data);
+        case 'googleSignIn':
+          this.nativeSignIn(data);
+          break;
+        case 'googleSignUp':
+          this.nativeSignUp(data);
           break;
         case 'facebookSignIn':
           this.nativeSignIn(data);
@@ -78,16 +81,21 @@ class Pxp {
   nativeSignIn(data) {
     const response = JSON.parse(data);
     this.apiClient
-      .oauthLogin(response.usuario, response.code, response.type)
-      .then(() => {});
+      .oauthLogin(response.usuario, response.code, response.type, response.device)
+      .then((response) => {
+      });
   }
 
   nativeSignUp(data) {
     const dataObj = JSON.parse(data);
     this.apiClient.createTokenUser(dataObj).then(() => {
-      console.log(data);
+      this.apiClient
+        .oauthLogin(dataObj.usuario, dataObj.code, dataObj.type, dataObj.device)
+        .then((response) => {
+        });
     });
   }
 }
+
 const pxp = new Pxp();
 export default pxp;

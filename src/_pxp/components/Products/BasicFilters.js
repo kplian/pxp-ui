@@ -54,7 +54,7 @@ const BasicFilters = ({ filters, handleFilter }) => {
   };
 
   useEffect(() => {
-    handleFilter(filters[value]);
+    handleFilter(filters[value], true);
   }, [value]);
 
   useEffect(() => {

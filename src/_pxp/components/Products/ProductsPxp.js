@@ -14,7 +14,7 @@ const ProductsPxp = ({ config, filters }) => {
     params: { ...defaultParams, ...config.getDataTable.params },
   });
 
-  const { state, set, data, setData } = jsonStore;
+  const { state, set, data } = jsonStore;
   const handleLoadMore = (page, filter = null) => {
     const filterConfig = {
       sort: state.params.sort,

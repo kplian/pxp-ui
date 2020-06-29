@@ -6,7 +6,6 @@ import GoogleLogin from 'react-google-login';
 import FacebookIcon from '../../icons/FacebookIcon';
 import GoogleIcon from '../../icons/GoogleIcon';
 import { startSocialLogin } from '../../actions/auth';
-import LoadingScreen from '../../components/LoadingScreen';
 
 const SocialLogin = forwardRef(() => {
   const isWebView = navigator.userAgent.includes('wv');
@@ -25,9 +24,24 @@ const SocialLogin = forwardRef(() => {
       window.Mobile.googleLogin();
     }
   };
+  
   // web login facebook and google
   const responseGoogle = (response) => {
     setAccessToken(response.accessToken);
+    setLoadingScreen(true);
+    const userLogued = {
+      code: response.getAuthResponse().id_token,
+      type: 'google',
+      language: '',
+      usuario: response.profileObj.email,
+    };
+    
+    dispatch(startSocialLogin(userLogued)).then((errorMsg) => {
+      if (errorMsg !== 'success') {
+        setLoadingScreen(false);
+      }
+    });
+    
   };
 
   const responseFacebook = (response) => {
@@ -127,7 +141,7 @@ const SocialLogin = forwardRef(() => {
         />
 
         <GoogleLogin
-          clientId="521452869912-9jjp32mfbp1t2pu0d8vq39g9c8schl48.apps.googleusercontent.com"
+          clientId="432978383853-mb7fe7mtjecintms1lj9o7vml1l86erf.apps.googleusercontent.com"
           render={(renderProps) => (
             <Button
               variant="contained"
@@ -152,7 +166,7 @@ const SocialLogin = forwardRef(() => {
           cookiePolicy="single_host_origin"
         />
       </div>
-      {loadingScreen && <LoadingScreen />}
+      {/*{loadingScreen && <LoadingScreen />}*/}
     </>
   );
 });
