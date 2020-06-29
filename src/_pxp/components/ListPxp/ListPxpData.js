@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ListPxp from './ListPxp';
 import Pxp from '../../../Pxp';
 
-const ListPxpData = ({ config }) => {
+const ListPxpData = ({ config, FilterComponent }) => {
   const [configData, setConfigData] = useState({
     data: [],
     hasMore: true,
@@ -10,7 +10,8 @@ const ListPxpData = ({ config }) => {
     total: 9999,
   });
   // Dynamic start value
-  const [start, setStart] = useState(0);
+  const initPage = config.showFilter ? -1 : 0;
+  const [start, setStart] = useState(initPage);
   // Current value for search or filter
   const [value, setValue] = useState('');
 
@@ -21,17 +22,28 @@ const ListPxpData = ({ config }) => {
       setStart(page * configData.limit);
     },
   };
-  const onSearch = (value) => {
+  const onSearch = (filter = null) => {
+    const filterConfig = {};
+    console.log('FILTER: ', filter);
+    if (filter && filter.search === true) {
+      filterConfig.bottom_filter_fields = [filter.field].join();
+      filterConfig.bottom_filter_value = filter.value;
+    } else if (filter) {
+      filterConfig[filter.field] = filter.value;
+    }
     setConfigData((prev) => ({
       ...prev,
       total: 9999,
       hasMore: true,
       data: [],
-      bottom_filter_value: value,
+      filter: filterConfig,
     }));
 
-    setStart(0);
-    setValue(value);
+    if (start === -1) {
+      setStart(0);
+    } else {
+      setValue(filter.value);
+    }
   };
 
   config.infiniteScroll = infiniteScroll;
@@ -44,20 +56,22 @@ const ListPxpData = ({ config }) => {
       const resp = await Pxp.apiClient.doRequest({
         url: config.getDataTable.url,
         params: {
+          // ...params,
           start,
           limit: params.limit || 50,
           sort: params.sort || '',
           dir: params.dir || 'ASC',
-          contenedor: params.contenedor,
-          bottom_filter_fields: params.bottom_filter_fields || '',
-          bottom_filter_value: value,
+          contenedor: params.contenedor || '',
+          ...configData.filter,
+          // bottom_filter_fields: params.bottom_filter_fields || '',
+          // bottom_filter_value: value,
         },
       });
 
       if (resp && resp.datos) {
         resp.datos.forEach((item) => configData.data.push(item));
 
-        const {length} = configData.data;
+        const { length } = configData.data;
         const hasMore =
           !!(length < parseInt(resp.total) && resp.total !== '0');
 
@@ -85,7 +99,7 @@ const ListPxpData = ({ config }) => {
     }
   }, [start, value]);
 
-  return <ListPxp data={configData.data} config={config} />;
+  return <ListPxp data={configData.data} config={config} FilterComponent={FilterComponent} />;
 };
 
 export default ListPxpData;

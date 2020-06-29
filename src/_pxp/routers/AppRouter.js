@@ -48,6 +48,13 @@ const AppRouter = ({
   const privatePaths = filteredRoutes.map(
     (route) => pages[route.component].path,
   );
+  // change init route if configuration is first and exists private routes
+  if (privatePaths.length > 0) {
+    Pxp.config.privateInitRoute =
+      Pxp.config.privateInitRoute === 'first'
+        ? privatePaths[0]
+        : Pxp.config.privateInitRoute;
+  }
 
   const publicRoutes = Pxp.config.publicRoutes || [];
   const publicPaths = publicRoutes.map((route) => pages[route].path);
