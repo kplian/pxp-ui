@@ -114,7 +114,7 @@ const MobileNavigation = ({ actions }) => {
       className={classes.root}
     >
       {
-        options.slice(0, 3).map(item => (
+        options.slice(0, 5).map(item => (
           <BottomNavigationAction
             key={item.label}
             classes={classesAction}
