@@ -19,7 +19,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 import SkeletonItems from './SkeletonItems';
 import SearchFab from './SearchFab';
-import OptionsFilter from './OptionsFilter';
+import OptionsFilter from '../filters/OptionsFilter';
 import _ from 'lodash';
 
 import { defaultConfig } from './defaultConfig';
@@ -76,7 +76,7 @@ const defaultActions = [
 ];
 
 // export const ListTable = ({ data, actions }) => {
-const ListPxp = ({ data = [], actions = [], config = {} }) => {
+const ListPxp = ({ data = [], actions = [], config = {}, FilterComponent = OptionsFilter }) => {
   // IntersectionObserver revisar
   const configAll = { ...defaultConfig, ...config };
   const actionsAll = [...defaultActions, ...actions];
@@ -127,14 +127,14 @@ const ListPxp = ({ data = [], actions = [], config = {} }) => {
     config.onSearch(value);
   }, 500);
 
-  const handleFilter = (value) => {
+  const handleFilter = _.debounce((value) => {
     config.onSearch(value);
-  }
+  }, 500);
 
   return (
     <div className={classes.root}>
       {configAll.showSearch && <SearchFab handleSearch={handleSearch}></SearchFab>}
-      {configAll.showFilter && <OptionsFilter filters={configAll.filters} handleFilter={handleFilter} />}
+      {configAll.showFilter && <FilterComponent filters={configAll.filters} handleFilter={handleFilter} />}
       <List dense={true} className={classes.list}>
         <Divider />
 

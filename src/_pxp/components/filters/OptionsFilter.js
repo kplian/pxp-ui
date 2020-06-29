@@ -32,14 +32,14 @@ const useStyles = makeStyles(theme => ({
         transform: 'translate(-50%, -50%)',
         fontSize: '3rem',
     },
-    image:{
+    image: {
         position: 'absolute',
         top: '50%',
         left: '50%',
         marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',  
+        transform: 'translate(-50%, -50%)',
         width: '57px',
-        height: '57px', 
+        height: '57px',
         borderRadius: '50%',
     },
     container: {
@@ -53,25 +53,25 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const OptionsFilter = ( { filters, handleFilter }) => {
+const OptionsFilter = ({ filters, handleFilter }) => {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
-        handleFilter( tabs[newValue].value );
+        handleFilter(tabs[newValue]);
     };
 
-    const tabs =[
-         {
-             value: '',
-             icon: 'format_list_bulleted',
-             label: 'Todo'
-         }
-    , ...filters ];
+    const tabs = [
+        {
+            value: '',
+            icon: 'format_list_bulleted',
+            label: 'Todo'
+        }
+        , ...filters];
 
     return (
-        <AppBar position="static" color="default" className={ classes.root }>
+        <AppBar position="static" color="default" className={classes.root}>
             <Tabs
                 variant="scrollable"
                 scrollButtons="on"
@@ -79,23 +79,23 @@ const OptionsFilter = ( { filters, handleFilter }) => {
                 onChange={handleChange}
                 textColor="secondary"
             >
-                { tabs.map( (item, i) => 
-                    <Tab key={ i } value={i}
-                        className={ value===i ? classes.active : classes.tabOption }
+                {tabs.map((item, i) =>
+                    <Tab key={i} value={i}
+                        className={value === i ? classes.active : classes.tabOption}
                         label={
                             <React.Fragment>
-                                <div className={ classes.circle }>
-                                    { item.image && 
-                                        <img src={ item.image } className={ classes.image } alt="filter option"/> 
+                                <div className={classes.circle}>
+                                    {item.image &&
+                                        <img src={item.image} className={classes.image} alt="filter option" />
                                     }
-                                    { item.icon && !item.image &&
-                                        <Icon className={ classes.icon }>{ item.icon }</Icon>
+                                    {item.icon && !item.image &&
+                                        <Icon className={classes.icon}>{item.icon}</Icon>
                                     }
                                 </div>
-                                <span>{ item.label }</span>
+                                <span>{item.label}</span>
                             </React.Fragment>
                         }
-                    /> 
+                    />
                 )}
             </Tabs>
         </AppBar>

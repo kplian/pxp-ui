@@ -84,7 +84,7 @@ export default ({ open: popen, username }) => {
     }
   }, [sessionDied, loadingScreen, username]);
 
-  const handleClose = () => {};
+  const handleClose = () => { };
 
   const userForm = {
     columns: {
@@ -130,7 +130,7 @@ export default ({ open: popen, username }) => {
         aria-labelledby="login-dialog-title"
       >
         <DialogTitle id="login-dialog-title">
-          <Typography variant="h3">
+          <Typography variant="h4" component="span">
             {t('sign_in_app', { application: Pxp.config.applicationName })}
           </Typography>
         </DialogTitle>

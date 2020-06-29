@@ -5,7 +5,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import _ from 'lodash';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Item from './Item';
-import BasicFilters from './BasicFilters';
+import BasicFilters from '../filters/BasicFilters';
 import useObserver from '../../hooks/useObserver';
 
 const useStyles = makeStyles((theme) => ({
