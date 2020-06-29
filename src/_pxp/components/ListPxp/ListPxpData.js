@@ -10,7 +10,8 @@ const ListPxpData = ({ config, FilterComponent }) => {
     total: 9999,
   });
   // Dynamic start value
-  const [start, setStart] = useState(-1);
+  const initPage = config.showFilter ? -1 : 0;
+  const [start, setStart] = useState(initPage);
   // Current value for search or filter
   const [value, setValue] = useState('');
 
