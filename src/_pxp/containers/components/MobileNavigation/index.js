@@ -88,6 +88,10 @@ const MobileNavigation = ({ actions }) => {
   const classesAction = useStylesAction();
   const location = useLocation();
   const menu = useSelector((state) => state.auth.menu);
+  const { pages: components } = usePages();
+
+  const options = actions || generateItems(menu, components);
+  const [value, setValue] = React.useState(0);
 
   const activeLink = (routes = []) => {
     let index = 0;
@@ -99,11 +103,10 @@ const MobileNavigation = ({ actions }) => {
     return index;
   };
 
-  const { pages: components } = usePages();
 
-  const options = actions || generateItems(menu, components);
-  const [value, setValue] = React.useState(activeLink(options));
-
+  React.useEffect(() => {
+    setValue(activeLink(options));
+  }, [location]);
   return (
     <BottomNavigationCustom
       value={value}
