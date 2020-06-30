@@ -10,6 +10,10 @@ const UseWindowSize = () => {
   const isClient = typeof window === 'object';
 
   function getSize() {
+    if (isClient) {
+      let vh = window.innerHeight;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
     return {
       width: isClient ? window.innerWidth : undefined,
       height: isClient ? window.innerHeight : undefined,

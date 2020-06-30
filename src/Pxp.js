@@ -72,6 +72,9 @@ class Pxp {
         case 'facebookSignUp':
           this.nativeSignUp(data);
           break;
+        case 'userCurrentPosition':
+          this.getCurrentPosition(data);
+          break;
         default:
           break;
       }
@@ -94,6 +97,10 @@ class Pxp {
         .then((response) => {
         });
     });
+  }
+
+  getCurrentPosition(data) {
+    localStorage.setItem('currentPositon', data);
   }
 }
 

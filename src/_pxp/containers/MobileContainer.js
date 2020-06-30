@@ -4,6 +4,7 @@ import { makeStyles, useTheme } from '@material-ui/styles';
 import zIndex from '@material-ui/core/styles/zIndex';
 import { Scrollbars } from 'react-custom-scrollbars';
 import MobileNavigation from './components/MobileNavigation';
+import UseWindowSize from '../hooks/useWindowSize';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
     // background: '#cb2d3e',  /* fallback for old browsers */
     // background: 'linear-gradient(to bottom, #cb2d3e 80%, #ef473a)', /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     flex: '1 1 auto',
-    height: 'calc( 100vh - 56px)',
-    maxHeight: 'calc( 100vh - 56px)',
+    height: 'calc( var(--vh) - 56px)',
+    maxHeight: 'calc( var(--vh) - 56px)',
     width: '100%',
     padding: '1px 0px 1px 0px',
     overflow: 'hidden',
@@ -42,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MobileContainer = ({ children }) => {
   const classes = useStyles();
+  const windowsize = UseWindowSize();
 
   return (
     <div

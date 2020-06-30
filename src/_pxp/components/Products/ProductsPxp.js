@@ -29,14 +29,19 @@ const ProductsPxp = ({ config, filters }) => {
       filterConfig[filter.field] = filter.value;
     }
 
-    set({
-      ...state,
-      params: {
-        ...filterConfig,
-        start: parseInt(page * state.params.limit, 10),
-      },
-      load: true,
-      infinite: page !== 0,
+    set(prev => {
+      console.log('ESTATE', state);
+
+      return {
+        ...state,
+        params: {
+          ...config.getDataTable.params,
+          ...filterConfig,
+          start: parseInt(page * state.params.limit, 10),
+        },
+        load: true,
+        infinite: page !== 0,
+      }
     });
   };
 

@@ -96,7 +96,7 @@ const Products = ({ data = [], filters, config }) => {
   }, [filter]);
 
   return (
-    <Box component={Scrollbars} style={{ height: 'calc(100vh - 110px)' }}>
+    <Box component={Scrollbars} style={{ height: 'calc(var(--vh) - 56px)' }}>
       <Box className={classes.filters}>
         <BasicFilters filters={filters} handleFilter={handleFilter} />
       </Box>

@@ -144,7 +144,7 @@ const ListPxp = ({ data = [], actions = [], config = {}, FilterComponent = Optio
         renderView={props => (
           <div {...props} style={{ ...props.style, overflowX: 'hidden', marginBottom: 0 }} />
         )}
-        style={{ height: 'calc(100vh - 110px)' }}
+        style={{ height: 'calc(var(--vh) - 104px)' }}
       >
         <List dense={true} className={classes.list}>
           <Divider />

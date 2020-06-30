@@ -92,7 +92,7 @@ const MobileNavigation = ({ actions }) => {
   const activeLink = (routes = []) => {
     let index = 0;
     routes.forEach((route, i) => {
-      if (route.path === location.pathname) {
+      if (location.pathname.includes(route.path)) {
         index = i;
       }
     })
