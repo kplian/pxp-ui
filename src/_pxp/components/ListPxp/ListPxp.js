@@ -28,6 +28,9 @@ import { defaultConfig } from './defaultConfig';
 
 const useStyles = makeStyles(theme => ({
   root: {
+    position: 'relative',
+    // height: '100%',
+    width: '100%',
   },
   title: {
     margin: theme.spacing(4, 0, 2),
@@ -78,7 +81,7 @@ const defaultActions = [
 ];
 
 // export const ListTable = ({ data, actions }) => {
-const ListPxp = ({ data = [], actions = [], config = {}, FilterComponent = OptionsFilter }) => {
+const ListPxp = ({ data = [], actions = [], config = {}, FilterComponent = OptionsFilter, heightFilter = 96 }) => {
   // IntersectionObserver revisar
   const configAll = { ...defaultConfig, ...config };
   const actionsAll = [...defaultActions, ...actions];
@@ -144,7 +147,7 @@ const ListPxp = ({ data = [], actions = [], config = {}, FilterComponent = Optio
         renderView={props => (
           <div {...props} style={{ ...props.style, overflowX: 'hidden', marginBottom: 0 }} />
         )}
-        style={{ height: 'calc(var(--vh) - 104px)' }}
+        style={{ height: `calc(100% - ${ configAll.showFilter ? heightFilter: 0}px)` }}
       >
         <List dense={true} className={classes.list}>
           <Divider />
@@ -161,13 +164,13 @@ const ListPxp = ({ data = [], actions = [], config = {}, FilterComponent = Optio
             loader={<SkeletonItems length={1} key={0} />}
           >
             {data && data.length > 0 && data.map((item, index) => (<div key={index} >
+              {configAll.columns.render && configAll.columns.render(item)}
+              {!configAll.columns.render &&
               <ListItem button onClick={() => handleClick(index)}>
                 {configAll.showDetail && <ListItemIcon>
                   {state[index] ? <ExpandLess /> : <ExpandMore />}
                 </ListItemIcon>
                 }
-                {configAll.columns.render && configAll.columns.render(item)}
-                {!configAll.columns.render &&
                   <ListItemText
                     primary={<React.Fragment>
                       <Box display="flex"
@@ -219,14 +222,14 @@ const ListPxp = ({ data = [], actions = [], config = {}, FilterComponent = Optio
                       </React.Fragment>
                     }
                   />
-                }
-                {configAll.showActions && <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="options" color="primary" onClick={toggleDrawer('bottom', true)}>
+                  {configAll.showActions && <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="options" color="primary" onClick={toggleDrawer('bottom', true)}>
                     <MoreVert />
-                  </IconButton>
-                </ListItemSecondaryAction>
+                    </IconButton>
+                    </ListItemSecondaryAction>
+                  }
+                  </ListItem>
                 }
-              </ListItem>
               <Collapse in={state[index]} timeout="auto" unmountOnExit>
                 <Grid container spacing={0} className={classes.detail}>
                   {!columns.detailRender && columns.detail && columns.detail.map((option, index) =>

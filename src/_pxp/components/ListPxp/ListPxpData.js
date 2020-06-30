@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ListPxp from './ListPxp';
 import Pxp from '../../../Pxp';
 
-const ListPxpData = ({ config, FilterComponent }) => {
+const ListPxpData = ({ config, FilterComponent, heightFilter }) => {
   const [configData, setConfigData] = useState({
     data: [],
     hasMore: true,
@@ -99,7 +99,7 @@ const ListPxpData = ({ config, FilterComponent }) => {
     }
   }, [start, value]);
 
-  return <ListPxp data={configData.data} config={config} FilterComponent={FilterComponent} />;
+  return <ListPxp data={configData.data} config={config} FilterComponent={FilterComponent} heightFilter={heightFilter}/>;
 };
 
 export default ListPxpData;
