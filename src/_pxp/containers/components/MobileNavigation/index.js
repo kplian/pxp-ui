@@ -5,9 +5,9 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Badge from '@material-ui/core/Badge';
 import Icon from '@material-ui/core/Icon';
 import { Link, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { newNotifyAction } from '../../../actions/notify'
 import usePages from '../../../hooks/usePages';
-
 // SOCKETS
 import { removeWebSocketListener, webSocketListener } from 'pxp-client';
 import { v4 as uuidv4 } from 'uuid';
@@ -71,6 +71,10 @@ const useStylesAction = makeStyles((theme) => ({
     '&$selected > :first-child > :first-child >:first-child': {
       fontSize: '2.3rem',
       color: theme.palette.secondary.light,
+    },
+    '&$selected > :first-child > :first-child': {
+      fontSize: '2.3rem',
+      color: theme.palette.secondary.light,
     }
   },
   selected: {
@@ -110,6 +114,7 @@ const MobileNavigation = ({ actions }) => {
   const [count, setCount] = useState(0);
   const eventNty = options.find(opt => opt.showNotify);
   const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   // F-SOCKETS
 
   const [value, setValue] = useState(0);
@@ -145,9 +150,10 @@ const MobileNavigation = ({ actions }) => {
         event: eventNty.eventListener(auth.currentUser.id_usuario),
         idComponent: uuid,
         handle: (e) => {
-          // console.log(e);
+          console.log(e);
           const countNow = parseInt(localStorage.getItem('notify') || 0);
           setCount(countNow + 1);
+          dispatch(newNotifyAction(e))
         },
       });
     }
