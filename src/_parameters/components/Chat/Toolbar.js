@@ -1,3 +1,9 @@
+/**
+ * Component for toolbar chat
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ *
+ */
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -6,14 +12,11 @@ import { useHistory } from 'react-router-dom';
 import {
   Avatar,
   Box,
-  Hidden,
   IconButton,
-  Input,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
-  Paper,
   Tooltip,
   Typography,
   makeStyles,
