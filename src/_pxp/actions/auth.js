@@ -65,12 +65,14 @@ export const startLogin = ({ login: username, password, language }) => {
 
 export const startResetPassword = ({ login: username, captcha }) => {
   return () => {
+    const getUrl = window.location;
     return Pxp.apiClient
       .doRequest({
         url: 'seguridad/Auten/resetPassword',
         params: {
           username,
           captcha,
+          url: `${getUrl.protocol}//${getUrl.host}/`,
         },
       })
       .then((data) => {
@@ -91,6 +93,7 @@ export const startSignup = ({
   captcha,
 }) => {
   return () => {
+    const getUrl = window.location;
     return Pxp.apiClient
       .doRequest({
         url: 'seguridad/Auten/signUp',
@@ -101,6 +104,7 @@ export const startSignup = ({
           username,
           password,
           captcha,
+          url: `${getUrl.protocol}//${getUrl.host}/`,
         },
       })
       .then((data) => {
