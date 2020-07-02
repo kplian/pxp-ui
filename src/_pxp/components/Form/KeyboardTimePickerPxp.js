@@ -46,12 +46,13 @@ export const KeyboardTimePickerPxpComponent = ({
 }) => {
   const classes = useStyles();
 
-  const { label, variant, gridForm, minDate, maxDate } = configInput;
+  const { label, variant, gridForm, minDate, maxDate, minTime } = configInput;
 
   const minMaxDate = {
     ...(minDate && { minDate }),
     ...(maxDate && { maxDate }),
   };
+
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -71,6 +72,7 @@ export const KeyboardTimePickerPxpComponent = ({
               value: date,
             })
           }
+          {...minMaxDate}
           KeyboardButtonProps={{
             'aria-label': 'change time',
           }}
