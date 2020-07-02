@@ -151,7 +151,6 @@ const MobileNavigation = ({ actions }) => {
   const clearEvents = () => {
     console.log('REMOVE');
     if (eventNty) {
-
       removeWebSocketListener({
         idComponent: uuid,
         event: eventNty.eventListener(auth.currentUser.id_usuario),

@@ -104,9 +104,12 @@ const ListPxp = ({ data = [], actions = [], config = {}, FilterComponent = Optio
     setState({ ...state, [side]: open });
   };
 
-  const handleClick = (index) => {
+  const handleClick = (index, item) => {
     if (configAll.showDetail) {
       setState({ ...state, [index]: !state[index] });
+    }
+    if (configAll.handleOnClick) {
+      configAll.handleOnClick(item);
     }
   }
 
@@ -147,7 +150,7 @@ const ListPxp = ({ data = [], actions = [], config = {}, FilterComponent = Optio
         renderView={props => (
           <div {...props} style={{ ...props.style, overflowX: 'hidden', marginBottom: 0 }} />
         )}
-        style={{ height: `calc(100% - ${ configAll.showFilter ? heightFilter: 0}px)` }}
+        style={{ height: `calc(100% - ${configAll.showFilter ? heightFilter : 0}px)` }}
       >
         <List dense={true} className={classes.list}>
           <Divider />
@@ -166,11 +169,11 @@ const ListPxp = ({ data = [], actions = [], config = {}, FilterComponent = Optio
             {data && data.length > 0 && data.map((item, index) => (<div key={index} >
               {configAll.columns.render && configAll.columns.render(item)}
               {!configAll.columns.render &&
-              <ListItem button onClick={() => handleClick(index)}>
-                {configAll.showDetail && <ListItemIcon>
-                  {state[index] ? <ExpandLess /> : <ExpandMore />}
-                </ListItemIcon>
-                }
+                <ListItem button onClick={() => handleClick(index, item)}>
+                  {configAll.showDetail && <ListItemIcon>
+                    {state[index] ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemIcon>
+                  }
                   <ListItemText
                     primary={<React.Fragment>
                       <Box display="flex"
@@ -224,12 +227,12 @@ const ListPxp = ({ data = [], actions = [], config = {}, FilterComponent = Optio
                   />
                   {configAll.showActions && <ListItemSecondaryAction>
                     <IconButton edge="end" aria-label="options" color="primary" onClick={toggleDrawer('bottom', true)}>
-                    <MoreVert />
+                      <MoreVert />
                     </IconButton>
-                    </ListItemSecondaryAction>
+                  </ListItemSecondaryAction>
                   }
-                  </ListItem>
-                }
+                </ListItem>
+              }
               <Collapse in={state[index]} timeout="auto" unmountOnExit>
                 <Grid container spacing={0} className={classes.detail}>
                   {!columns.detailRender && columns.detail && columns.detail.map((option, index) =>
