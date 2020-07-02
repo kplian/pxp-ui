@@ -6,8 +6,11 @@ import Badge from '@material-ui/core/Badge';
 import Icon from '@material-ui/core/Icon';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { newNotifyAction } from '../../../actions/notify'
+import { newNotifyAction } from '../../../actions/notify';
 import usePages from '../../../hooks/usePages';
+import useNotification from '../../../hooks/useNotification';
+import { createNotification } from '../../../utils/createNotification';
+
 // SOCKETS
 import { removeWebSocketListener, webSocketListener } from 'pxp-client';
 import { v4 as uuidv4 } from 'uuid';
@@ -106,6 +109,7 @@ const MobileNavigation = ({ actions }) => {
   const classes = useStyles();
   const classesAction = useStylesAction();
   const location = useLocation();
+  const notifyData = useNotification();
 
   const menu = useSelector((state) => state.auth.menu);
   const { pages: components } = usePages();
@@ -144,8 +148,21 @@ const MobileNavigation = ({ actions }) => {
     }
   }, [value]);
 
+  const clearEvents = () => {
+    console.log('REMOVE');
+    if (eventNty) {
+
+      removeWebSocketListener({
+        idComponent: uuid,
+        event: eventNty.eventListener(auth.currentUser.id_usuario),
+      });
+    }
+  };
+
   useEffect(() => {
     if (eventNty) {
+      console.log('CREATE');
+      window.addEventListener('beforeunload', clearEvents);
       webSocketListener({
         event: eventNty.eventListener(auth.currentUser.id_usuario),
         idComponent: uuid,
@@ -153,18 +170,14 @@ const MobileNavigation = ({ actions }) => {
           console.log(e);
           const countNow = parseInt(localStorage.getItem('notify') || 0);
           setCount(countNow + 1);
-          dispatch(newNotifyAction(e))
+          createNotification(e);
+          dispatch(newNotifyAction(e));
         },
       });
     }
 
     return () => {
-      if (eventNty) {
-        removeWebSocketListener({
-          idComponent: uuid,
-          event: eventNty.eventListener(auth.currentUser.id_usuario),
-        });
-      }
+      window.removeEventListener('beforeunload', clearEvents);
     };
   }, []);
 
