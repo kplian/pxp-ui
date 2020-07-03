@@ -54,6 +54,7 @@ const ThreadDetails = ({ eventWs, idChat, idComponent }) => {
           ...prevData,
           datos: prevData.datos.concat([
             {
+              id_mensaje: uuIdV4(),
               id_usuario_from: e.from.idUser,
               user_name_from: e.from.user,
               mensaje: e.mensaje,
@@ -66,7 +67,7 @@ const ThreadDetails = ({ eventWs, idChat, idComponent }) => {
   };
   useEffect(() => {
     console.log('data', data);
-    if(data) {
+    if (data) {
       messagesRef.current.scrollToBottom(0);
     }
   }, [data]);
@@ -94,31 +95,48 @@ const ThreadDetails = ({ eventWs, idChat, idComponent }) => {
     };
   }, []);
 
+  const createMsg = (message, afterSaveMsg) => {
+    Pxp.apiClient
+      .doRequest({
+        url: 'parametros/Mensaje/insertarMensaje',
+        params: {
+          id_chat: idChat,
+          mensaje: message,
+        },
+      })
+      .then((resp) => {
+        afterSaveMsg();
+      });
+  };
   const handleSend = (message, callback) => {
-    setData((prevData) => {
-      if (prevData) {
-        return {
-          ...prevData,
-          datos: prevData.datos.concat([
-            {
-              id_mensaje: uuIdV4(),
-              id_usuario_from: user,
-              user_name_from: Pxp.apiClient._authenticated.nombre_usuario,
-              mensaje: message,
-            },
-          ]),
-        };
-      }
-    });
-    sendMessageWs({
-      event: eventWs,
-      msg: message,
-      idChat,
-    });
-    setTimeout(() => {
-      messagesRef.current.scrollToBottom(0);
-    }, 100);
-    callback();
+    if (message !== '') {
+      setData((prevData) => {
+        if (prevData) {
+          return {
+            ...prevData,
+            datos: prevData.datos.concat([
+              {
+                id_mensaje: uuIdV4(),
+                id_usuario_from: user,
+                user_name_from: Pxp.apiClient._authenticated.nombre_usuario,
+                mensaje: message,
+              },
+            ]),
+          };
+        }
+      });
+      createMsg(message, () => {
+        console.log('msg has sent');
+      });
+      sendMessageWs({
+        event: eventWs,
+        msg: message,
+      });
+      setTimeout(() => {
+        messagesRef.current.scrollToBottom(0);
+      }, 100);
+      callback();
+    }
   };
 
   return (
