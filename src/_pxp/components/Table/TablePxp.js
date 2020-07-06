@@ -44,6 +44,7 @@ import DrawTable from './DrawTable';
 import useJsonStore from '../../hooks/useJsonStore';
 import InitButton from '../../hooks/InitButton';
 import { setTableState } from '../../actions/app';
+import Confirm from '../Alert/Confirm';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -113,6 +114,11 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const [selected, setSelected] = React.useState([]);
   // eslint-disable-next-line no-unused-vars
   const [rowSelected, setRowSelected] = useState();
+  // state for open dialog for delete
+  const [confirmDelete, setConfirmDelete] = useState({
+    open: false,
+    dataRow: undefined,
+  });
 
   const [statesShowColumn, setStatesShowColumn] = useState({});
 
@@ -306,11 +312,18 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     setOpenDialog(true);
   };
 
+  const handleConfirmDelete = (rowSelectedAux) => {
+    setConfirmDelete({
+      open: true,
+      data: rowSelectedAux,
+    });
+  };
   const handleDelete = (rowSelectedAux) => {
     // diff if is object or array
     // array is when the delete was executed with selections
     // object is when the delete was executed from actions menu
 
+    console.log(rowSelectedAux)
     let selectedAux = [];
     if (Array.isArray(rowSelectedAux)) {
       selectedAux = rowSelectedAux.slice();
@@ -389,7 +402,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const buttonsToolbarBySelections = {
     ...(buttonDel && {
       buttonDel: {
-        onClick: handleDelete,
+        onClick: handleConfirmDelete,
         icon: <DeleteIcon />,
         title: 'Delete',
       },
@@ -419,7 +432,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     }),
     ...(actionsTableCell.buttonDel && {
       buttonDel: {
-        onClick: handleDelete,
+        onClick: handleConfirmDelete,
         buttonIcon: <DeleteIcon />,
         label: 'Delete',
       },
@@ -644,6 +657,13 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
           <Form dialog data={configFormState} />
         </DialogContent>
       </Dialog>
+      <Confirm
+        openConfirm={confirmDelete.open}
+        setOpenConfirm={setConfirmDelete}
+        dialogContentText="¿Está seguro de eliminar el registro?"
+        data={confirmDelete.data}
+        onConfirm={handleDelete}
+      />
     </>
   );
 });
