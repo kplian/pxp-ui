@@ -39,16 +39,18 @@ const useLocationPxp = () => {
     const isWebView = navigator.userAgent.includes('wv');
     if (isWebView && window.Mobile) {
       window.Mobile.getUserCurrentPosition();
-      const current = localStorage.getItem('currentLocation');
-      if (current) {
-        const { lat, lng } = JSON.parse(current);
-        setPosition({ lat, lng, error: null });
-      } else {
-        setPosition({
-          ...position,
-          error: "User denied GeoLocation.",
-        });
-      }
+      setTimeout(() => {
+        const current = localStorage.getItem('currentLocation');
+        if (current) {
+          const { lat, lng } = JSON.parse(current);
+          setPosition({ lat, lng, error: null });
+        } else {
+          setPosition({
+            ...position,
+            error: "User denied GeoLocation.",
+          });
+        }
+      }, 100);
     } else {
       getLocation();
     }
