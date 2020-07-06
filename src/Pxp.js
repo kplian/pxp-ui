@@ -100,7 +100,7 @@ class Pxp {
   }
 
   getCurrentPosition(data) {
-    localStorage.setItem('currentPositon', data);
+    localStorage.setItem('currentLocation', data);
   }
 }
 

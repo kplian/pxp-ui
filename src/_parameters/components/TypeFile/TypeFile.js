@@ -125,10 +125,11 @@ const TypeFile = ({ table, idTableDesc }) => {
       },
     },
     idStore: 'id_tipo_archivo',
-    buttonDel: true,
+    ...(table ? { buttonDel: false } : { buttonDel: true }),
     buttonNew: true,
     actionsTableCell: {
       buttonDel: true,
+      ...(table ? { buttonDel: false } : { buttonDel: true }),
       buttonEdit: false,
     },
     resetButton: true,
