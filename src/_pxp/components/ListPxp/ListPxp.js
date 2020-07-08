@@ -21,7 +21,7 @@ import SkeletonItems from './SkeletonItems';
 import SearchFab from './SearchFab';
 import OptionsFilter from '../filters/OptionsFilter';
 import { Scrollbars } from 'react-custom-scrollbars';
-
+import useObserver from '../../hooks/useObserver';
 import _ from 'lodash';
 
 import { defaultConfig } from './defaultConfig';
