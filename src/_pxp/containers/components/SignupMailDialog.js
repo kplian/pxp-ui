@@ -33,7 +33,7 @@ const SignUpMailDialog = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} variant="contained" color="primary">
-            {t('resend_verification_email')}
+            {t('continue_to_login')}
           </Button>
         </DialogActions>
       </Dialog>

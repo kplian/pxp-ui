@@ -2,6 +2,7 @@ import React from 'react';
 import useJsonStore from '../../hooks/useJsonStore';
 import DrawGridListImage from './DrawGridListImage';
 import { makeStyles } from '@material-ui/styles';
+import LoadingScreen from '../LoadingScreen';
 
 const useStyles = makeStyles(theme => ({
   empty: {
@@ -14,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const GridListImage = ({ idTypeFile, idTable }) => {
+const GridListImage = ({ idTypeFile, idTable, isAdmin }) => {
   const classes = useStyles();
   const getData = {
     url: 'parametros/Archivo/getFiles',
@@ -31,7 +32,13 @@ const GridListImage = ({ idTypeFile, idTable }) => {
   // get the menu that we will use in the table cell for each one.
   const jsonStore = useJsonStore(getData);
   const { state, set, data = {}, loading } = jsonStore;
-  console.log(data)
+
+  const refresData = () => {
+    set({
+      ...state,
+      refresh: true,
+    });
+  };
   return (
     <>
       {data && data.total !== '0' && (
@@ -40,12 +47,15 @@ const GridListImage = ({ idTypeFile, idTable }) => {
           set={set}
           data={data}
           loading={loading}
+          isAdmin={isAdmin}
+          refresData={refresData}
         />
       )}
       {
         ((data && data.total === '0') && !loading) &&
         <p className={classes.empty}>No hay imagenes para mostrar</p>
       }
+      {loading && <LoadingScreen />}
     </>
   );
 };
