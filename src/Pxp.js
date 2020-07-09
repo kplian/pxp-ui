@@ -84,8 +84,23 @@ class Pxp {
   nativeSignIn(data) {
     const response = JSON.parse(data);
     this.apiClient
-      .oauthLogin(response.usuario, response.code, response.type, response.device)
-      .then((response) => {
+      .oauthLogin(
+        response.usuario,
+        response.code,
+        response.type,
+        response.device,
+      )
+      .then((res) => {
+        const isWebView = navigator.userAgent.includes('wv');
+        if (
+          isWebView &&
+          window.Mobile &&
+          process.env.REACT_APP_WEB_SOCKET === 'YES'
+        ) {
+          window.Mobile.saveWebSocketURL(
+            `ws://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}?sessionIDPXP=${res.phpsession}`,
+          );
+        }
       });
   }
 
@@ -94,11 +109,22 @@ class Pxp {
     this.apiClient.createTokenUser(dataObj).then(() => {
       this.apiClient
         .oauthLogin(dataObj.usuario, dataObj.code, dataObj.type, dataObj.device)
-        .then((response) => {
+        .then((res) => {
+          const isWebView = navigator.userAgent.includes('wv');
+          if (
+            isWebView &&
+            window.Mobile &&
+            process.env.REACT_APP_WEB_SOCKET === 'YES'
+          ) {
+            window.Mobile.saveWebSocketURL(
+              `ws://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}?sessionIDPXP=${res.phpsession}`,
+            );
+          }
         });
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
   getCurrentPosition(data) {
     localStorage.setItem('currentLocation', data);
   }

@@ -43,7 +43,6 @@ export const startSocialLogin = ({ usuario, code, type, language }) => {
     return Pxp.apiClient
       .oauthLogin(usuario, code, type, language)
       .then((data) => {
-        console.log(data);
         if (data.ROOT) {
           return data.ROOT.detalle.mensaje;
         }
@@ -58,6 +57,16 @@ export const startLogin = ({ login: username, password, language }) => {
       if (data.ROOT) {
         return data.ROOT.detalle.mensaje;
       }
+      const isWebView = navigator.userAgent.includes('wv');
+      if (isWebView && window.Mobile) {
+        window.Mobile.saveUserCredentials(username, password, language);
+        if (process.env.REACT_APP_WEB_SOCKET === 'YES') {
+          window.Mobile.saveWebSocketURL(
+            `ws://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}?sessionIDPXP=${data.phpsession}`,
+          );
+        }
+      }
+
       return 'success';
     });
   };
@@ -65,12 +74,14 @@ export const startLogin = ({ login: username, password, language }) => {
 
 export const startResetPassword = ({ login: username, captcha }) => {
   return () => {
+    const getUrl = window.location;
     return Pxp.apiClient
       .doRequest({
         url: 'seguridad/Auten/resetPassword',
         params: {
           username,
           captcha,
+          url: `${getUrl.protocol}//${getUrl.host}/`,
         },
       })
       .then((data) => {
@@ -91,6 +102,7 @@ export const startSignup = ({
   captcha,
 }) => {
   return () => {
+    const getUrl = window.location;
     return Pxp.apiClient
       .doRequest({
         url: 'seguridad/Auten/signUp',
@@ -101,6 +113,7 @@ export const startSignup = ({
           username,
           password,
           captcha,
+          url: `${getUrl.protocol}//${getUrl.host}/`,
         },
       })
       .then((data) => {
