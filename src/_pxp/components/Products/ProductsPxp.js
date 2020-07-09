@@ -25,6 +25,7 @@ const ProductsPxp = ({ config, filters }) => {
     if (filter && filter.search === true) {
       filterConfig.bottom_filter_fields = [filter.field].join();
       filterConfig.bottom_filter_value = filter.value;
+      filterConfig[filter.fieldFilter] = filter.valueFilter;
     } else if (filter) {
       filterConfig[filter.field] = filter.value;
     }

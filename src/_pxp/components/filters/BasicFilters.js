@@ -40,17 +40,22 @@ const BasicFilters = ({ filters, handleFilter }) => {
   };
 
   const handleSearch = (e) => {
-    let searchFitler = filters.filter((flr) => flr.search)[0] || null;
-    searchFitler = { ...searchFitler, value: e.target.value };
+    let searchFitler = filters.find((flr) => flr.search) || null;
+    const basicFilter = {
+      field: '*',
+      value: e.target.value,
+      criteria: 'contains',
+      search: true,
+    }
+    searchFitler = { ...basicFilter, ...searchFitler, value: e.target.value };
 
-    handleFilter(
-      searchFitler || {
-        field: '*',
-        value: e.target.value,
-        criteria: 'contains',
-        search: true,
-      },
-    );
+    const currentFilter = filters[value];
+
+    handleFilter({
+      fieldFilter: currentFilter.field,
+      valueFilter: currentFilter.value,
+      ...searchFitler
+    });
   };
 
   useEffect(() => {
