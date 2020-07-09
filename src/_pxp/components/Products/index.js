@@ -87,7 +87,6 @@ const Products = ({ data = [], filters, config }) => {
   }, [page]);
 
   useEffect(() => {
-    console.log('change tab tambien', page);
     if (page === 0) {
       config.pagination.onLoadMore(page, filter);
     } else {

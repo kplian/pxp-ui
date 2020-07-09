@@ -3,6 +3,13 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Badge from '@material-ui/core/Badge';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import Drawer from '@material-ui/core/Drawer';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,7 +17,7 @@ import { newNotifyAction } from '../../../actions/notify';
 import usePages from '../../../hooks/usePages';
 import useNotification from '../../../hooks/useNotification';
 import { createNotification } from '../../../utils/createNotification';
-
+import { startLogout } from '../../../actions/auth';
 // SOCKETS
 import { removeWebSocketListener, webSocketListener } from 'pxp-client';
 import { v4 as uuidv4 } from 'uuid';
@@ -84,9 +91,8 @@ const useStylesAction = makeStyles((theme) => ({
     fontSize: '0.8rem',
     paddingTop: '0px !important',
     color: theme.palette.text.primary + ' !important',
-  }
+  },
 }));
-
 
 const generateItems = (menu, components) => menu.map(item => {
   const cmp = components[item.component];
@@ -133,7 +139,6 @@ const MobileNavigation = ({ actions }) => {
     return index;
   };
 
-
   useEffect(() => {
     setValue(activeLink(options));
   }, [location]);
@@ -149,7 +154,6 @@ const MobileNavigation = ({ actions }) => {
   }, [value]);
 
   const clearEvents = () => {
-    console.log('REMOVE');
     if (eventNty) {
       removeWebSocketListener({
         idComponent: uuid,
@@ -203,6 +207,7 @@ const MobileNavigation = ({ actions }) => {
           />
         ))
       }
+      <MoreMenu />
     </BottomNavigationCustom>
   );
 };
@@ -222,3 +227,67 @@ const Notify = ({ visible, value = 0, icon }) => {
     </React.Fragment>
   )
 }
+
+const useStylesMore = makeStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.primary.main,
+    borderRadius: '0 10px 10px 0',
+    opacity: '0.8',
+    position: 'absolute',
+    left: 0,
+    top: '-60px',
+    zIndex: 100,
+  }
+}));
+
+const MoreButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.text.primary,
+    padding: '8px',
+  },
+}))(IconButton);
+
+const MoreMenu = () => {
+  const classes = useStylesMore();
+  const dispatch = useDispatch();
+  const [anchorEl, setAnchorEl] = React.useState(false);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(startLogout());
+    setAnchorEl(null);
+  };
+
+  return (
+    <div className={classes.root}>
+      <MoreButton onClick={handleClick}>
+        <Icon fontSize="small">settings</Icon>
+      </MoreButton>
+      <Drawer
+        id="more-menu"
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        anchor='bottom'
+      >
+        <List>
+          <ListItem button onClick={handleLogout}>
+            <ListItemIcon>
+              <Icon>exit_to_app</Icon>
+            </ListItemIcon>
+            <Typography variant="inherit">Cerrar sesión</Typography>
+          </ListItem>
+          <Divider />
+          <ListItem></ListItem>
+        </List>
+
+      </Drawer>
+    </div>
+  )
+};

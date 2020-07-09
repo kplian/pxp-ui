@@ -12,12 +12,12 @@ import {
 } from 'react-google-maps';
 
 const CustomMap = withScriptjs(
-  withGoogleMap(({ lat, lng, customIconMarker = undefined }) => {
+  withGoogleMap(({ lat, lng, customIconMarker = undefined, zoom = 14 }) => {
     console.log('lat', lat);
     console.log('lng', lng);
     return (
       <GoogleMap
-        defaultZoom={14}
+        defaultZoom={zoom}
         defaultCenter={{ lat, lng }}
         defaultOptions={{
           scrollwheel: false,
