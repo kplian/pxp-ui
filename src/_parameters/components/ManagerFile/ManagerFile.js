@@ -21,7 +21,7 @@ import GridListImage from '../../../_pxp/components/GridListImage/GridListImage'
 import Pxp from '../../../Pxp';
 import DialogPxp from '../../../_pxp/components/DialogPxp';
 import File from '../../../_pxp/icons/File';
-import TypeFile from "../TypeFile/TypeFile";
+import TypeFile from '../TypeFile/TypeFile';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -320,6 +320,7 @@ const ManagerFile = ({ idTable, table, idTableDesc }) => {
         <GridListImage
           idTable={idTable}
           idTypeFile={gridListImage.idTypeFile}
+          isAdmin
         />
       </DialogPxp>
       <DialogPxp

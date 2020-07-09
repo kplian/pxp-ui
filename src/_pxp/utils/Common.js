@@ -7,12 +7,13 @@ export const getUrlForView = ({ nameFile, folder, extension, size }) => {
   let urlFile = '';
   if (nameFile) {
     urlFile = folder;
-    urlFile = urlFile.split('./../../../')[1];
     if (size) {
-      urlFile = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOST}/${size}/${urlFile}${nameFile}.${extension}`;
+      urlFile = `${urlFile.split('./../../../')[1]}/${size}/`;
     } else {
-      urlFile = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOST}/${urlFile}${nameFile}.${extension}`;
+      // eslint-disable-next-line prefer-destructuring
+      urlFile = urlFile.split('./../../../')[1];
     }
+    urlFile = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOST}/${urlFile}${nameFile}.${extension}`;
   }
   return urlFile;
 };

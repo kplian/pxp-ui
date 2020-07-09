@@ -1,8 +1,9 @@
 import React from 'react';
 import useJsonStore from '../../hooks/useJsonStore';
 import DrawGridListImage from './DrawGridListImage';
+import LoadingScreen from "../LoadingScreen";
 
-const GridListImage = ({ idTypeFile, idTable }) => {
+const GridListImage = ({ idTypeFile, idTable, isAdmin }) => {
   const getData = {
     url: 'parametros/Archivo/getFiles',
     params: {
@@ -19,6 +20,12 @@ const GridListImage = ({ idTypeFile, idTable }) => {
   const jsonStore = useJsonStore(getData);
   const { state, set, data, loading } = jsonStore;
 
+  const refresData = () => {
+    set({
+      ...state,
+      refresh: true,
+    });
+  };
   return (
     <>
       {data && (
@@ -27,8 +34,11 @@ const GridListImage = ({ idTypeFile, idTable }) => {
           set={set}
           data={data}
           loading={loading}
+          isAdmin={isAdmin}
+          refresData={refresData}
         />
       )}
+      {loading && <LoadingScreen />}
     </>
   );
 };
