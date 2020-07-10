@@ -14,16 +14,16 @@ class Pxp {
       Pxp.instance = this;
       // envents callbacks
       this.callbacks = {};
-
+      
       // config
       this.config = config;
-
+      
       //
       this.apiClient = null;
     }
     return Pxp.instance;
   }
-
+  
   /**
    * @param {string} eventName
    * @param {*} data
@@ -35,16 +35,16 @@ class Pxp {
       });
     }
   }
-
+  
   /**
    * @param {string} eventName name of event
    * @param {string} id callback identifier
    * @param {Function} callback
    */
   listenEvent(eventName, id, callback) {
-    this.callbacks[eventName] = { [id]: callback };
+    this.callbacks[eventName] = {[id]: callback};
   }
-
+  
   /**
    * @param {string} eventName name of event
    * @param {string} id callback identifier
@@ -52,7 +52,7 @@ class Pxp {
   unlistenEvent(eventName, id) {
     delete this.callbacks[eventName][id];
   }
-
+  
   /**
    * @param {Object} client api client to be used in the application
    */
@@ -72,6 +72,9 @@ class Pxp {
         case 'facebookSignUp':
           this.nativeSignUp(data);
           break;
+        case 'vouzSignIn':
+          this.vouzSignIn(data);
+          break;
         case 'userCurrentPosition':
           this.getCurrentPosition(data);
           break;
@@ -80,7 +83,26 @@ class Pxp {
       }
     };
   }
-
+  
+  vouzSignIn(data) {
+    const response = JSON.parse(data);
+    this.apiClient
+      .login(
+        response.username,
+        response.password,
+      )
+      .then((res) => {
+        const isWebView = navigator.userAgent.includes('wv');
+        if (
+          res.success &&
+          isWebView &&
+          window.Mobile
+        ) {
+          window.Mobile.hideLoadingDialog();
+        }
+      });
+  }
+  
   nativeSignIn(data) {
     const response = JSON.parse(data);
     this.apiClient
@@ -108,7 +130,7 @@ class Pxp {
         }
       });
   }
-
+  
   // eslint-disable-next-line class-methods-use-this
   getCurrentPosition(data) {
     localStorage.setItem('currentLocation', data);
