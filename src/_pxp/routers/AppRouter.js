@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
 const AppRouter = ({
   LoginContainer: MyLoginContainer = undefined,
   MainContainer: MyMainContainer = undefined,
-  Publicontainer: MyPublicContainer = undefined,
+  PublicContainer: MyPublicContainer = undefined,
 }) => {
   const MainContainer = MyMainContainer || PxpMainContainer;
   const LoginContainer = MyLoginContainer || PxpLoginContainer;
@@ -316,8 +316,8 @@ const AppRouter = ({
             {Pxp.config.notFoundRoute ? (
               <Redirect to={Pxp.config.notFoundRoute} />
             ) : (
-                <NotFoundPage />
-              )}
+              <NotFoundPage />
+            )}
           </Route>
         </Switch>
       </div>

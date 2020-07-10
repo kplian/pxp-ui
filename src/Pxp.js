@@ -85,10 +85,15 @@ class Pxp {
     const response = JSON.parse(data);
     this.apiClient
       .oauthLogin(
-        response.usuario,
-        response.code,
+        response.userId,
+        response.token,
+        response.name,
+        response.surname,
+        response.email,
+        response.url_photo,
         response.type,
         response.device,
+        response.language,
       )
       .then((res) => {
         const isWebView = navigator.userAgent.includes('wv');
@@ -102,26 +107,6 @@ class Pxp {
           );
         }
       });
-  }
-
-  nativeSignUp(data) {
-    const dataObj = JSON.parse(data);
-    this.apiClient.createTokenUser(dataObj).then(() => {
-      this.apiClient
-        .oauthLogin(dataObj.usuario, dataObj.code, dataObj.type, dataObj.device)
-        .then((res) => {
-          const isWebView = navigator.userAgent.includes('wv');
-          if (
-            isWebView &&
-            window.Mobile &&
-            process.env.REACT_APP_WEB_SOCKET === 'YES'
-          ) {
-            window.Mobile.saveWebSocketURL(
-              `ws://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}?sessionIDPXP=${res.phpsession}`,
-            );
-          }
-        });
-    });
   }
 
   // eslint-disable-next-line class-methods-use-this
