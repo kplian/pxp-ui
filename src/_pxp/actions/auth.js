@@ -219,6 +219,9 @@ export const startSetMenu = () => {
 export const startLogout = () => {
   return (dispatch) => {
     return Pxp.apiClient.logout().then(() => {
+      if (navigator.userAgent.includes('wv')) {
+        window.Mobile.deleteUserCredentials();
+      }
       dispatch(logout());
       history.push('/login');
       dispatch(setMenu([]));

@@ -13,14 +13,14 @@ import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { removeWebSocketListener, webSocketListener } from 'pxp-client';
+import { v4 as uuidv4 } from 'uuid';
 import { newNotifyAction } from '../../../actions/notify';
 import usePages from '../../../hooks/usePages';
 import useNotification from '../../../hooks/useNotification';
 import { createNotification } from '../../../utils/createNotification';
 import { startLogout } from '../../../actions/auth';
 // SOCKETS
-import { removeWebSocketListener, webSocketListener } from 'pxp-client';
-import { v4 as uuidv4 } from 'uuid';
 import LoginDialog from '../../../../native_citas/containers/components/LoginDialog';
 
 const uuid = uuidv4();
@@ -31,7 +31,7 @@ const BottomNavigationCustom = withStyles((theme) => ({
     maxWidth: '100%',
     backgroundColor: theme.palette.primary.main,
     color: 'white',
-  }
+  },
 }))(BottomNavigation);
 
 const useStyles = makeStyles((theme) => ({
@@ -39,8 +39,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
   },
   selected: {
-    color: theme.palette.secondary.main + ' !important',
-  }
+    color: `${theme.palette.secondary.main} !important`,
+  },
 }));
 
 const useStylesAction = makeStyles((theme) => ({
@@ -51,14 +51,14 @@ const useStylesAction = makeStyles((theme) => ({
       top: '-7px',
       maxWidth: '60px !important',
       minWidth: '60px !important',
-      color: theme.palette.text.primary + ' !important',
+      color: `${theme.palette.text.primary} !important`,
       position: 'relative',
       width: '60px',
       height: '34.64px',
       backgroundColor: theme.palette.primary.dark,
       zIndex: 100,
       // margin: '17.32px 0',
-      "&:after, &:before": {
+      '&:after, &:before': {
         content: '"" !important',
         position: 'absolute',
         width: 0,
@@ -67,16 +67,15 @@ const useStylesAction = makeStyles((theme) => ({
       },
       '&:before': {
         bottom: '100%',
-        borderBottom: '17.32px solid ' + theme.palette.primary.dark,
+        borderBottom: `17.32px solid ${theme.palette.primary.dark}`,
       },
       '&:after': {
         top: '100%',
-        borderTop: '17.32px solid ' + theme.palette.primary.dark,
-      }
-
+        borderTop: `17.32px solid ${theme.palette.primary.dark}`,
+      },
     },
     '&$selected > :first-child > :nth-child(2)': {
-      display: 'none'
+      display: 'none',
     },
     '&$selected > :first-child > :first-child >:first-child': {
       fontSize: '2.3rem',
@@ -85,31 +84,32 @@ const useStylesAction = makeStyles((theme) => ({
     '&$selected > :first-child > :first-child': {
       fontSize: '2.3rem',
       color: theme.palette.secondary.light,
-    }
+    },
   },
   selected: {
     fontSize: '0.8rem',
     paddingTop: '0px !important',
-    color: theme.palette.text.primary + ' !important',
+    color: `${theme.palette.text.primary} !important`,
   },
 }));
 
-const generateItems = (menu, components) => menu.map(item => {
-  const cmp = components[item.component];
-  const notify = {};
+const generateItems = (menu, components) =>
+  menu.map((item) => {
+    const cmp = components[item.component];
+    const notify = {};
 
-  if (cmp && cmp.showNotify) {
-    notify.showNotify = cmp.showNotify;
-    notify.eventListener = cmp.eventListener;
-  }
+    if (cmp && cmp.showNotify) {
+      notify.showNotify = cmp.showNotify;
+      notify.eventListener = cmp.eventListener;
+    }
 
-  return ({
-    icon: item.icon,
-    label: item.text,
-    path: cmp ? cmp.path : '/',
-    ...notify,
+    return {
+      icon: item.icon,
+      label: item.text,
+      path: cmp ? cmp.path : '/',
+      ...notify,
+    };
   });
-});
 
 const MobileNavigation = ({ actions }) => {
   const classes = useStyles();
@@ -120,9 +120,9 @@ const MobileNavigation = ({ actions }) => {
   const menu = useSelector((state) => state.auth.menu);
   const { pages: components } = usePages();
   const options = actions || generateItems(menu, components);
-  // I-SOCKETS 
+  // I-SOCKETS
   const [count, setCount] = useState(0);
-  const eventNty = options.find(opt => opt.showNotify);
+  const eventNty = options.find((opt) => opt.showNotify);
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   // F-SOCKETS
@@ -135,7 +135,7 @@ const MobileNavigation = ({ actions }) => {
       if (location.pathname.includes(route.path)) {
         index = i;
       }
-    })
+    });
     return index;
   };
 
@@ -193,20 +193,22 @@ const MobileNavigation = ({ actions }) => {
       showLabels
       className={classes.root}
     >
-      {
-        options.slice(0, 5).map(item => (
-          <BottomNavigationAction
-            key={item.label}
-            classes={classesAction}
-            label={item.label}
-            component={Link}
-            to={item.path}
-            icon={
-              <Notify visible={item.showNotify && item.path !== options[value].path} value={count} icon={item.icon} />
-            }
-          />
-        ))
-      }
+      {options.slice(0, 5).map((item) => (
+        <BottomNavigationAction
+          key={item.label}
+          classes={classesAction}
+          label={item.label}
+          component={Link}
+          to={item.path}
+          icon={
+            <Notify
+              visible={item.showNotify && item.path !== options[value].path}
+              value={count}
+              icon={item.icon}
+            />
+          }
+        />
+      ))}
       <MoreMenu />
     </BottomNavigationCustom>
   );
@@ -216,19 +218,19 @@ export default MobileNavigation;
 
 const Notify = ({ visible, value = 0, icon }) => {
   return (
-    <React.Fragment>
-      {visible ?
+    <>
+      {visible ? (
         <Badge color="secondary" badgeContent={value} style={{ zIndex: 100 }}>
-          <Icon >{icon}</Icon>
+          <Icon>{icon}</Icon>
         </Badge>
-        :
-        <Icon >{icon}</Icon>
-      }
-    </React.Fragment>
-  )
-}
+      ) : (
+          <Icon>{icon}</Icon>
+        )}
+    </>
+  );
+};
 
-const useStylesMore = makeStyles(theme => ({
+const useStylesMore = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.primary.main,
     borderRadius: '0 10px 10px 0',
@@ -237,7 +239,7 @@ const useStylesMore = makeStyles(theme => ({
     left: 0,
     top: '-60px',
     zIndex: 100,
-  }
+  },
 }));
 
 const MoreButton = withStyles((theme) => ({
@@ -274,7 +276,7 @@ const MoreMenu = () => {
         id="more-menu"
         open={Boolean(anchorEl)}
         onClose={handleClose}
-        anchor='bottom'
+        anchor="bottom"
       >
         <List>
           <ListItem button onClick={handleLogout}>
@@ -284,10 +286,9 @@ const MoreMenu = () => {
             <Typography variant="inherit">Cerrar sesión</Typography>
           </ListItem>
           <Divider />
-          <ListItem></ListItem>
+          <ListItem />
         </List>
-
       </Drawer>
     </div>
-  )
+  );
 };
