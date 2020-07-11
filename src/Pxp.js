@@ -99,6 +99,9 @@ class Pxp {
           window.Mobile
         ) {
           window.Mobile.hideLoadingDialog();
+          window.Mobile.saveWebSocketURL(
+            `ws://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}?sessionIDPXP=${res.phpsession}`,
+          );
         }
       });
   }
