@@ -78,6 +78,7 @@
  *  signupDialog: 'CTA__CreateUser', //signup dialog to use instead of pxp ui dialog
  *  signupMailDialog: 'CTA__CreateUserMailSent', //signup and mail sent dialog to use instead of pxp ui dialog
  *  signupConfirmDialog: 'CTA__ConfirmCreation', //Email confirmation dialog to use instead of pxp ui dialog
+ *  termsOfService: '/condiciones'
  * }
  */
 

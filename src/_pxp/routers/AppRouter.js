@@ -50,10 +50,12 @@ const AppRouter = ({
   );
   // change init route if configuration is first and exists private routes
   if (privatePaths.length > 0) {
+    console.log(Pxp.config.privateInitRoute);
     Pxp.config.privateInitRoute =
       Pxp.config.privateInitRoute === 'first'
-        ? privatePaths[0]
+        ? `${privatePaths[0]}##first`
         : Pxp.config.privateInitRoute;
+    console.log(Pxp.config.privateInitRoute);
   }
 
   const publicRoutes = Pxp.config.publicRoutes || [];

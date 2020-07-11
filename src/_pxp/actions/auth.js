@@ -83,10 +83,11 @@ export const startLogin = ({ login: username, password, language }) => {
         if (process.env.REACT_APP_WEB_SOCKET === 'YES') {
           window.Mobile.saveWebSocketURL(
             `ws://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}?sessionIDPXP=${data.phpsession}`,
+            data.id_usuario,
+            data.nombre_usuario,
           );
         }
       }
-
       return 'success';
     });
   };
@@ -226,6 +227,16 @@ export const startLogout = () => {
       history.push('/login');
       dispatch(setMenu([]));
       dispatch(setRoutes([]));
+      Pxp.config.privateInitRoute = Pxp.config.privateInitRoute.includes(
+        'first',
+      )
+        ? 'first'
+        : Pxp.config.privateInitRoute;
+
+      const isWebView = navigator.userAgent.includes('wv');
+      if (isWebView && window.Mobile) {
+        window.Mobile.deleteUserCredentials();
+      }
     });
   };
 };

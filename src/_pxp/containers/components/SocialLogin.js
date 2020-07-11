@@ -14,6 +14,7 @@ const SocialLogin = forwardRef(() => {
   const [accessToken, setAccessToken] = useState('');
   const [loadingScreen, setLoadingScreen] = useState(false);
   const { settings } = useSettings();
+  console.log(settings);
   const dispatch = useDispatch();
   // call to native logins (facebook and google)
   const handleFacebookLogin = () => {
@@ -31,11 +32,10 @@ const SocialLogin = forwardRef(() => {
   // web login facebook and google
   const responseGoogle = (response) => {
     const { language } = settings;
-    setAccessToken(response.accessToken);
     setLoadingScreen(true);
     const userLogued = {
-      userId: response.profileObj.googleId,
-      token: response.accessToken,
+      userId: response.getId(),
+      token: response.getAuthResponse().id_token,
       name: response.profileObj.givenName,
       surname: response.profileObj.familyName,
       device: 'web',
@@ -187,7 +187,7 @@ const SocialLogin = forwardRef(() => {
           cookiePolicy="single_host_origin"
         />
       </div>
-      { loadingScreen && <LoadingScreen />}
+      {loadingScreen && <LoadingScreen />}
     </>
   );
 });

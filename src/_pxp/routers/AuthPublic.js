@@ -11,7 +11,8 @@ import Pxp from '../../Pxp';
 const AuthPublic = ({ children }) => {
   const authenticated = useSelector((state) => state.auth.uid);
   if (authenticated) {
-    return <Redirect to={Pxp.config.privateInitRoute} />;
+    console.log(Pxp.config.privateInitRoute);
+    return <Redirect to={Pxp.config.privateInitRoute.replace('##first', '')} />;
   }
   return children;
 };

@@ -84,7 +84,7 @@ export default ({ open: popen, username }) => {
     }
   }, [sessionDied, loadingScreen, username]);
 
-  const handleClose = () => { };
+  const handleClose = () => {};
 
   const userForm = {
     columns: {
@@ -174,6 +174,12 @@ export default ({ open: popen, username }) => {
                   >
                     {t('signup')}
                   </Button>
+                  {Pxp.config.accountManagement &&
+                    Pxp.config.accountManagement.termsOfService && (
+                      <Link href={Pxp.config.accountManagement.termsOfService}>
+                        Terminos del Servicio
+                      </Link>
+                    )}
                 </>
               )}
           </div>
