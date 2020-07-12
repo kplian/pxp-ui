@@ -6,11 +6,15 @@ import GoogleLogin from 'react-google-login';
 import FacebookIcon from '../../icons/FacebookIcon';
 import GoogleIcon from '../../icons/GoogleIcon';
 import { startSocialLogin } from '../../actions/auth';
+import LoadingScreen from '../../components/LoadingScreen';
+import useSettings from '../../hooks/useSettings';
 
 const SocialLogin = forwardRef(() => {
   const isWebView = navigator.userAgent.includes('wv');
   const [accessToken, setAccessToken] = useState('');
   const [loadingScreen, setLoadingScreen] = useState(false);
+  const { settings } = useSettings();
+  console.log(settings);
   const dispatch = useDispatch();
   // call to native logins (facebook and google)
   const handleFacebookLogin = () => {
@@ -24,48 +28,65 @@ const SocialLogin = forwardRef(() => {
       window.Mobile.googleLogin();
     }
   };
-  
+
   // web login facebook and google
   const responseGoogle = (response) => {
-    setAccessToken(response.accessToken);
+    const { language } = settings;
     setLoadingScreen(true);
     const userLogued = {
-      code: response.getAuthResponse().id_token,
+      userId: response.getId(),
+      token: response.getAuthResponse().id_token,
+      name: response.profileObj.givenName,
+      surname: response.profileObj.familyName,
+      device: 'web',
       type: 'google',
-      language: '',
-      usuario: response.profileObj.email,
+      language,
+      email: response.profileObj.email,
+      urlPhoto: response.profileObj.imageUrl,
     };
-    
+
     dispatch(startSocialLogin(userLogued)).then((errorMsg) => {
       if (errorMsg !== 'success') {
         setLoadingScreen(false);
       }
     });
-    
   };
 
   const responseFacebook = (response) => {
     setLoadingScreen(true);
+    const { language } = settings;
     const userLogued = {
-      code: response.accessToken,
+      userId: response.userID,
+      token: response.accessToken,
+      name: response.name.split(' ', 2)[0],
+      surname: response.name.split(' ', 2)[1],
+      device: 'web',
       type: 'facebook',
-      language: '',
+      language,
     };
-
     fetch(
       `https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=${response.accessToken}`,
     )
       .then((data) => data.json())
       .then((json) => {
-        userLogued.usuario = json.email;
-        dispatch(startSocialLogin(userLogued)).then((errorMsg) => {
-          if (errorMsg !== 'success') {
-            setLoadingScreen(false);
-          }
-        });
+        fetch(
+          `https://graph.facebook.com/${response.userID}/picture?type=square`,
+        )
+          .then((data) => {
+            userLogued.email = json.email;
+            userLogued.urlPhoto = data.url;
+            dispatch(startSocialLogin(userLogued)).then((errorMsg) => {
+              if (errorMsg !== 'success') {
+                setLoadingScreen(false);
+              }
+            });
+          })
+          .catch((e) => {
+            console.log('error', e);
+          });
       })
-      .catch(() => {
-        // reject('ERROR GETTING DATA FROM FACEBOOK')
+      .catch((e) => {
+        console.log('error', e);
       });
   };
   if (isWebView) {
@@ -117,7 +138,7 @@ const SocialLogin = forwardRef(() => {
         style={{ display: 'inline-flex', width: '104%' }}
       >
         <FacebookLogin
-          appId="1146525882368432"
+          appId={process.env.REACT_APP_FACEBOOK_KEY}
           callback={responseFacebook}
           render={(renderProps) => (
             <Button
@@ -141,7 +162,7 @@ const SocialLogin = forwardRef(() => {
         />
 
         <GoogleLogin
-          clientId="432978383853-mb7fe7mtjecintms1lj9o7vml1l86erf.apps.googleusercontent.com"
+          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
           render={(renderProps) => (
             <Button
               variant="contained"
@@ -166,7 +187,7 @@ const SocialLogin = forwardRef(() => {
           cookiePolicy="single_host_origin"
         />
       </div>
-      {/*{loadingScreen && <LoadingScreen />}*/}
+      {loadingScreen && <LoadingScreen />}
     </>
   );
 });
