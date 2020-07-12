@@ -91,7 +91,7 @@ class Pxp {
       if (res.success && isWebView && window.Mobile) {
         window.Mobile.hideLoadingDialog();
         window.Mobile.saveWebSocketURL(
-          `ws://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}?sessionIDPXP=${res.phpsession}`,
+          `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${res.phpsession}`,
           res.id_usuario,
           res.nombre_usario,
         );
@@ -121,7 +121,7 @@ class Pxp {
           process.env.REACT_APP_WEB_SOCKET === 'YES'
         ) {
           window.Mobile.saveWebSocketURL(
-            `ws://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}?sessionIDPXP=${res.phpsession}`,
+            `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${res.phpsession}`,
             res.id_usuario,
             res.nombre_usuario,
           );

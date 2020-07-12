@@ -82,7 +82,7 @@ export const startLogin = ({ login: username, password, language }) => {
         window.Mobile.saveUserCredentials(username, password, language);
         if (process.env.REACT_APP_WEB_SOCKET === 'YES') {
           window.Mobile.saveWebSocketURL(
-            `ws://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}?sessionIDPXP=${data.phpsession}`,
+            `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${data.phpsession}`,
             data.id_usuario,
             data.nombre_usuario,
           );
