@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import useGeolocation from 'react-hook-geolocation';
+
 const useLocationPxp = () => {
-  const [position, setPosition] = useState({ lat: null, lng: null, error: true });
+  const [position, setPosition] = useState({
+    lat: null,
+    lng: null,
+    error: true,
+  });
   const [webview, setWebview] = useState(false);
   // const geolocation = useGeolocation();
 
@@ -9,12 +14,14 @@ const useLocationPxp = () => {
     return new Promise(function (resolve, reject) {
       navigator.geolocation.getCurrentPosition(resolve, reject);
     });
-  }
+  };
 
   const getLocation = async () => {
     if (navigator.geolocation) {
       try {
-        const { coords: { latitude, longitude } } = await getCoordinates();
+        const {
+          coords: { latitude, longitude },
+        } = await getCoordinates();
         setPosition({
           lat: latitude,
           lng: longitude,
@@ -26,11 +33,10 @@ const useLocationPxp = () => {
           error: error.message,
         });
       }
-
     } else {
       setPosition({
         ...position,
-        error: "Geolocation is not supported by this browser.",
+        error: 'Geolocation is not supported by this browser.',
       });
     }
   };
@@ -47,7 +53,7 @@ const useLocationPxp = () => {
         } else {
           setPosition({
             ...position,
-            error: "User denied GeoLocation.",
+            error: 'User denied GeoLocation.',
           });
         }
       }, 100);
@@ -59,12 +65,11 @@ const useLocationPxp = () => {
   const saveLocalStorage = (latitude, longitude) => {
     localStorage.setItem(
       'currentLocation',
-      JSON.stringify({ lat: latitude, lng: longitude })
+      JSON.stringify({ lat: latitude, lng: longitude }),
     );
   };
 
   useEffect(() => {
-    console.log('AQUI ESTOY');
     handleGetCurrentPosition();
   }, []);
   return { position, handleGetCurrentPosition };

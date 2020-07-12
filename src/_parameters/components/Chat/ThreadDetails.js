@@ -47,7 +47,7 @@ const ThreadDetails = ({ eventWs, idChat, idComponent }) => {
   const { data, setData } = useJsonStore(getDataTable);
 
   const listenerMessage = (e) => {
-    console.log(e);
+    console.log('listenerMessage', e);
     setData((prevData) => {
       if (prevData) {
         return {
@@ -105,33 +105,18 @@ const ThreadDetails = ({ eventWs, idChat, idComponent }) => {
         },
       })
       .then((resp) => {
-        afterSaveMsg();
+        afterSaveMsg(resp);
       });
   };
   const handleSend = (message, callback) => {
     if (message !== '') {
-      setData((prevData) => {
-        if (prevData) {
-          return {
-            ...prevData,
-            datos: prevData.datos.concat([
-              {
-                id_mensaje: uuIdV4(),
-                id_usuario_from: user,
-                user_name_from: Pxp.apiClient._authenticated.nombre_usuario,
-                mensaje: message,
-              },
-            ]),
-          };
-        }
-      });
-      createMsg(message, () => {
+      createMsg(message, (resp) => {
         console.log('msg has sent');
       });
-      sendMessageWs({
+      /* sendMessageWs({
         event: eventWs,
         msg: message,
-      });
+      }); */
       setTimeout(() => {
         messagesRef.current.scrollToBottom(0);
       }, 100);
