@@ -12,12 +12,12 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     overflow: 'auto',
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
+    padding: 0,
+    paddingBottom: theme.spacing(0),
   },
 
   item: {
-    margin: theme.spacing(1),
+    margin: '2px',
     // padding: theme.spacing(1),
     boxShadow: theme.shadows[8],
     maxWidth: '345px',
@@ -87,7 +87,6 @@ const Products = ({ data = [], filters, config }) => {
   }, [page]);
 
   useEffect(() => {
-    console.log('change tab tambien', page);
     if (page === 0) {
       config.pagination.onLoadMore(page, filter);
     } else {
@@ -105,7 +104,7 @@ const Products = ({ data = [], filters, config }) => {
         p={2}
         style={{ height: 'calc(100vh - 110px)' }}
       >
-        <Grid container spacing={2} className={classes.root}>
+        <Grid container spacing={1} className={classes.root}>
           {data.length > 0 &&
             data
               //   .filter( item => {

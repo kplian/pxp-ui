@@ -72,6 +72,9 @@ class Pxp {
         case 'facebookSignUp':
           this.nativeSignUp(data);
           break;
+        case 'vouzSignIn':
+          this.vouzSignIn(data);
+          break;
         case 'userCurrentPosition':
           this.getCurrentPosition(data);
           break;
@@ -81,24 +84,52 @@ class Pxp {
     };
   }
 
-  nativeSignIn(data) {
+  vouzSignIn(data) {
     const response = JSON.parse(data);
-    this.apiClient
-      .oauthLogin(response.usuario, response.code, response.type, response.device)
-      .then((response) => {
-      });
-  }
-
-  nativeSignUp(data) {
-    const dataObj = JSON.parse(data);
-    this.apiClient.createTokenUser(dataObj).then(() => {
-      this.apiClient
-        .oauthLogin(dataObj.usuario, dataObj.code, dataObj.type, dataObj.device)
-        .then((response) => {
-        });
+    this.apiClient.login(response.username, response.password).then((res) => {
+      const isWebView = navigator.userAgent.includes('wv');
+      if (res.success && isWebView && window.Mobile) {
+        window.Mobile.hideLoadingDialog();
+        window.Mobile.saveWebSocketURL(
+          `ws://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}?sessionIDPXP=${res.phpsession}`,
+          res.id_usuario,
+          res.nombre_usuario,
+        );
+      }
     });
   }
 
+  nativeSignIn(data) {
+    const response = JSON.parse(data);
+    this.apiClient
+      .oauthLogin(
+        response.userId,
+        response.token,
+        response.name,
+        response.surname,
+        response.email,
+        response.url_photo,
+        response.type,
+        response.device,
+        response.language,
+      )
+      .then((res) => {
+        const isWebView = navigator.userAgent.includes('wv');
+        if (
+          isWebView &&
+          window.Mobile &&
+          process.env.REACT_APP_WEB_SOCKET === 'YES'
+        ) {
+          window.Mobile.saveWebSocketURL(
+            `ws://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}?sessionIDPXP=${res.phpsession}`,
+            res.id_usuario,
+            res.nombre_usuario,
+          );
+        }
+      });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
   getCurrentPosition(data) {
     localStorage.setItem('currentLocation', data);
   }

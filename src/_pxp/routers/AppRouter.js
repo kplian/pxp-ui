@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
 const AppRouter = ({
   LoginContainer: MyLoginContainer = undefined,
   MainContainer: MyMainContainer = undefined,
-  Publicontainer: MyPublicContainer = undefined,
+  PublicContainer: MyPublicContainer = undefined,
 }) => {
   const MainContainer = MyMainContainer || PxpMainContainer;
   const LoginContainer = MyLoginContainer || PxpLoginContainer;
@@ -50,10 +50,12 @@ const AppRouter = ({
   );
   // change init route if configuration is first and exists private routes
   if (privatePaths.length > 0) {
+    console.log(Pxp.config.privateInitRoute);
     Pxp.config.privateInitRoute =
       Pxp.config.privateInitRoute === 'first'
-        ? privatePaths[0]
+        ? `${privatePaths[0]}##first`
         : Pxp.config.privateInitRoute;
+    console.log(Pxp.config.privateInitRoute);
   }
 
   const publicRoutes = Pxp.config.publicRoutes || [];
@@ -316,8 +318,8 @@ const AppRouter = ({
             {Pxp.config.notFoundRoute ? (
               <Redirect to={Pxp.config.notFoundRoute} />
             ) : (
-                <NotFoundPage />
-              )}
+              <NotFoundPage />
+            )}
           </Route>
         </Switch>
       </div>
