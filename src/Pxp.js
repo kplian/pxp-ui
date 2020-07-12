@@ -93,7 +93,7 @@ class Pxp {
         window.Mobile.saveWebSocketURL(
           `ws://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}?sessionIDPXP=${res.phpsession}`,
           res.id_usuario,
-          res.nombre_usario,
+          res.nombre_usuario,
         );
       }
     });
