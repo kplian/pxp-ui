@@ -78,6 +78,13 @@ export const startLogin = ({login: username, password, language}) => {
         return data.ROOT.detalle.mensaje;
       }
       const isWebView = navigator.userAgent.includes('wv');
+      
+      const userAgent = window.navigator.userAgent.toLowerCase(),
+        safari = /safari/.test( userAgent ),
+        ios = /iphone|ipod|ipad/.test( userAgent );
+  
+      const iOSWebView = (ios && !safari);
+      
       if (
         isWebView &&
         window.Mobile
@@ -91,7 +98,7 @@ export const startLogin = ({login: username, password, language}) => {
           );
         }
       } else if (
-        isWebView &&
+        iOSWebView &&
         window.webkit
       ) {
         window.webkit.messageHandlers.saveUserCredentials.postMessage(
@@ -256,9 +263,17 @@ export const startLogout = () => {
         : Pxp.config.privateInitRoute;
       
       const isWebView = navigator.userAgent.includes('wv');
+  
+  
+      const userAgent = window.navigator.userAgent.toLowerCase(),
+        safari = /safari/.test( userAgent ),
+        ios = /iphone|ipod|ipad/.test( userAgent );
+  
+      const iOSWebView = (ios && !safari);
+      
       if (isWebView && window.Mobile) {
         window.Mobile.deleteUserCredentials();
-      } else if (isWebView && window.webkit) {
+      } else if (iOSWebView && window.webkit) {
         window.webkit.messageHandlers.deleteUserCredentials.postMessage();
       }
     });

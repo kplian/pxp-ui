@@ -43,6 +43,13 @@ const useLocationPxp = () => {
   
   const handleGetCurrentPosition = () => {
     const isWebView = navigator.userAgent.includes('wv');
+  
+    const userAgent = window.navigator.userAgent.toLowerCase(),
+      safari = /safari/.test( userAgent ),
+      ios = /iphone|ipod|ipad/.test( userAgent );
+  
+    const iOSWebView = (ios && !safari);
+    
     if (
       isWebView &&
       window.Mobile
@@ -61,7 +68,7 @@ const useLocationPxp = () => {
         }
       }, 100);
     } else if (
-      isWebView &&
+      iOSWebView &&
       window.webkit
     ) {
       window.webkit.messageHandlers.getUserCurrentPosition.postMessage();
