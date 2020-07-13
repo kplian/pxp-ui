@@ -14,6 +14,7 @@ class Pxp {
       Pxp.instance = this;
       // envents callbacks
       this.callbacks = {};
+      this.callbacksMobileFocus = {};
 
       // config
       this.config = config;
@@ -46,11 +47,27 @@ class Pxp {
   }
 
   /**
+   * @param {string} id callback identifier
+   * @param {Function} callback
+   */
+  listenMobileFocus(id, callback) {
+    this.callbacksMobileFocus[id] = callback;
+  }
+
+  /**
    * @param {string} eventName name of event
    * @param {string} id callback identifier
    */
   unlistenEvent(eventName, id) {
     delete this.callbacks[eventName][id];
+  }
+
+  /**
+   * @param {string} eventName name of event
+   * @param {string} id callback identifier
+   */
+  unlistenMobileFocus(id) {
+    delete this.callbacksMobileFocus[id];
   }
 
   /**
@@ -77,6 +94,9 @@ class Pxp {
           break;
         case 'userCurrentPosition':
           this.getCurrentPosition(data);
+          break;
+        case 'onMobileFocusIn':
+          this.onMobileFocusIn(data);
           break;
         default:
           break;
@@ -132,6 +152,14 @@ class Pxp {
   // eslint-disable-next-line class-methods-use-this
   getCurrentPosition(data) {
     localStorage.setItem('currentLocation', data);
+  }
+
+  onMobileFocusIn() {
+    console.log(this.callbacksMobileFocus);
+    Object.keys(this.callbacksMobileFocus).forEach((id) => {
+      console.log('entra');
+      this.callbacksMobileFocus[id]();
+    });
   }
 }
 
