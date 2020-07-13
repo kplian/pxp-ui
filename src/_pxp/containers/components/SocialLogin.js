@@ -11,12 +11,20 @@ import useSettings from '../../hooks/useSettings';
 
 const SocialLogin = forwardRef(() => {
   const isWebView = navigator.userAgent.includes('wv');
+  
+  const userAgent = window.navigator.userAgent.toLowerCase(),
+    safari = /safari/.test( userAgent ),
+    ios = /iphone|ipod|ipad/.test( userAgent );
+  
+  const iOSWebView = (ios && !safari);
+  
   const [accessToken, setAccessToken] = useState('');
   const [loadingScreen, setLoadingScreen] = useState(false);
   const { settings } = useSettings();
   console.log(settings);
   const dispatch = useDispatch();
   // call to native logins (facebook and google)
+  
   const handleFacebookLogin = () => {
     if (window.Mobile) {
       window.Mobile.facebookLogin();
@@ -89,7 +97,7 @@ const SocialLogin = forwardRef(() => {
         console.log('error', e);
       });
   };
-  if (isWebView) {
+  if (isWebView || iOSWebView) {
     return (
       <>
         <div
@@ -187,7 +195,7 @@ const SocialLogin = forwardRef(() => {
           cookiePolicy="single_host_origin"
         />
       </div>
-      {loadingScreen && <LoadingScreen />}
+      {/*{loadingScreen && <LoadingScreen />}*/}
     </>
   );
 });
