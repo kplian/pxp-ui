@@ -24,7 +24,6 @@ const ListPxpData = ({ config, FilterComponent, heightFilter }) => {
   };
   const onSearch = (filter = null) => {
     const filterConfig = {};
-    console.log('FILTER: ', filter);
     if (filter && filter.search === true) {
       filterConfig.bottom_filter_fields = [filter.field].join();
       filterConfig.bottom_filter_value = filter.value;
@@ -72,8 +71,7 @@ const ListPxpData = ({ config, FilterComponent, heightFilter }) => {
         resp.datos.forEach((item) => configData.data.push(item));
 
         const { length } = configData.data;
-        const hasMore =
-          !!(length < parseInt(resp.total) && resp.total !== '0');
+        const hasMore = !!(length < parseInt(resp.total) && resp.total !== '0');
 
         setConfigData((prev) => {
           return {
@@ -99,7 +97,14 @@ const ListPxpData = ({ config, FilterComponent, heightFilter }) => {
     }
   }, [start, value]);
 
-  return <ListPxp data={configData.data} config={config} FilterComponent={FilterComponent} heightFilter={heightFilter}/>;
+  return (
+    <ListPxp
+      data={configData.data}
+      config={config}
+      FilterComponent={FilterComponent}
+      heightFilter={heightFilter}
+    />
+  );
 };
 
 export default ListPxpData;

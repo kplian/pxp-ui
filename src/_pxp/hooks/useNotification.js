@@ -15,11 +15,8 @@ const useNotification = () => {
 
   const requestPermissionMobile = async () => {
     return new Promise((resolve, reject) => {
-      console.log('Ok');
       navigator.serviceWorker.ready
         .then(function (registration) {
-          console.log('ODDDDDk');
-
           registration.showNotification('Vibration Sample', {
             body: 'Buzz! Buzz!',
             icon: '../images/touch/chrome-touch-icon-192x192.png',

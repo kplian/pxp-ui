@@ -164,13 +164,11 @@ const MobileNavigation = ({ actions }) => {
 
   useEffect(() => {
     if (eventNty) {
-      console.log('CREATE');
       window.addEventListener('beforeunload', clearEvents);
       webSocketListener({
         event: eventNty.eventListener(auth.currentUser.id_usuario),
         idComponent: uuid,
         handle: (e) => {
-          console.log(e);
           const countNow = parseInt(localStorage.getItem('notify') || 0);
           setCount(countNow + 1);
           createNotification(e);

@@ -30,9 +30,7 @@ const ProductsPxp = ({ config, filters }) => {
       filterConfig[filter.field] = filter.value;
     }
 
-    set(prev => {
-      console.log('ESTATE', state);
-
+    set((prev) => {
       return {
         ...state,
         params: {
@@ -42,7 +40,7 @@ const ProductsPxp = ({ config, filters }) => {
         },
         load: true,
         infinite: page !== 0,
-      }
+      };
     });
   };
 
@@ -51,7 +49,9 @@ const ProductsPxp = ({ config, filters }) => {
     pageInit: -1,
     parent: document.getElementById('content'),
     onLoadMore: (page, filter) => {
-      handleLoadMore(page, filter);
+      if (filter) {
+        handleLoadMore(page, filter);
+      }
     },
   };
 

@@ -87,7 +87,7 @@ const Products = ({ data = [], filters, config }) => {
   }, [page]);
 
   useEffect(() => {
-    if (page === 0) {
+    if (page === 0 && !config.pagination.hasMore) {
       config.pagination.onLoadMore(page, filter);
     } else {
       setPage(0);
@@ -99,11 +99,7 @@ const Products = ({ data = [], filters, config }) => {
       <Box className={classes.filters}>
         <BasicFilters filters={filters} handleFilter={handleFilter} />
       </Box>
-      <Box
-        flexGrow={1}
-        p={2}
-        style={{ height: 'calc(100vh - 110px)' }}
-      >
+      <Box flexGrow={1} p={2} style={{ height: 'calc(100vh - 110px)' }}>
         <Grid container spacing={1} className={classes.root}>
           {data.length > 0 &&
             data
