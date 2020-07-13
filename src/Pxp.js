@@ -66,7 +66,7 @@ class Pxp {
    * @param {string} eventName name of event
    * @param {string} id callback identifier
    */
-  unlistenMobileFocus(id) {
+  unListenMobileFocus(id) {
     delete this.callbacksMobileFocus[id];
   }
 
