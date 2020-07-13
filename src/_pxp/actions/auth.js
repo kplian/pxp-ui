@@ -274,7 +274,7 @@ export const startLogout = () => {
       if (isWebView && window.Mobile) {
         window.Mobile.deleteUserCredentials();
       } else if (iOSWebView && window.webkit) {
-        window.webkit.messageHandlers.deleteUserCredentials.postMessage();
+        window.webkit.messageHandlers.deleteUserCredentials.postMessage({"data": ""});
       }
     });
   };

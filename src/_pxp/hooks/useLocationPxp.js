@@ -71,7 +71,7 @@ const useLocationPxp = () => {
       iOSWebView &&
       window.webkit
     ) {
-      window.webkit.messageHandlers.getUserCurrentPosition.postMessage();
+      window.webkit.messageHandlers.getUserCurrentPosition.postMessage({"data": ""});
       setTimeout(() => {
         const current = localStorage.getItem('currentLocation');
         if (current) {
