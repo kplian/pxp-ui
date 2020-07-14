@@ -265,6 +265,11 @@ const MoreMenu = () => {
     setAnchorEl(null);
   };
 
+  const handleClean = () => {
+    window.location.reload(true);
+    setAnchorEl(null);
+  };
+
   return (
     <div className={classes.root}>
       <MoreButton onClick={handleClick}>
@@ -277,6 +282,13 @@ const MoreMenu = () => {
         anchor="bottom"
       >
         <List>
+          <ListItem button onClick={handleClean}>
+            <ListItemIcon>
+              <Icon>refresh</Icon>
+            </ListItemIcon>
+            <Typography variant="inherit">Recargar aplicación</Typography>
+          </ListItem>
+          <Divider />
           <ListItem button onClick={handleLogout}>
             <ListItemIcon>
               <Icon>exit_to_app</Icon>
@@ -284,6 +296,7 @@ const MoreMenu = () => {
             <Typography variant="inherit">Cerrar sesión</Typography>
           </ListItem>
           <Divider />
+
           <ListItem />
         </List>
       </Drawer>
