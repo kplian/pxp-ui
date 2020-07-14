@@ -76,6 +76,12 @@ class Pxp {
   setApiClient(client) {
     this.apiClient = client;
     global.callMethodFromDevice = (method, data) => {
+      
+      console.log("---------")
+      console.log(method)
+      console.log(data)
+      console.log("---------")
+      
       switch (method) {
         case 'googleSignIn':
           this.nativeSignIn(data);
@@ -134,9 +140,9 @@ class Pxp {
         window.webkit.messageHandlers.hideLoadingDialog.postMessage({"data": ""});
         window.webkit.messageHandlers.saveWebSocketURL.postMessage(
           {
-            socket: `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${data.phpsession}`,
-            id_usuario: data.id_usuario,
-            nombre_usuario: data.nombre_usuario,
+            socket: `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${res.phpsession}`,
+            id_usuario: res.id_usuario,
+            nombre_usuario: res.nombre_usuario,
           }
         );
       }
@@ -182,9 +188,9 @@ class Pxp {
           process.env.REACT_APP_WEB_SOCKET === 'YES'
         ) {
           window.webkit.messageHandlers.saveWebSocketURL.postMessage({
-            socket: `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${data.phpsession}`,
-            id_usuario: data.id_usuario,
-            nombre_usuario: data.nombre_usuario,
+            socket: `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${res.phpsession}`,
+            id_usuario: res.id_usuario,
+            nombre_usuario: res.nombre_usuario,
           })
         }
       });
