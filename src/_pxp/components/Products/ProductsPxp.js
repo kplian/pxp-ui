@@ -15,7 +15,6 @@ const ProductsPxp = ({ config, filters }) => {
   });
 
   const { state, set, data, loading, error } = jsonStore;
-  // console.log('ERROR', error, data);
 
   const handleLoadMore = (page, filter = null) => {
     const filterConfig = {
@@ -77,6 +76,7 @@ const ProductsPxp = ({ config, filters }) => {
         config={config}
         loading={loading}
         error={error}
+        errorMessage={data?.detail?.message || null}
       />
     </div>
   );

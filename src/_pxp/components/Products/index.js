@@ -51,6 +51,7 @@ const Products = ({
   config,
   loading = true,
   error = false,
+  errorMessage = null,
 }) => {
   const classes = useStyles();
   const [filter, setFilter] = useState(null);
@@ -109,7 +110,7 @@ const Products = ({
       </Box>
       <Box flexGrow={1} p={2} style={{ height: 'calc(100vh - 110px)' }}>
         {loading && !config.pagination.hasMore && <Loader />}
-        {error && <label>Ha ocurrido un error...</label>}
+        {error && <label>{errorMessage || 'Ha acurrido un error...'}</label>}
         {!error && (
           <Grid container spacing={1} className={classes.root}>
             {data.length > 0 &&
