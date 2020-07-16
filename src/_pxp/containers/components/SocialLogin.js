@@ -101,107 +101,74 @@ const SocialLogin = forwardRef(() => {
         console.log('error', e);
       });
   };
-  if (isWebView || iOSWebView) {
+  
+  if (!isWebView && !iOSWebView){
     return (
       <>
       <div
         className="social-login-button-container"
         style={{display: 'inline-flex', width: '104%'}}
       >
-        <Button
-          variant="contained"
-          color="secondary"
-          className="facebook-button"
-          onClick={(e) => handleFacebookLogin(e)}
-          startIcon={
-            <FacebookIcon
-              style={{paddingTop: '8px'}}
-              width={30}
-              fill="#ffffff"
-            />
-          }
-        >
-          Facebook
-        </Button>
-        
-        <Button
-          variant="contained"
-          color="secondary"
-          className="google-button"
-          onClick={(e) => handleGoogleLogin(e)}
-          startIcon={
-            <GoogleIcon
-              style={{paddingTop: '8px'}}
-              width={30}
-              fill="#ffffff"
-            />
-          }
-        >
-          <label htmlFor="">Google</label>
-        </Button>
+        <FacebookLogin
+          appId={process.env.REACT_APP_FACEBOOK_KEY}
+          callback={responseFacebook}
+          render={(renderProps) => (
+            <Button
+              variant="contained"
+              color="secondary"
+              className="facebook-button"
+              publishPermissions={['publish_actions']}
+              readPermissions={['public_profile']}
+              onClick={renderProps.onClick}
+              startIcon={
+                <FacebookIcon
+                  style={{paddingTop: '8px'}}
+                  width={30}
+                  fill="#ffffff"
+                />
+              }
+            >
+              Facebook
+            </Button>
+          )}
+        />
+      
+        <GoogleLogin
+          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+          render={(renderProps) => (
+            <Button
+              variant="contained"
+              color="secondary"
+              className="google-button"
+              onClick={renderProps.onClick}
+              disabled={renderProps.disabled}
+              startIcon={
+                <GoogleIcon
+                  style={{paddingTop: '8px'}}
+                  width={30}
+                  fill="#ffffff"
+                />
+              }
+            >
+              <label htmlFor="">Google</label>
+            </Button>
+          )}
+          buttonText="Login"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy="single_host_origin"
+        />
       </div>
+      {/*{loadingScreen && <LoadingScreen />}*/}
       </>
     );
+  } else {
+    return (<></>)
   }
-  return (
-    <>
-    <div
-      className="social-login-button-container"
-      style={{display: 'inline-flex', width: '104%'}}
-    >
-      <FacebookLogin
-        appId={process.env.REACT_APP_FACEBOOK_KEY}
-        callback={responseFacebook}
-        render={(renderProps) => (
-          <Button
-            variant="contained"
-            color="secondary"
-            className="facebook-button"
-            publishPermissions={['publish_actions']}
-            readPermissions={['public_profile']}
-            onClick={renderProps.onClick}
-            startIcon={
-              <FacebookIcon
-                style={{paddingTop: '8px'}}
-                width={30}
-                fill="#ffffff"
-              />
-            }
-          >
-            Facebook
-          </Button>
-        )}
-      />
-      
-      <GoogleLogin
-        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-        render={(renderProps) => (
-          <Button
-            variant="contained"
-            color="secondary"
-            className="google-button"
-            onClick={renderProps.onClick}
-            disabled={renderProps.disabled}
-            startIcon={
-              <GoogleIcon
-                style={{paddingTop: '8px'}}
-                width={30}
-                fill="#ffffff"
-              />
-            }
-          >
-            <label htmlFor="">Google</label>
-          </Button>
-        )}
-        buttonText="Login"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
-        cookiePolicy="single_host_origin"
-      />
-    </div>
-    {/*{loadingScreen && <LoadingScreen />}*/}
-    </>
-  );
+  
+  
+  
+  
 });
 
 export default SocialLogin;
