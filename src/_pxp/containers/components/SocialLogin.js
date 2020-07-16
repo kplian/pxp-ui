@@ -101,48 +101,8 @@ const SocialLogin = forwardRef(() => {
         console.log('error', e);
       });
   };
-  if (isWebView || iOSWebView) {
-    return (
-      <>
-      <div
-        className="social-login-button-container"
-        style={{display: 'inline-flex', width: '104%'}}
-      >
-        <Button
-          variant="contained"
-          color="secondary"
-          className="facebook-button"
-          onClick={(e) => handleFacebookLogin(e)}
-          startIcon={
-            <FacebookIcon
-              style={{paddingTop: '8px'}}
-              width={30}
-              fill="#ffffff"
-            />
-          }
-        >
-          Facebook
-        </Button>
-        
-        <Button
-          variant="contained"
-          color="secondary"
-          className="google-button"
-          onClick={(e) => handleGoogleLogin(e)}
-          startIcon={
-            <GoogleIcon
-              style={{paddingTop: '8px'}}
-              width={30}
-              fill="#ffffff"
-            />
-          }
-        >
-          <label htmlFor="">Google</label>
-        </Button>
-      </div>
-      </>
-    );
-  }
+  
+  
   return (
     <>
     <div
@@ -202,6 +162,7 @@ const SocialLogin = forwardRef(() => {
     {/*{loadingScreen && <LoadingScreen />}*/}
     </>
   );
+  
 });
 
 export default SocialLogin;
