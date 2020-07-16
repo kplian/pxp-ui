@@ -13,7 +13,10 @@ import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeWebSocketListener, webSocketListener } from 'pxp-client';
+import PxpClient, {
+  removeWebSocketListener,
+  webSocketListener,
+} from 'pxp-client';
 import { v4 as uuidv4 } from 'uuid';
 import { newNotifyAction } from '../../../actions/notify';
 import usePages from '../../../hooks/usePages';
@@ -164,11 +167,12 @@ const MobileNavigation = ({ actions }) => {
 
   useEffect(() => {
     if (eventNty) {
-      window.addEventListener('beforeunload', clearEvents);
+      // window.addEventListener('beforeunload', clearEvents);
       webSocketListener({
         event: eventNty.eventListener(auth.currentUser.id_usuario),
         idComponent: uuid,
         handle: (e) => {
+          console.log('[PXP]', PxpClient);
           const countNow = parseInt(localStorage.getItem('notify') || 0);
           setCount(countNow + 1);
           createNotification(e);
