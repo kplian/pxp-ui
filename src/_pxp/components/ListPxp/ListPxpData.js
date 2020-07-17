@@ -92,7 +92,7 @@ const ListPxpData = ({ config, FilterComponent, heightFilter }) => {
 
   // active with change page or value search
   useEffect(() => {
-    if (configData.hasMore) {
+    if (configData.hasMore && start >= 0) {
       getData();
     }
   }, [start, value]);

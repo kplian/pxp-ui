@@ -45,7 +45,14 @@ const Loader = (props) => (
   </div>
 );
 
-const Products = ({ data = [], filters, config }) => {
+const Products = ({
+  data = [],
+  filters,
+  config,
+  loading = true,
+  error = false,
+  errorMessage = null,
+}) => {
   const classes = useStyles();
   const [filter, setFilter] = useState(null);
   const [page, setPage] = useState(-1);
@@ -59,11 +66,9 @@ const Products = ({ data = [], filters, config }) => {
     if (tab) {
       // if the handle is active from tab then we need to return the page to 0
       // todo change this logic
-      setPage(0);
-      setFilter(currentFilter);
-    } else {
-      setFilter(currentFilter);
+      // setPage(0);
     }
+    setFilter(currentFilter);
   }, 500);
 
   useEffect(() => {
@@ -81,13 +86,17 @@ const Products = ({ data = [], filters, config }) => {
   }, [entry]);
 
   useEffect(() => {
-    if (page >= 0 && config.pagination.hasMore) {
+    if (page === 0) {
       config.pagination.onLoadMore(page, filter);
+    } else if (page > 0 && config.pagination.hasMore) {
+      config.pagination.onLoadMore(page, filter);
+    } else if (filter && filter.search) {
+      config.pagination.onLoadMore(0, filter);
     }
   }, [page]);
 
   useEffect(() => {
-    if (page === 0 && !config.pagination.hasMore) {
+    if (page === 0) {
       config.pagination.onLoadMore(page, filter);
     } else {
       setPage(0);
@@ -100,30 +109,34 @@ const Products = ({ data = [], filters, config }) => {
         <BasicFilters filters={filters} handleFilter={handleFilter} />
       </Box>
       <Box flexGrow={1} p={2} style={{ height: 'calc(100vh - 110px)' }}>
-        <Grid container spacing={1} className={classes.root}>
-          {data.length > 0 &&
-            data
-              //   .filter( item => {
-              //   if( filter ) {
-              //     return valueFilter( item, filter);
-              //   }
-              //   return true;
-              // })
-              .map((item, i) => (
-                <Grid
-                  item
-                  xs={6}
-                  md={3}
-                  lg={3}
-                  xl={2}
-                  key={`${item[config.idStore]}_${i}`}
-                >
-                  <div className={classes.item}>
-                    <Item item={item} config={config} />
-                  </div>
-                </Grid>
-              ))}
-        </Grid>
+        {loading && !config.pagination.hasMore && <Loader />}
+        {error && <label>{errorMessage || 'Ha acurrido un error...'}</label>}
+        {!error && (
+          <Grid container spacing={1} className={classes.root}>
+            {data.length > 0 &&
+              data
+                //   .filter( item => {
+                //   if( filter ) {
+                //     return valueFilter( item, filter);
+                //   }
+                //   return true;
+                // })
+                .map((item, i) => (
+                  <Grid
+                    item
+                    xs={6}
+                    md={3}
+                    lg={3}
+                    xl={2}
+                    key={`${item[config.idStore]}_${i}`}
+                  >
+                    <div className={classes.item}>
+                      <Item item={item} config={config} />
+                    </div>
+                  </Grid>
+                ))}
+          </Grid>
+        )}
         {config.pagination.hasMore && <Loader id="loader" />}
       </Box>
     </Box>

@@ -59,6 +59,8 @@ const useFetch = (options) => {
                   } else {
                     setData(resp);
                   }
+                } else {
+                  setData(resp); // send to error // todo change the logic for that
                 }
 
                 // send msg error

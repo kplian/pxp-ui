@@ -14,7 +14,8 @@ const ProductsPxp = ({ config, filters }) => {
     params: { ...defaultParams, ...config.getDataTable.params },
   });
 
-  const { state, set, data } = jsonStore;
+  const { state, set, data, loading, error } = jsonStore;
+
   const handleLoadMore = (page, filter = null) => {
     const filterConfig = {
       sort: state.params.sort,
@@ -73,6 +74,9 @@ const ProductsPxp = ({ config, filters }) => {
         data={data && data.datos ? data.datos : []}
         filters={filters}
         config={config}
+        loading={loading}
+        error={error}
+        errorMessage={data?.detail?.message || null}
       />
     </div>
   );
