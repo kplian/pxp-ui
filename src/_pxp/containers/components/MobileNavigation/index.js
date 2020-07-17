@@ -182,7 +182,7 @@ const MobileNavigation = ({ actions }) => {
     }
 
     return () => {
-      window.removeEventListener('beforeunload', clearEvents);
+      // window.removeEventListener('beforeunload', clearEvents);
     };
   }, []);
 

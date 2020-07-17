@@ -87,7 +87,7 @@ const ThreadDetails = ({ eventWs, idChat, idComponent }) => {
   // we need to remove the webSocketListener when the component is unmount
   useEffect(() => {
     return () => {
-      console.log('desmontar');
+      console.log('desmontar chat');
       removeWebSocketListener({
         idComponent,
         event: eventWs,
