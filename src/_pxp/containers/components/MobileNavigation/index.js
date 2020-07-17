@@ -164,7 +164,7 @@ const MobileNavigation = ({ actions }) => {
 
   useEffect(() => {
     if (eventNty) {
-      window.addEventListener('beforeunload', clearEvents);
+      //window.addEventListener('beforeunload', clearEvents);
       webSocketListener({
         event: eventNty.eventListener(auth.currentUser.id_usuario),
         idComponent: uuid,
@@ -178,7 +178,7 @@ const MobileNavigation = ({ actions }) => {
     }
 
     return () => {
-      window.removeEventListener('beforeunload', clearEvents);
+      //window.removeEventListener('beforeunload', clearEvents);
     };
   }, []);
 
