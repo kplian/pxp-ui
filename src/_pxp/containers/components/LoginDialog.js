@@ -93,6 +93,10 @@ export default ({open: popen, username}) => {
     safari = /safari/.test(userAgent),
     ios = /iphone|ipod|ipad/.test(userAgent);
   
+  const handleDownloadApk = (e) => {
+    
+  };
+  
   const iOSWebView = (ios && !safari);
   
   const userForm = {
@@ -167,7 +171,6 @@ export default ({open: popen, username}) => {
               <></>
             }
             <SocialLogin />
-            
             </>
           )}
           {Pxp.config.accountManagement &&
@@ -178,6 +181,29 @@ export default ({open: popen, username}) => {
                       {t('new_to', {application: Pxp.config.applicationName})}
                     </span>
             </p>
+            
+            {!isWebView && !iOSWebView
+              ?
+              <Button
+                variant="outlined"
+                color="secondary"
+                className=""
+                style={{width: "75%", height: "50px"}}
+                onClick={() => {
+                  history.push('/vouz.apk');
+                }}
+                disabled={false}
+              
+              >
+                <label htmlFor="">Descarga nuestra Aplicacion para android</label>
+              </Button>
+              
+              :
+              <></>
+            }
+            
+            <br/>
+            <br/>
             <Button
               variant="outlined"
               className={classes.signUpButton}
