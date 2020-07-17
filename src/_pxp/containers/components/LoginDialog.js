@@ -184,20 +184,7 @@ export default ({open: popen, username}) => {
             
             {!isWebView && !iOSWebView
               ?
-              <Button
-                variant="outlined"
-                color="secondary"
-                className=""
-                style={{width: "75%", height: "50px"}}
-                onClick={() => {
-                  history.push('/vouz.apk');
-                }}
-                disabled={false}
-              
-              >
-                <label htmlFor="">Descarga nuestra Aplicacion para android</label>
-              </Button>
-              
+              <Link href="https://vouz.me/vouz.apk">Descarga nuestra app para android.</Link>
               :
               <></>
             }
