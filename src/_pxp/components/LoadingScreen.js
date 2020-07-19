@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     alignItems: 'center',
     backgroundColor: theme.palette.background.default,
+    opacity: 0.7,
     display: 'flex',
     flexDirection: 'column',
     height: '100%',

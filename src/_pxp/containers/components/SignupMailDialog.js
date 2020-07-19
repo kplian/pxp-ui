@@ -24,11 +24,17 @@ const SignUpMailDialog = () => {
     <>
       <Dialog open onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle disableTypography id="forgot-dialog-title">
-          <Typography variant="h3">{t('verify_email_proceed')}</Typography>
+          {
+            // <Typography variant="h3">{t('verify_email_proceed')}</Typography>
+          }
+          <Typography variant="h3">{t('user_info')}</Typography>
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            {t('sent_email_signup_msg', { email: params.email })}
+            {
+              // t('sent_email_signup_msg', { email: params.email })
+            }
+            {t('signup_verified_mail_msg', { name: params.email })}
           </Typography>
         </DialogContent>
         <DialogActions>
