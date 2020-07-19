@@ -46,7 +46,7 @@ const BasicFilters = ({ filters, handleFilter }) => {
       value: e.target.value,
       criteria: 'contains',
       search: true,
-    }
+    };
     searchFitler = { ...basicFilter, ...searchFitler, value: e.target.value };
 
     const currentFilter = filters[value];
@@ -54,7 +54,7 @@ const BasicFilters = ({ filters, handleFilter }) => {
     handleFilter({
       fieldFilter: currentFilter.field,
       valueFilter: currentFilter.value,
-      ...searchFitler
+      ...searchFitler,
     });
   };
 
@@ -95,6 +95,7 @@ const BasicFilters = ({ filters, handleFilter }) => {
           <InputBase
             className={classes.input}
             placeholder="Search"
+            autoComplete="off"
             autoFocus
             inputProps={{ 'aria-label': 'search' }}
             onKeyUp={handleSearch}
