@@ -79,7 +79,7 @@ const useLocationPxp = () => {
             error: 'User denied GeoLocation.',
           });
         }
-      }, 500);
+      }, 1000);
     } else {
       getLocation();
     }

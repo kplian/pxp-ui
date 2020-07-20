@@ -93,13 +93,18 @@ const BasicFilters = ({ filters, handleFilter }) => {
       )}
       {search && (
         <Grow in={search} timeout={700} className={classes.input}>
-          { /* <InputBase */ }
+          {/* <InputBase */}
           <Input
             className={classes.input}
             placeholder="Search"
             autoComplete="off"
             autoFocus
-            inputProps={{ 'aria-label': 'search' }}
+            inputProps={{
+              'aria-label': 'search',
+              spellCheck: 'false',
+              autoComplete: 'off',
+              autoCorrect: 'off', // no standard, available only in safari
+            }}
             onKeyUp={handleSearch}
           />
         </Grow>
