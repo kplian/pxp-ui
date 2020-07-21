@@ -6,6 +6,7 @@ import {
   IconButton,
   Icon,
   InputBase,
+  Input,
   Grow,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
@@ -46,7 +47,7 @@ const BasicFilters = ({ filters, handleFilter }) => {
       value: e.target.value,
       criteria: 'contains',
       search: true,
-    }
+    };
     searchFitler = { ...basicFilter, ...searchFitler, value: e.target.value };
 
     const currentFilter = filters[value];
@@ -54,7 +55,7 @@ const BasicFilters = ({ filters, handleFilter }) => {
     handleFilter({
       fieldFilter: currentFilter.field,
       valueFilter: currentFilter.value,
-      ...searchFitler
+      ...searchFitler,
     });
   };
 
@@ -92,11 +93,18 @@ const BasicFilters = ({ filters, handleFilter }) => {
       )}
       {search && (
         <Grow in={search} timeout={700} className={classes.input}>
-          <InputBase
+          {/* <InputBase */}
+          <Input
             className={classes.input}
             placeholder="Search"
+            autoComplete="off"
             autoFocus
-            inputProps={{ 'aria-label': 'search' }}
+            inputProps={{
+              'aria-label': 'search',
+              spellCheck: 'false',
+              autoComplete: 'off',
+              autoCorrect: 'off', // no standard, available only in safari
+            }}
             onKeyUp={handleSearch}
           />
         </Grow>
