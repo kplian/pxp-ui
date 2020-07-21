@@ -27,11 +27,12 @@ const Forgot = () => {
   const history = useHistory();
   const { t } = useTranslation();
 
-  const handleForgot = (login, captcha) => {
+  const handleForgot = (login, captcha, states) => {
     dispatch(startResetPassword({ login, captcha })).then((errorMsg) => {
       setLoadingScreen(false);
       if (errorMsg !== 'success') {
         setError(errorMsg);
+        states.captcha.reset();
       } else {
         history.push('/forgot/confirm');
       }
@@ -57,9 +58,9 @@ const Forgot = () => {
     resetButton: false,
     submitLabel: t('send_reset_email'), // this is optional
     onEnterSubmit: true,
-    onSubmit: ({ values }) => {
+    onSubmit: ({ values, states }) => {
       setLoadingScreen(true);
-      handleForgot(values.username, values.captcha);
+      handleForgot(values.username, values.captcha, states);
     },
   };
   const handleClose = () => {};

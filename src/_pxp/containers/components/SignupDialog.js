@@ -41,13 +41,14 @@ const SignUpDialog = () => {
   const history = useHistory();
   const { t } = useTranslation();
 
-  const handleSignup = (email, name, surname, username, password, captcha) => {
+  const handleSignup = (email, name, surname, username, password, captcha, states) => {
     dispatch(
       startSignup({ email, name, surname, username, password, captcha }),
     ).then((errorMsg) => {
       setLoadingScreen(false);
       if (errorMsg !== 'success') {
         setError(errorMsg);
+        states.captcha.reset();
       } else {
         history.push(`/signup/mail/${email}`);
       }
@@ -133,7 +134,8 @@ const SignUpDialog = () => {
     resetButton: false,
     submitLabel: t('create_my_account'),
     onEnterSubmit: true,
-    onSubmit: ({ values }) => {
+    onSubmit: ({ values, states }) => {
+      console.log(states)
       if (values.password !== values.password2) {
         setError(t('passwords_not_match'));
       } else {
@@ -145,6 +147,7 @@ const SignUpDialog = () => {
           values.username,
           values.password,
           values.captcha,
+          states
         );
       }
     },
