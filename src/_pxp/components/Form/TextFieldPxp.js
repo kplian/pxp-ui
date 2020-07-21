@@ -39,7 +39,6 @@ export const TextFieldPxpComponent = ({
         {...(autoFocus && { autoFocus })}
         error={Boolean(error)}
         fullWidth
-        autoComplete="off"
         helperText={error ? msgError : helperText}
         label={label}
         // margin="normal"

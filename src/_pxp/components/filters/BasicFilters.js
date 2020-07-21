@@ -95,7 +95,6 @@ const BasicFilters = ({ filters, handleFilter }) => {
           <InputBase
             className={classes.input}
             placeholder="Search"
-            autoComplete="off"
             autoFocus
             inputProps={{ 'aria-label': 'search' }}
             onKeyUp={handleSearch}
