@@ -3,27 +3,18 @@
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  */
-import React, { useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import clsx from 'clsx';
-import { useSnackbar } from 'notistack';
 import {
-  Avatar,
   Box,
   Divider,
   IconButton,
   Input,
   Paper,
-  SvgIcon,
   Tooltip,
   makeStyles,
 } from '@material-ui/core';
-import { sendMessageWs } from 'pxp-client';
 import PaperPlane from '../../../_pxp/icons/PaperPlane';
-/*
-import { Send as SendIcon } from 'react-feather';
-*/
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,7 +56,6 @@ function MessageAdd({
       handleSend(message, handleResetInput);
     }
   };
-
 
   return (
     <div className={clsx(classes.root, className)} {...rest}>
