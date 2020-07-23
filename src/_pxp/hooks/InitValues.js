@@ -3,9 +3,8 @@
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  */
-import {React, useRef, useState} from 'react';
+import { useRef, useState } from 'react';
 import useJsonStore from './useJsonStore';
-import {defaultValuesTextField} from "../components/Form/defaultValues";
 
 const InitValues = (values) => {
   const {
@@ -76,9 +75,6 @@ const InitValues = (values) => {
     }
     setError({ hasError: false, msg: '' });
   };
-
-
-
 
   let config = {
     ...values,
