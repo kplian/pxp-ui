@@ -7,7 +7,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack';
-import { Button } from '@material-ui/core';
 import Pxp from '../../Pxp';
 
 const useFetch = (options) => {
