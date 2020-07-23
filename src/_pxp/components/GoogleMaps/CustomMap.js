@@ -13,8 +13,6 @@ import {
 
 const CustomMap = withScriptjs(
   withGoogleMap(({ lat, lng, customIconMarker = undefined, zoom = 14 }) => {
-    console.log('lat', lat);
-    console.log('lng', lng);
     return (
       <GoogleMap
         defaultZoom={zoom}
