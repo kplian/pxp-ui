@@ -3,10 +3,9 @@
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  */
-import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React from 'react';
 import clsx from 'clsx';
-import { Avatar, Box, Link, Typography, makeStyles } from '@material-ui/core';
+import { Avatar, Box, Typography, makeStyles } from '@material-ui/core';
 import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
