@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import {
   Badge,
@@ -18,6 +18,7 @@ import Features from '../Features';
 import ItemTitle from './ItemTitle';
 import ItemDescription from './ItemDescription';
 import ItemRating from './ItemRating';
+import useObserver from '../../../hooks/useObserver';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,9 +67,15 @@ const useStyles = makeStyles((theme) => ({
 const Item = ({ item, config }) => {
   const [stateActions, setStateActions] = useState(config.actions);
   const [stateItem, setStateItem] = useState(item);
+  const [showImage, setShowImage] = useState(false);
   const classes = useStyles();
   const [openDetail, setOpenDetail] = React.useState(false);
   const { columns } = config;
+  const [observer, setElement, entry] = useObserver({
+    threshold: 0.1,
+    root: null,
+    rootMargin: '10px',
+  });
 
   const handleOpen = () => {
     setOpenDetail(true);
@@ -78,30 +85,42 @@ const Item = ({ item, config }) => {
     setOpenDetail(false);
   };
 
+  useEffect(() => {
+    const loaderRef = document.getElementById(`card${item.id_dama}`);
+    setElement(loaderRef);
+
+    return () => {
+      if (entry && entry.target) observer.unobserve(entry.target);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (entry && entry.isIntersecting) {
+      setShowImage(true);
+    }
+  }, [entry]);
+
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} id={`card${item.id_dama}`}>
       <CardMedia
         className={classes.media}
-        image={
-          config.urlImage(item) ||
-          imagesDemo[parseInt(Math.random() * imagesDemo.length)]
-        }
+        image={showImage ? config.urlImage(item) || 'empty' : 'default'}
         title="Image"
       />
       <CardContent>
         {typeof item[columns.title] === 'function' ? (
           item[columns.title]()
         ) : (
-          <ItemTitle
-            title={item[columns.title]}
-            subtitle={item[columns.subtitle]}
-            active={
-              typeof columns.active === 'function'
-                ? columns.active(item)
-                : item[columns.active]
-            }
-          />
-        )}
+            <ItemTitle
+              title={item[columns.title]}
+              subtitle={item[columns.subtitle]}
+              active={
+                typeof columns.active === 'function'
+                  ? columns.active(item)
+                  : item[columns.active]
+              }
+            />
+          )}
         <ItemDescription description={item[columns.description]} />
       </CardContent>
       <Features item={item} features={config.features} />
@@ -142,15 +161,3 @@ const Item = ({ item, config }) => {
 };
 
 export default Item;
-
-const imagesDemo = [
-  'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTcFYKy7CrMvjbL4hEu0JH4865Qk4zLv9AI58koNxq3HPDkio4Z&usqp=CAU',
-  'https://c4.wallpaperflare.com/wallpaper/105/218/545/angels-barefoot-blondes-commercial-wallpaper-preview.jpg',
-  'https://c.wallhere.com/photos/6d/98/women_Georgy_Chernyadyev_model_long_hair_looking_at_viewer_blonde_straight_hair_legs-282607.jpg!d',
-  'https://pbs.twimg.com/media/DUJMTn8XcAAnuAR.jpg',
-  'https://www.ctvnews.ca/polopoly_fs/1.4169897.1574420912!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg',
-  'https://cdn1.thr.com/sites/default/files/imagecache/gallery_landscape_887x500/2015/03/Pretty_Woman_Still_1.jpg',
-  'https://cache.desktopnexus.com/thumbseg/2378/2378782-bigthumbnail.jpg',
-  'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQpudU9gPnYk67NQrYHTSuecu0btI0ddI8zU5KuuFKw-0--DdgH&usqp=CAU',
-  'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSApcWL18PJC04NBaivpP8WIRBbZuLK450-A58Ujo8ATKIcGRW6&usqp=CAU',
-];

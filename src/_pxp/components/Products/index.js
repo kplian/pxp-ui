@@ -4,9 +4,11 @@ import { Grid, Box } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import _ from 'lodash';
 import { Scrollbars } from 'react-custom-scrollbars';
+import Zoom from '@material-ui/core/Zoom';
 import Item from './Item';
 import BasicFilters from '../filters/BasicFilters';
 import useObserver from '../../hooks/useObserver';
+import EmptyData from '../EmptyData';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,12 +54,14 @@ const Products = ({
   loading = true,
   error = false,
   errorMessage = null,
+  pageLimit = 50,
 }) => {
   const classes = useStyles();
+  const scrollRef = React.createRef();
   const [filter, setFilter] = useState(null);
   const [page, setPage] = useState(-1);
   const [observer, setElement, entry] = useObserver({
-    threshold: 0.9,
+    threshold: 0.7,
     root: null,
     rootMargin: '10px',
   });
@@ -74,12 +78,11 @@ const Products = ({
   useEffect(() => {
     const loaderRef = document.getElementById('loader');
     setElement(loaderRef);
-  }, [config.pagination.hasMore]);
+  }, [config.pagination.hasMore, data]);
 
   useEffect(() => {
     if (entry && entry.isIntersecting && config.pagination.hasMore) {
       setPage((prev) => prev + 1);
-
       // const element = entry.target;
       // observer.unobserve(element);
     }
@@ -87,6 +90,7 @@ const Products = ({
 
   useEffect(() => {
     if (page === 0) {
+      scrollRef.current.scrollToTop(0);
       config.pagination.onLoadMore(page, filter);
     } else if (page > 0 && config.pagination.hasMore) {
       config.pagination.onLoadMore(page, filter);
@@ -97,6 +101,7 @@ const Products = ({
 
   useEffect(() => {
     if (page === 0) {
+      scrollRef.current.scrollToTop(0);
       config.pagination.onLoadMore(page, filter);
     } else {
       setPage(0);
@@ -104,40 +109,52 @@ const Products = ({
   }, [filter]);
 
   return (
-    <Box component={Scrollbars} style={{ height: 'calc(var(--vh) - 56px)' }}>
+    <Box
+      component={Scrollbars}
+      style={{ height: 'calc(var(--vh) - 56px)' }}
+      ref={scrollRef}
+    >
       <Box className={classes.filters}>
         <BasicFilters filters={filters} handleFilter={handleFilter} />
       </Box>
       <Box flexGrow={1} p={2} style={{ height: 'calc(100vh - 110px)' }}>
-        {loading && !config.pagination.hasMore && <Loader />}
+        {!loading && !error && data.length === 0 && <EmptyData />}
+        {loading && page === 0 && <Loader />}
         {error && <label>{errorMessage || 'Ha acurrido un error...'}</label>}
-        {!error && (
+        {!error && data.length > 0 && (
           <Grid container spacing={1} className={classes.root}>
-            {data.length > 0 &&
-              data
-                //   .filter( item => {
-                //   if( filter ) {
-                //     return valueFilter( item, filter);
-                //   }
-                //   return true;
-                // })
-                .map((item, i) => (
-                  <Grid
-                    item
-                    xs={6}
-                    md={3}
-                    lg={3}
-                    xl={2}
-                    key={`${item[config.idStore]}_${i}`}
+            {data
+              //   .filter( item => {
+              //   if( filter ) {
+              //     return valueFilter( item, filter);
+              //   }
+              //   return true;
+              // })
+              .map((item, i) => (
+                <Grid
+                  item
+                  xs={6}
+                  md={3}
+                  lg={3}
+                  xl={2}
+                  key={`${item[config.idStore]}_${i}`}
+                >
+                  <Zoom
+                    in
+                    timeout={300}
+                    style={{
+                      transitionDelay: `${(i % pageLimit) * 100}ms`,
+                    }}
                   >
                     <div className={classes.item}>
                       <Item item={item} config={config} />
                     </div>
-                  </Grid>
-                ))}
+                  </Zoom>
+                </Grid>
+              ))}
           </Grid>
         )}
-        {config.pagination.hasMore && <Loader id="loader" />}
+        {data.length > 0 && config.pagination.hasMore && <Loader id="loader" />}
       </Box>
     </Box>
   );

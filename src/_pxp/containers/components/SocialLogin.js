@@ -8,6 +8,7 @@ import GoogleIcon from '../../icons/GoogleIcon';
 import { startSocialLogin } from '../../actions/auth';
 import LoadingScreen from '../../components/LoadingScreen';
 import useSettings from '../../hooks/useSettings';
+import LoadButton from '../../components/LoadButton/LoadButton';
 
 const SocialLogin = forwardRef(() => {
   const isWebView = navigator.userAgent.includes('wv');
@@ -20,8 +21,12 @@ const SocialLogin = forwardRef(() => {
 
   const [accessToken, setAccessToken] = useState('');
   const [loadingScreen, setLoadingScreen] = useState(false);
+  const [disableButtons, setDisableButtons] = useState({
+    facebook: false,
+    google: false,
+  });
   const { settings } = useSettings();
-  console.log(settings);
+
   const dispatch = useDispatch();
   // call to native logins (facebook and google)
 
@@ -43,25 +48,30 @@ const SocialLogin = forwardRef(() => {
 
   // web login facebook and google
   const responseGoogle = (response) => {
-    const { language } = settings;
-    setLoadingScreen(true);
-    const userLogued = {
-      userId: response.getId(),
-      token: response.getAuthResponse().id_token,
-      name: response.profileObj.givenName,
-      surname: response.profileObj.familyName,
-      device: 'web',
-      type: 'google',
-      language,
-      email: response.profileObj.email,
-      urlPhoto: response.profileObj.imageUrl,
-    };
+    if (response && response.error) {
+      console.log('CONTROLAR ERROR', response); // Mostrar menssage de error, deshabilitar button no funciona
+      setDisableButtons({ ...disableButtons, google: true });
+    } else {
+      const { language } = settings;
+      setLoadingScreen(true);
+      const userLogued = {
+        userId: response.getId(),
+        token: response.getAuthResponse().id_token,
+        name: response.profileObj.givenName,
+        surname: response.profileObj.familyName,
+        device: 'web',
+        type: 'google',
+        language,
+        email: response.profileObj.email,
+        urlPhoto: response.profileObj.imageUrl,
+      };
 
-    dispatch(startSocialLogin(userLogued)).then((errorMsg) => {
-      if (errorMsg !== 'success') {
-        setLoadingScreen(false);
-      }
-    });
+      dispatch(startSocialLogin(userLogued)).then((errorMsg) => {
+        if (errorMsg !== 'success') {
+          setLoadingScreen(false);
+        }
+      });
+    }
   };
 
   const responseFacebook = (response) => {
@@ -113,7 +123,7 @@ const SocialLogin = forwardRef(() => {
             appId={process.env.REACT_APP_FACEBOOK_KEY}
             callback={responseFacebook}
             render={(renderProps) => (
-              <Button
+              <LoadButton
                 variant="contained"
                 color="secondary"
                 className="facebook-button"
@@ -127,16 +137,18 @@ const SocialLogin = forwardRef(() => {
                     fill="#ffffff"
                   />
                 }
+                loading={loadingScreen}
               >
                 Facebook
-              </Button>
+              </LoadButton>
             )}
           />
 
           <GoogleLogin
             clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+            disabled={disableButtons.google}
             render={(renderProps) => (
-              <Button
+              <LoadButton
                 variant="contained"
                 color="secondary"
                 className="google-button"
@@ -149,9 +161,10 @@ const SocialLogin = forwardRef(() => {
                     fill="#ffffff"
                   />
                 }
+                loading={loadingScreen}
               >
                 <label htmlFor="">Google</label>
-              </Button>
+              </LoadButton>
             )}
             buttonText="Login"
             onSuccess={responseGoogle}
@@ -159,7 +172,9 @@ const SocialLogin = forwardRef(() => {
             cookiePolicy="single_host_origin"
           />
         </div>
-        {loadingScreen && <LoadingScreen />}
+        {
+          // loadingScreen && <LoadingScreen />
+        }
       </>
     );
   }

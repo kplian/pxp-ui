@@ -120,7 +120,7 @@ export const defaultValuesDatePicker = {
   group: undefined, // the default group ever is group1 or the first position in the object of the groups
 };
 export const defaultValuesTimePicker = {
-  type: 'DatePicker',
+  type: 'TimePicker',
   label: undefined,
   initialValue: null, // moment(new Date(), 'DD-MM-YYYY').toDate()
   minDate: null, // moment(new Date(), 'DD-MM-YYYY').subtract(5, 'days').toDate(),

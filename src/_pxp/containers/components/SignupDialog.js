@@ -41,7 +41,15 @@ const SignUpDialog = () => {
   const history = useHistory();
   const { t } = useTranslation();
 
-  const handleSignup = (email, name, surname, username, password, captcha, states) => {
+  const handleSignup = (
+    email,
+    name,
+    surname,
+    username,
+    password,
+    captcha,
+    states,
+  ) => {
     dispatch(
       startSignup({ email, name, surname, username, password, captcha }),
     ).then((errorMsg) => {
@@ -135,7 +143,6 @@ const SignUpDialog = () => {
     submitLabel: t('create_my_account'),
     onEnterSubmit: true,
     onSubmit: ({ values, states }) => {
-      console.log(states)
       if (values.password !== values.password2) {
         setError(t('passwords_not_match'));
       } else {
@@ -147,7 +154,7 @@ const SignUpDialog = () => {
           values.username,
           values.password,
           values.captcha,
-          states
+          states,
         );
       }
     },
@@ -160,7 +167,7 @@ const SignUpDialog = () => {
           <Typography variant="h3">{t('create_your_account')}</Typography>
         </DialogTitle>
         <DialogContent>
-          <Form data={signupForm} dialog />
+          <Form data={signupForm} dialog loading={loadingScreen} />
           {error && (
             <FormHelperText error className={classes.error}>
               {error}
@@ -172,7 +179,9 @@ const SignUpDialog = () => {
           </Link>
         </DialogContent>
       </Dialog>
-      {loadingScreen && <LoadingScreen />}
+      {
+        // loadingScreen && <LoadingScreen />
+      }
     </>
   );
 };

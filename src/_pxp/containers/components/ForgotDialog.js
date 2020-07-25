@@ -63,7 +63,7 @@ const Forgot = () => {
       handleForgot(values.username, values.captcha, states);
     },
   };
-  const handleClose = () => {};
+  const handleClose = () => { };
   return (
     <>
       <Dialog open onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -71,13 +71,15 @@ const Forgot = () => {
           <Typography variant="h3">{t('reset_your_password')}</Typography>
         </DialogTitle>
         <DialogContent>
-          <Form data={forgotForm} dialog />
+          <Form data={forgotForm} dialog loading={loadingScreen} />
           {error && <FormHelperText error>{error}</FormHelperText>}
           <Typography variant="body2">{t('dont_reset_password')}</Typography>
           <Link href="/login"> {t('login')}</Link>
         </DialogContent>
       </Dialog>
-      {loadingScreen && <LoadingScreen />}
+      {
+        // loadingScreen && <LoadingScreen />
+      }
     </>
   );
 };

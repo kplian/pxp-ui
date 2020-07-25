@@ -14,8 +14,8 @@ const ProductsPxp = ({ config, filters }) => {
     params: { ...defaultParams, ...config.getDataTable.params },
   });
 
+  const [myData, setMyData] = React.useState([]);
   const { state, set, data, loading, error } = jsonStore;
-
   const handleLoadMore = (page, filter = null) => {
     const filterConfig = {
       sort: state.params.sort,
@@ -50,6 +50,7 @@ const ProductsPxp = ({ config, filters }) => {
     pageInit: -1,
     parent: document.getElementById('content'),
     onLoadMore: (page, filter) => {
+      if (page === 0) setMyData([]);
       if (filter) {
         handleLoadMore(page, filter);
       }
@@ -60,23 +61,22 @@ const ProductsPxp = ({ config, filters }) => {
   config.pagination.hasMore =
     data && data.total ? data.datos.length < parseInt(data.total, 10) : true;
 
-  // React.useEffect(() => {
-
-  //     if( auxData && auxData.datos) {
-  //         console.log('dataaaaaa', auxData);
-  //         setData(auxData.datos);
-  //     }
-  // }, [auxData]);
+  React.useEffect(() => {
+    if (data && data.datos.length >= 0 && !loading) {
+      setMyData(data.datos);
+    }
+  }, [data]);
 
   return (
     <div>
       <Products
-        data={data && data.datos ? data.datos : []}
+        data={myData}
         filters={filters}
         config={config}
         loading={loading}
         error={error}
         errorMessage={data?.detail?.message || null}
+        pageLimit={config.getDataTable.params.limit}
       />
     </div>
   );

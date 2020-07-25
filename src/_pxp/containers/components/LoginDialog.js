@@ -22,6 +22,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 import { startLogin } from '../../actions/auth';
 import useSettings from '../../hooks/useSettings';
 import SocialLogin from './SocialLogin';
+import LoadButton from '../../components/LoadButton/LoadButton';
 
 const useStyles = makeStyles({
   formLogin: {
@@ -60,6 +61,7 @@ const useStyles = makeStyles({
 export default ({ open: popen, username }) => {
   const { settings } = useSettings();
   const [loadingScreen, setLoadingScreen] = useState(false);
+
   const [open] = React.useState(popen);
   const [error, setError] = React.useState('');
   const sessionDied = useSelector((state) => state.auth.sessionDied);
@@ -146,7 +148,7 @@ export default ({ open: popen, username }) => {
         </DialogTitle>
         <DialogContent>
           <div className={classes.formLogin}>
-            <Form data={userForm} dialog />
+            <Form data={userForm} dialog loading={loadingScreen} />
             {error && <FormHelperText error>{error}</FormHelperText>}
             {Pxp.config.accountManagement &&
               Pxp.config.accountManagement.recoverPassword && (
@@ -209,7 +211,9 @@ export default ({ open: popen, username }) => {
           </div>
         </DialogContent>
       </Dialog>
-      {loadingScreen && <LoadingScreen />}
+      {
+        // loadingScreen && <LoadingScreen />
+      }
     </>
   );
 };

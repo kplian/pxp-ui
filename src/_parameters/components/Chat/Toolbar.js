@@ -21,6 +21,7 @@ import {
   Typography,
   makeStyles,
   SvgIcon,
+  Icon,
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Toolbar = ({ className, rest, contact }) => {
+const Toolbar = ({ className, rest, contact, actions = [] }) => {
   const classes = useStyles();
   const history = useHistory();
   const moreRef = useRef(null);
@@ -87,13 +88,15 @@ const Toolbar = ({ className, rest, contact }) => {
         </Box>
       )}
       <Box flexGrow={1} />
-      <Tooltip title="More options">
-        <IconButton onClick={handleMenuOpen} ref={moreRef}>
-          <SvgIcon fontSize="small">
-            <MoreVertIcon />
-          </SvgIcon>
-        </IconButton>
-      </Tooltip>
+      {actions.length > 0 && (
+        <Tooltip title="More options">
+          <IconButton onClick={handleMenuOpen} ref={moreRef}>
+            <SvgIcon fontSize="small">
+              <MoreVertIcon />
+            </SvgIcon>
+          </IconButton>
+        </Tooltip>
+      )}
       <Menu
         anchorEl={moreRef.current}
         keepMounted
@@ -101,14 +104,14 @@ const Toolbar = ({ className, rest, contact }) => {
         onClose={handleMenuClose}
         open={openMenu}
       >
-        <MenuItem>
-          <ListItemIcon>
-            <SvgIcon fontSize="small">
-              <MoreVertIcon />
-            </SvgIcon>
-          </ListItemIcon>
-          <ListItemText primary="Button" />
-        </MenuItem>
+        {actions.map((action, i) => (
+          <MenuItem onClick={action.onClick} key={`action-tolbar-pxp-${i}`}>
+            <ListItemIcon>
+              <Icon fontSize="small">{action.icon}</Icon>
+            </ListItemIcon>
+            <ListItemText primary={action.label} />
+          </MenuItem>
+        ))}
       </Menu>
     </div>
   );

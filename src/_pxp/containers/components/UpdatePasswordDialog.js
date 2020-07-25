@@ -78,7 +78,7 @@ const UpdatePassword = () => {
       }
     },
   };
-  const handleClose = () => {};
+  const handleClose = () => { };
   return (
     <>
       <Dialog open onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -96,7 +96,7 @@ const UpdatePassword = () => {
                 2. {t('password_letters_number_msg')}
               </Typography>
               <br />
-              <Form data={updateForm} dialog />
+              <Form data={updateForm} dialog loading={loadingScreen} />
               {error && (
                 <FormHelperText error>
                   <Typography variant="h5">{error}</Typography>
@@ -109,7 +109,9 @@ const UpdatePassword = () => {
           )}
         </DialogContent>
       </Dialog>
-      {loadingScreen && <LoadingScreen />}
+      {
+        // loadingScreen && <LoadingScreen />
+      }
     </>
   );
 };

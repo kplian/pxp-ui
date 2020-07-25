@@ -7,7 +7,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack';
-import { Button } from '@material-ui/core';
 import Pxp from '../../Pxp';
 
 const useFetch = (options) => {
@@ -24,22 +23,20 @@ const useFetch = (options) => {
 
     if (options !== undefined && options.load) {
       (async () => {
-        setLoading(true);
-
+        // setLoading(true);
         const params = new URLSearchParams();
         // eslint-disable-next-line no-restricted-syntax
         for (const key in options) {
           params.append(key, options[key]);
         }
-
         setLoading(true);
-
         Pxp.apiClient
           .doRequest({
             url: options.url,
             params: options.params,
           })
           .then((resp) => {
+            setLoading(false);
             if (resp && isMounted) {
               if (resp.status >= 400 && resp.status < 600) {
                 setError(resp);
@@ -84,13 +81,13 @@ const useFetch = (options) => {
                   );
                 }
                 setError(resp.error);
-                setLoading(false);
               }
             }
           })
           .catch((err) => {
             // eslint-disable-next-line no-unused-expressions
             err.code !== 20 && setError(err);
+            setLoading(false);
           });
       })();
     }

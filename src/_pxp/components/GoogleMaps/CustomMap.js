@@ -13,8 +13,6 @@ import {
 
 const CustomMap = withScriptjs(
   withGoogleMap(({ lat, lng, customIconMarker = undefined, zoom = 14 }) => {
-    console.log('lat', lat);
-    console.log('lng', lng);
     return (
       <GoogleMap
         defaultZoom={zoom}
@@ -69,7 +67,8 @@ const CustomMap = withScriptjs(
             {
               featureType: 'landscape.natural',
               elementType: 'geometry.fill',
-              stylers: [{ visibility: 'on' }, { color: '#b8cb93' }],
+              // stylers: [{ visibility: 'on' }, { color: '#b8cb93' }],
+              stylers: [{ visibility: 'on' }, { color: '#e5e3df' }],
             },
             { featureType: 'poi.park', stylers: [{ visibility: 'on' }] },
             {

@@ -38,6 +38,7 @@ import LoadingScreen from '../LoadingScreen';
 import Pxp from '../../../Pxp';
 import DropzoneAreaPxp from './DropzoneAreaPxp';
 import GoogleReCaptchaPxpComponent from './GoogleReCaptcha';
+import LoadButton from '../LoadButton/LoadButton';
 // @todo see the way for send the state in the handles only verify if it is correct and test
 
 const useStyles = makeStyles((theme) => ({
@@ -58,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DrawForm = forwardRef(({ data, dialog }, ref) => {
+const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
   const classes = useStyles();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -614,13 +615,14 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
             </Button>
           )}
           {(data.submitButton === true || data.submitButton === undefined) && (
-            <Button
+            <LoadButton
               variant="contained"
               color="primary"
               onClick={(e) => handleSubmitForm(e)}
+              loading={typeof onSubmit === 'function' ? loading : loadingScreen}
             >
               {data.submitLabel || 'Submit'}
-            </Button>
+            </LoadButton>
           )}
         </Box>
       )}
@@ -661,7 +663,7 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
                             className={classes.button}
                           >
                             {data.steppersConfig &&
-                            data.steppersConfig.backButton
+                              data.steppersConfig.backButton
                               ? data.steppersConfig.backButton
                               : 'Back'}
                           </Button>
@@ -672,15 +674,15 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
                             className={classes.button}
                           >
                             {activeStep ===
-                            Object.values(groupsConfig).length - 1
+                              Object.values(groupsConfig).length - 1
                               ? data.steppersConfig &&
                                 data.steppersConfig.finishButton
                                 ? data.steppersConfig.finishButton
                                 : 'Finish'
                               : data.steppersConfig &&
                                 data.steppersConfig.nextButton
-                              ? data.steppersConfig.nextButton
-                              : 'Next'}
+                                ? data.steppersConfig.nextButton
+                                : 'Next'}
                           </Button>
                         </div>
                       </div>
@@ -705,19 +707,24 @@ const DrawForm = forwardRef(({ data, dialog }, ref) => {
                 Reset
               </Button>
 
-              <Button
+              <LoadButton
                 variant="contained"
                 color="primary"
                 onClick={(e) => handleSubmitForm(e)}
+                loading={
+                  typeof onSubmit === 'function' ? loading : loadingScreen
+                }
               >
                 {data.submitLabel || 'Submit'}
-              </Button>
+              </LoadButton>
             </Paper>
           )}
         </div>
       )}
 
-      {loadingScreen && <LoadingScreen />}
+      {
+        // loadingScreen && <LoadingScreen />
+      }
     </>
   );
 });

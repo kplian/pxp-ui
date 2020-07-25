@@ -49,7 +49,7 @@ import {
 import DrawForm from './DrawForm';
 
 const Form = forwardRef((props, ref) => {
-  const { data, dialog = false } = props;
+  const { data, dialog = false, loading } = props;
 
   let mergedDataConfig = _.merge({}, defaultConfig, data);
   if (typeof data.groups === 'object') {
@@ -102,6 +102,7 @@ const Form = forwardRef((props, ref) => {
       <DrawForm
         data={dataInitialized}
         dialog={dialog}
+        loading={loading}
         ref={ref}
       />
     </>
