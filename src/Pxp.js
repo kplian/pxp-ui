@@ -104,6 +104,9 @@ class Pxp {
         case 'onMobileFocusIn':
           this.onMobileFocusIn(data);
           break;
+        case 'userFirebaseToken':
+          this.setUserFirebaseToken(data);
+          break
         default:
           break;
       }
@@ -207,6 +210,10 @@ class Pxp {
       console.log('entra');
       this.callbacksMobileFocus[id]();
     });
+  }
+  
+  setUserFirebaseToken(data){
+    localStorage.setItem('userFirebaseToken', data);
   }
 }
 
