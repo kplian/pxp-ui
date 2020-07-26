@@ -12,6 +12,9 @@
 /.pnp
 .pnp.js
 
+#public
+/public/firebase-messaging-sw.js
+
 # testing
 /coverage
 
