@@ -106,7 +106,7 @@ class Pxp {
           break;
         case 'userFirebaseToken':
           this.setUserFirebaseToken(data);
-          break
+          break;
         default:
           break;
       }
@@ -213,7 +213,8 @@ class Pxp {
   }
   
   setUserFirebaseToken(data){
-    localStorage.setItem('userFirebaseToken', data);
+    const response = JSON.parse(data);
+    localStorage.setItem('deviceID', response.token);
   }
 }
 
