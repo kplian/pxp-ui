@@ -175,7 +175,7 @@ const MobileNavigation = ({ actions }) => {
           console.log('[PXP]', PxpClient);
           const countNow = parseInt(localStorage.getItem('notify') || 0);
           setCount(countNow + 1);
-          createNotification(e);
+          // createNotification(e);
           dispatch(newNotifyAction(e));
         },
       });
