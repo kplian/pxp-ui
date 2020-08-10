@@ -177,6 +177,51 @@ const SocialLogin = forwardRef(() => {
         }
       </>
     );
+  } else {
+    return (
+      <>
+      <div
+        className="social-login-button-container"
+        style={{ display: 'inline-flex', width: '104%' }}
+      >
+        <LoadButton
+          variant="contained"
+          color="secondary"
+          className="facebook-button"
+          publishPermissions={['publish_actions']}
+          readPermissions={['public_profile']}
+          onClick={handleFacebookLogin}
+          startIcon={
+            <FacebookIcon
+              style={{ paddingTop: '8px' }}
+              width={30}
+              fill="#ffffff"
+            />
+          }
+          loading={loadingScreen}
+        >
+          Facebook
+        </LoadButton>
+  
+        <LoadButton
+          variant="contained"
+          color="secondary"
+          className="google-button"
+          onClick={handleGoogleLogin}
+          startIcon={
+            <GoogleIcon
+              style={{ paddingTop: '8px' }}
+              width={30}
+              fill="#ffffff"
+            />
+          }
+          loading={loadingScreen}
+        >
+          <label htmlFor="">Google</label>
+        </LoadButton>
+      </div>
+      </>
+    );
   }
   return <></>;
 });
