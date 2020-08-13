@@ -23,7 +23,27 @@ export const capitalizeFirst = (cad, separator = ' ') => {
     string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   return cad
     ? cad
-        .split(separator)
-        .reduce((acc, curr) => acc + capilatizeWord(curr) + separator, '')
+      .split(separator)
+      .reduce((acc, curr) => acc + capilatizeWord(curr) + separator, '')
     : null;
+};
+
+export const deleteNativeStorage = () => {
+  console.log('[DELETE NATIVE STORAGE]');
+
+  const isWebView = navigator.userAgent.includes('wv');
+
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  const safari = /safari/.test(userAgent);
+  const ios = /iphone|ipod|ipad/.test(userAgent);
+
+  const iOSWebView = ios && !safari;
+
+  if (isWebView && window.Mobile) {
+    window.Mobile.deleteUserCredentials();
+  } else if (iOSWebView && window.webkit) {
+    window.webkit.messageHandlers.deleteUserCredentials.postMessage({
+      data: '',
+    });
+  }
 };

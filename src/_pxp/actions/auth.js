@@ -5,12 +5,13 @@
  */
 import Pxp from '../../Pxp';
 import history from '../routers/History';
+import { deleteNativeStorage } from '../utils/Common';
 
 const findRoutes = (menu) => {
   const routes = [];
   menu.forEach((menuOption) => {
     if (menuOption.type === 'hoja') {
-      routes.push({id: menuOption.id_gui, component: menuOption.component});
+      routes.push({ id: menuOption.id_gui, component: menuOption.component });
     } else {
       routes.push(...findRoutes(menuOption.childrens));
     }
@@ -71,24 +72,21 @@ export const startSocialLogin = ({
   };
 };
 
-export const startLogin = ({login: username, password, language}) => {
+export const startLogin = ({ login: username, password, language }) => {
   return () => {
     return Pxp.apiClient.login(username, password, language).then((data) => {
       if (data.ROOT) {
         return data.ROOT.detalle.mensaje;
       }
       const isWebView = navigator.userAgent.includes('wv');
-      
-      const userAgent = window.navigator.userAgent.toLowerCase(),
-        safari = /safari/.test( userAgent ),
-        ios = /iphone|ipod|ipad/.test( userAgent );
-  
-      const iOSWebView = (ios && !safari);
-      
-      if (
-        isWebView &&
-        window.Mobile
-      ) {
+
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      const safari = /safari/.test(userAgent);
+      const ios = /iphone|ipod|ipad/.test(userAgent);
+
+      const iOSWebView = ios && !safari;
+
+      if (isWebView && window.Mobile) {
         window.Mobile.saveUserCredentials(username, password, language);
         if (process.env.REACT_APP_WEB_SOCKET === 'YES') {
           window.Mobile.saveWebSocketURL(
@@ -97,24 +95,18 @@ export const startLogin = ({login: username, password, language}) => {
             data.nombre_usuario,
           );
         }
-      } else if (
-        iOSWebView &&
-        window.webkit
-      ) {
-        window.webkit.messageHandlers.saveUserCredentials.postMessage(
-          {
-            username: username,
-            password: password,
-            language: language,
-          });
+      } else if (iOSWebView && window.webkit) {
+        window.webkit.messageHandlers.saveUserCredentials.postMessage({
+          username,
+          password,
+          language,
+        });
         if (process.env.REACT_APP_WEB_SOCKET === 'YES') {
-          window.webkit.messageHandlers.saveWebSocketURL.postMessage(
-            {
-              socket: `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${data.phpsession}`,
-              id_usuario: data.id_usuario,
-              nombre_usuario: data.nombre_usuario,
-            }
-          );
+          window.webkit.messageHandlers.saveWebSocketURL.postMessage({
+            socket: `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${data.phpsession}`,
+            id_usuario: data.id_usuario,
+            nombre_usuario: data.nombre_usuario,
+          });
         }
       }
       return 'success';
@@ -122,7 +114,7 @@ export const startLogin = ({login: username, password, language}) => {
   };
 };
 
-export const startResetPassword = ({login: username, captcha}) => {
+export const startResetPassword = ({ login: username, captcha }) => {
   return () => {
     const getUrl = window.location;
     return Pxp.apiClient
@@ -175,7 +167,7 @@ export const startSignup = ({
   };
 };
 
-export const startSignupConfirm = ({token}) => {
+export const startSignupConfirm = ({ token }) => {
   return () => {
     return Pxp.apiClient
       .doRequest({
@@ -190,7 +182,7 @@ export const startSignupConfirm = ({token}) => {
   };
 };
 
-export const startUpdatePassword = ({password1, token}) => {
+export const startUpdatePassword = ({ password1, token }) => {
   return () => {
     return Pxp.apiClient
       .doRequest({
@@ -209,7 +201,7 @@ export const startUpdatePassword = ({password1, token}) => {
   };
 };
 
-export const startSetLanguage = ({language}) => {
+export const startSetLanguage = ({ language }) => {
   return () => {
     return Pxp.apiClient
       .doRequest({
@@ -249,9 +241,9 @@ export const startSetMenu = () => {
 export const startLogout = () => {
   return (dispatch) => {
     return Pxp.apiClient.logout().then(() => {
-      if (navigator.userAgent.includes('wv')) {
-        window.Mobile.deleteUserCredentials();
-      }
+      // if (navigator.userAgent.includes('wv')) {
+      //   window.Mobile.deleteUserCredentials();
+      // }
       dispatch(logout());
       history.push('/login');
       dispatch(setMenu([]));
@@ -261,21 +253,8 @@ export const startLogout = () => {
       )
         ? 'first'
         : Pxp.config.privateInitRoute;
-      
-      const isWebView = navigator.userAgent.includes('wv');
-  
-  
-      const userAgent = window.navigator.userAgent.toLowerCase(),
-        safari = /safari/.test( userAgent ),
-        ios = /iphone|ipod|ipad/.test( userAgent );
-  
-      const iOSWebView = (ios && !safari);
-      
-      if (isWebView && window.Mobile) {
-        window.Mobile.deleteUserCredentials();
-      } else if (iOSWebView && window.webkit) {
-        window.webkit.messageHandlers.deleteUserCredentials.postMessage({"data": ""});
-      }
+
+      deleteNativeStorage();
     });
   };
 };
