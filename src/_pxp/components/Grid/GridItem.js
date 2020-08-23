@@ -1,3 +1,8 @@
+/**
+ * GridItem
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ */
 import React from 'react';
 // nodejs library to set properties for components
 import PropTypes from 'prop-types';

@@ -24,7 +24,8 @@ const areEqual = (prev, next) =>
   prev.loading === next.loading &&
   prev.open === next.open &&
   prev.disabled === next.disabled &&
-  prev.error === next.error;
+  prev.error === next.error &&
+  prev.dataStore === next.dataStore;
 
 const AutocompletePxpComponent = ({
   name,
@@ -37,9 +38,11 @@ const AutocompletePxpComponent = ({
   error,
   msgError,
   size = 'medium',
+  dataStore // if the datastore changed we need to re-render
 }) => {
   const { label, variant, store, isSearchable, gridForm } = configInput;
 
+  console.log('draw autocomplete', store.data);
   // this handle has debounce for start with searching after 500 ms
   const handleInputChange = _.debounce(async (valueInput) => {
     if (
@@ -98,8 +101,8 @@ const AutocompletePxpComponent = ({
           return optionEq[store.idDD] === valueEq[store.idDD];
         }}
         options={
-          store.data
-            ? store.data.datos.map((i) => ({
+          dataStore
+            ? dataStore.datos.map((i) => ({
                 ...i,
               }))
             : [] // we need to send empty array for init form

@@ -42,7 +42,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ManagerFile = ({ idTable, table, idTableDesc }) => {
+const ManagerFile = ({
+  idTable,
+  table,
+  idTableDesc,
+  buttonViewFile = true,
+  buttonUploadFile = true,
+  buttonDeleteFile = true,
+  buttonFileType = true,
+}) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [loadingScreen, setLoadingScreen] = useState(false);
@@ -107,7 +115,6 @@ const ManagerFile = ({ idTable, table, idTableDesc }) => {
       codigo: {
         label: 'Codigo',
         renderColumn: (row) => {
-          console.log(row);
           return (
             <Box display="flex" alignItems="center">
               {row.id_archivo &&
@@ -179,61 +186,69 @@ const ManagerFile = ({ idTable, table, idTableDesc }) => {
     buttonNew: false,
     buttonCheckList: false,
     buttonsToolbar: {
-      buttonFileType: {
-        onClick: () => {
-          setOpenTypeFile(true);
+      ...(buttonFileType && {
+        fileType: {
+          onClick: () => {
+            setOpenTypeFile(true);
+          },
+          icon: <File/>,
+          title: 'Type File',
         },
-        icon: <File />,
-        title: 'Type File',
-      },
+      }),
     },
     actionsTableCell: {
       buttonDel: false,
       buttonEdit: false,
       extraButtons: {
-        uploadFile: {
-          label: 'Upload File',
-          buttonIcon: <CloudUploadIcon />,
-          onClick: (row) => {
-            setDropZone({
-              open: true,
-              idTypeFile: row.id_tipo_archivo,
-              extensionsAllowed: row.extensiones_permitidas,
-              multiple: row.multiple === 'si',
-              typeFile: row.tipo_archivo,
-              acceptedFiles:
-                row.tipo_archivo === 'imagen'
-                  ? ['image/*']
-                  : ['image/*', 'video/*', 'application/*'],
-            });
+        ...(buttonUploadFile && {
+          uploadFile: {
+            label: 'Upload File',
+            buttonIcon: <CloudUploadIcon />,
+            onClick: (row) => {
+              setDropZone({
+                open: true,
+                idTypeFile: row.id_tipo_archivo,
+                extensionsAllowed: row.extensiones_permitidas,
+                multiple: row.multiple === 'si',
+                typeFile: row.tipo_archivo,
+                acceptedFiles:
+                  row.tipo_archivo === 'imagen'
+                    ? ['image/*']
+                    : ['image/*', 'video/*', 'application/*'],
+              });
+            },
           },
-        },
-        viewFile: {
-          label: 'View File',
-          buttonIcon: <VisibilityIcon />,
-          onClick: (row) => {
-            window.open(getUrlForView(row));
+        }),
+        ...(buttonViewFile && {
+          viewFile: {
+            label: 'View File',
+            buttonIcon: <VisibilityIcon />,
+            onClick: (row) => {
+              window.open(getUrlForView(row));
+            },
+            disabled: true,
           },
-          disabled: true,
-        },
-        deleteFile: {
-          label: 'Delete File',
-          buttonIcon: <DeleteIcon />,
-          onClick: (row) => {
-            removeFile(row);
+        }),
+        ...(buttonDeleteFile && {
+          deleteFile: {
+            label: 'Delete File',
+            buttonIcon: <DeleteIcon />,
+            onClick: (row) => {
+              removeFile(row);
+            },
+            disabled: true,
           },
-          disabled: true,
-        },
+        }),
       },
     },
     paginationType: 'infiniteScrolling',
     onClickRow: ({ row, statesButtonsTableCell }) => {
       if (row.id_archivo && row.estado_reg !== 'inactivo') {
-        statesButtonsTableCell.viewFile.enable();
-        statesButtonsTableCell.deleteFile.enable();
+        buttonViewFile && statesButtonsTableCell.viewFile.enable();
+        buttonDeleteFile && statesButtonsTableCell.deleteFile.enable();
       } else {
-        statesButtonsTableCell.viewFile.disable();
-        statesButtonsTableCell.deleteFile.disable();
+        buttonViewFile && statesButtonsTableCell.viewFile.disable();
+        buttonDeleteFile && statesButtonsTableCell.deleteFile.disable();
       }
     },
   };

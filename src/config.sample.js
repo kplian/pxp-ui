@@ -80,6 +80,13 @@
  *  signupConfirmDialog: 'CTA__ConfirmCreation', //Email confirmation dialog to use instead of pxp ui dialog
  *  termsOfService: '/condiciones'
  * }
+ *
+ * @param customPrivateRoutes Configure routes private from config (if you dont need the menu)
+ * @example
+ * customPrivateRoutes: {
+ *  id: 1000, // number
+ *  component: 'WEB__Home', // the menu that you have in your pages
+ * }
  */
 
 export default {
@@ -124,6 +131,12 @@ export default {
     signup: false,
     loginDialog: 'CTA__Login',
   },
+  // customPrivateRoutes: [
+  //   {
+  //     id: 1000,
+  //     component: 'WEB__Home',
+  //   },
+  // ],
   // darkTheme: 'PINK_DARK',
   // customThemes: [
   //   'PINK',

@@ -393,6 +393,7 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
             helperText={values.helperText}
             error={values.error.hasError}
             msgError={values.error.msg}
+            dataStore={values.store.data}
           />,
         );
       }

@@ -65,7 +65,8 @@
     "use-position": "^0.0.7",
     "use-sound": "^1.0.2",
     "uuid": "^8.0.0",
-    "yup": "^0.28.3"
+    "yup": "^0.28.3",
+    "react-swipeable-views": "0.13.3"
   },
   "scripts": {
     "start": "react-scripts start",

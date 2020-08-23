@@ -8,7 +8,7 @@ import history from '../routers/History';
 import { deleteNativeStorage } from '../utils/Common';
 
 const findRoutes = (menu) => {
-  const routes = [];
+  let routes = [];
   menu.forEach((menuOption) => {
     if (menuOption.type === 'hoja') {
       routes.push({ id: menuOption.id_gui, component: menuOption.component });
@@ -16,6 +16,9 @@ const findRoutes = (menu) => {
       routes.push(...findRoutes(menuOption.childrens));
     }
   });
+  if (Pxp.config.customPrivateRoutes) {
+    routes = [...routes, ...Pxp.config.customPrivateRoutes];
+  }
   return routes;
 };
 
