@@ -35,7 +35,6 @@ const ComponentMapping = ({ config }) => {
       {data && (
         <DrawComponents
           config={config}
-          itemStates={itemStates}
           useJsonStoreRes={useJsonStoreRes}
         />
       )}
