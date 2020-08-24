@@ -17,13 +17,11 @@ const ComponentMapping = ({ config }) => {
   const useJsonStoreRes = useJsonStore(getDataTable);
   const { data, state, set, loading } = useJsonStoreRes;
 
-  const [itemStates, setItemStates] = useState();
+  const [itemStates, setItemStates] = useState(); // not use for moment
   useEffect(() => {
-    console.log('termino de cargar el data', data);
     if (data && data.datos.length > 0) {
       // create state for each data
       let aux = {};
-      console.log('data', data);
       data.datos.forEach((row) => {
         aux = {
           ...aux,
