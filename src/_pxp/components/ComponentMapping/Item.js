@@ -12,6 +12,7 @@ const areEqual = (prev, next) => {
 };
 
 export const ItemComponent = forwardRef(({ grid, keyId, children }, ref) => {
+  console.log(keyId);
   return (
     <Grid key={keyId} item {...grid} ref={ref}>
       {children}

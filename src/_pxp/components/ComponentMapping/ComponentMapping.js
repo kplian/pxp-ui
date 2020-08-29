@@ -4,16 +4,22 @@
  * @author Favio Figueroa
  */
 
-import React from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
 import useJsonStore from '../../hooks/useJsonStore';
 import DrawComponents from './DrawComponents';
+import SkeletonFuncionario from '../../../boa-manager-file/components/SkeletonFuncionario';
+import DrawSkeleton from './DrawSkeleton';
 
-const ComponentMapping = ({ config }) => {
+const ComponentMapping = forwardRef(({ config }, ref) => {
   const { getDataTable } = config;
   const useJsonStoreRes = useJsonStore(getDataTable);
   const { data, state, set, loading } = useJsonStoreRes;
+
+  const limitArray = Array.apply(null, { length: parseInt(config.getDataTable.params.limit, 10) / 2 });
+
 
   /* const [itemStates, setItemStates] = useState(); // not use for moment
   useEffect(() => {
@@ -30,31 +36,28 @@ const ComponentMapping = ({ config }) => {
     }
   }, [data]); */
 
+  useImperativeHandle(ref, () => {
+    return {
+      useJsonStoreRes,
+    };
+  });
+
   return (
     <>
-      {data && (
-        <DrawComponents
-          config={config}
-          useJsonStoreRes={useJsonStoreRes}
-        />
-      )}
-      {loading && (
-        <>
-          <Skeleton
-            animation="wave"
-            height={10}
-            width="100%"
-            style={{ marginBottom: 6 }}
+      <Grid container spacing={3} key={`group_${1}`}>
+        {data && (
+          <DrawComponents config={config} useJsonStoreRes={useJsonStoreRes} />
+        )}
+        {loading && (
+          <DrawSkeleton
+            grid={config.grid}
+            limitArray={limitArray}
+            config={config}
           />
-          <Skeleton variant="rect" width="100%" height={118} />
-          <Box pt={0.5}>
-            <Skeleton />
-            <Skeleton width="100%" />
-          </Box>
-        </>
-      )}
+        )}
+      </Grid>
     </>
   );
-};
+});
 
 export default ComponentMapping;

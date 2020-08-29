@@ -40,23 +40,21 @@ const DrawComponents = ({ config, useJsonStoreRes }) => {
 
   return (
     <>
-      <Grid container spacing={3} key={`group_${1}`}>
-        {data.datos.map((row, index) => {
-          return (
-            <Item
-              key={`${row[config.idStore]}`}
-              grid={grid}
-              keyId={row[config.idStore]}
-              {...(parseInt(data.datos.length, 10) === index + 1 && {
-                ref: lastComponentRender,
-              })}
-              // memoDisabled
-            >
-              {config.renderComponent(row, null)}
-            </Item>
-          );
-        })}
-      </Grid>
+      {data.datos.map((row, index) => {
+        return (
+          <Item
+            key={`${row[config.idStore]}`}
+            grid={grid}
+            keyId={row[config.idStore]}
+            {...(parseInt(data.datos.length, 10) === index + 1 && {
+              ref: lastComponentRender,
+            })}
+            // memoDisabled
+          >
+            {config.renderComponent(row, null)}
+          </Item>
+        );
+      })}
     </>
   );
 };

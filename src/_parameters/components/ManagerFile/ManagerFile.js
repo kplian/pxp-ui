@@ -15,6 +15,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import ImageIcon from '@material-ui/icons/Image';
+import { Image } from '@material-ui/icons';
 import TablePxp from '../../../_pxp/components/Table/TablePxp';
 import LoadingScreen from '../../../_pxp/components/LoadingScreen';
 import GridListImage from '../../../_pxp/components/GridListImage/GridListImage';
@@ -39,6 +42,14 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.getContrastText('#ffd600'),
     backgroundColor: '#ffd600',
     cursor: 'pointer',
+  },
+  avatarRed: {
+    height: 42,
+    width: 42,
+    marginRight: theme.spacing(1),
+    color: theme.palette.getContrastText('#a40909'),
+    backgroundColor: '#a40909',
+    cursor: 'no-drop',
   },
 }));
 
@@ -109,6 +120,7 @@ const ManagerFile = ({
       });
   };
 
+  const openFile = () => {};
   const jsonItem = {
     tableName: 'Manager File',
     columns: {
@@ -118,10 +130,12 @@ const ManagerFile = ({
           return (
             <Box display="flex" alignItems="center">
               {row.id_archivo &&
-              row.estado_reg !== 'inactivo' &&
-              row.tipo_archivo === 'imagen' ? (
-                <Avatar className={classes.avatar} src={getUrlForView(row)} />
-              ) : (
+                row.estado_reg !== 'inactivo' &&
+                row.tipo_archivo === 'imagen' && (
+                  <Avatar className={classes.avatar} src={getUrlForView(row)} />
+                )}
+
+              {buttonUploadFile ? (
                 <Avatar
                   className={classes.avatarYellow}
                   onClick={() => {
@@ -139,12 +153,31 @@ const ManagerFile = ({
                 >
                   <CloudUploadIcon />
                 </Avatar>
+              ) : (
+                <Avatar
+                  {...(row.id_archivo
+                    ? {
+                        className: classes.avatarYellow,
+                        onClick: () => window.open(getUrlForView(row)),
+                      }
+                    : { className: classes.avatarRed })}
+                >
+                  {row.tipo_archivo === 'documento' ? (
+                    <InsertDriveFileIcon />
+                  ) : (
+                    <ImageIcon />
+                  )}
+                </Avatar>
               )}
               {}
               <div>
-                <Typography variant="body2" color="inherit">
-                  {row.codigo}
+                <Typography variant="h6" color="inherit">
+                  {row.nombre}{' '}
+                  <Typography variant="caption" color="inherit">
+                    ({row.codigo})
+                  </Typography>
                 </Typography>
+
                 {row.id_archivo &&
                   row.estado_reg !== 'inactivo' &&
                   row.tipo_archivo === 'documento' && (
@@ -191,7 +224,7 @@ const ManagerFile = ({
           onClick: () => {
             setOpenTypeFile(true);
           },
-          icon: <File/>,
+          icon: <File />,
           title: 'Type File',
         },
       }),
