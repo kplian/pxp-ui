@@ -11,11 +11,17 @@
  */
 /* eslint-disable react/jsx-props-no-spreading */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import { CircularProgress, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Grid from '@material-ui/core/Grid';
 import _ from 'lodash';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import ButtonPxp from '../ButtonPxp';
+import Warehouse1 from '../../../sales/icons/Warehouse1';
+import ManagerFile from "../../../_parameters/components/ManagerFile/ManagerFile";
+import DialogPxp from "../DialogPxp";
 
 const areEqual = (prev, next) =>
   next.memoDisabled !== false &&
@@ -38,16 +44,16 @@ const AutocompletePxpComponent = ({
   error,
   msgError,
   size = 'medium',
-  dataStore // if the datastore changed we need to re-render
+  dataStore, // if the datastore changed we need to re-render
 }) => {
   const { label, variant, store, isSearchable, gridForm } = configInput;
 
   console.log('draw autocomplete', store.data);
   // this handle has debounce for start with searching after 500 ms
   const handleInputChange = _.debounce(async (valueInput) => {
-    console.log('valueInput',valueInput)
-    console.log('isSearchable',isSearchable)
-    console.log('valueInput',valueInput)
+    console.log('valueInput', valueInput);
+    console.log('isSearchable', isSearchable);
+    console.log('valueInput', valueInput);
     if (
       valueInput &&
       isSearchable &&
@@ -73,6 +79,7 @@ const AutocompletePxpComponent = ({
       }));
     }
   };
+
 
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
@@ -122,9 +129,12 @@ const AutocompletePxpComponent = ({
               ...params.InputProps,
               endAdornment: (
                 <>
+
                   {store.loading ? (
                     <CircularProgress color="inherit" size={20} />
                   ) : null}
+
+                  {(configInput.InputProps && configInput.InputProps.endAdornment) && configInput.InputProps.endAdornment}
                   {params.InputProps.endAdornment}
                 </>
               ),
@@ -146,6 +156,7 @@ const AutocompletePxpComponent = ({
         disabled={disabled}
       />
     </Grid>
+
   );
 };
 
