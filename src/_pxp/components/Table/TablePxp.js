@@ -322,8 +322,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     // diff if is object or array
     // array is when the delete was executed with selections
     // object is when the delete was executed from actions menu
-
-    console.log(rowSelectedAux)
     let selectedAux = [];
     if (Array.isArray(rowSelectedAux)) {
       selectedAux = rowSelectedAux.slice();
