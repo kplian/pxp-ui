@@ -11,7 +11,7 @@
  */
 /* eslint-disable react/jsx-props-no-spreading */
 
-import React, {useCallback} from 'react';
+import React from 'react';
 import { CircularProgress, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Grid from '@material-ui/core/Grid';

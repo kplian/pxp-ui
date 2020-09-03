@@ -27,9 +27,7 @@ const TableBodyPxp = ({
   selected,
   lastBookElementRef,
 }) => {
-  console.log(data)
   const { datos: rows } = data || { datos: [], total: 0 };
-  console.log(rows)
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   // render column according to renderColumn or column type
