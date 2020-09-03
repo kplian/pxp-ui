@@ -1,6 +1,6 @@
 /**
  * ComponentMapping.js (this component will be use for example for component shop or all that you want to render with map())
- * @copyright Disydes 2020
+ * @copyright Kplian 2020
  * @author Favio Figueroa
  */
 

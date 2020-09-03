@@ -1,6 +1,6 @@
 /*
  * ConfirmDialog.js
- * @copyright Disydes 2020
+ * @copyright Kplian 2020
  * @author Favio Figueroa
  */
 import React, { useState } from 'react';

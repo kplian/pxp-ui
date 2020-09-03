@@ -1,6 +1,6 @@
 /**
  * ItemSkeleton.js
- * @copyright Disydes 2020
+ * @copyright Kplian 2020
  * @author Favio Figueroa
  */
 
