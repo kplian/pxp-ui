@@ -5,12 +5,9 @@
  */
 
 import React, { forwardRef, useImperativeHandle } from 'react';
-import Skeleton from '@material-ui/lab/Skeleton';
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import useJsonStore from '../../hooks/useJsonStore';
 import DrawComponents from './DrawComponents';
-import SkeletonFuncionario from '../../../boa-manager-file/components/SkeletonFuncionario';
 import DrawSkeleton from './DrawSkeleton';
 
 const ComponentMapping = forwardRef(({ config }, ref) => {

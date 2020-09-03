@@ -9,15 +9,13 @@ import _ from 'lodash';
 import IconButton from '@material-ui/core/IconButton';
 import * as Yup from 'yup';
 import moment from 'moment';
+import AddIcon from '@material-ui/icons/Add';
 import InitValues from '../../../_pxp/hooks/InitValues';
 import { defaultValuesAutoComplete } from '../../../_pxp/components/Form/defaultValues';
 import { handleMouseTriggerComponent } from '../../../_pxp/utils/Common';
-import Warehouse1 from '../../../sales/icons/Warehouse1';
 import AutocompletePxp from '../../../_pxp/components/Form/AutocompletePxp';
 import DialogPxp from '../../../_pxp/components/DialogPxp';
-import ManagerFile from '../../../_parameters/components/ManagerFile/ManagerFile';
 import Form from '../../../_pxp/components/Form/Form';
-import BasicContainer from '../../../_pxp/containers/BasicContainer';
 
 const AutoCompleteTriggerComponent = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -106,7 +104,7 @@ const AutoCompleteTriggerComponent = () => {
           value: resp.data.id_persona,
           nombre_completo2: `${dataForSending.nombre} ${dataForSending.ap_paterno} ${dataForSending.ap_materno}`,
         };
-        console.log(values)
+        console.log(values);
         autoCompleteConfig.setValue(values);
         setOpenDialog(false);
       },
@@ -145,7 +143,7 @@ const AutoCompleteTriggerComponent = () => {
             onClick={handleClickShowComponent}
             onMouseDown={handleMouseTriggerComponent}
           >
-            <Warehouse1 />
+            <AddIcon />
           </IconButton>
         ),
       },
