@@ -11,17 +11,11 @@
  */
 /* eslint-disable react/jsx-props-no-spreading */
 
-import React, {useCallback} from 'react';
+import React from 'react';
 import { CircularProgress, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Grid from '@material-ui/core/Grid';
 import _ from 'lodash';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import ButtonPxp from '../ButtonPxp';
-import Warehouse1 from '../../../sales/icons/Warehouse1';
-import ManagerFile from "../../../_parameters/components/ManagerFile/ManagerFile";
-import DialogPxp from "../DialogPxp";
 
 const areEqual = (prev, next) =>
   next.memoDisabled !== false &&

@@ -1,16 +1,13 @@
 /**
  * ComponentMapping.js (this component will be use for example for component shop or all that you want to render with map())
- * @copyright Disydes 2020
+ * @copyright Kplian 2020
  * @author Favio Figueroa
  */
 
 import React, { forwardRef, useImperativeHandle } from 'react';
-import Skeleton from '@material-ui/lab/Skeleton';
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import useJsonStore from '../../hooks/useJsonStore';
 import DrawComponents from './DrawComponents';
-import SkeletonFuncionario from '../../../boa-manager-file/components/SkeletonFuncionario';
 import DrawSkeleton from './DrawSkeleton';
 
 const ComponentMapping = forwardRef(({ config }, ref) => {

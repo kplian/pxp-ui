@@ -25,6 +25,7 @@ import Pxp from '../../../Pxp';
 import DialogPxp from '../../../_pxp/components/DialogPxp';
 import File from '../../../_pxp/icons/File';
 import TypeFile from '../TypeFile/TypeFile';
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -127,6 +128,8 @@ const ManagerFile = ({
       codigo: {
         label: 'Codigo',
         renderColumn: (row) => {
+          const fieldTypeValue = JSON.parse(row.field_type_value);
+          console.log(fieldTypeValue);
           return (
             <Box display="flex" alignItems="center">
               {row.id_archivo &&
@@ -173,9 +176,9 @@ const ManagerFile = ({
               <div>
                 <Typography variant="h6" color="inherit">
                   {row.nombre}{' '}
-                  <Typography variant="caption" color="inherit">
+                  {/*<Typography variant="caption" color="inherit">
                     ({row.codigo})
-                  </Typography>
+                  </Typography>*/}
                 </Typography>
 
                 {row.id_archivo &&
@@ -197,6 +200,39 @@ const ManagerFile = ({
                     ver Album
                   </Typography>
                 )}
+              </div>
+            </Box>
+          );
+        },
+      },
+      fileType: {
+        label: 'Valores',
+        renderColumn: (row) => {
+          const fieldTypeValue = JSON.parse(row.field_type_value);
+          console.log(fieldTypeValue);
+          return (
+            <Box display="flex" alignItems="center">
+              <div>
+                {fieldTypeValue &&
+                  fieldTypeValue.array_to_json &&
+                  fieldTypeValue.array_to_json.map((fieldType, index) => {
+                    return (
+                      <>
+                        {fieldType.valor !== null ? (
+                          <Typography
+                            key={`fieldType_${row.id_tipo_archivo}_${index}`}
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                          >
+                            {fieldType.descripcion} : {fieldType.tipo === 'DateField' ? moment(fieldType.valor, 'DD-MM-YYYY').format('DD-MM-YYYY') : fieldType.valor }
+                          </Typography>
+                        ) : (
+                          <></>
+                        )}
+                      </>
+                    );
+                  })}
               </div>
             </Box>
           );
