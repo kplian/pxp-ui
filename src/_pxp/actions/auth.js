@@ -7,7 +7,7 @@ import Pxp from '../../Pxp';
 import history from '../routers/History';
 import { deleteNativeStorage } from '../utils/Common';
 
-const findRoutes = (menu) => {
+export const findRoutes = (menu) => {
   let routes = [];
   menu.forEach((menuOption) => {
     if (menuOption.type === 'hoja') {
@@ -32,12 +32,12 @@ export const logout = () => ({
   type: 'LOGOUT',
 });
 
-const setMenu = (menu) => ({
+export const setMenu = (menu) => ({
   type: 'SET_MENU',
   menu,
 });
 
-const setRoutes = (routes) => ({
+export const setRoutes = (routes) => ({
   type: 'SET_ROUTES',
   routes,
 });
