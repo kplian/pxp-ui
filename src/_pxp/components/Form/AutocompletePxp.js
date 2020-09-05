@@ -42,12 +42,8 @@ const AutocompletePxpComponent = ({
 }) => {
   const { label, variant, store, isSearchable, gridForm } = configInput;
 
-  console.log('draw autocomplete', store.data);
   // this handle has debounce for start with searching after 500 ms
   const handleInputChange = _.debounce(async (valueInput) => {
-    console.log('valueInput', valueInput);
-    console.log('isSearchable', isSearchable);
-    console.log('valueInput', valueInput);
     if (
       valueInput &&
       isSearchable &&
