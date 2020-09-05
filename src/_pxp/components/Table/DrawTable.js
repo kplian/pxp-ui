@@ -51,6 +51,7 @@ const DrawTable = ({
   loading,
   jsonStore,
   lastBookElementRef,
+  dataRows,
 }) => {
   const classes = useStyles();
 
@@ -73,7 +74,7 @@ const DrawTable = ({
               orderBy={orderBy}
               onSelectAllClick={handles.handleSelectAllClick}
               onRequestSort={handles.handleRequestSort}
-              rowCount={data.datos.length}
+              rowCount={dataRows.length}
               headCells={dataConfig.columns}
               statesShowColumn={statesShowColumn}
             />
@@ -96,6 +97,7 @@ const DrawTable = ({
               selected={selected}
               jsonStore={jsonStore}
               lastBookElementRef={lastBookElementRef}
+              dataRows={dataRows}
             />
           )}
 

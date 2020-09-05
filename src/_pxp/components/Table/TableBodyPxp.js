@@ -26,8 +26,8 @@ const TableBodyPxp = ({
   emptyRows,
   selected,
   lastBookElementRef,
+  dataRows,
 }) => {
-  const { datos: rows } = data || { datos: [], total: 0 };
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   // render column according to renderColumn or column type
@@ -64,8 +64,8 @@ const TableBodyPxp = ({
 
   return (
     <TableBody>
-      {rows &&
-        rows.map((row, index) => {
+      {dataRows &&
+        dataRows.map((row, index) => {
           const isItemSelected = isSelected(row[idStore]);
           const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -79,7 +79,7 @@ const TableBodyPxp = ({
               tabIndex={-1}
               selected={isItemSelected}
               // ref={lastBookElementRef}
-              {...(parseInt(rows.length, 10) === index + 1 && {
+              {...(parseInt(dataRows.length, 10) === index + 1 && {
                 ref: lastBookElementRef,
               })}
             >
