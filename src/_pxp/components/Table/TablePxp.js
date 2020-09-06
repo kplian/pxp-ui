@@ -131,8 +131,18 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const [total, setTotal] = useState(); // total is whole total in your query backend
   useEffect(() => {
     if (data) {
-      setDataRows(data[dataReader.dataRows]);
-      setTotal(data[dataReader.total]);
+      if (dataReader && dataReader.dataRows) {
+        setDataRows(data[dataReader.dataRows]);
+      } else {
+        // put the defaul for moment is pxp backend version 1
+        setDataRows(data.datos);
+      }
+      if (dataReader && dataReader.total) {
+        setTotal(data[dataReader.total]);
+      } else {
+        // put the defaul for moment is pxp backend version 1
+        setTotal(data.total);
+      }
     }
   }, [data]);
 
