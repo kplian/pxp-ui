@@ -271,7 +271,7 @@ const ExampleAutoComplete = () => {
                           {option.desc_person}
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
-                          <span className={classesOption.subscriptions}>
+                          <span>
                             {option.nombre_cargo}
                           </span>{' '}
                         </Typography>

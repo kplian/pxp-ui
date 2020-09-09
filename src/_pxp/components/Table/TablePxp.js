@@ -98,6 +98,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     actionsTableCell,
     buttonsToolbar: addButtonsToolbar,
     afterRefresh,
+    dataReader, // this is for map the data for render and the total
   } = dataConfig;
   const columnsForDrawing = Object.entries(dataConfig.columns)
     .filter(([, value]) => value.grid === true || value.grid === undefined)
@@ -124,11 +125,30 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
   // get the menu that we will use in the table cell for each one.
   const jsonStore = useJsonStore(dataConfig.getDataTable);
-  const { state, set, data, loading } = jsonStore;
+  const { state, set, data, loading, error } = jsonStore;
+
+  const [dataRows, setDataRows] = useState([]);
+  const [total, setTotal] = useState(); // total is whole total in your query backend
+  useEffect(() => {
+    if (data) {
+      if (dataReader && dataReader.dataRows) {
+        setDataRows(data[dataReader.dataRows]);
+      } else {
+        // put the defaul for moment is pxp backend version 1
+        setDataRows(data.datos);
+      }
+      if (dataReader && dataReader.total) {
+        setTotal(data[dataReader.total]);
+      } else {
+        // put the defaul for moment is pxp backend version 1
+        setTotal(data.total);
+      }
+    }
+  }, [data]);
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = data.datos.map((n) => n[idStore]);
+      const newSelecteds = dataRows.map((n) => n[idStore]);
       setSelected(newSelecteds);
       return;
     }
@@ -527,7 +547,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const emptyRows =
     data && !data.error
       ? rowsPerPage -
-        Math.min(rowsPerPage, data.datos.total - page * rowsPerPage)
+        Math.min(rowsPerPage, dataRows.lenght - page * rowsPerPage)
       : null;
 
   const observer = useRef();
@@ -539,7 +559,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
         if (
           entries[0].isIntersecting &&
           dataConfig.paginationType === 'infiniteScrolling' &&
-          data.datos.length < data.total
+          dataRows.length < total
         ) {
           // jsonStore.set(prev => ({...prev, params:{ ...prev.params, start: parseInt(prev.params.start + 10)}, infinite:true}))
           jsonStore.set({
@@ -605,6 +625,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
               loading={loading}
               jsonStore={jsonStore}
               lastBookElementRef={lastBookElementRef}
+              dataRows={dataRows}
             />
           }
 
@@ -616,7 +637,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
                   parseInt(dataConfig.getDataTable.params.limit, 10),
                 ]}
                 component="div"
-                count={parseInt(data.total, 10)}
+                count={parseInt(total, 10)}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onChangePage={handleChangePage}
