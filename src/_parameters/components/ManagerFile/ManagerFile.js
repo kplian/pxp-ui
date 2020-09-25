@@ -15,6 +15,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import ImageIcon from '@material-ui/icons/Image';
+import { Image } from '@material-ui/icons';
 import TablePxp from '../../../_pxp/components/Table/TablePxp';
 import LoadingScreen from '../../../_pxp/components/LoadingScreen';
 import GridListImage from '../../../_pxp/components/GridListImage/GridListImage';
@@ -22,6 +25,7 @@ import Pxp from '../../../Pxp';
 import DialogPxp from '../../../_pxp/components/DialogPxp';
 import File from '../../../_pxp/icons/File';
 import TypeFile from '../TypeFile/TypeFile';
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,9 +44,25 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#ffd600',
     cursor: 'pointer',
   },
+  avatarRed: {
+    height: 42,
+    width: 42,
+    marginRight: theme.spacing(1),
+    color: theme.palette.getContrastText('#a40909'),
+    backgroundColor: '#a40909',
+    cursor: 'no-drop',
+  },
 }));
 
-const ManagerFile = ({ idTable, table, idTableDesc }) => {
+const ManagerFile = ({
+  idTable,
+  table,
+  idTableDesc,
+  buttonViewFile = true,
+  buttonUploadFile = true,
+  buttonDeleteFile = true,
+  buttonFileType = true,
+}) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [loadingScreen, setLoadingScreen] = useState(false);
@@ -101,20 +121,24 @@ const ManagerFile = ({ idTable, table, idTableDesc }) => {
       });
   };
 
+  const openFile = () => {};
   const jsonItem = {
     tableName: 'Manager File',
     columns: {
       codigo: {
         label: 'Codigo',
         renderColumn: (row) => {
-          console.log(row);
+          const fieldTypeValue = JSON.parse(row.field_type_value);
+          console.log(fieldTypeValue);
           return (
             <Box display="flex" alignItems="center">
               {row.id_archivo &&
-              row.estado_reg !== 'inactivo' &&
-              row.tipo_archivo === 'imagen' ? (
-                <Avatar className={classes.avatar} src={getUrlForView(row)} />
-              ) : (
+                row.estado_reg !== 'inactivo' &&
+                row.tipo_archivo === 'imagen' && (
+                  <Avatar className={classes.avatar} src={getUrlForView(row)} />
+                )}
+
+              {buttonUploadFile ? (
                 <Avatar
                   className={classes.avatarYellow}
                   onClick={() => {
@@ -132,12 +156,31 @@ const ManagerFile = ({ idTable, table, idTableDesc }) => {
                 >
                   <CloudUploadIcon />
                 </Avatar>
+              ) : (
+                <Avatar
+                  {...(row.id_archivo
+                    ? {
+                        className: classes.avatarYellow,
+                        onClick: () => window.open(getUrlForView(row)),
+                      }
+                    : { className: classes.avatarRed })}
+                >
+                  {row.tipo_archivo === 'documento' ? (
+                    <InsertDriveFileIcon />
+                  ) : (
+                    <ImageIcon />
+                  )}
+                </Avatar>
               )}
               {}
               <div>
-                <Typography variant="body2" color="inherit">
-                  {row.codigo}
+                <Typography variant="h6" color="inherit">
+                  {row.nombre}{' '}
+                  {/*<Typography variant="caption" color="inherit">
+                    ({row.codigo})
+                  </Typography>*/}
                 </Typography>
+
                 {row.id_archivo &&
                   row.estado_reg !== 'inactivo' &&
                   row.tipo_archivo === 'documento' && (
@@ -162,6 +205,39 @@ const ManagerFile = ({ idTable, table, idTableDesc }) => {
           );
         },
       },
+      fileType: {
+        label: 'Valores',
+        renderColumn: (row) => {
+          const fieldTypeValue = JSON.parse(row.field_type_value);
+          console.log(fieldTypeValue);
+          return (
+            <Box display="flex" alignItems="center">
+              <div>
+                {fieldTypeValue &&
+                  fieldTypeValue.array_to_json &&
+                  fieldTypeValue.array_to_json.map((fieldType, index) => {
+                    return (
+                      <>
+                        {fieldType.valor !== null ? (
+                          <Typography
+                            key={`fieldType_${row.id_tipo_archivo}_${index}`}
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                          >
+                            {fieldType.descripcion} : {fieldType.tipo === 'DateField' ? moment(fieldType.valor, 'DD-MM-YYYY').format('DD-MM-YYYY') : fieldType.valor }
+                          </Typography>
+                        ) : (
+                          <></>
+                        )}
+                      </>
+                    );
+                  })}
+              </div>
+            </Box>
+          );
+        },
+      },
     },
     getDataTable: {
       url: 'parametros/Archivo/getTypeFile',
@@ -179,61 +255,69 @@ const ManagerFile = ({ idTable, table, idTableDesc }) => {
     buttonNew: false,
     buttonCheckList: false,
     buttonsToolbar: {
-      buttonFileType: {
-        onClick: () => {
-          setOpenTypeFile(true);
+      ...(buttonFileType && {
+        fileType: {
+          onClick: () => {
+            setOpenTypeFile(true);
+          },
+          icon: <File />,
+          title: 'Type File',
         },
-        icon: <File />,
-        title: 'Type File',
-      },
+      }),
     },
     actionsTableCell: {
       buttonDel: false,
       buttonEdit: false,
       extraButtons: {
-        uploadFile: {
-          label: 'Upload File',
-          buttonIcon: <CloudUploadIcon />,
-          onClick: (row) => {
-            setDropZone({
-              open: true,
-              idTypeFile: row.id_tipo_archivo,
-              extensionsAllowed: row.extensiones_permitidas,
-              multiple: row.multiple === 'si',
-              typeFile: row.tipo_archivo,
-              acceptedFiles:
-                row.tipo_archivo === 'imagen'
-                  ? ['image/*']
-                  : ['image/*', 'video/*', 'application/*'],
-            });
+        ...(buttonUploadFile && {
+          uploadFile: {
+            label: 'Upload File',
+            buttonIcon: <CloudUploadIcon />,
+            onClick: (row) => {
+              setDropZone({
+                open: true,
+                idTypeFile: row.id_tipo_archivo,
+                extensionsAllowed: row.extensiones_permitidas,
+                multiple: row.multiple === 'si',
+                typeFile: row.tipo_archivo,
+                acceptedFiles:
+                  row.tipo_archivo === 'imagen'
+                    ? ['image/*']
+                    : ['image/*', 'video/*', 'application/*'],
+              });
+            },
           },
-        },
-        viewFile: {
-          label: 'View File',
-          buttonIcon: <VisibilityIcon />,
-          onClick: (row) => {
-            window.open(getUrlForView(row));
+        }),
+        ...(buttonViewFile && {
+          viewFile: {
+            label: 'View File',
+            buttonIcon: <VisibilityIcon />,
+            onClick: (row) => {
+              window.open(getUrlForView(row));
+            },
+            disabled: true,
           },
-          disabled: true,
-        },
-        deleteFile: {
-          label: 'Delete File',
-          buttonIcon: <DeleteIcon />,
-          onClick: (row) => {
-            removeFile(row);
+        }),
+        ...(buttonDeleteFile && {
+          deleteFile: {
+            label: 'Delete File',
+            buttonIcon: <DeleteIcon />,
+            onClick: (row) => {
+              removeFile(row);
+            },
+            disabled: true,
           },
-          disabled: true,
-        },
+        }),
       },
     },
     paginationType: 'infiniteScrolling',
     onClickRow: ({ row, statesButtonsTableCell }) => {
       if (row.id_archivo && row.estado_reg !== 'inactivo') {
-        statesButtonsTableCell.viewFile.enable();
-        statesButtonsTableCell.deleteFile.enable();
+        buttonViewFile && statesButtonsTableCell.viewFile.enable();
+        buttonDeleteFile && statesButtonsTableCell.deleteFile.enable();
       } else {
-        statesButtonsTableCell.viewFile.disable();
-        statesButtonsTableCell.deleteFile.disable();
+        buttonViewFile && statesButtonsTableCell.viewFile.disable();
+        buttonDeleteFile && statesButtonsTableCell.deleteFile.disable();
       }
     },
   };

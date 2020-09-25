@@ -26,8 +26,8 @@ const TableBodyPxp = ({
   emptyRows,
   selected,
   lastBookElementRef,
+  dataRows,
 }) => {
-  const { datos: rows } = data || { datos: [], total: 0 };
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   // render column according to renderColumn or column type
@@ -64,64 +64,65 @@ const TableBodyPxp = ({
 
   return (
     <TableBody>
-      {rows.map((row, index) => {
-        const isItemSelected = isSelected(row[idStore]);
-        const labelId = `enhanced-table-checkbox-${index}`;
+      {dataRows &&
+        dataRows.map((row, index) => {
+          const isItemSelected = isSelected(row[idStore]);
+          const labelId = `enhanced-table-checkbox-${index}`;
 
-        return (
-          <TableRow
-            key={`tableRow_${idStore}_${row[idStore]}`}
-            hover
-            onClick={(event) => handleClickRow(event, row)}
-            role="checkbox"
-            aria-checked={isItemSelected}
-            tabIndex={-1}
-            selected={isItemSelected}
-            // ref={lastBookElementRef}
-            {...(parseInt(rows.length, 10) === index + 1 && {
-              ref: lastBookElementRef,
-            })}
-          >
-            {/* eslint-disable-next-line no-underscore-dangle */}
-            {statesShowColumn.checkbox_ && (
-              <TableCell padding="checkbox">
-                <Checkbox
-                  key={`checkbox_${row[idStore]}`}
-                  checked={isItemSelected}
-                  inputProps={{ 'aria-labelledby': labelId }}
-                  onClick={(event) => handleCheckInCell(event, row)}
-                />
-              </TableCell>
-            )}
-            {Object.entries(dataConfig.columns).map(
-              ([nameKey, values], indexColumn) => {
-                return (
-                  // eslint-disable-next-line react/no-array-index-key
-                  <React.Fragment key={`cell_${indexColumn}_${nameKey}`}>
-                    {statesShowColumn[nameKey] && (
-                      <TableCell align="left">
-                        {renderColumn(nameKey, values, row, index)}
-                      </TableCell>
-                    )}
-                  </React.Fragment>
-                );
-              },
-            )}
-
-            <TableCell align="right">
-              {dataConfig.actionsTableCell &&
-              typeof dataConfig.actionsTableCell.onClick === 'function' ? (
-                <ButtonPxp
-                  icon={dataConfig.actionsTableCell.icon}
-                  onClick={() => dataConfig.actionsTableCell.onClick(row)}
-                />
-              ) : (
-                <MenuTableCell buttons={buttonsTableCell} row={row} />
+          return (
+            <TableRow
+              key={`tableRow_${idStore}_${row[idStore]}`}
+              hover
+              onClick={(event) => handleClickRow(event, row)}
+              role="checkbox"
+              aria-checked={isItemSelected}
+              tabIndex={-1}
+              selected={isItemSelected}
+              // ref={lastBookElementRef}
+              {...(parseInt(dataRows.length, 10) === index + 1 && {
+                ref: lastBookElementRef,
+              })}
+            >
+              {/* eslint-disable-next-line no-underscore-dangle */}
+              {statesShowColumn.checkbox_ && (
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    key={`checkbox_${row[idStore]}`}
+                    checked={isItemSelected}
+                    inputProps={{ 'aria-labelledby': labelId }}
+                    onClick={(event) => handleCheckInCell(event, row)}
+                  />
+                </TableCell>
               )}
-            </TableCell>
-          </TableRow>
-        );
-      })}
+              {Object.entries(dataConfig.columns).map(
+                ([nameKey, values], indexColumn) => {
+                  return (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <React.Fragment key={`cell_${indexColumn}_${nameKey}`}>
+                      {statesShowColumn[nameKey] && (
+                        <TableCell align="left">
+                          {renderColumn(nameKey, values, row, index)}
+                        </TableCell>
+                      )}
+                    </React.Fragment>
+                  );
+                },
+              )}
+
+              <TableCell align="right">
+                {dataConfig.actionsTableCell &&
+                typeof dataConfig.actionsTableCell.onClick === 'function' ? (
+                  <ButtonPxp
+                    icon={dataConfig.actionsTableCell.icon}
+                    onClick={() => dataConfig.actionsTableCell.onClick(row)}
+                  />
+                ) : (
+                  <MenuTableCell buttons={buttonsTableCell} row={row} />
+                )}
+              </TableCell>
+            </TableRow>
+          );
+        })}
 
       {emptyRows > 0 && (
         <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>

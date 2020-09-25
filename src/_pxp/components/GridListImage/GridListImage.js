@@ -1,3 +1,8 @@
+/**
+ * GridListImage for view images in grid
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ */
 import React from 'react';
 import useJsonStore from '../../hooks/useJsonStore';
 import DrawGridListImage from './DrawGridListImage';

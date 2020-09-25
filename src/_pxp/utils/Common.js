@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 /**
  * Common functions for use in another components
  * @copyright Kplian Ltda 2020
@@ -23,8 +25,8 @@ export const capitalizeFirst = (cad, separator = ' ') => {
     string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   return cad
     ? cad
-      .split(separator)
-      .reduce((acc, curr) => acc + capilatizeWord(curr) + separator, '')
+        .split(separator)
+        .reduce((acc, curr) => acc + capilatizeWord(curr) + separator, '')
     : null;
 };
 
@@ -47,3 +49,5 @@ export const deleteNativeStorage = () => {
     });
   }
 };
+
+export const handleMouseTriggerComponent = (event) => event.preventDefault();

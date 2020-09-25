@@ -24,7 +24,8 @@ const areEqual = (prev, next) =>
   prev.loading === next.loading &&
   prev.open === next.open &&
   prev.disabled === next.disabled &&
-  prev.error === next.error;
+  prev.error === next.error &&
+  prev.dataStore === next.dataStore;
 
 const AutocompletePxpComponent = ({
   name,
@@ -37,6 +38,7 @@ const AutocompletePxpComponent = ({
   error,
   msgError,
   size = 'medium',
+  dataStore, // if the datastore changed we need to re-render
 }) => {
   const { label, variant, store, isSearchable, gridForm } = configInput;
 
@@ -68,6 +70,7 @@ const AutocompletePxpComponent = ({
     }
   };
 
+
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
       <Autocomplete
@@ -98,8 +101,8 @@ const AutocompletePxpComponent = ({
           return optionEq[store.idDD] === valueEq[store.idDD];
         }}
         options={
-          store.data
-            ? store.data.datos.map((i) => ({
+          dataStore
+            ? dataStore.datos.map((i) => ({
                 ...i,
               }))
             : [] // we need to send empty array for init form
@@ -116,9 +119,12 @@ const AutocompletePxpComponent = ({
               ...params.InputProps,
               endAdornment: (
                 <>
+
                   {store.loading ? (
                     <CircularProgress color="inherit" size={20} />
                   ) : null}
+
+                  {(configInput.InputProps && configInput.InputProps.endAdornment) && configInput.InputProps.endAdornment}
                   {params.InputProps.endAdornment}
                 </>
               ),
@@ -140,6 +146,7 @@ const AutocompletePxpComponent = ({
         disabled={disabled}
       />
     </Grid>
+
   );
 };
 

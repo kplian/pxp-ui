@@ -10,11 +10,18 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import _ from 'lodash';
+import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import { simpleForm, configAutoComplete, configTextField } from './config';
 import Form from '../../../_pxp/components/Form/Form';
 import imgAvatar from '../../../_pxp/components/Table/avatar.jpeg';
 import Label from '../../../_pxp/components/Label';
 import BasicContainer from '../../../_pxp/containers/BasicContainer';
+import InitValues from '../../../_pxp/hooks/InitValues';
+import { defaultValuesAutoComplete } from '../../../_pxp/components/Form/defaultValues';
+import { getUrlForView } from '../../../_pxp/utils/Common';
+import CircularProgress from '../../../_pxp/components/CircularProgress';
+import AutocompletePxp from '../../../_pxp/components/Form/AutocompletePxp';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -221,10 +228,116 @@ const ExampleAutoComplete = () => {
       },
     },
   };
+
+  // IF YOU WANT TO USE ONLY THE COMPONENT YOU CAN DO THIS
+  const autoCompleteOnlyComponentConfig = InitValues(
+    _.merge({}, defaultValuesAutoComplete, {
+      type: 'AutoComplete',
+      label: 'Funcionario',
+      initialValue: null,
+      isSearchable: true,
+      memoDisabled: true,
+      store: {
+        url: 'seguridad/Persona/listarPersonaFoto',
+        params: {
+          start: '0',
+          limit: '10',
+          sort: 'id_persona',
+          dir: 'ASC',
+        },
+        parFilters: 'PERSON.nombre_completo2#PERSON.ci',
+        idDD: 'id_persona',
+        descDD: 'desc_person',
+        minChars: 2,
+        renderOption: (option) => (
+          <>
+            <Table style={{ width: '100%' }}>
+              <TableBody>
+                <TableRow hover key={option.id_funcionario}>
+                  <TableCell>
+                    <Box display="flex" alignItems="center">
+                      <Avatar
+                        className={classes.avatar}
+                        src={getUrlForView({
+                          nameFile: option?.nombre_archivo,
+                          folder: option?.folder,
+                          extension: option?.extension,
+                          // size: 'pequeno',
+                        })}
+                      />
+
+                      <Box ml={2}>
+                        <Typography variant="h6" color="textPrimary">
+                          {option.desc_person}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                          <span>
+                            {option.nombre_cargo}
+                          </span>{' '}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </TableCell>
+
+                  <TableCell>
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="flex-end"
+                    >
+                      <Box mr={2}>
+                        <Typography
+                          align="right"
+                          variant="h6"
+                          color="textPrimary"
+                        >
+                          38%
+                        </Typography>
+                      </Box>
+                      <CircularProgress value={38} />
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </>
+        ),
+      },
+    }),
+  );
+
+  const handleChange = ({ event, name, value, dataValue }) => {
+    // eslint-disable-next-line no-unused-expressions
+    event && event.preventDefault(); // in some inputs we dont have event like date pickers
+    const stateField = autoCompleteOnlyComponentConfig;
+    const { setValue } = stateField;
+    setValue(dataValue);
+  };
+
   return (
     <BasicContainer>
       {' '}
       <Form data={config} />;
+      <div>
+        {autoCompleteOnlyComponentConfig.store && (
+          <AutocompletePxp
+            key={1}
+            name="funcionario"
+            value={autoCompleteOnlyComponentConfig.value}
+            configInput={autoCompleteOnlyComponentConfig}
+            handleChange={handleChange}
+            loading={autoCompleteOnlyComponentConfig.store.loading}
+            memoDisabled={autoCompleteOnlyComponentConfig.memoDisabled}
+            states={{}}
+            open={autoCompleteOnlyComponentConfig.store.open}
+            disabled={autoCompleteOnlyComponentConfig.disabled}
+            helperText={autoCompleteOnlyComponentConfig.helperText}
+            error={autoCompleteOnlyComponentConfig.error.hasError}
+            msgError={autoCompleteOnlyComponentConfig.error.msg}
+            dataStore={autoCompleteOnlyComponentConfig.store.data}
+          />
+        )}
+      </div>
     </BasicContainer>
   );
 };

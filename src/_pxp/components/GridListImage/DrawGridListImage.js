@@ -1,3 +1,8 @@
+/**
+ * DrawGridListImage
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ */
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
