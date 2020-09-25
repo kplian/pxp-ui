@@ -12,7 +12,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
 import React from 'react';
-import { CircularProgress, TextField } from '@material-ui/core';
+import { CircularProgress, TextField, Button } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Grid from '@material-ui/core/Grid';
 import _ from 'lodash';
@@ -70,6 +70,7 @@ const AutocompletePxpComponent = ({
     }
   };
 
+  console.log('SSTORE', dataStore)
 
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
@@ -89,7 +90,10 @@ const AutocompletePxpComponent = ({
         onClose={() => {
           store.setOpen(false);
         }}
-        getOptionLabel={(option) => (option ? option[store.descDD] : '')}
+        getOptionLabel={(option) => {
+          console.log('OPTION', option, store.descDD);
+          return (option ? option[store.descDD] : '');
+        }}
         getOptionSelected={(optionEq, valueEq) => {
           if (
             // we need to put this for not generating error when the autocomplete tries to find the value in the option
@@ -129,7 +133,7 @@ const AutocompletePxpComponent = ({
                 </>
               ),
             }}
-          />
+            />
         )}
         onChange={(event, newValue) => {
           handleChange({
