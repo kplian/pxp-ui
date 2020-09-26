@@ -11,6 +11,7 @@ const useJsonStore = (optionsRequest) => {
     url: optionsRequest.url,
     params: optionsRequest.params,
     load: optionsRequest.load === undefined ? true : optionsRequest.load,
+    method: optionsRequest.method,
   });
   const [open, setOpen] = useState(false);
   const [data, setData, loading, error] = useFetch(state);

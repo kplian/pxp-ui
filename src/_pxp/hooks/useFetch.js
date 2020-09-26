@@ -7,10 +7,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack';
-import axios from 'axios';
 import Pxp from '../../Pxp';
 
 const useFetch = (options) => {
+  console.log('options', options);
   const { enqueueSnackbar } = useSnackbar();
 
   const [data, setData] = useState(null);
@@ -31,87 +31,102 @@ const useFetch = (options) => {
           params.append(key, options[key]);
         }
         setLoading(true);
-        if (Pxp.config.backendVersion === 'v1') {
-          Pxp.apiClient
-            .doRequest({
-              url: options.url,
-              params: options.params,
-            })
-            .then((resp) => {
-              setLoading(false);
-              if (resp && isMounted) {
-                if (resp.status >= 400 && resp.status < 600) {
-                  setError(resp);
-                } else {
-                  if (!resp.error) {
-                    // setData(resp);
-                    if (options.infinite === true) {
-                      setData((prevData) => {
-                        if (prevData) {
-                          return {
-                            ...prevData,
-                            datos: prevData.datos.concat(resp.datos),
-                          };
-                        }
-                        return resp;
-                      });
-                    } else {
-                      setData(resp);
-                    }
+        Pxp.apiClient
+          .doRequest({
+            url: options.url,
+            params: options.params,
+            method: options.method || 'POST',
+          })
+          .then((resp) => {
+            setLoading(false);
+            if (resp && isMounted) {
+              if (resp.status >= 400 && resp.status < 600) {
+                setError(resp);
+              } else if (Pxp.config.backendVersion === 'v1') {
+                if (!resp.error) {
+                  // setData(resp);
+                  if (options.infinite === true) {
+                    setData((prevData) => {
+                      if (prevData) {
+                        return {
+                          ...prevData,
+                          datos: prevData.datos.concat(resp.datos),
+                        };
+                      }
+                      return resp;
+                    });
                   } else {
-                    setData(resp); // send to error // todo change the logic for that
+                    setData(resp);
                   }
-
-                  // send msg error
-                  if (resp.error) {
-                    enqueueSnackbar(
-                      <div>
-                        url: ${options.url} -> ${resp.detail.message}
-                        <pre
-                          style={{
-                            whiteSpace: 'pre-wrap',
-                            wordBreak: 'break-all',
-                          }}
-                        >
-                          {JSON.stringify(resp.detail, null, 2)}
-                        </pre>
-                      </div>,
-                      {
-                        variant: 'error',
-                        persist: false,
-                      },
-                    );
-                  }
-                  setError(resp.error);
+                } else {
+                  setData(resp); // send to error // todo change the logic for that
                 }
+
+                // send msg error
+                if (resp.error) {
+                  enqueueSnackbar(
+                    <div>
+                      url: ${options.url} -> ${resp.detail.message}
+                      <pre
+                        style={{
+                          whiteSpace: 'pre-wrap',
+                          wordBreak: 'break-all',
+                        }}
+                      >
+                        {JSON.stringify(resp.detail, null, 2)}
+                      </pre>
+                    </div>,
+                    {
+                      variant: 'error',
+                      persist: false,
+                    },
+                  );
+                }
+                setError(resp.error);
+              } else {
+                // this is for node version v2
+                if (options.infinite === true) {
+                  setData((prevData) => {
+                    if (prevData) {
+                      return {
+                        ...prevData,
+                        data: prevData.data.concat(resp.data),
+                      };
+                    }
+                    return resp;
+                  });
+                } else {
+                  setData(resp);
+                }
+
+                if(resp.error) {
+                  enqueueSnackbar(
+                    <div>
+                      url: ${options.url} -> ${resp.error.message}
+                      <pre
+                        style={{
+                          whiteSpace: 'pre-wrap',
+                          wordBreak: 'break-all',
+                        }}
+                      >
+                        {JSON.stringify(resp.error, null, 2)}
+                      </pre>
+                    </div>,
+                    {
+                      variant: 'error',
+                      persist: false,
+                    },
+                  );
+                }
+
               }
-            })
-            .catch((err) => {
-              // eslint-disable-next-line no-unused-expressions
-              err.code !== 20 && setError(err);
-              setLoading(false);
-            });
-        } else {
-          const method = options.method || 'get';
-          axios[method](options.url, {
-            headers: {
-              'Content-Type': 'application/json',
-              'Access-Control-Allow-Origin': '*'
             }
           })
-            .then(({ data }) => {
-              setLoading(false);
-              setData({
-                total: data.length,
-                datos: data
-              }); // send to error // todo change the logic for that
-            })
-            .catch((err) => {
-              // eslint-disable-next-line no-unused-expressions
-              setError(err);
-              setLoading(false);
-            });
-        }
+          .catch((err) => {
+            // eslint-disable-next-line no-unused-expressions
+            err.code !== 20 && setError(err);
+            setLoading(false);
+          });
       })();
     }
 

@@ -271,6 +271,7 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
       Pxp.apiClient
         .doRequest({
           url: onSubmit.url,
+          ...(onSubmit.method && { method: onSubmit.method }),
           params: dataForSending,
           ...(type && { type }),
         })
@@ -286,7 +287,8 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
               onSubmit.callback(resp, dataForSending);
             }
           } else {
-            enqueueSnackbar(resp.detail.message, {
+            const messageError = resp.error ? resp.error.message : resp.detail.message;
+            enqueueSnackbar(messageError, {
               variant: 'error',
             });
           }

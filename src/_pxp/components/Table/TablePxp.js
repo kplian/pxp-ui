@@ -276,6 +276,10 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       ...dataConfig,
       onSubmit: {
         ...dataConfig.onSubmit,
+        ...(Pxp.apiClient.backendVersion === 'v2' && {
+          url: dataConfig.onSubmit.urlAdd, method: 'POST'
+        }),
+
         callback: () => {
           handleRefresh();
         },
@@ -317,6 +321,9 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       submitLabel: 'Edit',
       onSubmit: {
         ...dataConfigForEdit.onSubmit,
+        ...(Pxp.apiClient.backendVersion === 'v2' && {
+          url: `${dataConfigForEdit.onSubmit.urlEdit}/${row[idStore]}`, method: 'PATCH'
+        }),
         extraParams: {
           ...dataConfigForEdit.onSubmit.extraParams,
           [idStore]: row[idStore],
@@ -359,6 +366,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     Pxp.apiClient
       .doRequest({
         url: dataConfig.urlDelete,
+        ...(Pxp.apiClient.backendVersion === 'v2' && { method: 'DELETE', url: `${dataConfig.urlDelete}/${selectedAux.join()}` }),
         params: {
           _tipo: 'matriz',
           row: JSON.stringify(sendDelete),
@@ -529,8 +537,14 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       params: {
         ...state.params,
         ...(paginationType === 'infiniteScrolling' && { start: 0 }), // reset to start 0 when the pagination is scrolling
-        bottom_filter_fields: Object.values(columnsForSearch).join(','),
-        bottom_filter_value: value,
+        ...(Pxp.apiClient.backendVersion === 'v1' && {
+          bottom_filter_fields: Object.values(columnsForSearch).join(','),
+          bottom_filter_value: value,
+        }),
+        ...(Pxp.apiClient.backendVersion === 'v2' && {
+          genericFilterFields: Object.values(columnsForSearch).join('#'),
+          genericFilterValue: value,
+        }),
       },
       ...(paginationType === 'infiniteScrolling' && { infinite: false }),
     });

@@ -226,7 +226,7 @@ export const startSetMenu = () => {
   return (dispatch) => {
     return Pxp.apiClient
       .doRequest({
-        url: 'seguridad/Menu/getMenuJSON',
+        url: Pxp.apiClient.backendVersion === 'v1' ? 'seguridad/Menu/getMenuJSON': 'pxp/Menu/getMenuJSON',
         params: {
           system: Pxp.config.menu.system,
           mobile: Pxp.config.menu.mobile,
