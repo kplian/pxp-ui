@@ -14,7 +14,7 @@
 
 #public
 /public/firebase-messaging-sw.js
-
+/public/images/*
 # testing
 /coverage
 
