@@ -41,6 +41,8 @@ const AutocompletePxpComponent = ({
   dataStore, // if the datastore changed we need to re-render
 }) => {
   const { label, variant, store, isSearchable, gridForm } = configInput;
+  const { dataRows } = store.dataReader; // this is the object that has the data for rendering
+
 
   // this handle has debounce for start with searching after 500 ms
   const handleInputChange = _.debounce(async (valueInput) => {
@@ -69,7 +71,6 @@ const AutocompletePxpComponent = ({
       }));
     }
   };
-
 
   return (
     <Grid key={`grid_${name}`} item {...gridForm}>
@@ -102,7 +103,7 @@ const AutocompletePxpComponent = ({
         }}
         options={
           dataStore
-            ? dataStore.datos.map((i) => ({
+            ? dataStore[dataRows].map((i) => ({
                 ...i,
               }))
             : [] // we need to send empty array for init form
@@ -119,17 +120,18 @@ const AutocompletePxpComponent = ({
               ...params.InputProps,
               endAdornment: (
                 <>
-
                   {store.loading ? (
                     <CircularProgress color="inherit" size={20} />
                   ) : null}
 
-                  {(configInput.InputProps && configInput.InputProps.endAdornment) && configInput.InputProps.endAdornment}
+                  {configInput.InputProps &&
+                    configInput.InputProps.endAdornment &&
+                    configInput.InputProps.endAdornment}
                   {params.InputProps.endAdornment}
                 </>
               ),
             }}
-            />
+          />
         )}
         onChange={(event, newValue) => {
           handleChange({
@@ -146,7 +148,6 @@ const AutocompletePxpComponent = ({
         disabled={disabled}
       />
     </Grid>
-
   );
 };
 
