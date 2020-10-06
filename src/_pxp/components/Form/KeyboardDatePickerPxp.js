@@ -19,6 +19,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 const useStyles = makeStyles((theme) => ({
   root: {},
   datePicker: {
+    marginTop: 0,
     '& + &': {
       marginLeft: theme.spacing(2),
     },
