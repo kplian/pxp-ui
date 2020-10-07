@@ -75,14 +75,16 @@ export const defaultValuesAutoComplete = {
   label: undefined,
   initialValue: null,
   store: {
+    // method: 'GET',
     url: 'system/Control/Method',
     params: {
-      start: '0',
+      /* start: '0',
       limit: '10',
       sort: 'id_',
-      dir: 'ASC',
+      dir: 'ASC', */
     },
     load: false,
+    dataReader: { dataRows: 'datos' }, // this config is for change the data received
     parFilters: 'alias.column1#alias.column2',
     idDD: 'id_',
     descDD: 'desc',
