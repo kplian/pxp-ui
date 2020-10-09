@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function LoadingScreen({ className }) {
+function LoadingScreen({ className = undefined }) {
   const classes = useStyles();
 
   return (
