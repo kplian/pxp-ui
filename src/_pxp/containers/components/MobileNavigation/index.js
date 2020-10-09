@@ -160,7 +160,7 @@ const MobileNavigation = ({ actions }) => {
     if (eventNty) {
       removeWebSocketListener({
         idComponent: uuid,
-        event: eventNty.eventListener(auth.currentUser.id_usuario),
+        event: eventNty.eventListener(auth.currentUser.userId),
       });
     }
   };
@@ -169,7 +169,7 @@ const MobileNavigation = ({ actions }) => {
     if (eventNty) {
       // window.addEventListener('beforeunload', clearEvents);
       webSocketListener({
-        event: eventNty.eventListener(auth.currentUser.id_usuario),
+        event: eventNty.eventListener(auth.currentUser.userId),
         idComponent: uuid,
         handle: (e) => {
           console.log('[PXP]', PxpClient);
