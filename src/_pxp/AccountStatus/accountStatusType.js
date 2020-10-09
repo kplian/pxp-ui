@@ -124,7 +124,7 @@ const AccountStatusType = () => {
           onClick: (row) => {
             setAccountStatus({
               ...accountStatus,
-              tableId: row.accountStatusTypeId,
+              tableId: row.accountStatusTypeId, // row.proveedor_id
               open: true,
             });
           },

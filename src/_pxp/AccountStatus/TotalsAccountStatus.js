@@ -93,4 +93,5 @@ TotalsAccountStatus.propTypes = {
   className: PropTypes.string,
 };
 
+
 export default TotalsAccountStatus;
