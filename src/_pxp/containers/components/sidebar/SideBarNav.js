@@ -34,7 +34,7 @@ function renderChildRoutes({
 }) {
   const key = item.text + depth;
 
-  if (item.childrens && item.childrens.length > 0) {
+  if (item.children && item.children.length > 0) {
     const open = matchPath(pathname, {
       path: item.component,
       exact: true,
@@ -51,7 +51,7 @@ function renderChildRoutes({
         {renderNavItems({
           depth: depth + 1,
           pathname,
-          items: item.childrens,
+          items: item.children,
           components,
         })}
       </NavItem>,
@@ -106,7 +106,7 @@ const SidebarNav = (props) => {
     <div>
       {menu.map((page) => {
         let content = null;
-        if (page.type === 'carpeta') {
+        if (page.type === 'carpeta' || page.type === 'branch') {
           content = (
             <List
               key={page.text}
@@ -126,7 +126,7 @@ const SidebarNav = (props) => {
             >
               {renderNavItems({
                 components,
-                items: page.childrens,
+                items: page.children,
                 pathname: location.pathname,
               })}
             </List>

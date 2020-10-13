@@ -74,7 +74,7 @@ const ThreadDetails = ({ eventWs, idChat, idComponent }) => {
   // mount
   useEffect(() => {
     // eslint-disable-next-line no-underscore-dangle
-    setUser(Pxp.apiClient._authenticated.id_usuario);
+    setUser(Pxp.apiClient._authenticated.userId);
     webSocketListener({
       event: eventWs,
       idComponent,

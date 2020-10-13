@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
 
 function generateNames(pages = [], menu, match) {
   const values = _.compact(match.path.split('/'));
-
   const matches = [];
   let temp = '';
   values.forEach((item) => {
@@ -46,22 +45,12 @@ function generateNames(pages = [], menu, match) {
     }),
   );
 
-  // function findByText(data, text) {
-  //   for(var i = 0; i < data.length; i++) {
-  //       if (data[i].component === text) {
-  //           return data[i];
-  //       } else if (data[i].childrens && data[i].childrens.length && typeof data[i].childrens === "object") {
-  //           return findByText(data[i].childrens, text);
-  //       }
-  //   }
-  // }
-
   function recursiveChild(array) {
     const arrayAux = [];
     array.forEach((item) => {
       arrayAux.push(item);
-      if (item.childrens && item.childrens.length > 0) {
-        arrayAux.push(...recursiveChild(item.childrens));
+      if (item.children && item.children.length > 0) {
+        arrayAux.push(...recursiveChild(item.children));
       }
     });
     return arrayAux;

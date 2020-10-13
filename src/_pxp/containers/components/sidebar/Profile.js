@@ -26,9 +26,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Profile = (props) => {
   const classes = useStyles();
+  console.log(Pxp.apiClient._authenticated);
   // get user from
   const user = {
-    name: Pxp.apiClient._authenticated.nombre_usuario,
+    name:
+      Pxp.apiClient._authenticated.nombre_usuario ||
+      Pxp.apiClient._authenticated.person.fullName,
     avatar: '/images/user.png',
     bio: 'Software Arquitect',
   };

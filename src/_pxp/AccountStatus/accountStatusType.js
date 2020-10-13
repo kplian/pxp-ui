@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
 import * as Yup from 'yup';
-import moment from 'moment';
 import Box from '@material-ui/core/Box';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import WcIcon from '@material-ui/icons/Wc';
-import Label from '../../_pxp/components/Label';
-import imgAvatar from '../../_pxp/components/Table/avatar.jpeg';
-import Form from '../../_pxp/components/Form/Form';
-import BasicContainer from '../../_pxp/containers/BasicContainer';
-import TablePxp from '../../_pxp/components/Table/TablePxp';
-import DialogPxp from '../../_pxp/components/DialogPxp';
+import Label from '../components/Label';
+import BasicContainer from '../containers/BasicContainer';
+import TablePxp from '../components/Table/TablePxp';
+import DialogPxp from '../components/DialogPxp';
 import AccountStatus from './AccountStatus';
 
 const AccountStatusType = () => {
@@ -94,10 +89,10 @@ const AccountStatusType = () => {
         initialValue: '',
         store: [
           { value: '', label: '' },
-          { value: 'masculino', label: 'masculino' },
+          { value: 'acreedor', label: 'acreedor' },
           {
-            value: 'femenino',
-            label: 'femenino',
+            value: 'deudor',
+            label: 'deudor',
           },
         ],
         gridForm: { xs: 12, sm: 6 },
@@ -106,7 +101,7 @@ const AccountStatusType = () => {
     },
     getDataTable: {
       method: 'GET',
-      url: 'params/AccountStatusType/list',
+      url: 'pxp/AccountStatusType/list',
       params: {
         start: '0',
         limit: '10',
@@ -129,11 +124,9 @@ const AccountStatusType = () => {
           onClick: (row) => {
             setAccountStatus({
               ...accountStatus,
-              tableId: row.accountStatusTypeId,
+              tableId: row.accountStatusTypeId, // row.proveedor_id
               open: true,
             });
-            alert('llega');
-            console.log(accountStatus);
           },
         },
       },
@@ -141,12 +134,12 @@ const AccountStatusType = () => {
     resetButton: true,
     onSubmit: {
       // when we work with v2 (pxp-nd) we need to add two service
-      urlAdd: 'params/AccountStatusType/add',
-      urlEdit: 'params/AccountStatusType/edit',
+      urlAdd: 'pxp/AccountStatusType/add',
+      urlEdit: 'pxp/AccountStatusType/edit',
       extraParams: {},
       // todo need to add typeSend for change to send all in jsonFormat or normal pxp
     },
-    urlDelete: 'params/AccountStatusType/delete',
+    urlDelete: 'pxp/AccountStatusType/delete',
     // paginationType: 'infiniteScrolling', // can be infiniteScrolling or pagination
   };
 
@@ -162,7 +155,10 @@ const AccountStatusType = () => {
         }}
         open={accountStatus.open}
       >
-        <AccountStatus code={accountStatus.code} tableId={accountStatus.tableId} />
+        <AccountStatus
+          code={accountStatus.code}
+          tableId={accountStatus.tableId}
+        />
       </DialogPxp>
     </>
   );

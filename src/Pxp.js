@@ -1,10 +1,11 @@
+// @ts-nocheck
 /**
  * This singleton contains common pxp-ui functionality and information such as:
  * Config
  * ApiClient
  * EventsHandler
  * @copyright Kplian Ltda 2020
- * @uthor Jaime Rivera
+ * @author Jaime Rivera
  * */
 import config from './config';
 
@@ -12,19 +13,19 @@ class Pxp {
   constructor() {
     if (!Pxp.instance) {
       Pxp.instance = this;
-      // envents callbacks
+      // events callbacks
       this.callbacks = {};
       this.callbacksMobileFocus = {};
-      
+
       // config
       this.config = config;
-      
+
       //
       this.apiClient = null;
     }
     return Pxp.instance;
   }
-  
+
   /**
    * @param {string} eventName
    * @param {*} data
@@ -36,16 +37,16 @@ class Pxp {
       });
     }
   }
-  
+
   /**
    * @param {string} eventName name of event
    * @param {string} id callback identifier
    * @param {Function} callback
    */
   listenEvent(eventName, id, callback) {
-    this.callbacks[eventName] = {[id]: callback};
+    this.callbacks[eventName] = { [id]: callback };
   }
-  
+
   /**
    * @param {string} id callback identifier
    * @param {Function} callback
@@ -53,7 +54,7 @@ class Pxp {
   listenMobileFocus(id, callback) {
     this.callbacksMobileFocus[id] = callback;
   }
-  
+
   /**
    * @param {string} eventName name of event
    * @param {string} id callback identifier
@@ -61,7 +62,7 @@ class Pxp {
   unlistenEvent(eventName, id) {
     delete this.callbacks[eventName][id];
   }
-  
+
   /**
    * @param {string} eventName name of event
    * @param {string} id callback identifier
@@ -69,31 +70,19 @@ class Pxp {
   unListenMobileFocus(id) {
     delete this.callbacksMobileFocus[id];
   }
-  
+
   /**
    * @param {Object} client api client to be used in the application
    */
   setApiClient(client) {
     this.apiClient = client;
     global.callMethodFromDevice = (method, data) => {
-      
-      console.log("---------")
-      console.log(method)
-      console.log(data)
-      console.log("---------")
-      
       switch (method) {
         case 'googleSignIn':
           this.nativeSignIn(data);
           break;
-        case 'googleSignUp':
-          this.nativeSignUp(data);
-          break;
         case 'facebookSignIn':
           this.nativeSignIn(data);
-          break;
-        case 'facebookSignUp':
-          this.nativeSignUp(data);
           break;
         case 'vouzSignIn':
           this.vouzSignIn(data);
@@ -102,7 +91,7 @@ class Pxp {
           this.getCurrentPosition(data);
           break;
         case 'onMobileFocusIn':
-          this.onMobileFocusIn(data);
+          this.onMobileFocusIn();
           break;
         case 'userFirebaseToken':
           this.setUserFirebaseToken(data);
@@ -112,46 +101,38 @@ class Pxp {
       }
     };
   }
-  
+
   vouzSignIn(data) {
     const response = JSON.parse(data);
     this.apiClient.login(response.username, response.password).then((res) => {
       const isWebView = navigator.userAgent.includes('wv');
-      
-      const userAgent = window.navigator.userAgent.toLowerCase(),
-        safari = /safari/.test(userAgent),
-        ios = /iphone|ipod|ipad/.test(userAgent);
-      
-      const iOSWebView = (ios && !safari);
-      
-      if (
-        res.success &&
-        isWebView &&
-        window.Mobile
-      ) {
+
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      const safari = /safari/.test(userAgent);
+      const ios = /iphone|ipod|ipad/.test(userAgent);
+
+      const iOSWebView = ios && !safari;
+
+      if (res.success && isWebView && window.Mobile) {
         window.Mobile.hideLoadingDialog();
         window.Mobile.saveWebSocketURL(
           `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${res.phpsession}`,
           res.id_usuario,
           res.nombre_usuario,
         );
-      } else if (
-        res.success &&
-        iOSWebView &&
-        window.webkit
-      ) {
-        window.webkit.messageHandlers.hideLoadingDialog.postMessage({"data": ""});
-        window.webkit.messageHandlers.saveWebSocketURL.postMessage(
-          {
-            socket: `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${res.phpsession}`,
-            id_usuario: res.id_usuario,
-            nombre_usuario: res.nombre_usuario,
-          }
-        );
+      } else if (res.success && iOSWebView && window.webkit) {
+        window.webkit.messageHandlers.hideLoadingDialog.postMessage({
+          data: '',
+        });
+        window.webkit.messageHandlers.saveWebSocketURL.postMessage({
+          socket: `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${res.phpsession}`,
+          id_usuario: res.id_usuario,
+          nombre_usuario: res.nombre_usuario,
+        });
       }
     });
   }
-  
+
   nativeSignIn(data) {
     const response = JSON.parse(data);
     this.apiClient
@@ -168,13 +149,13 @@ class Pxp {
       )
       .then((res) => {
         const isWebView = navigator.userAgent.includes('wv');
-        
-        const userAgent = window.navigator.userAgent.toLowerCase(),
-          safari = /safari/.test(userAgent),
-          ios = /iphone|ipod|ipad/.test(userAgent);
-        
-        const iOSWebView = (ios && !safari);
-        
+
+        const userAgent = window.navigator.userAgent.toLowerCase();
+        const safari = /safari/.test(userAgent);
+        const ios = /iphone|ipod|ipad/.test(userAgent);
+
+        const iOSWebView = ios && !safari;
+
         if (
           isWebView &&
           window.Mobile &&
@@ -194,25 +175,24 @@ class Pxp {
             socket: `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${res.phpsession}`,
             id_usuario: res.id_usuario,
             nombre_usuario: res.nombre_usuario,
-          })
+          });
         }
       });
   }
-  
+
   // eslint-disable-next-line class-methods-use-this
   getCurrentPosition(data) {
     localStorage.setItem('currentLocation', data);
   }
-  
+
   onMobileFocusIn() {
-    console.log(this.callbacksMobileFocus);
     Object.keys(this.callbacksMobileFocus).forEach((id) => {
-      console.log('entra');
       this.callbacksMobileFocus[id]();
     });
   }
-  
-  setUserFirebaseToken(data){
+
+  // eslint-disable-next-line class-methods-use-this
+  setUserFirebaseToken(data) {
     const response = JSON.parse(data);
     localStorage.setItem('deviceID', response.token);
   }
