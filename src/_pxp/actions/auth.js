@@ -1,7 +1,7 @@
 /**
  * Auth actions for redux store
  * @copyright Kplian Ltda 2020
- * @uthor Jaime Rivera
+ * @author Jaime Rivera
  */
 import Pxp from '../../Pxp';
 import history from '../routers/History';
@@ -9,11 +9,16 @@ import { deleteNativeStorage } from '../utils/Common';
 
 export const findRoutes = (menu) => {
   let routes = [];
+  console.log('menuuuuu', menu);
   menu.forEach((menuOption) => {
-    if (menuOption.type === 'hoja') {
-      routes.push({ id: menuOption.id_gui, component: menuOption.component });
+    const mo = menuOption;
+    if (menuOption.type === 'hoja' || menuOption.type === 'leaf') {
+      routes.push({
+        id: menuOption.id_gui || menuOption.uiId,
+        component: menuOption.component || menuOption.route,
+      });
     } else {
-      routes.push(...findRoutes(menuOption.childrens));
+      routes.push(...findRoutes(mo.children));
     }
   });
   if (Pxp.config.customPrivateRoutes) {
@@ -89,26 +94,32 @@ export const startLogin = ({ login: username, password, language }) => {
 
       const iOSWebView = ios && !safari;
 
+      // @ts-ignore
       if (isWebView && window.Mobile) {
+        // @ts-ignore
         window.Mobile.saveUserCredentials(username, password, language);
         if (process.env.REACT_APP_WEB_SOCKET === 'YES') {
+          // @ts-ignore
           window.Mobile.saveWebSocketURL(
             `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${data.phpsession}`,
-            data.id_usuario,
-            data.nombre_usuario,
+            data.userId,
+            data.username,
           );
         }
+        // @ts-ignore
       } else if (iOSWebView && window.webkit) {
+        // @ts-ignore
         window.webkit.messageHandlers.saveUserCredentials.postMessage({
           username,
           password,
           language,
         });
         if (process.env.REACT_APP_WEB_SOCKET === 'YES') {
+          // @ts-ignore
           window.webkit.messageHandlers.saveWebSocketURL.postMessage({
             socket: `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${data.phpsession}`,
-            id_usuario: data.id_usuario,
-            nombre_usuario: data.nombre_usuario,
+            id_usuario: data.userId,
+            nombre_usuario: data.username,
           });
         }
       }
@@ -223,14 +234,26 @@ export const startSetLanguage = ({ language }) => {
 };
 
 export const startSetMenu = () => {
+  console.log(Pxp.apiClient.backendVersion);
   return (dispatch) => {
     return Pxp.apiClient
       .doRequest({
-        url: Pxp.apiClient.backendVersion === 'v1' ? 'seguridad/Menu/getMenuJSON': 'pxp/Menu/getMenuJSON',
+        method: Pxp.apiClient.backendVersion === 'v2' ? 'GET' : 'POST',
+        url:
+          Pxp.apiClient.backendVersion === 'v2'
+            ? 'pxp/Ui/list'
+            : 'seguridad/Menu/getMenuJSON',
         params: {
-          system: Pxp.config.menu.system,
-          mobile: Pxp.config.menu.mobile,
-          folder: Pxp.config.menu.folder || '',
+          ...(Pxp.config.menu.system && {
+            system: Pxp.config.menu.system,
+          }),
+          ...(Pxp.config.menu.folder && {
+            folder: Pxp.config.menu.folder,
+          }),
+          includeSystemRoot: Pxp.config.menu.includeSystemRoot || true,
+          ...(Pxp.apiClient.backendVersion === 'v1' && {
+            mobile: Pxp.config.menu.mobile,
+          }),
         },
       })
       .then((resp) => {
@@ -244,9 +267,6 @@ export const startSetMenu = () => {
 export const startLogout = () => {
   return (dispatch) => {
     return Pxp.apiClient.logout().then(() => {
-      // if (navigator.userAgent.includes('wv')) {
-      //   window.Mobile.deleteUserCredentials();
-      // }
       dispatch(logout());
       history.push('/login');
       dispatch(setMenu([]));

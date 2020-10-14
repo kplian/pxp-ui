@@ -129,7 +129,9 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
   const [dataRows, setDataRows] = useState([]);
   const [total, setTotal] = useState(); // total is whole total in your query backend
+  const [dataFooter, setDataFooter] = useState(); // data for use in the footer
   useEffect(() => {
+    console.log('datareader', dataReader)
     if (data) {
       if (dataReader && dataReader.dataRows) {
         setDataRows(data[dataReader.dataRows]);
@@ -142,6 +144,9 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       } else {
         // put the defaul for moment is pxp backend version 1
         setTotal(data.total);
+      }
+      if (dataReader && dataReader.dataFooter) {
+        setDataFooter(data[dataReader.dataFooter]);
       }
     }
   }, [data]);
@@ -640,6 +645,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
               jsonStore={jsonStore}
               lastBookElementRef={lastBookElementRef}
               dataRows={dataRows}
+              dataFooter={dataFooter}
             />
           }
 

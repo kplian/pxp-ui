@@ -81,6 +81,7 @@ PxpClient.init(
   Pxp.config.backendRestVersion,
   Pxp.config.webSocket,
   Pxp.config.portWebSocket,
+  Pxp.config.backendVersion,
 );
 
 // this will make available the api from any place we have access to Pxp
@@ -138,7 +139,7 @@ PxpClient.onAuthStateChanged((user) => {
         renderApp();
         history.push('/login');
       } else {
-        store.dispatch(login(user.id_usuario, user));
+        store.dispatch(login(user.userId, user));
         renderApp();
       }
     });

@@ -8,9 +8,13 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TableContainer from '@material-ui/core/TableContainer';
 import Table from '@material-ui/core/Table';
-import TableHeadPxp from './TableHeadPxp';
-import TableBodyPxp from './TableBodyPxp';
+import TableFooter from '@material-ui/core/TableFooter';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import Paper from '@material-ui/core/Paper';
 import SkeletonLoading from './SkeletonLoading';
+import TableBodyPxp from './TableBodyPxp';
+import TableHeadPxp from './TableHeadPxp';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,11 +56,24 @@ const DrawTable = ({
   jsonStore,
   lastBookElementRef,
   dataRows,
+  dataFooter,
 }) => {
   const classes = useStyles();
 
   const { paginationType } = dataConfig;
 
+  console.log(statesShowColumn);
+  const numColumnActives = Object.entries(statesShowColumn).filter(
+    ([nameKey, values]) => {
+      console.log(values);
+      if (values === true) {
+        return values;
+      }
+    },
+  );
+  console.log(numColumnActives);
+
+  console.log('dataConfig', dataConfig);
   return (
     <>
       <TableContainer>
@@ -84,21 +101,35 @@ const DrawTable = ({
             (paginationType === 'pagination' ||
               paginationType === undefined)) ||
             (data && paginationType === 'infiniteScrolling')) && (
-            <TableBodyPxp
-              dataConfig={dataConfig}
-              data={data}
-              idStore={idStore}
-              statesShowColumn={statesShowColumn}
-              handleCheckInCell={handles.handleCheckInCell}
-              handleClickRow={handles.handleClickRow}
-              buttonsTableCell={buttonsTableCell}
-              dense={dense}
-              emptyRows={emptyRows}
-              selected={selected}
-              jsonStore={jsonStore}
-              lastBookElementRef={lastBookElementRef}
-              dataRows={dataRows}
-            />
+            <>
+              <TableBodyPxp
+                dataConfig={dataConfig}
+                data={data}
+                idStore={idStore}
+                statesShowColumn={statesShowColumn}
+                handleCheckInCell={handles.handleCheckInCell}
+                handleClickRow={handles.handleClickRow}
+                buttonsTableCell={buttonsTableCell}
+                dense={dense}
+                emptyRows={emptyRows}
+                selected={selected}
+                jsonStore={jsonStore}
+                lastBookElementRef={lastBookElementRef}
+                dataRows={dataRows}
+              />
+              {dataConfig.tableFooter && dataFooter && (
+                <TableFooter>
+                  <TableRow>
+                    <TableCell
+                      colSpan={numColumnActives.length + 1}
+                      align="right"
+                    >
+                      {dataConfig.tableFooter(dataFooter)}
+                    </TableCell>
+                  </TableRow>
+                </TableFooter>
+              )}
+            </>
           )}
 
           {loading && (
