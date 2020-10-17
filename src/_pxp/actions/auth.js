@@ -9,6 +9,7 @@ import { deleteNativeStorage } from '../utils/Common';
 
 export const findRoutes = (menu) => {
   let routes = [];
+  console.log('menuuuuu', menu);
   menu.forEach((menuOption) => {
     const mo = menuOption;
     if (menuOption.type === 'hoja' || menuOption.type === 'leaf') {
@@ -233,14 +234,15 @@ export const startSetLanguage = ({ language }) => {
 };
 
 export const startSetMenu = () => {
+  console.log(Pxp.apiClient.backendVersion);
   return (dispatch) => {
     return Pxp.apiClient
       .doRequest({
-        method: Pxp.apiClient.backendVersion === 'v1' ? 'POST' : 'GET',
+        method: Pxp.apiClient.backendVersion === 'v2' ? 'GET' : 'POST',
         url:
-          Pxp.apiClient.backendVersion === 'v1'
-            ? 'seguridad/Menu/getMenuJSON'
-            : 'pxp/Ui/list',
+          Pxp.apiClient.backendVersion === 'v2'
+            ? 'pxp/Ui/list'
+            : 'seguridad/Menu/getMenuJSON',
         params: {
           ...(Pxp.config.menu.system && {
             system: Pxp.config.menu.system,
