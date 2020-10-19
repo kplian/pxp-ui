@@ -10,7 +10,6 @@ import { useSnackbar } from 'notistack';
 import Pxp from '../../Pxp';
 
 const useFetch = (options) => {
-  console.log('options', options);
   const { enqueueSnackbar } = useSnackbar();
 
   const [data, setData] = useState(null);

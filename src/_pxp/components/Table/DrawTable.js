@@ -62,18 +62,14 @@ const DrawTable = ({
 
   const { paginationType } = dataConfig;
 
-  console.log(statesShowColumn);
   const numColumnActives = Object.entries(statesShowColumn).filter(
     ([nameKey, values]) => {
-      console.log(values);
       if (values === true) {
         return values;
       }
     },
   );
-  console.log(numColumnActives);
 
-  console.log('dataConfig', dataConfig);
   return (
     <>
       <TableContainer>
