@@ -115,7 +115,7 @@ const AccountStatus = ({ code, tableId }) => {
     dataReader: {
       dataRows: 'data',
       total: 'count', // this total is the count of whole data the count in the query for example the pxp ever sending count
-      dataFooter: 'extraData',
+      //dataFooter: 'extraData',
       dataHeaderSection: 'extraData',
     },
     headerSection: (dataHeaderSection) => { // this header is after of the table
@@ -131,7 +131,7 @@ const AccountStatus = ({ code, tableId }) => {
         </>
       );
     },
-    tableFooter: (dataFooter) => {
+    /*tableFooter: (dataFooter) => {
       return (
         <>
           {dataFooter && (
@@ -142,7 +142,7 @@ const AccountStatus = ({ code, tableId }) => {
 
         </>
       );
-    },
+    },*/
     columns: {
       date: {
         type: 'DatePicker',
@@ -213,23 +213,14 @@ const AccountStatus = ({ code, tableId }) => {
       },
       load: true,
     },
-    idStore: 'accountStatusTypeId',
+    //idStore: 'accountStatusId',
+    idStore: 'account_status_id',
     buttonDel: true,
     buttonNew: true,
     buttonEdit: true,
     actionsTableCell: {
       buttonDel: true,
-      buttonEdit: true,
-      extraButtons: {
-        otherButton: {
-          label: 'Account Status',
-          buttonIcon: <AddShoppingCartIcon />,
-          onClick: (row) => {
-            alert('llega');
-            console.log(row);
-          },
-        },
-      },
+      buttonEdit: false,
       /* icon: <AddShoppingCartIcon />,
       onClick: (row) => {
         alert('llega');

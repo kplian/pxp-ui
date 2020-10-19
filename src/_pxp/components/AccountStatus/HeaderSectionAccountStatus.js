@@ -30,10 +30,10 @@ const HeaderSectionAccountStatus = ({ data }) => {
             <DataBox title={"Total Balance"} amount={data.totalAmount} />
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
-            <DataBox title={"Total Balance"} amount={data.totalAmount} />
+            <DataBox title={"Positive"} amount={0} />
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
-            <DataBox />
+            <DataBox title={"Negative"} amount={0} />
           </Grid>
         </Grid>
       </Container>
