@@ -33,6 +33,18 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     flex: 1,
   },
+  content: {
+    flex: '1 1 auto',
+    height: 'calc( 100vh - 70px)',
+    width: '100%',
+    padding: '0px 16px 16px 16px',
+    overflow: 'hidden',
+    [theme.breakpoints.down('sm')]: {
+      padding: '0px 0px 16px 0px',
+    },
+    backgroundColor: theme.palette.background.default,
+
+  },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -74,7 +86,8 @@ const DialogPxp = ({
           </Typography>
         </Toolbar>
       </AppBar>
-      {children}
+      <main className={classes.content}>{children}</main>
+
     </Dialog>
   );
 };

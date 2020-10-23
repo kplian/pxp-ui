@@ -16,6 +16,7 @@ import { CircularProgress, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Grid from '@material-ui/core/Grid';
 import _ from 'lodash';
+import Pxp from '../../../Pxp';
 
 const areEqual = (prev, next) =>
   next.memoDisabled !== false &&
@@ -56,8 +57,14 @@ const AutocompletePxpComponent = ({
         ...store.state,
         params: {
           ...store.state.params,
-          par_filtro: store.parFilters,
-          query: valueInput,
+          ...(Pxp.apiClient.backendVersion === 'v1' && {
+            par_filtro: store.parFilters,
+            query: valueInput,
+          }),
+          ...(Pxp.apiClient.backendVersion === 'v2' && {
+            genericFilterFields: store.parFilters,
+            genericFilterValue: valueInput,
+          }),
         },
       });
     }

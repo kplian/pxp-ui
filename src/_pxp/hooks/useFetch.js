@@ -10,7 +10,6 @@ import { useSnackbar } from 'notistack';
 import Pxp from '../../Pxp';
 
 const useFetch = (options) => {
-  // console.log('options', options);
   const { enqueueSnackbar } = useSnackbar();
 
   const [data, setData] = useState(null);
@@ -99,7 +98,7 @@ const useFetch = (options) => {
                   setData(resp);
                 }
 
-                if(resp.error) {
+                if (resp.error) {
                   enqueueSnackbar(
                     <div>
                       url: ${options.url} -> ${resp.error.message}

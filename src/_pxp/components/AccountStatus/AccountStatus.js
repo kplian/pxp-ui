@@ -1,4 +1,10 @@
-import React, { useState } from 'react';
+/**
+ * Account Status
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ */
+
+import React, { useRef, useState } from 'react';
 import * as Yup from 'yup';
 
 import Box from '@material-ui/core/Box';
@@ -11,13 +17,17 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import Grid from '@material-ui/core/Grid';
+import moment from 'moment';
 import TotalsAccountStatus from './TotalsAccountStatus';
-import Label from '../components/Label';
-import TablePxp from '../components/Table/TablePxp';
-import BasicContainer from '../containers/BasicContainer';
+import Label from '../Label';
+import TablePxp from '../Table/TablePxp';
+import BasicContainer from '../../containers/BasicContainer';
 
 import 'date-fns';
-import moment from 'moment';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import PageviewIcon from '@material-ui/icons/Pageview';
+import HeaderSectionAccountStatus from './HeaderSectionAccountStatus';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -77,24 +87,62 @@ const AccountStatus = ({ code, tableId }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
+  const [hasBeenRefreshed, setHasBeenRefreshed] = useState();
+  const tableRef = useRef();
+  const format = 'YYYY-MM-DD';
+  const search = () => {
+    console.log(tableRef.current);
+    console.log(moment(startDate).format(format));
+    console.log(moment(endDate).format(format));
+
+    tableRef.current.jsonStore.set((prevData) => {
+      if (prevData) {
+        return {
+          ...prevData,
+          params: {
+            ...prevData.params,
+            startDate: moment(startDate).format(format),
+            endDate: moment(endDate).format(format),
+          },
+        };
+      }
+    });
+  };
+
+
   const config = {
     nameForm: 'AccountStatus',
     dataReader: {
       dataRows: 'data',
       total: 'count', // this total is the count of whole data the count in the query for example the pxp ever sending count
-      dataFooter: 'dataFooter',
+      //dataFooter: 'extraData',
+      dataHeaderSection: 'extraData',
     },
-    tableFooter: (dataFooter) => {
-      console.log(dataFooter);
+    headerSection: (dataHeaderSection) => { // this header is after of the table
       return (
         <>
-          <TotalsAccountStatus
-            totalAmount={dataFooter.totalAmount}
-            totalRange={dataFooter.totalRange}
-          />
+          {dataHeaderSection && (
+            <HeaderSectionAccountStatus
+              data={dataHeaderSection}
+            />
+          )
+          }
+
         </>
       );
     },
+    /*tableFooter: (dataFooter) => {
+      return (
+        <>
+          {dataFooter && (
+            <TotalsAccountStatus
+              data={dataFooter}
+            />
+          )}
+
+        </>
+      );
+    },*/
     columns: {
       date: {
         type: 'DatePicker',
@@ -123,8 +171,12 @@ const AccountStatus = ({ code, tableId }) => {
                   {row.type}
                 </Typography>
                 <Typography variant="body2" color="inherit">
-                  <b>Code:</b>
-                  {row.code}
+                  <b>Date:</b>
+                  {row.date}
+                </Typography>
+                <Typography variant="body2" color="inherit">
+                  <b>Description:</b>
+                  {row.description}
                 </Typography>
                 <Label color="success">
                   <b>Amount:</b>
@@ -138,7 +190,7 @@ const AccountStatus = ({ code, tableId }) => {
       amount: {
         type: 'TextField',
         initialValue: '',
-        label: 'amount',
+        label: 'Amount',
         gridForm: { xs: 12, sm: 4 },
         variant: 'outlined',
         validate: {
@@ -161,23 +213,14 @@ const AccountStatus = ({ code, tableId }) => {
       },
       load: true,
     },
-    idStore: 'accountStatusTypeId',
+    //idStore: 'accountStatusId',
+    idStore: 'account_status_id',
     buttonDel: true,
     buttonNew: true,
     buttonEdit: true,
     actionsTableCell: {
       buttonDel: true,
-      buttonEdit: true,
-      extraButtons: {
-        otherButton: {
-          label: 'Account Status',
-          buttonIcon: <AddShoppingCartIcon />,
-          onClick: (row) => {
-            alert('llega');
-            console.log(row);
-          },
-        },
-      },
+      buttonEdit: false,
       /* icon: <AddShoppingCartIcon />,
       onClick: (row) => {
         alert('llega');
@@ -264,9 +307,12 @@ const AccountStatus = ({ code, tableId }) => {
               />
             </Grid>
           </MuiPickersUtilsProvider>
+          <IconButton aria-label="delete" onClick={() => search()}>
+            <PageviewIcon />
+          </IconButton>
         </Box>
       </Box>
-      <TablePxp dataConfig={config} />
+      <TablePxp dataConfig={config} ref={tableRef} />
     </BasicContainer>
   );
 };
