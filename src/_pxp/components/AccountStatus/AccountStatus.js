@@ -109,29 +109,25 @@ const AccountStatus = ({ code, tableId }) => {
     });
   };
 
-
   const config = {
     nameForm: 'AccountStatus',
     dataReader: {
       dataRows: 'data',
       total: 'count', // this total is the count of whole data the count in the query for example the pxp ever sending count
-      //dataFooter: 'extraData',
+      // dataFooter: 'extraData',
       dataHeaderSection: 'extraData',
     },
-    headerSection: (dataHeaderSection) => { // this header is after of the table
+    headerSection: (dataHeaderSection) => {
+      // this header is after of the table
       return (
         <>
           {dataHeaderSection && (
-            <HeaderSectionAccountStatus
-              data={dataHeaderSection}
-            />
-          )
-          }
-
+            <HeaderSectionAccountStatus data={dataHeaderSection} />
+          )}
         </>
       );
     },
-    /*tableFooter: (dataFooter) => {
+    /* tableFooter: (dataFooter) => {
       return (
         <>
           {dataFooter && (
@@ -142,8 +138,39 @@ const AccountStatus = ({ code, tableId }) => {
 
         </>
       );
-    },*/
+    }, */
     columns: {
+      typeTransaction: {
+        type: 'Dropdown',
+        label: 'Type Transaction',
+        initialValue: '',
+        store: [
+          { value: '', label: '' },
+          { value: 'account payable', label: 'account payable' },
+          { value: 'account receivable', label: 'account receivable' },
+          { value: 'payment in advance', label: 'payment in advance' },
+          { value: 'payment', label: 'Payment' },
+          { value: 'adjusting account', label: 'adjusting account' },
+        ],
+        gridForm: { xs: 12, sm: 6 },
+        variant: 'outlined',
+        /* onChange: (resObj) => {
+          console.log(resObj);
+          switch (resObj.value) {
+            case 'account payable':
+            case 'account receivable':
+              alert('+');
+              break;
+            case 'payment in advance':
+            case 'payment':
+              alert('-');
+              break;
+            default:
+              alert('cualquiera');
+          }
+        }, */
+        grid: false,
+      },
       date: {
         type: 'DatePicker',
         label: 'Date',
@@ -167,8 +194,8 @@ const AccountStatus = ({ code, tableId }) => {
             <Box display="flex" alignItems="center">
               <div>
                 <Typography variant="body2" color="inherit">
-                  <b>Type:</b>
-                  {row.type}
+                  <b>Type Transaction:</b>
+                  {row.typeTransaction}
                 </Typography>
                 <Typography variant="body2" color="inherit">
                   <b>Date:</b>
@@ -213,7 +240,7 @@ const AccountStatus = ({ code, tableId }) => {
       },
       load: true,
     },
-    //idStore: 'accountStatusId',
+    // idStore: 'accountStatusId',
     idStore: 'account_status_id',
     buttonDel: true,
     buttonNew: true,
