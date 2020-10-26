@@ -84,8 +84,8 @@ const useStyles = makeStyles((theme) => ({
 
 const AccountStatus = ({ code, tableId }) => {
   const classes = useStyles();
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(moment(new Date()).toDate());
+  const [endDate, setEndDate] = useState(moment(new Date()).toDate());
 
   const [hasBeenRefreshed, setHasBeenRefreshed] = useState();
   const tableRef = useRef();
@@ -237,6 +237,8 @@ const AccountStatus = ({ code, tableId }) => {
         dir: 'desc', // for seeing every time the last save
         tableId,
         code,
+        startDate: moment(startDate).format(format),
+        endDate: moment(endDate).format(format),
       },
       load: true,
     },
@@ -262,6 +264,7 @@ const AccountStatus = ({ code, tableId }) => {
       extraParams: {
         tableId,
         code,
+
       },
       // todo need to add typeSend for change to send all in jsonFormat or normal pxp
     },
