@@ -125,6 +125,11 @@ const AutocompletePxpComponent = ({
             variant={variant}
             InputProps={{
               ...params.InputProps,
+              form: {
+                autocomplete: 'off',
+              },
+              autoComplete: 'off',
+              autoCorrect: 'off', // no standard, available only in safari
               endAdornment: (
                 <>
                   {store.loading ? (
