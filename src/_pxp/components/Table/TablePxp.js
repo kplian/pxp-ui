@@ -130,8 +130,8 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const [dataRows, setDataRows] = useState([]);
   const [total, setTotal] = useState(); // total is whole total in your query backend
   const [dataFooter, setDataFooter] = useState(); // data for use in the footer
+  const [dataHeaderSection, setDataHeaderSection] = useState(); // data for use in the header section
   useEffect(() => {
-    console.log('datareader', dataReader)
     if (data) {
       if (dataReader && dataReader.dataRows) {
         setDataRows(data[dataReader.dataRows]);
@@ -147,6 +147,9 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       }
       if (dataReader && dataReader.dataFooter) {
         setDataFooter(data[dataReader.dataFooter]);
+      }
+      if (dataReader && dataReader.dataHeaderSection) {
+        setDataHeaderSection(data[dataReader.dataHeaderSection]);
       }
     }
   }, [data]);
@@ -271,7 +274,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       }), // reset to start 0 when the pagination is scrolling
       refresh: true,
     });
-    console.log('after refresh');
   };
 
   const handleNew = () => {
@@ -612,7 +614,13 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   return (
     <>
       <div className={classes.root}>
+        {dataConfig.headerSection && dataHeaderSection && (
+          <>
+            {dataConfig.headerSection(dataHeaderSection)}
+          </>
+        )}
         <Paper className={classes.paper}>
+
           <TableToolbarPxp
             tableName={tableName}
             numSelected={selected.length}

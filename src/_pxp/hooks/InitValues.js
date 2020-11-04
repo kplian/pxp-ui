@@ -3,7 +3,7 @@
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  */
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useJsonStore from './useJsonStore';
 
 const InitValues = (values) => {
@@ -44,6 +44,15 @@ const InitValues = (values) => {
   const [disabled, setDisabled] = useState(isDisabled);
   const [isHide, setIsHide] = useState(isHidden);
   const [yupValidate, setYupValidate] = useState(validate);
+
+  // listen if the value of autocomplete  is changed
+  useEffect(() => {
+    if (type === 'AutoComplete') {
+      if (value != null) {
+        setError({ hasError: false, msg: '' });
+      }
+    }
+  }, [value]);
 
   // init useRef for some component
   const ref = useRef();

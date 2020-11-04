@@ -1,12 +1,18 @@
+/**
+ * AccountStatusType
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ */
+
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import Label from '../components/Label';
-import BasicContainer from '../containers/BasicContainer';
-import TablePxp from '../components/Table/TablePxp';
-import DialogPxp from '../components/DialogPxp';
+import Label from '../Label';
+import BasicContainer from '../../containers/BasicContainer';
+import TablePxp from '../Table/TablePxp';
+import DialogPxp from '../DialogPxp';
 import AccountStatus from './AccountStatus';
 
 const AccountStatusType = () => {

@@ -1,8 +1,14 @@
+/**
+ * Label
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Card, Grid, Typography, makeStyles } from '@material-ui/core';
-import Label from '../components/Label';
+import Label from '../Label';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -31,18 +37,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TotalsAccountStatus = ({
-  totalAmount,
-  totalRange,
+  data,
   className,
   ...rest
 }) => {
   const classes = useStyles();
-  const overview = {
-    income: '854,355.00',
-    expanses: '373,250.50',
-    profit: '123,532.00',
-    subscriptions: '26,000',
-  };
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
@@ -54,11 +53,11 @@ const TotalsAccountStatus = ({
             variant="overline"
             color="textSecondary"
           >
-            Saldo Total
+            Initial Balance
           </Typography>
           <div className={classes.valueContainer}>
             <Typography variant="h3" color="textPrimary">
-              ${totalAmount}
+              ${data.initialBalance.sum_initial_balance}
             </Typography>
             <Label className={classes.label} color="success">
               +25%
@@ -73,11 +72,11 @@ const TotalsAccountStatus = ({
             variant="overline"
             color="textSecondary"
           >
-            Total Amount in Ranges of Dates
+            Total Balance
           </Typography>
           <div className={classes.valueContainer}>
             <Typography variant="h3" color="textPrimary">
-              {totalRange}
+              ${data.totalAmount}
             </Typography>
             <Label className={classes.label} color="error">
               -20%

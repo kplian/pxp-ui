@@ -1,3 +1,8 @@
+/**
+ * Label
+ * @copyright Kplian Ltda 2020
+ * @uthor Favio Figueroa
+ */
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
