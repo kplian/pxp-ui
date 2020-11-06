@@ -45,6 +45,9 @@ import useJsonStore from '../../hooks/useJsonStore';
 import InitButton from '../../hooks/InitButton';
 import { setTableState } from '../../actions/app';
 import Confirm from '../Alert/Confirm';
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import DescriptionIcon from '@material-ui/icons/Description';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,8 +86,8 @@ function useWidth() {
 }
 
 const TablePxp = forwardRef(({ dataConfig }, ref) => {
+  const isVersion2 = Pxp.apiClient.backendVersion === 'v2';
   const width = useWidth();
-
   const classes = useStyles();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -93,6 +96,8 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     tableName,
     idStore,
     buttonNew,
+    buttonPdf,  //  show btn pdf
+    buttonXlsx, //   show btn xlsx
     buttonCheckList,
     buttonDel,
     actionsTableCell,
@@ -276,6 +281,20 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     });
   };
 
+  /** function for export data */
+  const fileExport = (type = 'pdf') => {
+    const configTable = dataConfig.getDataTable;
+    const params = JSON.stringify(configTable.params);
+    const module = configTable.module;
+    const entity = configTable.entity;
+    const columns = JSON.stringify(Object.keys(dataConfig.columns).map(key => ({
+      header: dataConfig.columns[key].label,
+      dataKey: key
+    })));
+    const filename = dataConfig.nameForm;
+    window.open(`${Pxp.apiClient.protocol}://${Pxp.apiClient.host}:${Pxp.apiClient.port}/${Pxp.apiClient.baseUrl}/${type}?params=${params}&module=${module}&entity=${entity}&columns=${columns}&filename=${filename}`);
+  };
+
   const handleNew = () => {
     setEditMode(false);
 
@@ -397,6 +416,14 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
   // button toolbar
   const buttonsToolbar = {
+    /*** add buttons export PDF XLSX */
+    ...(buttonPdf && isVersion2 && {
+      buttonPdf: { onClick: () => fileExport(), icon: <PictureAsPdfIcon />, title: 'Export PDF' },
+    }),
+    ...(buttonXlsx && isVersion2 && {
+      buttonXlsx: { onClick: () => fileExport('xlsx'), icon: <DescriptionIcon />, title: 'Export XLSX' },
+    }),
+    /**********************************/
     ...(buttonNew && {
       buttonNew: { onClick: handleNew, icon: <AddIcon />, title: 'new' },
     }),
