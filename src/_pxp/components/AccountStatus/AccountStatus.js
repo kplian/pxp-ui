@@ -84,8 +84,8 @@ const useStyles = makeStyles((theme) => ({
 
 const AccountStatus = ({ code, tableId }) => {
   const classes = useStyles();
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(moment(new Date()).toDate());
+  const [endDate, setEndDate] = useState(moment(new Date()).toDate());
 
   const [hasBeenRefreshed, setHasBeenRefreshed] = useState();
   const tableRef = useRef();
@@ -109,29 +109,25 @@ const AccountStatus = ({ code, tableId }) => {
     });
   };
 
-
   const config = {
     nameForm: 'AccountStatus',
     dataReader: {
       dataRows: 'data',
       total: 'count', // this total is the count of whole data the count in the query for example the pxp ever sending count
-      //dataFooter: 'extraData',
+      // dataFooter: 'extraData',
       dataHeaderSection: 'extraData',
     },
-    headerSection: (dataHeaderSection) => { // this header is after of the table
+    headerSection: (dataHeaderSection) => {
+      // this header is after of the table
       return (
         <>
           {dataHeaderSection && (
-            <HeaderSectionAccountStatus
-              data={dataHeaderSection}
-            />
-          )
-          }
-
+            <HeaderSectionAccountStatus data={dataHeaderSection} />
+          )}
         </>
       );
     },
-    /*tableFooter: (dataFooter) => {
+    /* tableFooter: (dataFooter) => {
       return (
         <>
           {dataFooter && (
@@ -142,8 +138,39 @@ const AccountStatus = ({ code, tableId }) => {
 
         </>
       );
-    },*/
+    }, */
     columns: {
+      typeTransaction: {
+        type: 'Dropdown',
+        label: 'Type Transaction',
+        initialValue: '',
+        store: [
+          { value: '', label: '' },
+          { value: 'account_payable', label: 'account payable' },
+          { value: 'account_receivable', label: 'account receivable' },
+          { value: 'payment_in_advance', label: 'payment in advance' },
+          { value: 'payment', label: 'Payment' },
+          { value: 'adjusting_account', label: 'adjusting account' },
+        ],
+        gridForm: { xs: 12, sm: 6 },
+        variant: 'outlined',
+        /* onChange: (resObj) => {
+          console.log(resObj);
+          switch (resObj.value) {
+            case 'account payable':
+            case 'account receivable':
+              alert('+');
+              break;
+            case 'payment in advance':
+            case 'payment':
+              alert('-');
+              break;
+            default:
+              alert('cualquiera');
+          }
+        }, */
+        grid: false,
+      },
       date: {
         type: 'DatePicker',
         label: 'Date',
@@ -167,8 +194,8 @@ const AccountStatus = ({ code, tableId }) => {
             <Box display="flex" alignItems="center">
               <div>
                 <Typography variant="body2" color="inherit">
-                  <b>Type:</b>
-                  {row.type}
+                  <b>Type Transaction:</b>
+                  {row.typeTransaction}
                 </Typography>
                 <Typography variant="body2" color="inherit">
                   <b>Date:</b>
@@ -210,10 +237,12 @@ const AccountStatus = ({ code, tableId }) => {
         dir: 'desc', // for seeing every time the last save
         tableId,
         code,
+        startDate: moment(startDate).format(format),
+        endDate: moment(endDate).format(format),
       },
       load: true,
     },
-    //idStore: 'accountStatusId',
+    // idStore: 'accountStatusId',
     idStore: 'account_status_id',
     buttonDel: true,
     buttonNew: true,
@@ -235,6 +264,7 @@ const AccountStatus = ({ code, tableId }) => {
       extraParams: {
         tableId,
         code,
+
       },
       // todo need to add typeSend for change to send all in jsonFormat or normal pxp
     },

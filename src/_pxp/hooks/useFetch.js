@@ -98,7 +98,7 @@ const useFetch = (options) => {
                   setData(resp);
                 }
 
-                if(resp.error) {
+                if (resp.error) {
                   enqueueSnackbar(
                     <div>
                       url: ${options.url} -> ${resp.error.message}
