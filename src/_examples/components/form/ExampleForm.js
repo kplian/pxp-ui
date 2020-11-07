@@ -93,7 +93,7 @@ const ExampleForm = () => {
   //   <ExamplePicker /> <ExampleAutoComplete />
   return (
     <BasicContainer>
-      <Form data={jsonExample1} ref={ref} />
+      <Form data={jsonExample1} ref={ref}  />
 
       <ButtonPxp icon={<IconPxp />} onClick={handleClickButton} />
       <ButtonPxp icon={<IconPxp />} onClick={handleClickSubmit} />

@@ -11,7 +11,7 @@ import DrawComponents from './DrawComponents';
 import DrawSkeleton from './DrawSkeleton';
 
 const ComponentMapping = forwardRef(({ config }, ref) => {
-  const { getDataTable } = config;
+  const { getDataTable, spacing = 3 } = config;
   const useJsonStoreRes = useJsonStore(getDataTable);
   const { data, state, set, loading } = useJsonStoreRes;
 
@@ -41,7 +41,7 @@ const ComponentMapping = forwardRef(({ config }, ref) => {
 
   return (
     <>
-      <Grid container spacing={3} key={`group_${1}`}>
+      <Grid container spacing={spacing} key={`group_${1}`}>
         {data && (
           <DrawComponents config={config} useJsonStoreRes={useJsonStoreRes} />
         )}
