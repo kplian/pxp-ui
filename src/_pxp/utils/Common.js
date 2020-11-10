@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-
+import moment from 'moment';
 /**
  * Common functions for use in another components
  * @copyright Kplian Ltda 2020
@@ -51,3 +51,16 @@ export const deleteNativeStorage = () => {
 };
 
 export const handleMouseTriggerComponent = (event) => event.preventDefault();
+
+export const formatDateNow = (date) => {
+  const dateCurrent = moment(date);
+  const dateNow = moment();
+  const diff = dateNow.diff(dateCurrent, 'days', true);
+  if (diff === 1) {
+    return 'ayer';
+  }
+  if (diff < 1) {
+    return dateCurrent.fromNow();
+  }
+  return dateCurrent.format('DD/MM/YYYY');
+};
