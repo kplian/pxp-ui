@@ -128,8 +128,6 @@ const ManagerFile = ({
       codigo: {
         label: 'Codigo',
         renderColumn: (row) => {
-          const fieldTypeValue = JSON.parse(row.field_type_value);
-          console.log(fieldTypeValue);
           return (
             <Box display="flex" alignItems="center">
               {row.id_archivo &&
@@ -208,8 +206,12 @@ const ManagerFile = ({
       fileType: {
         label: 'Valores',
         renderColumn: (row) => {
-          const fieldTypeValue = JSON.parse(row.field_type_value);
-          console.log(fieldTypeValue);
+          let fieldTypeValue;
+          if(row.field_type_value) {
+            fieldTypeValue = JSON.parse(row.field_type_value);
+          } else {
+            fieldTypeValue = [];
+          }
           return (
             <Box display="flex" alignItems="center">
               <div>

@@ -50,6 +50,11 @@ export const deleteNativeStorage = () => {
   }
 };
 
+export const formatNumber = ({ value }) => {
+  const num = parseFloat(value);
+  return num.toLocaleString('en-US');
+};
+
 export const handleMouseTriggerComponent = (event) => event.preventDefault();
 
 export const formatDateNow = (date) => {

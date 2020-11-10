@@ -297,6 +297,22 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
     });
   };
 
+  //function for verify if the inputs are validated
+  const formIsValidate = (e, callback) => {
+    e.preventDefault();
+    const values = {
+      ...getValues(),
+      ...(onSubmit.extraParams && { ...onSubmit.extraParams }),
+    };
+
+    getSchemaValidation(false, (schema) => {
+      validateAllValues(schema, values);
+      schema.isValid(values).then((valid) => {
+        callback(valid)
+      });
+    });
+  }
+
   // logic for submit button
   const handleSubmitForm = (e) => {
     e.preventDefault();
@@ -396,6 +412,7 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
             error={values.error.hasError}
             msgError={values.error.msg}
             dataStore={values.store.data}
+            size={values.size}
           />,
         );
       }
@@ -413,6 +430,7 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
             states={states}
             disabled={values.disabled}
             helperText={values.helperText}
+            size={values.size}
           />,
         );
       }
@@ -538,6 +556,7 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
       removeExtraParam,
       hideGroup,
       showGroup,
+      formIsValidate,
     };
   });
 

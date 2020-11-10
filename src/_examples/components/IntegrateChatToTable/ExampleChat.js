@@ -96,8 +96,9 @@ const ExampleChat = () => {
           label: 'example Chat',
           buttonIcon: <ProductDocuments />,
           onClick: (row) => {
+            console.log('roww',row)
             openChatView({
-              idTable: row.id_tipo_chat,
+              idTable: row.id_data_example,
               idChat: row.id_chat,
             });
           },
@@ -140,6 +141,7 @@ const ExampleChat = () => {
           typeChat={chatView.typeChat}
           idComponent={chatView.idComponent}
           idChat={chatView.idChat}
+          idSuplant={1582}/*we can add id suplant for change the from mensajes*/
         />
       </DialogPxp>
       {loadingScreen && <LoadingScreen />}

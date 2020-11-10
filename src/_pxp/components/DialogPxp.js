@@ -55,7 +55,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const DialogPxp = ({
   children,
   transition,
-  fullScreen,
+  fullScreen = true,
   fullWidth,
   iconToolbar,
   titleToolbar,
@@ -66,7 +66,7 @@ const DialogPxp = ({
 
   return (
     <Dialog
-      fullScreen
+      {...(fullScreen && { fullScreen })}
       open={open}
       onClose={onClose}
       TransitionComponent={Transition}

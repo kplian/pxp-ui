@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.dark,
   },
 }));
-const ThreadDetails = ({ eventWs, idChat, idComponent }) => {
+const ThreadDetails = ({ eventWs, idChat, idComponent, idSuplant }) => {
   const classes = useStyles();
   const messagesRef = useRef(null);
 
@@ -57,6 +57,7 @@ const ThreadDetails = ({ eventWs, idChat, idComponent }) => {
               id_mensaje: uuIdV4(),
               id_usuario_from: e.from.idUser,
               user_name_from: e.from.user,
+              user_name_suplant: e.from.UserSuplant,
               mensaje: e.mensaje,
             },
           ]),
@@ -79,6 +80,7 @@ const ThreadDetails = ({ eventWs, idChat, idComponent }) => {
       event: eventWs,
       idComponent,
       handle: (e) => {
+        console.log('eeeeeewebsocket handle', e)
         listenerMessage(e);
       },
     });
@@ -102,6 +104,7 @@ const ThreadDetails = ({ eventWs, idChat, idComponent }) => {
         params: {
           id_chat: idChat,
           mensaje: message,
+          ...(idSuplant && { id_usuario_suplant: idSuplant }),
         },
       })
       .then((resp) => {
@@ -143,6 +146,7 @@ const ThreadDetails = ({ eventWs, idChat, idComponent }) => {
               idFrom={i.id_usuario_from}
               message={i.mensaje}
               date={i.fecha_reg}
+              userNameSuplant={i.user_name_suplant}
             />
           ))}
       </Box>

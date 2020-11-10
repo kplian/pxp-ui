@@ -25,17 +25,20 @@ const ChatView = ({
   typeChat,
   idChat,
   idComponent,
+  idSuplant,
 }) => {
   const classes = useStyles();
 
   const event = `${typeChat}_${idTableDesc}_${idTable}_${idChat}`;
-console.log(event)
+
+console.log('event',event)
   return (
     <div className={classes.root}>
       <ThreadDetails
         eventWs={event}
         idChat={idChat}
         idComponent={idComponent}
+        idSuplant={idSuplant}
       />
     </div>
   );

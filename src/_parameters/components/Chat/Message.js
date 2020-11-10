@@ -35,8 +35,10 @@ function Message({
   idFrom,
   message,
   date,
+  userNameSuplant,
   ...rest
 }) {
+  console.log(userNameFrom)
   const classes = useStyles();
   const dateMessage = date || new Date();
   return (
@@ -53,7 +55,7 @@ function Message({
             boxShadow={1}
           >
             <Typography color="inherit" variant="h6">
-              {userNameFrom}
+              {userNameSuplant || userNameFrom}
             </Typography>
             <Box mt={1}>
               <Typography

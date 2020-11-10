@@ -7,6 +7,7 @@
 import React from 'react';
 import { Container, Grid, makeStyles } from '@material-ui/core';
 import DataBox from './DataBox';
+import { formatNumber } from '../../utils/Common';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,10 +25,10 @@ const HeaderSectionAccountStatus = ({ data }) => {
       <Container maxWidth={false}>
         <Grid container spacing={3}>
           <Grid item lg={3} sm={6} xs={12}>
-            <DataBox title={"Initial Balance"} amount={data.initialBalance.sum_initial_balance} />
+            <DataBox title={"Initial Balance"} amount={formatNumber({value: data.initialBalance.sum_initial_balance})} />
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
-            <DataBox title={"Total Balance"} amount={data.totalAmount} />
+            <DataBox title={"Total Balance"} amount={formatNumber({value:data.totalAmount})} />
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
             <DataBox title={"Positive"} amount={0} />

@@ -6,6 +6,7 @@
 
 import React, { useRef, useState } from 'react';
 import * as Yup from 'yup';
+import PropTypes from 'prop-types';
 
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -28,6 +29,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PageviewIcon from '@material-ui/icons/Pageview';
 import HeaderSectionAccountStatus from './HeaderSectionAccountStatus';
+import { formatNumber } from '../../utils/Common';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -108,6 +110,7 @@ const AccountStatus = ({ code, tableId }) => {
       }
     });
   };
+
 
   const config = {
     nameForm: 'AccountStatus',
@@ -194,20 +197,20 @@ const AccountStatus = ({ code, tableId }) => {
             <Box display="flex" alignItems="center">
               <div>
                 <Typography variant="body2" color="inherit">
-                  <b>Type Transaction:</b>
+                  <b>Type Transaction:{' '}</b>
                   {row.typeTransaction}
                 </Typography>
                 <Typography variant="body2" color="inherit">
-                  <b>Date:</b>
+                  <b>Date:{' '}</b>
                   {row.date}
                 </Typography>
                 <Typography variant="body2" color="inherit">
-                  <b>Description:</b>
+                  <b>Description:{' '}</b>
                   {row.description}
                 </Typography>
                 <Label color="success">
-                  <b>Amount:</b>
-                  {row.amount}
+                  <b>Amount:{' '}</b>
+                  {formatNumber({value: row.amount})}
                 </Label>
               </div>
             </Box>
@@ -225,6 +228,7 @@ const AccountStatus = ({ code, tableId }) => {
         },
         filters: { pfiltro: 'name', type: 'string' },
         search: true,
+        renderColumn: (row) => formatNumber({value: row.amount})
       },
     },
     getDataTable: {
@@ -264,7 +268,6 @@ const AccountStatus = ({ code, tableId }) => {
       extraParams: {
         tableId,
         code,
-
       },
       // todo need to add typeSend for change to send all in jsonFormat or normal pxp
     },
@@ -347,4 +350,8 @@ const AccountStatus = ({ code, tableId }) => {
   );
 };
 
+AccountStatus.prototypes = {
+  code: PropTypes.string.isRequired,
+  tableId: PropTypes.number.isRequired,
+};
 export default AccountStatus;
