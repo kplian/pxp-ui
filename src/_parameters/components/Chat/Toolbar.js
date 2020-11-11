@@ -47,7 +47,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Toolbar = ({ className, rest, contact, actions = [] }) => {
+const Toolbar = ({
+  className,
+  rest,
+  contact,
+  actions = [],
+  historyBack = true,
+}) => {
   const classes = useStyles();
   const history = useHistory();
   const moreRef = useRef(null);
@@ -63,14 +69,16 @@ const Toolbar = ({ className, rest, contact, actions = [] }) => {
 
   return (
     <div className={clsx(classes.root, className)} {...rest}>
-      <IconButton
-        className={classes.menuButton}
-        onClick={() => history.goBack()}
-      >
-        <SvgIcon fontSize="small">
-          <ArrowBackIosIcon />
-        </SvgIcon>
-      </IconButton>
+      {historyBack && (
+        <IconButton
+          className={classes.menuButton}
+          onClick={() => history.goBack()}
+        >
+          <SvgIcon fontSize="small">
+            <ArrowBackIosIcon />
+          </SvgIcon>
+        </IconButton>
+      )}
       {contact && (
         <Box display="flex" alignItems="center">
           <Avatar src={contact.avatar} />

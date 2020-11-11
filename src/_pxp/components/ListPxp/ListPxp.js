@@ -35,7 +35,7 @@ import { defaultConfig } from './defaultConfig';
 const useStyles = makeStyles((theme) => ({
   root: {
     position: 'relative',
-    // height: '100%',
+    height: '100%',
     width: '100%',
   },
   title: {
@@ -174,6 +174,7 @@ const ListPxp = ({
           />
         )}
         style={{
+          minHeight: '250px',
           height: `calc(100% - ${configAll.showFilter ? heightFilter : 0}px)`,
         }}
       >

@@ -23,6 +23,7 @@ const ListPxpData = ({ config, FilterComponent, heightFilter }) => {
     },
   };
   const onSearch = (filter = null) => {
+    console.log('[SEARCH]', filter);
     const filterConfig = {};
     if (filter && filter.search === true) {
       filterConfig.bottom_filter_fields = [filter.field].join();
@@ -51,6 +52,8 @@ const ListPxpData = ({ config, FilterComponent, heightFilter }) => {
   const params = config.getDataTable.params || {};
   // Call service with load data
   const getData = async () => {
+    console.log('[RESP]', configData);
+
     if (configData.total > configData.data.length) {
       const resp = await Pxp.apiClient.doRequest({
         url: config.getDataTable.url,
@@ -67,6 +70,7 @@ const ListPxpData = ({ config, FilterComponent, heightFilter }) => {
         },
       });
 
+      console.log('[RESP]', resp);
       if (resp && resp.datos) {
         resp.datos.forEach((item) => configData.data.push(item));
 

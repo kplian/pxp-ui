@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '16px 0px 16px 0px',
   },
   content: {
-    height: '100%',
+    height: 'calc(100% - 144px)',
   },
   fabContainer: {
     width: '0px',
