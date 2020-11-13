@@ -29,9 +29,10 @@ const ChatView = ({
 }) => {
   const classes = useStyles();
 
-  const event = `${typeChat}_${idTableDesc}_${idTable}_${idChat}`;
+  // const event = `${typeChat}_${idTableDesc}_${idTable}_${idChat}`;
+  const event = `${typeChat}_${idTableDesc}_${idChat}_${idChat}`;
 
-console.log('event',event)
+  console.log('[event chat]', event)
   return (
     <div className={classes.root}>
       <ThreadDetails
