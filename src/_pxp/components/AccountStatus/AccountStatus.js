@@ -29,7 +29,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PageviewIcon from '@material-ui/icons/Pageview';
 import HeaderSectionAccountStatus from './HeaderSectionAccountStatus';
-import { formatNumber } from '../../utils/Common';
+import { currencyFormat, formatNumber } from '../../utils/Common';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -210,7 +210,7 @@ const AccountStatus = ({ code, tableId }) => {
                 </Typography>
                 <Label color="success">
                   <b>Amount:{' '}</b>
-                  {formatNumber({value: row.amount})}
+                  {currencyFormat({value: row.amount})}
                 </Label>
               </div>
             </Box>
@@ -228,7 +228,7 @@ const AccountStatus = ({ code, tableId }) => {
         },
         filters: { pfiltro: 'name', type: 'string' },
         search: true,
-        renderColumn: (row) => formatNumber({value: row.amount})
+        renderColumn: (row) => currencyFormat({value: row.amount})
       },
     },
     getDataTable: {
