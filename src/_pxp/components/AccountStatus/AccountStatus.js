@@ -30,6 +30,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PageviewIcon from '@material-ui/icons/Pageview';
 import HeaderSectionAccountStatus from './HeaderSectionAccountStatus';
 import { currencyFormat, formatNumber } from '../../utils/Common';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -85,6 +86,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AccountStatus = ({ code, tableId }) => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const [startDate, setStartDate] = useState(moment(new Date()).toDate());
   const [endDate, setEndDate] = useState(moment(new Date()).toDate());
@@ -113,7 +115,7 @@ const AccountStatus = ({ code, tableId }) => {
 
 
   const config = {
-    nameForm: 'AccountStatus',
+    nameForm: t('account_status'),
     dataReader: {
       dataRows: 'data',
       total: 'count', // this total is the count of whole data the count in the query for example the pxp ever sending count
@@ -145,15 +147,15 @@ const AccountStatus = ({ code, tableId }) => {
     columns: {
       typeTransaction: {
         type: 'Dropdown',
-        label: 'Type Transaction',
+        label: t('type_transaction'),
         initialValue: '',
         store: [
           { value: '', label: '' },
-          { value: 'account_payable', label: 'account payable' },
-          { value: 'account_receivable', label: 'account receivable' },
-          { value: 'payment_in_advance', label: 'payment in advance' },
-          { value: 'payment', label: 'Payment' },
-          { value: 'adjusting_account', label: 'adjusting account' },
+          { value: 'account_payable', label: t('account_payable') },
+          { value: 'account_receivable', label: t('account_receivable') },
+          { value: 'payment_in_advance', label: t('payment_in_advance') },
+          { value: 'payment', label: t('payment') },
+          { value: 'adjusting_account', label: t('adjusting_account') },
         ],
         gridForm: { xs: 12, sm: 6 },
         variant: 'outlined',
@@ -176,7 +178,7 @@ const AccountStatus = ({ code, tableId }) => {
       },
       date: {
         type: 'DatePicker',
-        label: 'Date',
+        label: t('date'),
         initialValue: moment(new Date()).toDate(),
         // format: 'DD-MM-YYYY',
         format: 'YYYY-MM-DD',
@@ -186,7 +188,7 @@ const AccountStatus = ({ code, tableId }) => {
       description: {
         type: 'TextField',
         initialValue: '',
-        label: 'Description',
+        label: t('description'),
         gridForm: { xs: 12, sm: 4 },
         variant: 'outlined',
         validate: {
@@ -197,19 +199,19 @@ const AccountStatus = ({ code, tableId }) => {
             <Box display="flex" alignItems="center">
               <div>
                 <Typography variant="body2" color="inherit">
-                  <b>Type Transaction:{' '}</b>
+                  <b>{t('type_transaction')} : {' '}</b>
                   {row.typeTransaction}
                 </Typography>
                 <Typography variant="body2" color="inherit">
-                  <b>Date:{' '}</b>
-                  {row.date}
+                  <b>{t('date')}:{' '}</b>
+                  {moment(row.date).format("DD-MM-YYYY")}
                 </Typography>
                 <Typography variant="body2" color="inherit">
-                  <b>Description:{' '}</b>
+                  <b>{t('description')}:{' '}</b>
                   {row.description}
                 </Typography>
                 <Label color="success">
-                  <b>Amount:{' '}</b>
+                  <b>{t('amount')}:{' '}</b>
                   {currencyFormat({value: row.amount})}
                 </Label>
               </div>
@@ -220,7 +222,7 @@ const AccountStatus = ({ code, tableId }) => {
       amount: {
         type: 'TextField',
         initialValue: '',
-        label: 'Amount',
+        label: t('amount'),
         gridForm: { xs: 12, sm: 4 },
         variant: 'outlined',
         validate: {
@@ -300,7 +302,7 @@ const AccountStatus = ({ code, tableId }) => {
                 format="dd/MM/yyyy"
                 margin="normal"
                 id="startDate"
-                label="Start Date"
+                label={t('start_date')}
                 value={startDate}
                 onChange={(date) =>
                   changeDate({
@@ -325,7 +327,7 @@ const AccountStatus = ({ code, tableId }) => {
                 format="dd/MM/yyyy"
                 margin="normal"
                 id="endDate"
-                label="End Date"
+                label={t('end_date')}
                 value={endDate}
                 onChange={(date) =>
                   changeDate({

@@ -155,7 +155,7 @@ const AccountStatusType = () => {
         <TablePxp dataConfig={config} />
       </BasicContainer>
       <DialogPxp
-        titleToolbar="AccountStatus" // change your our description
+        titleToolbar="AccountStatus lo que quiera" // change your our description
         onClose={() => {
           setAccountStatus({ ...accountStatus, open: false });
         }}
