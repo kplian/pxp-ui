@@ -285,14 +285,30 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const fileExport = (type = 'pdf') => {
     const configTable = dataConfig.getDataTable;
     const params = JSON.stringify(configTable.params);
-    const module = configTable.module;
-    const entity = configTable.entity;
-    const columns = JSON.stringify(Object.keys(dataConfig.columns).map(key => ({
+    // const module = configTable.module;
+    // const entity = configTable.entity;
+    const columns = Object.keys(dataConfig.columns).map(key => ({
       header: dataConfig.columns[key].label,
       dataKey: key
-    })));
+    }));
     const filename = dataConfig.nameForm;
-    window.open(`${Pxp.apiClient.protocol}://${Pxp.apiClient.host}:${Pxp.apiClient.port}/${Pxp.apiClient.baseUrl}/${type}?params=${params}&module=${module}&entity=${entity}&columns=${columns}&filename=${filename}`);
+
+    const encodeFormData = (data) => {
+      return Object.keys(data)
+        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+        .join('&');
+    }
+    const report = JSON.stringify({
+      columns,
+      filename,
+      type
+    });
+
+    window.open(`
+    ${Pxp.apiClient.protocol}://${Pxp.apiClient.host}:${Pxp.apiClient.port}/${Pxp.apiClient.baseUrl}/${configTable.url}?${encodeFormData(configTable.params)}&report=${report}`);
+
+
+    // window.open(`${Pxp.apiClient.protocol}://${Pxp.apiClient.host}:${Pxp.apiClient.port}/${Pxp.apiClient.baseUrl}/${type}?params=${params}&module=${module}&entity=${entity}&columns=${columns}&filename=${filename}`);
   };
 
   const handleNew = () => {
