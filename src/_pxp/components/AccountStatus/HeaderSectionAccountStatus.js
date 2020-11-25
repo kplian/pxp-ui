@@ -7,7 +7,8 @@
 import React from 'react';
 import { Container, Grid, makeStyles } from '@material-ui/core';
 import DataBox from './DataBox';
-import { formatNumber } from '../../utils/Common';
+import { currencyFormat, formatNumber } from '../../utils/Common';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,23 +20,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 const HeaderSectionAccountStatus = ({ data }) => {
   const classes = useStyles();
+  const { t } = useTranslation();
 
   return (
     <div className={classes.root}>
       <Container maxWidth={false}>
         <Grid container spacing={3}>
-          <Grid item lg={3} sm={6} xs={12}>
-            <DataBox title={"Initial Balance"} amount={formatNumber({value: data.initialBalance.sum_initial_balance})} />
+          <Grid item lg={6} sm={6} xs={12}>
+            <DataBox title={t('initial_balance')} amount={currencyFormat({value: data.initialBalance.sum_initial_balance})} />
           </Grid>
-          <Grid item lg={3} sm={6} xs={12}>
-            <DataBox title={"Total Balance"} amount={formatNumber({value:data.totalAmount})} />
+          <Grid item lg={6} sm={6} xs={12}>
+            <DataBox title={t('total_balance')} amount={currencyFormat({value:data.totalBalance})} />
           </Grid>
-          <Grid item lg={3} sm={6} xs={12}>
+          {/*<Grid item lg={3} sm={6} xs={12}>
             <DataBox title={"Positive"} amount={0} />
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
             <DataBox title={"Negative"} amount={0} />
-          </Grid>
+          </Grid>*/}
         </Grid>
       </Container>
     </div>
