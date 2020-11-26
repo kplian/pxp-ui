@@ -449,6 +449,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
           });
         }
       });
+
   };
 
   // button toolbar

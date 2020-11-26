@@ -177,7 +177,8 @@ export const startSignup = ({
           return data.detail.message;
         }
         return 'success';
-      });
+      })
+      .catch((err) => err.message);
   };
 };
 

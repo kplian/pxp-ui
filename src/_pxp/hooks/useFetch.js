@@ -125,6 +125,23 @@ const useFetch = (options) => {
             // eslint-disable-next-line no-unused-expressions
             err.code !== 20 && setError(err);
             setLoading(false);
+            enqueueSnackbar(
+              <div>
+                url: ${options.url} -> ${err.message}
+                <pre
+                  style={{
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-all',
+                  }}
+                >
+                  {JSON.stringify(err, null, 2)}
+                </pre>
+              </div>,
+              {
+                variant: 'error',
+                persist: false,
+              },
+            );
           });
       })();
     }
