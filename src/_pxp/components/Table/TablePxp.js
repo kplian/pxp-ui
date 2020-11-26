@@ -250,7 +250,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
   // init values pagination
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(
     parseInt(dataConfig.getDataTable.params.limit, 10),
   );
