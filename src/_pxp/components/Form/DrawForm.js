@@ -287,7 +287,10 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
               onSubmit.callback(resp, dataForSending);
             }
           } else {
-            const messageError = resp.error ? resp.error.message : resp.detail.message;
+            const messageError =
+              resp.error && resp.error.message
+                ? resp.error.message
+                : resp.detail.message;
             enqueueSnackbar(messageError, {
               variant: 'error',
             });
@@ -297,7 +300,7 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
     });
   };
 
-  //function for verify if the inputs are validated
+  // function for verify if the inputs are validated
   const formIsValidate = (e, callback) => {
     e.preventDefault();
     const values = {
@@ -308,10 +311,10 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
     getSchemaValidation(false, (schema) => {
       validateAllValues(schema, values);
       schema.isValid(values).then((valid) => {
-        callback(valid)
+        callback(valid);
       });
     });
-  }
+  };
 
   // logic for submit button
   const handleSubmitForm = (e) => {
@@ -685,7 +688,7 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
                             className={classes.button}
                           >
                             {data.steppersConfig &&
-                              data.steppersConfig.backButton
+                            data.steppersConfig.backButton
                               ? data.steppersConfig.backButton
                               : 'Back'}
                           </Button>
@@ -696,15 +699,15 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
                             className={classes.button}
                           >
                             {activeStep ===
-                              Object.values(groupsConfig).length - 1
+                            Object.values(groupsConfig).length - 1
                               ? data.steppersConfig &&
                                 data.steppersConfig.finishButton
                                 ? data.steppersConfig.finishButton
                                 : 'Finish'
                               : data.steppersConfig &&
                                 data.steppersConfig.nextButton
-                                ? data.steppersConfig.nextButton
-                                : 'Next'}
+                              ? data.steppersConfig.nextButton
+                              : 'Next'}
                           </Button>
                         </div>
                       </div>

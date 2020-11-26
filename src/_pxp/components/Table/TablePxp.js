@@ -37,6 +37,8 @@ import _ from 'lodash';
 import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import useTheme from '@material-ui/core/styles/useTheme';
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import DescriptionIcon from '@material-ui/icons/Description';
 import Pxp from '../../../Pxp';
 import TableToolbarPxp from './TableToolbarPxp';
 import Form from '../Form/Form';
@@ -45,9 +47,6 @@ import useJsonStore from '../../hooks/useJsonStore';
 import InitButton from '../../hooks/InitButton';
 import { setTableState } from '../../actions/app';
 import Confirm from '../Alert/Confirm';
-import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
-import DescriptionIcon from '@material-ui/icons/Description';
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -96,7 +95,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     tableName,
     idStore,
     buttonNew,
-    buttonPdf,  //  show btn pdf
+    buttonPdf, //  show btn pdf
     buttonXlsx, //   show btn xlsx
     buttonCheckList,
     buttonDel,
@@ -248,9 +247,14 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     );
   }, [width]);
 
+  const auxPage =
+    parseInt(dataConfig.getDataTable.params.start, 0) /
+    parseInt(dataConfig.getDataTable.params.limit, 10);
+
   // init values pagination
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(true);
+
+  const [page, setPage] = React.useState(auxPage);
+  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(
     parseInt(dataConfig.getDataTable.params.limit, 10),
   );
@@ -285,14 +289,36 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const fileExport = (type = 'pdf') => {
     const configTable = dataConfig.getDataTable;
     const params = JSON.stringify(configTable.params);
-    const module = configTable.module;
-    const entity = configTable.entity;
-    const columns = JSON.stringify(Object.keys(dataConfig.columns).map(key => ({
+    // const module = configTable.module;
+    // const entity = configTable.entity;
+    const columns = Object.keys(dataConfig.columns).map((key) => ({
       header: dataConfig.columns[key].label,
-      dataKey: key
-    })));
+      dataKey: key,
+    }));
     const filename = dataConfig.nameForm;
-    window.open(`${Pxp.apiClient.protocol}://${Pxp.apiClient.host}:${Pxp.apiClient.port}/${Pxp.apiClient.baseUrl}/${type}?params=${params}&module=${module}&entity=${entity}&columns=${columns}&filename=${filename}`);
+
+    const encodeFormData = (data) => {
+      return Object.keys(data)
+        .map(
+          (key) =>
+            `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`,
+        )
+        .join('&');
+    };
+    const report = JSON.stringify({
+      columns,
+      filename,
+      type,
+    });
+
+    window.open(`
+    ${Pxp.apiClient.protocol}://${Pxp.apiClient.host}:${Pxp.apiClient.port}/${
+      Pxp.apiClient.baseUrl
+      }/${configTable.url}?${encodeFormData(
+        configTable.params,
+      )}&report=${report}`);
+
+    // window.open(`${Pxp.apiClient.protocol}://${Pxp.apiClient.host}:${Pxp.apiClient.port}/${Pxp.apiClient.baseUrl}/${type}?params=${params}&module=${module}&entity=${entity}&columns=${columns}&filename=${filename}`);
   };
 
   const handleNew = () => {
@@ -303,7 +329,8 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       onSubmit: {
         ...dataConfig.onSubmit,
         ...(Pxp.apiClient.backendVersion === 'v2' && {
-          url: dataConfig.onSubmit.urlAdd, method: 'POST'
+          url: dataConfig.onSubmit.urlAdd,
+          method: 'POST',
         }),
 
         callback: () => {
@@ -315,7 +342,14 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   };
 
   const saveState = () => {
-    dispatch(setTableState(location.pathname, state.params));
+    dispatch(
+      setTableState(location.pathname, {
+        ...state.params,
+        sort: orderBy,
+        dir: order,
+        start: '0',
+      }),
+    );
   };
 
   let dataConfigForEdit = { ...dataConfig };
@@ -330,9 +364,9 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
             initialValue:
               row[column.store.idDD] !== ''
                 ? {
-                    [column.store.idDD]: row[column.store.idDD],
-                    [column.store.descDD]: row[column.gridDisplayField],
-                  }
+                  [column.store.idDD]: row[column.store.idDD],
+                  [column.store.descDD]: row[column.gridDisplayField],
+                }
                 : row[column.store.idDD],
           }),
           ...(column.type !== 'AutoComplete' && { initialValue: row[nameKey] }),
@@ -348,7 +382,8 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       onSubmit: {
         ...dataConfigForEdit.onSubmit,
         ...(Pxp.apiClient.backendVersion === 'v2' && {
-          url: `${dataConfigForEdit.onSubmit.urlEdit}/${row[idStore]}`, method: 'PATCH'
+          url: `${dataConfigForEdit.onSubmit.urlEdit}/${row[idStore]}`,
+          method: 'PATCH',
         }),
         extraParams: {
           ...dataConfigForEdit.onSubmit.extraParams,
@@ -392,7 +427,10 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     Pxp.apiClient
       .doRequest({
         url: dataConfig.urlDelete,
-        ...(Pxp.apiClient.backendVersion === 'v2' && { method: 'DELETE', url: `${dataConfig.urlDelete}/${selectedAux.join()}` }),
+        ...(Pxp.apiClient.backendVersion === 'v2' && {
+          method: 'DELETE',
+          url: `${dataConfig.urlDelete}/${selectedAux.join()}`,
+        }),
         params: {
           _tipo: 'matriz',
           row: JSON.stringify(sendDelete),
@@ -412,18 +450,29 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
           });
         }
       });
+
   };
 
   // button toolbar
   const buttonsToolbar = {
-    /*** add buttons export PDF XLSX */
-    ...(buttonPdf && isVersion2 && {
-      buttonPdf: { onClick: () => fileExport(), icon: <PictureAsPdfIcon />, title: 'Export PDF' },
+    /** * add buttons export PDF XLSX */
+    ...(buttonPdf &&
+      isVersion2 && {
+      buttonPdf: {
+        onClick: () => fileExport(),
+        icon: <PictureAsPdfIcon />,
+        title: 'Export PDF',
+      },
     }),
-    ...(buttonXlsx && isVersion2 && {
-      buttonXlsx: { onClick: () => fileExport('xlsx'), icon: <DescriptionIcon />, title: 'Export XLSX' },
+    ...(buttonXlsx &&
+      isVersion2 && {
+      buttonXlsx: {
+        onClick: () => fileExport('xlsx'),
+        icon: <DescriptionIcon />,
+        title: 'Export XLSX',
+      },
     }),
-    /**********************************/
+    /** ******************************* */
     ...(buttonNew && {
       buttonNew: { onClick: handleNew, icon: <AddIcon />, title: 'new' },
     }),
@@ -595,7 +644,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const emptyRows =
     data && !data.error
       ? rowsPerPage -
-        Math.min(rowsPerPage, dataRows.lenght - page * rowsPerPage)
+      Math.min(rowsPerPage, dataRows.lenght - page * rowsPerPage)
       : null;
 
   const observer = useRef();
@@ -642,12 +691,9 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     <>
       <div className={classes.root}>
         {dataConfig.headerSection && dataHeaderSection && (
-          <>
-            {dataConfig.headerSection(dataHeaderSection)}
-          </>
+          <>{dataConfig.headerSection(dataHeaderSection)}</>
         )}
         <Paper className={classes.paper}>
-
           <TableToolbarPxp
             tableName={tableName}
             numSelected={selected.length}
