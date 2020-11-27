@@ -12,12 +12,13 @@ const LoadButton = ({
   children,
   loading = false,
   component = null,
+  disabled = false,
   ...props
 }) => {
   const classes = useStyles();
   const Element = component || Button;
   return (
-    <Element {...props} disabled={loading}>
+    <Element {...props} disabled={disabled || loading}>
       {children}
       {loading && (
         <CircularProgress
