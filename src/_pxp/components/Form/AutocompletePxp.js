@@ -127,7 +127,9 @@ const AutocompletePxpComponent = ({
               ...params.InputProps,
               form: {
                 autocomplete: 'off',
+                autocomplete: 'chrome-off',
               },
+              autocomplete: 'chrome-off',
               autoComplete: 'off',
               autoCorrect: 'off', // no standard, available only in safari
               endAdornment: (

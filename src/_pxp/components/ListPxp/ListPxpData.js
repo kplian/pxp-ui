@@ -1,14 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import ListPxp from './ListPxp';
 import Pxp from '../../../Pxp';
 
-const ListPxpData = ({ config, FilterComponent, heightFilter }) => {
+const ListPxpData = forwardRef((props, ref) => {
+  const { config, FilterComponent, heightFilter } = props;
   const [configData, setConfigData] = useState({
     data: [],
     hasMore: true,
     limit: 12,
     total: 9999,
   });
+
+  const resetConfig = () => {
+    setConfigData({
+      data: [],
+      hasMore: true,
+      limit: 12,
+      total: 9999,
+    });
+  };
   // Dynamic start value
   const initPage = config.showFilter ? -1 : 0;
   const [start, setStart] = useState(initPage);
@@ -94,6 +109,12 @@ const ListPxpData = ({ config, FilterComponent, heightFilter }) => {
     }
   };
 
+  useImperativeHandle(ref, () => {
+    return {
+      getData,
+      resetConfig,
+    };
+  });
   // active with change page or value search
   useEffect(() => {
     if (configData.hasMore && start >= 0) {
@@ -109,6 +130,6 @@ const ListPxpData = ({ config, FilterComponent, heightFilter }) => {
       heightFilter={heightFilter}
     />
   );
-};
+});
 
 export default ListPxpData;

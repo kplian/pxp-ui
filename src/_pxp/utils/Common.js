@@ -55,6 +55,11 @@ export const formatNumber = ({ value }) => {
   return num.toLocaleString('en-US');
 };
 
+export const currencyFormat = ({value}) => {
+  const num = parseFloat(value);
+  return `$${num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
+};
+
 export const handleMouseTriggerComponent = (event) => event.preventDefault();
 
 export const formatDateNow = (date) => {

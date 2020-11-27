@@ -50,7 +50,6 @@ const DataBox = ({ className, title, amount, ...rest }) => {
         </Typography>
         <Box display="flex" alignItems="center" flexWrap="wrap">
           <Typography variant="h3" color="textPrimary">
-            {data.currency}
             {amount}
           </Typography>
           <Label
