@@ -6,7 +6,7 @@
 import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { List, ListSubheader } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import usePages from '../../../hooks/usePages';

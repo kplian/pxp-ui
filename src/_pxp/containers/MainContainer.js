@@ -6,13 +6,15 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import Topbar from './components/Topbar';
 import Sidebar from './components/sidebar/Sidebar';
 import LoginDialog from './components/LoginDialog';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => {
+  console.log('[theme]', theme);
+  return ({
   root: {
     paddingTop: 56,
     height: '100%',
@@ -36,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
       padding: '0px 0px 16px 0px',
     },
   },
-}));
+  })
+});
 
 const MainContainer = ({ children }) => {
   const classes = useStyles();

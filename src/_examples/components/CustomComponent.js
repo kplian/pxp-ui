@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import ExamplePicker from './form/ExamplePicker';
 import BasicContainer from '../../_pxp/containers/BasicContainer';
 
