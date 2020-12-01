@@ -159,6 +159,9 @@ const AccountStatus = ({ code, tableId }) => {
         ],
         gridForm: { xs: 12, sm: 6 },
         variant: 'outlined',
+        validate: {
+          shape: Yup.string().required('Required'),
+        },
         /* onChange: (resObj) => {
           console.log(resObj);
           switch (resObj.value) {
