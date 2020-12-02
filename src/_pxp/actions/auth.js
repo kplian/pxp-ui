@@ -9,7 +9,6 @@ import { deleteNativeStorage } from '../utils/Common';
 
 export const findRoutes = (menu) => {
   let routes = [];
-  console.log('menuuuuu', menu);
   menu.forEach((menuOption) => {
     const mo = menuOption;
     if (menuOption.type === 'hoja' || menuOption.type === 'leaf') {
@@ -83,9 +82,6 @@ export const startSocialLogin = ({
 export const startLogin = ({ login: username, password, language }) => {
   return () => {
     return Pxp.apiClient.login(username, password, language).then((data) => {
-      if (data.ROOT) {
-        return data.ROOT.detalle.mensaje;
-      }
       const isWebView = navigator.userAgent.includes('wv');
 
       const userAgent = window.navigator.userAgent.toLowerCase();
@@ -124,7 +120,10 @@ export const startLogin = ({ login: username, password, language }) => {
         }
       }
       return 'success';
-    });
+    })
+      .catch((err) => {
+        return err.message;
+      });
   };
 };
 
@@ -140,11 +139,11 @@ export const startResetPassword = ({ login: username, captcha }) => {
           url: `${getUrl.protocol}//${getUrl.host}/`,
         },
       })
-      .then((data) => {
-        if (data.error) {
-          return data.detail.message;
-        }
+      .then(() => {
         return 'success';
+      })
+      .catch((err) => {
+        return err.message;
       });
   };
 };
@@ -172,13 +171,12 @@ export const startSignup = ({
           url: `${getUrl.protocol}//${getUrl.host}/`,
         },
       })
-      .then((data) => {
-        if (data.error) {
-          return data.detail.message;
-        }
+      .then(() => {
         return 'success';
       })
-      .catch((err) => err.message);
+      .catch((err) => {
+        return err.message;
+      });
   };
 };
 
@@ -193,6 +191,9 @@ export const startSignupConfirm = ({ token }) => {
       })
       .then((data) => {
         return data;
+      })
+      .catch((err) => {
+        return err.message;
       });
   };
 };
@@ -212,6 +213,9 @@ export const startUpdatePassword = ({ password1, token }) => {
           return data.detail.message;
         }
         return 'success';
+      })
+      .catch((err) => {
+        return err.message;
       });
   };
 };
@@ -261,6 +265,9 @@ export const startSetMenu = () => {
         dispatch(setMenu(resp.data));
         dispatch(setRoutes(findRoutes(resp.data)));
         return resp;
+      })
+      .catch((err) => {
+        return err.message;
       });
   };
 };
