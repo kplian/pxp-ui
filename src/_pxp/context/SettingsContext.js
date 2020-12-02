@@ -51,6 +51,7 @@ export function SettingsProvider({ settings, children }) {
     document.dir = currentSettings.direction;
   }, [currentSettings]);
 
+  console.log('[pross]', createTheme(currentSettings));
   return (
     <SettingsContext.Provider
       value={{

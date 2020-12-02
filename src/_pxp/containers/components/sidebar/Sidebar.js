@@ -6,7 +6,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Divider, Drawer, Box, IconButton } from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
