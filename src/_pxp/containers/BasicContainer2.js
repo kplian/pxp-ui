@@ -5,7 +5,7 @@
  */
 import React, { useRef } from 'react';
 import Fab from '@material-ui/core/Fab';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Scrollbars } from 'react-custom-scrollbars';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import history from '../routers/History';

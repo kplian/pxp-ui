@@ -15,7 +15,7 @@ import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import Form from '../../components/Form/Form';
 import LoadingScreen from '../../components/LoadingScreen';

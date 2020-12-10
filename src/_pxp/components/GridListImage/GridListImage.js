@@ -6,7 +6,7 @@
 import React from 'react';
 import useJsonStore from '../../hooks/useJsonStore';
 import DrawGridListImage from './DrawGridListImage';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import LoadingScreen from '../LoadingScreen';
 
 const useStyles = makeStyles(theme => ({
