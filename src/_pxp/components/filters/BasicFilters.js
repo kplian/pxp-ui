@@ -9,6 +9,7 @@ import {
   Input,
   Grow,
 } from '@material-ui/core';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles(() => ({
@@ -30,7 +31,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const BasicFilters = ({ filters, handleFilter }) => {
+const BasicFilters = ({ filters, handleFilter, refresh = null }) => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [search, setSearch] = useState(false);
@@ -60,7 +61,7 @@ const BasicFilters = ({ filters, handleFilter }) => {
   };
 
   useEffect(() => {
-    handleFilter(filters[value], true);
+    handleFilter(filters[value]);
   }, [value]);
 
   useEffect(() => {
@@ -107,6 +108,11 @@ const BasicFilters = ({ filters, handleFilter }) => {
             onKeyUp={handleSearch}
           />
         </Grow>
+      )}
+      {refresh && (
+        <IconButton onClick={() => handleFilter(filters[value], true)}>
+          <RefreshIcon />
+        </IconButton>
       )}
       <IconButton onClick={toggleSearch}>
         <Icon>{!search ? 'search' : 'close'}</Icon>

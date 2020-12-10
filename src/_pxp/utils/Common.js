@@ -55,7 +55,7 @@ export const formatNumber = ({ value }) => {
   return num.toLocaleString('en-US');
 };
 
-export const currencyFormat = ({value}) => {
+export const currencyFormat = ({ value }) => {
   const num = parseFloat(value);
   return `$${num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
 };
@@ -74,3 +74,5 @@ export const formatDateNow = (date) => {
   }
   return dateCurrent.format('DD/MM/YYYY');
 };
+
+export const formatDate = (date, format) => moment(date).format(format);
