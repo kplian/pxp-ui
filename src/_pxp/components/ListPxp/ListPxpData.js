@@ -8,7 +8,7 @@ import ListPxp from './ListPxp';
 import Pxp from '../../../Pxp';
 
 const ListPxpData = forwardRef((props, ref) => {
-  const { config, FilterComponent, heightFilter, refresh } = props;
+  const { config, FilterComponent, heightFilter, refresh, isRefreshActive = ()=>{} } = props;
   const [configData, setConfigData] = useState({
     data: [],
     hasMore: true,
@@ -61,6 +61,7 @@ const ListPxpData = forwardRef((props, ref) => {
       setValue(filter.value);
     } else {
       setRefreshActive(isRefresh);
+      isRefreshActive(isRefresh);
     }
   };
 
@@ -89,6 +90,7 @@ const ListPxpData = forwardRef((props, ref) => {
       });
 
       setRefreshActive(false);
+      isRefreshActive(false);
       console.log('[RESP]', resp);
       if (resp && resp.datos) {
         resp.datos.forEach((item) => configData.data.push(item));
