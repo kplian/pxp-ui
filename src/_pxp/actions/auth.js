@@ -82,49 +82,54 @@ export const startSocialLogin = ({
 
 export const startLogin = ({ login: username, password, language }) => {
   return () => {
-    return Pxp.apiClient.login(username, password, language).then((data) => {
-      if (data.ROOT) {
-        return data.ROOT.detalle.mensaje;
-      }
-      const isWebView = navigator.userAgent.includes('wv');
-
-      const userAgent = window.navigator.userAgent.toLowerCase();
-      const safari = /safari/.test(userAgent);
-      const ios = /iphone|ipod|ipad/.test(userAgent);
-
-      const iOSWebView = ios && !safari;
-
-      // @ts-ignore
-      if (isWebView && window.Mobile) {
-        // @ts-ignore
-        window.Mobile.saveUserCredentials(username, password, language);
-        if (process.env.REACT_APP_WEB_SOCKET === 'YES') {
-          // @ts-ignore
-          window.Mobile.saveWebSocketURL(
-            `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${data.phpsession}`,
-            data.userId,
-            data.username,
-          );
+    return Pxp.apiClient
+      .login(username, password, language)
+      .then((data) => {
+        if (data.ROOT) {
+          return data.ROOT.detalle.mensaje;
         }
+        const isWebView = navigator.userAgent.includes('wv');
+
+        const userAgent = window.navigator.userAgent.toLowerCase();
+        const safari = /safari/.test(userAgent);
+        const ios = /iphone|ipod|ipad/.test(userAgent);
+
+        const iOSWebView = ios && !safari;
+
         // @ts-ignore
-      } else if (iOSWebView && window.webkit) {
-        // @ts-ignore
-        window.webkit.messageHandlers.saveUserCredentials.postMessage({
-          username,
-          password,
-          language,
-        });
-        if (process.env.REACT_APP_WEB_SOCKET === 'YES') {
+        if (isWebView && window.Mobile) {
           // @ts-ignore
-          window.webkit.messageHandlers.saveWebSocketURL.postMessage({
-            socket: `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${data.phpsession}`,
-            id_usuario: data.userId,
-            nombre_usuario: data.username,
+          window.Mobile.saveUserCredentials(username, password, language);
+          if (process.env.REACT_APP_WEB_SOCKET === 'YES') {
+            // @ts-ignore
+            window.Mobile.saveWebSocketURL(
+              `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${data.phpsession}`,
+              data.userId,
+              data.username,
+            );
+          }
+          // @ts-ignore
+        } else if (iOSWebView && window.webkit) {
+          // @ts-ignore
+          window.webkit.messageHandlers.saveUserCredentials.postMessage({
+            username,
+            password,
+            language,
           });
+          if (process.env.REACT_APP_WEB_SOCKET === 'YES') {
+            // @ts-ignore
+            window.webkit.messageHandlers.saveWebSocketURL.postMessage({
+              socket: `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${data.phpsession}`,
+              id_usuario: data.userId,
+              nombre_usuario: data.username,
+            });
+          }
         }
-      }
-      return 'success';
-    });
+        return 'success';
+      })
+      .catch((err) => {
+        return err.message || 'Invalid Login';
+      });
   };
 };
 

@@ -4,8 +4,9 @@ import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
+import ListReport from './ListReport';
 
-const Accordion = withStyles({
+const Accordion = withStyles((theme) => ({
   root: {
     border: '1px solid rgba(0, 0, 0, .125)',
     boxShadow: 'none',
@@ -20,14 +21,15 @@ const Accordion = withStyles({
     },
   },
   expanded: {},
-})(MuiAccordion);
+}))(MuiAccordion);
 
-const AccordionSummary = withStyles({
+const AccordionSummary = withStyles((theme) => ({
   root: {
-    backgroundColor: 'rgba(0, 0, 0, .03)',
+    backgroundColor: theme.palette.background,
     borderBottom: '1px solid rgba(0, 0, 0, .125)',
     marginBottom: -1,
     minHeight: 56,
+    color: theme.palette.primary.main,
     '&$expanded': {
       minHeight: 56,
     },
@@ -38,17 +40,10 @@ const AccordionSummary = withStyles({
     },
   },
   expanded: {},
-})(MuiAccordionSummary);
-
-const AccordionDetails = withStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-}))(MuiAccordionDetails);
-
+}))(MuiAccordionSummary);
 const ConfigReport = ({ columns = [] }) => {
 
-  const [expanded, setExpanded] = React.useState('panel1');
+  const [expanded, setExpanded] = React.useState('panel0');
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -56,42 +51,14 @@ const ConfigReport = ({ columns = [] }) => {
 
   return (
     <div>
-      <Accordion square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Typography>Collapsible Group Item #1</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing
-            elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion square expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-          <Typography>Collapsible Group Item #2</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing
-            elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion square expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-          <Typography>Collapsible Group Item #3</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing
-            elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+      { columns.map((column, i) =>
+        <Accordion square expanded={expanded === 'panel' + i} onChange={handleChange('panel' + i)} key={'panel-report-' + i}>
+          <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+            <Typography>{column.name}</Typography>
+          </AccordionSummary>
+          <ListReport></ListReport>
+        </Accordion>
+      )}
     </div>
   )
 }

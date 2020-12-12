@@ -71,7 +71,7 @@ const TableBodyPxp = ({
 
           return (
             <TableRow
-              key={`tableRow_${idStore}_${row[idStore]}`}
+              key={`tableRow_${idStore}_${row[idStore]}_${index}`}
               hover
               onClick={(event) => handleClickRow(event, row)}
               role="checkbox"
