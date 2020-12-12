@@ -435,19 +435,18 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
         },
       })
       .then((resp) => {
-        if (!resp.error) {
-          enqueueSnackbar('Success', {
-            variant: 'success',
-            action: <Button>See all</Button>,
-          });
-          handleRefresh();
-        } else {
-          enqueueSnackbar(resp.detail.message, {
-            variant: 'error',
-            action: <Button>See all</Button>,
-          });
-        }
-      });
+        enqueueSnackbar('Success', {
+          variant: 'success',
+          action: <Button>See all</Button>,
+        });
+        handleRefresh();
+      })
+      .catch((err) => {
+        enqueueSnackbar(err.message, {
+          variant: 'error',
+        });
+        handleRefresh();
+      });;
 
   };
 

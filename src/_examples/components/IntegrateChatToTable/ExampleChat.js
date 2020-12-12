@@ -3,7 +3,7 @@
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  */
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import { v4 as uuIdV4 } from 'uuid';
 import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
@@ -52,11 +52,18 @@ const ExampleChat = () => {
       })
       .then((resp) => {
         setLoadingScreen(false);
-        enqueueSnackbar(resp.detail.message, {
-          variant: !resp.error ? 'success' : 'error',
+        enqueueSnackbar('Success', {
+          variant: 'success',
         });
         refTable.current.handleRefresh();
-      });
+      })
+      .catch((err) => {
+        setLoadingScreen(false);
+        enqueueSnackbar(err.message, {
+          variant: 'error',
+        });
+        refTable.current.handleRefresh();
+      });;
   };
 
   const jsonTypeChat = {
@@ -96,7 +103,7 @@ const ExampleChat = () => {
           label: 'example Chat',
           buttonIcon: <ProductDocuments />,
           onClick: (row) => {
-            console.log('roww',row)
+            console.log('roww', row)
             openChatView({
               idTable: row.id_data_example,
               idChat: row.id_chat,

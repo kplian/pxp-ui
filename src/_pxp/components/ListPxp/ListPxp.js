@@ -93,6 +93,7 @@ const ListPxp = ({
   config = {},
   FilterComponent = OptionsFilter,
   heightFilter = 96,
+  refresh = null,
 }) => {
   // IntersectionObserver revisar
   const configAll = { ...defaultConfig, ...config };
@@ -151,8 +152,8 @@ const ListPxp = ({
     config.onSearch(value);
   }, 500);
 
-  const handleFilter = _.debounce((filter) => {
-    config.onSearch(filter);
+  const handleFilter = _.debounce((filter, isRefresh = false) => {
+    config.onSearch(filter, isRefresh);
   }, 500);
 
   return (
@@ -162,6 +163,7 @@ const ListPxp = ({
         <FilterComponent
           filters={configAll.filters}
           handleFilter={handleFilter}
+          refresh={refresh}
         />
       )}
       <Scrollbars

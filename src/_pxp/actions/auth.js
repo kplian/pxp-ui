@@ -9,7 +9,6 @@ import { deleteNativeStorage } from '../utils/Common';
 
 export const findRoutes = (menu) => {
   let routes = [];
-  console.log('menuuuuu', menu);
   menu.forEach((menuOption) => {
     const mo = menuOption;
     if (menuOption.type === 'hoja' || menuOption.type === 'leaf') {
@@ -82,53 +81,48 @@ export const startSocialLogin = ({
 
 export const startLogin = ({ login: username, password, language }) => {
   return () => {
-    return Pxp.apiClient
-      .login(username, password, language)
-      .then((data) => {
-        if (data.ROOT) {
-          return data.ROOT.detalle.mensaje;
-        }
-        const isWebView = navigator.userAgent.includes('wv');
+    return Pxp.apiClient.login(username, password, language).then((data) => {
+      const isWebView = navigator.userAgent.includes('wv');
 
-        const userAgent = window.navigator.userAgent.toLowerCase();
-        const safari = /safari/.test(userAgent);
-        const ios = /iphone|ipod|ipad/.test(userAgent);
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      const safari = /safari/.test(userAgent);
+      const ios = /iphone|ipod|ipad/.test(userAgent);
 
-        const iOSWebView = ios && !safari;
+      const iOSWebView = ios && !safari;
 
+      // @ts-ignore
+      if (isWebView && window.Mobile) {
         // @ts-ignore
-        if (isWebView && window.Mobile) {
+        window.Mobile.saveUserCredentials(username, password, language);
+        if (process.env.REACT_APP_WEB_SOCKET === 'YES') {
           // @ts-ignore
-          window.Mobile.saveUserCredentials(username, password, language);
-          if (process.env.REACT_APP_WEB_SOCKET === 'YES') {
-            // @ts-ignore
-            window.Mobile.saveWebSocketURL(
-              `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${data.phpsession}`,
-              data.userId,
-              data.username,
-            );
-          }
-          // @ts-ignore
-        } else if (iOSWebView && window.webkit) {
-          // @ts-ignore
-          window.webkit.messageHandlers.saveUserCredentials.postMessage({
-            username,
-            password,
-            language,
-          });
-          if (process.env.REACT_APP_WEB_SOCKET === 'YES') {
-            // @ts-ignore
-            window.webkit.messageHandlers.saveWebSocketURL.postMessage({
-              socket: `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${data.phpsession}`,
-              id_usuario: data.userId,
-              nombre_usuario: data.username,
-            });
-          }
+          window.Mobile.saveWebSocketURL(
+            `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${data.phpsession}`,
+            data.userId,
+            data.username,
+          );
         }
-        return 'success';
-      })
+        // @ts-ignore
+      } else if (iOSWebView && window.webkit) {
+        // @ts-ignore
+        window.webkit.messageHandlers.saveUserCredentials.postMessage({
+          username,
+          password,
+          language,
+        });
+        if (process.env.REACT_APP_WEB_SOCKET === 'YES') {
+          // @ts-ignore
+          window.webkit.messageHandlers.saveWebSocketURL.postMessage({
+            socket: `wss://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT_WEB_SOCKET}/wss?sessionIDPXP=${data.phpsession}`,
+            id_usuario: data.userId,
+            nombre_usuario: data.username,
+          });
+        }
+      }
+      return 'success';
+    })
       .catch((err) => {
-        return err.message || 'Invalid Login';
+        return err.message;
       });
   };
 };
@@ -145,11 +139,11 @@ export const startResetPassword = ({ login: username, captcha }) => {
           url: `${getUrl.protocol}//${getUrl.host}/`,
         },
       })
-      .then((data) => {
-        if (data.error) {
-          return data.detail.message;
-        }
+      .then(() => {
         return 'success';
+      })
+      .catch((err) => {
+        return err.message;
       });
   };
 };
@@ -177,13 +171,12 @@ export const startSignup = ({
           url: `${getUrl.protocol}//${getUrl.host}/`,
         },
       })
-      .then((data) => {
-        if (data.error) {
-          return data.detail.message;
-        }
+      .then(() => {
         return 'success';
       })
-      .catch((err) => err.message);
+      .catch((err) => {
+        return err.message;
+      });
   };
 };
 
@@ -198,6 +191,9 @@ export const startSignupConfirm = ({ token }) => {
       })
       .then((data) => {
         return data;
+      })
+      .catch((err) => {
+        return err.message;
       });
   };
 };
@@ -217,6 +213,9 @@ export const startUpdatePassword = ({ password1, token }) => {
           return data.detail.message;
         }
         return 'success';
+      })
+      .catch((err) => {
+        return err.message;
       });
   };
 };
@@ -266,6 +265,9 @@ export const startSetMenu = () => {
         dispatch(setMenu(resp.data));
         dispatch(setRoutes(findRoutes(resp.data)));
         return resp;
+      })
+      .catch((err) => {
+        return err.message;
       });
   };
 };

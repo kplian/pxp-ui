@@ -286,15 +286,13 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
             if (typeof onSubmit.callback === 'function') {
               onSubmit.callback(resp, dataForSending);
             }
-          } else {
-            const messageError =
-              resp.error && resp.error.message
-                ? resp.error.message
-                : resp.detail.message;
-            enqueueSnackbar(messageError, {
-              variant: 'error',
-            });
           }
+          setLoadingScreen(false);
+        })
+        .catch((err) => {
+          enqueueSnackbar(err.message, {
+            variant: 'error',
+          });
           setLoadingScreen(false);
         });
     });
@@ -688,7 +686,7 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
                             className={classes.button}
                           >
                             {data.steppersConfig &&
-                            data.steppersConfig.backButton
+                              data.steppersConfig.backButton
                               ? data.steppersConfig.backButton
                               : 'Back'}
                           </Button>
@@ -699,15 +697,15 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
                             className={classes.button}
                           >
                             {activeStep ===
-                            Object.values(groupsConfig).length - 1
+                              Object.values(groupsConfig).length - 1
                               ? data.steppersConfig &&
                                 data.steppersConfig.finishButton
                                 ? data.steppersConfig.finishButton
                                 : 'Finish'
                               : data.steppersConfig &&
                                 data.steppersConfig.nextButton
-                              ? data.steppersConfig.nextButton
-                              : 'Next'}
+                                ? data.steppersConfig.nextButton
+                                : 'Next'}
                           </Button>
                         </div>
                       </div>
