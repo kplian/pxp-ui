@@ -57,7 +57,8 @@ export const formatNumber = ({ value }) => {
 
 export const currencyFormat = ({ value }) => {
   const num = parseFloat(value);
-  return `$${num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
+  const currency = process.env.REACT_APP_CURRENCY || '$';
+  return `${currency}${num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
 };
 
 export const handleMouseTriggerComponent = (event) => event.preventDefault();

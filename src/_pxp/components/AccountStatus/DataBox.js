@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Avatar, Box, Card, Typography, makeStyles } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import Icon from '@material-ui/core/Icon';
 import Label from '../Label';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,17 +53,20 @@ const DataBox = ({ className, title, amount, ...rest }) => {
           <Typography variant="h3" color="textPrimary">
             {amount}
           </Typography>
-          <Label
-            className={classes.label}
-            color={data.difference > 0 ? 'success' : 'error'}
-          >
-            {data.difference > 0 ? '+' : ''}
-            {data.difference}%
+          {
+            false && <Label
+              className={classes.label}
+              color={data.difference > 0 ? 'success' : 'error'}
+            >
+              {data.difference > 0 ? '+' : ''}
+              {data.difference}%
           </Label>
+          }
+
         </Box>
       </Box>
       <Avatar className={classes.avatar}>
-        <AttachMoneyIcon />
+        <Typography variant="h4">{process.env.REACT_APP_CURRENCY || '$'}</Typography>
       </Avatar>
     </Card>
   );
