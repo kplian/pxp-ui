@@ -126,8 +126,8 @@ const AutocompletePxpComponent = ({
             InputProps={{
               ...params.InputProps,
               form: {
-                autoComplete: 'off',
                 autocomplete: 'chrome-off',
+                autoComplete: 'off',
               },
               autocomplete: 'chrome-off',
               autoComplete: 'off',
