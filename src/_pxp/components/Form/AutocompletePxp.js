@@ -96,7 +96,7 @@ const AutocompletePxpComponent = ({
         onClose={() => {
           store.setOpen(false);
         }}
-        getOptionLabel={(option) => (option ? option[store.descDD] : '')}
+        getOptionLabel={(option) => (option ? option[store.descDD] : ' ')}
         getOptionSelected={(optionEq, valueEq) => {
           if (
             // we need to put this for not generating error when the autocomplete tries to find the value in the option
@@ -105,7 +105,7 @@ const AutocompletePxpComponent = ({
           ) {
             return true;
           }
-          return optionEq[store.idDD] === valueEq[store.idDD];
+          return valueEq && optionEq[store.idDD] === valueEq[store.idDD];
         }}
         options={
           dataStore
@@ -125,8 +125,8 @@ const AutocompletePxpComponent = ({
             InputProps={{
               ...params.InputProps,
               form: {
-                autocomplete: 'off',
-                //autocomplete: 'chrome-off',
+                autocomplete: 'chrome-off',
+                autoComplete: 'off',
               },
               //autocomplete: 'chrome-off',
               autoComplete: 'off',

@@ -20,6 +20,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 const useStyles = makeStyles((theme) => ({
   root: {},
   datePicker: {
+    marginTop: 0,
     '& + &': {
       marginLeft: theme.spacing(2),
     },
@@ -53,11 +54,11 @@ export const KeyboardTimePickerPxpComponent = ({
     ...(maxDate && { maxDate }),
   };
 
-
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid key={`grid_${name}`} item {...gridForm}>
         <KeyboardTimePicker
+          className={classes.datePicker}
           fullWidth
           margin="normal"
           autoOk

@@ -4,7 +4,7 @@
  * @uthor Israel Colque
  */
 import _ from 'lodash';
-import { createMuiTheme, responsiveFontSizes } from '@material-ui/core';
+import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import typography from './typography';
 import LIGHT from './light';
 import ONE_DARK from './dark';
