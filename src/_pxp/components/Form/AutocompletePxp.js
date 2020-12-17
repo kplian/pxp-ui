@@ -44,7 +44,6 @@ const AutocompletePxpComponent = ({
   const { label, variant, store, isSearchable, gridForm } = configInput;
   const { dataRows } = store.dataReader; // this is the object that has the data for rendering
 
-
   // this handle has debounce for start with searching after 500 ms
   const handleInputChange = _.debounce(async (valueInput) => {
     if (
@@ -127,9 +126,9 @@ const AutocompletePxpComponent = ({
               ...params.InputProps,
               form: {
                 autocomplete: 'off',
-                autocomplete: 'chrome-off',
+                //autocomplete: 'chrome-off',
               },
-              autocomplete: 'chrome-off',
+              //autocomplete: 'chrome-off',
               autoComplete: 'off',
               autoCorrect: 'off', // no standard, available only in safari
               endAdornment: (
