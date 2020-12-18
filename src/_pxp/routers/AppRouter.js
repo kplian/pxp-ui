@@ -236,7 +236,7 @@ const AppRouter = ({
                         key += 1;
                         return (
                           <Route
-                            exact
+                            exact={pages[route.component].noExact ? false : true}
                             key={key}
                             path={pages[route.component].path}
                             render={() => {

@@ -30,12 +30,16 @@ const useStyles = makeStyles((theme) => {
   },
   content: {
     flex: '1 1 auto',
-    height: 'calc( 100vh - 70px)',
+    height: 'calc( 100vh - 64px)',
     width: '100%',
     padding: '0px 16px 16px 16px',
     overflow: 'hidden',
     [theme.breakpoints.down('sm')]: {
       padding: '0px 0px 16px 0px',
+      paddingBottom: 0,
+    },
+    [theme.breakpoints.down('xs')]: {
+      paddingBottom: 0,
     },
   },
   })

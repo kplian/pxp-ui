@@ -55,9 +55,10 @@ export const formatNumber = ({ value }) => {
   return num.toLocaleString('en-US');
 };
 
-export const currencyFormat = ({value}) => {
+export const currencyFormat = ({ value }) => {
   const num = parseFloat(value);
-  return `$${num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
+  const currency = process.env.REACT_APP_CURRENCY || '$';
+  return `${currency}${num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
 };
 
 export const handleMouseTriggerComponent = (event) => event.preventDefault();
@@ -74,3 +75,5 @@ export const formatDateNow = (date) => {
   }
   return dateCurrent.format('DD/MM/YYYY');
 };
+
+export const formatDate = (date, format) => moment(date).format(format);

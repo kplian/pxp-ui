@@ -8,7 +8,7 @@ import ListPxp from './ListPxp';
 import Pxp from '../../../Pxp';
 
 const ListPxpData = forwardRef((props, ref) => {
-  const { config, FilterComponent, heightFilter } = props;
+  const { config, FilterComponent, heightFilter, refresh, isRefreshActive = ()=>{} } = props;
   const [configData, setConfigData] = useState({
     data: [],
     hasMore: true,
@@ -29,6 +29,7 @@ const ListPxpData = forwardRef((props, ref) => {
   const [start, setStart] = useState(initPage);
   // Current value for search or filter
   const [value, setValue] = useState('');
+  const [refreshActive, setRefreshActive] = useState(false);
 
   const infiniteScroll = {
     hasMore: configData.hasMore,
@@ -37,8 +38,7 @@ const ListPxpData = forwardRef((props, ref) => {
       setStart(page * configData.limit);
     },
   };
-  const onSearch = (filter = null) => {
-    console.log('[SEARCH]', filter);
+  const onSearch = (filter = null, isRefresh = false) => {
     const filterConfig = {};
     if (filter && filter.search === true) {
       filterConfig.bottom_filter_fields = [filter.field].join();
@@ -54,10 +54,14 @@ const ListPxpData = forwardRef((props, ref) => {
       filter: filterConfig,
     }));
 
+    console.log('[STATES]', value, start, filter.value);
     if (start === -1) {
       setStart(0);
-    } else {
+    } else if (value !== filter.value) {
       setValue(filter.value);
+    } else {
+      setRefreshActive(isRefresh);
+      isRefreshActive(isRefresh);
     }
   };
 
@@ -85,6 +89,8 @@ const ListPxpData = forwardRef((props, ref) => {
         },
       });
 
+      setRefreshActive(false);
+      isRefreshActive(false);
       console.log('[RESP]', resp);
       if (resp && resp.datos) {
         resp.datos.forEach((item) => configData.data.push(item));
@@ -117,10 +123,10 @@ const ListPxpData = forwardRef((props, ref) => {
   });
   // active with change page or value search
   useEffect(() => {
-    if (configData.hasMore && start >= 0) {
+    if ((configData.hasMore && start >= 0) || refreshActive) {
       getData();
     }
-  }, [start, value]);
+  }, [start, value, refreshActive]);
 
   return (
     <ListPxp
@@ -128,6 +134,7 @@ const ListPxpData = forwardRef((props, ref) => {
       config={config}
       FilterComponent={FilterComponent}
       heightFilter={heightFilter}
+      refresh={refresh}
     />
   );
 });

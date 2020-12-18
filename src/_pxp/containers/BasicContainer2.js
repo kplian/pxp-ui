@@ -8,6 +8,7 @@ import Fab from '@material-ui/core/Fab';
 import { makeStyles } from '@material-ui/core/styles';
 import { Scrollbars } from 'react-custom-scrollbars';
 import ArrowBack from '@material-ui/icons/ArrowBack';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import history from '../routers/History';
 import Breadcrumbs from '../utils/Breadcrumbs';
 
@@ -39,6 +40,7 @@ const BasicContainer = ({
   showBreadcrumbs = true,
   scrollBarRef,
   children,
+  width,
 }) => {
   const classes = useStyles();
   const myScrollBarRef = useRef();
@@ -72,4 +74,4 @@ const BasicContainer = ({
   );
 };
 
-export default BasicContainer;
+export default withWidth()(BasicContainer);

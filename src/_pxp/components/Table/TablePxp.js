@@ -289,8 +289,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const fileExport = (type = 'pdf') => {
     const configTable = dataConfig.getDataTable;
     const params = JSON.stringify(configTable.params);
-    // const module = configTable.module;
-    // const entity = configTable.entity;
     const columns = Object.keys(dataConfig.columns).map((key) => ({
       header: dataConfig.columns[key].label,
       dataKey: key,
