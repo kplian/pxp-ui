@@ -34,6 +34,7 @@ const CheckListColumn = ({ statesShowColumn, setStatesShowColumn }) => {
     });
   };
 
+  console.log('statesShowColumn',statesShowColumn)
   return (
     <>
       <TolPop icon={<ViewColumn />}>
