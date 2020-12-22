@@ -62,6 +62,10 @@ const useStyles = makeStyles((theme) => ({
   actions: {
     justifyContent: 'center',
   },
+  icon: {
+    fontFamily: 'Material Icons'
+  }
+
 }));
 
 const Item = ({ item, config }) => {
@@ -140,7 +144,7 @@ const Item = ({ item, config }) => {
               aria-label="show more"
               color={action.color || 'primary'}
             >
-              <Icon>
+              <Icon className={classes.icon}>
                 {typeof action.icon === 'function'
                   ? action.icon(stateItem)
                   : action.icon}
