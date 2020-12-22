@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CheckListColumn = ({ statesShowColumn, setStatesShowColumn }) => {
+const CheckListColumn = ({ statesShowColumn, setStatesShowColumn, dataConfig }) => {
   const classes = useStyles();
 
   const handleChange = (event) => {
@@ -35,6 +35,9 @@ const CheckListColumn = ({ statesShowColumn, setStatesShowColumn }) => {
   };
 
   console.log('statesShowColumn',statesShowColumn)
+  console.log('statesShowColumn',setStatesShowColumn)
+  console.log('dataConfig',dataConfig)
+
   return (
     <>
       <TolPop icon={<ViewColumn />}>
@@ -42,7 +45,7 @@ const CheckListColumn = ({ statesShowColumn, setStatesShowColumn }) => {
           <FormControl component="fieldset" className={classes.formControl}>
             <FormLabel component="legend">Show Columns</FormLabel>
             <FormGroup>
-              {Object.entries(statesShowColumn).map(([nameKey]) => (
+              {Object.entries(statesShowColumn).map(([nameKey], index) => (
                 <FormControlLabel
                   key={`checklist_${nameKey}`}
                   control={
@@ -52,7 +55,13 @@ const CheckListColumn = ({ statesShowColumn, setStatesShowColumn }) => {
                       name={nameKey}
                     />
                   }
-                  label={nameKey}
+                  label={
+                    index > 0
+                      ? dataConfig.columns[nameKey]
+                        ? dataConfig.columns[nameKey].label
+                        : ''
+                      : nameKey
+                  }
                 />
               ))}
             </FormGroup>
