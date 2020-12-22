@@ -27,6 +27,7 @@ const TableBodyPxp = ({
   selected,
   lastBookElementRef,
   dataRows,
+  hasActionsColumn,
 }) => {
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
@@ -109,17 +110,19 @@ const TableBodyPxp = ({
                 },
               )}
 
-              <TableCell align="right">
-                {dataConfig.actionsTableCell &&
-                typeof dataConfig.actionsTableCell.onClick === 'function' ? (
-                  <ButtonPxp
-                    icon={dataConfig.actionsTableCell.icon}
-                    onClick={() => dataConfig.actionsTableCell.onClick(row)}
-                  />
-                ) : (
-                  <MenuTableCell buttons={buttonsTableCell} row={row} />
-                )}
-              </TableCell>
+              {hasActionsColumn && (
+                <TableCell align="right">
+                  {dataConfig.actionsTableCell &&
+                  typeof dataConfig.actionsTableCell.onClick === 'function' ? (
+                    <ButtonPxp
+                      icon={dataConfig.actionsTableCell.icon}
+                      onClick={() => dataConfig.actionsTableCell.onClick(row)}
+                    />
+                  ) : (
+                    <MenuTableCell buttons={buttonsTableCell} row={row} />
+                  )}
+                </TableCell>
+              )}
             </TableRow>
           );
         })}
