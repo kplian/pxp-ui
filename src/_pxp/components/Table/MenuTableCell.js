@@ -30,33 +30,37 @@ const MenuTableCell = ({ buttons, row, icon }) => {
 
   return (
     <div>
-      <IconButton
-        aria-label="more"
-        aria-controls="long-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-      >
-        {icon || <MoreVertIcon />}
-      </IconButton>
-      <Menu
-        id="long-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          style: {
-            maxHeight: ITEM_HEIGHT * 4.5,
-            width: '50ch',
-          },
-        }}
-      >
-        <MenuItemTableCell
-          buttons={buttons}
-          row={row}
-          handleClose={handleClose}
-        />
-      </Menu>
+      {Object.entries(buttons).length > 0 && (
+        <>
+          <IconButton
+            aria-label="more"
+            aria-controls="long-menu"
+            aria-haspopup="true"
+            onClick={handleClick}
+          >
+            {icon || <MoreVertIcon />}
+          </IconButton>
+          <Menu
+            id="long-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              style: {
+                maxHeight: ITEM_HEIGHT * 4.5,
+                width: '50ch',
+              },
+            }}
+          >
+            <MenuItemTableCell
+              buttons={buttons}
+              row={row}
+              handleClose={handleClose}
+            />
+          </Menu>
+        </>
+      )}
     </div>
   );
 };

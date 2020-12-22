@@ -87,6 +87,7 @@
  *  id: 1000, // number
  *  component: 'WEB__Home', // the menu that you have in your pages
  * }
+ * @param inMaintenance Set webapp in mode maintance, define true or false.
  */
 
 export default {
@@ -131,6 +132,7 @@ export default {
     signup: false,
     loginDialog: 'CTA__Login',
   },
+  inMaintenance: false,
   // customPrivateRoutes: [
   //   {
   //     id: 1000,
