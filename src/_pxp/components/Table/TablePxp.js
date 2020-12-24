@@ -705,6 +705,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
             defaultFilterValue={
               dataConfig.getDataTable.params.bottom_filter_value || ''
             }
+            dataConfig={dataConfig}
           />
           {
             <DrawTable

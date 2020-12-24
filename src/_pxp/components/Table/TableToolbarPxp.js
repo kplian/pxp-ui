@@ -90,6 +90,7 @@ const TableToolbarPxp = (props) => {
     buttonCheckList,
     columnForSearchCount,
     defaultFilterValue,
+    dataConfig,
   } = props;
 
   return (
@@ -181,6 +182,7 @@ const TableToolbarPxp = (props) => {
             <CheckListColumn
               statesShowColumn={statesShowColumn}
               setStatesShowColumn={setStatesShowColumn}
+              dataConfig={dataConfig}
             />
           )}
         </>

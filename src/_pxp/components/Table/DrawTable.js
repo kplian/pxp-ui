@@ -4,7 +4,7 @@
  * @uthor Favio Figueroa
  *
  */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TableContainer from '@material-ui/core/TableContainer';
 import Table from '@material-ui/core/Table';
@@ -12,9 +12,11 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Paper from '@material-ui/core/Paper';
+import { webSocketListener } from 'pxp-client';
 import SkeletonLoading from './SkeletonLoading';
 import TableBodyPxp from './TableBodyPxp';
 import TableHeadPxp from './TableHeadPxp';
+import Pxp from '../../../Pxp';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,6 +63,10 @@ const DrawTable = ({
   const classes = useStyles();
 
   const { paginationType } = dataConfig;
+  const [hasActionsColumn, setHasActionsColumn] = useState({
+    active: false,
+    type: undefined, // can be dropdown and click
+  });
 
   const numColumnActives = Object.entries(statesShowColumn).filter(
     ([nameKey, values]) => {
@@ -69,6 +75,24 @@ const DrawTable = ({
       }
     },
   );
+
+  // mount
+  useEffect(() => {
+    if (
+      Object.entries(buttonsTableCell).length > 0 &&
+      typeof dataConfig.actionsTableCell.onClick !== 'function'
+    ) {
+      setHasActionsColumn({
+        active: true,
+        type: 'dropDown',
+      });
+    } else if (typeof dataConfig.actionsTableCell.onClick === 'function') {
+      setHasActionsColumn({
+        active: true,
+        type: 'click',
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -90,6 +114,7 @@ const DrawTable = ({
               rowCount={dataRows.length}
               headCells={dataConfig.columns}
               statesShowColumn={statesShowColumn}
+              hasActionsColumn={hasActionsColumn}
             />
           )}
 
@@ -112,6 +137,7 @@ const DrawTable = ({
                 jsonStore={jsonStore}
                 lastBookElementRef={lastBookElementRef}
                 dataRows={dataRows}
+                hasActionsColumn={hasActionsColumn}
               />
               {dataConfig.tableFooter && dataFooter && (
                 <TableFooter>
