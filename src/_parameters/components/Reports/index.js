@@ -1,56 +1,133 @@
-import React from 'react'
-import { Grid, Paper } from '@material-ui/core';
+import React, { useEffect } from 'react'
+import {
+  Grid,
+  Hidden,
+  IconButton,
+  Fab,
+  Drawer
+} from '@material-ui/core';
 import ConfigReport from './ConfigReport';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  useParams,
   useRouteMatch
 } from 'react-router-dom';
-import TableReport from './TableReport';
-import FilterReport from './FilterReport';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import ViewReport from './ViewReport';
+import Pxp from '../../../Pxp';
 
+import { makeStyles } from '@material-ui/core/styles';
+
+const drawerWidth = 240;
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    position: 'relative',
+  },
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+    position: 'absolute',
+    top: theme.spacing(1),
+    left: theme.spacing(1),
+    zIndex: theme.zIndex.modal,
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
+  },
+  empty: {
+    paddingTop: theme.spacing(4),
+    textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1rem',
+    },
+  },
+  // necessary for content to be below app bar
+  drawerPaper: {
+    width: drawerWidth,
+    position: 'relative'
+  },
+  content: {
+    flexGrow: 1,
+    paddingLeft: theme.spacing(1),
+    [theme.breakpoints.down('xs')]: {
+      padding: theme.spacing(0),
+    },
+  },
+}));
 
 const Reports = () => {
   let { path, url } = useRouteMatch();
-  const [filters, setFilters] = React.useState({});
+  const [columns, setColumns] = React.useState([]);
+  const classes = useStyles();
 
-  const columns = [
-    {
-      name: 'Reporte Generales',
-      id: 1,
-    },
-    {
-      name: 'Reportes Gráficos',
-      id: 1,
-    }
-  ];
+  const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const changeReport = (report) => {
-    console.log('[filters]', report);
-    setFilters(JSON.parse(report.filters));
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
   };
 
+  useEffect(() => {
+    Pxp.apiClient.doRequest({
+      url: `reports/groups`,
+      method: 'GET',
+    }).then(setColumns);
+  }, []);
+
   return (
-    <div>
-      <Grid container spacing={2}>
-        <Grid item sm={12} md={4} lg={3}>
-          <ConfigReport columns={columns} ></ConfigReport>
-        </Grid>
-        <Grid item sm={12} md={8} lg={9}>
+    <div className={classes.root} id="drawer-report-container">
+      <Fab
+        size="small"
+        color="secondary"
+        aria-label="Report List"
+        className={classes.menuButton}
+        onClick={handleDrawerToggle}
+      >
+        <MenuOpenIcon />
+      </Fab>
+      <nav className={classes.drawer} aria-label="mailbox folders">
+        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+        <Hidden smUp implementation="css">
+          <Drawer
+            container={document.getElementById('drawer-report-container')}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+          >
+            <ConfigReport columns={columns} onRowClick={handleDrawerToggle}></ConfigReport>
+          </Drawer>
+        </Hidden>
+        <Hidden xsDown implementation="css">
+          <Drawer
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            variant="permanent"
+            open
+          >
+            <ConfigReport columns={columns} ></ConfigReport>
+          </Drawer>
+        </Hidden>
+      </nav>
+      <main className={classes.content}>
           <Switch>
             <Route exact path={path}>
-              <h3>Please select a report.</h3>
+            <h3 className={classes.empty}>Please select a report.</h3>
             </Route>
             <Route path={`${path}/:reportId`}>
               <ViewReport></ViewReport>
             </Route>
           </Switch>
-        </Grid>
-      </Grid>
+      </main>
     </div>
   )
 }
