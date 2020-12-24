@@ -12,11 +12,11 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Paper from '@material-ui/core/Paper';
+import { webSocketListener } from 'pxp-client';
 import SkeletonLoading from './SkeletonLoading';
 import TableBodyPxp from './TableBodyPxp';
 import TableHeadPxp from './TableHeadPxp';
 import Pxp from '../../../Pxp';
-import { webSocketListener } from 'pxp-client';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,7 +63,10 @@ const DrawTable = ({
   const classes = useStyles();
 
   const { paginationType } = dataConfig;
-  const [hasActionsColumn, setHasActionsColumn] = useState();
+  const [hasActionsColumn, setHasActionsColumn] = useState({
+    active: false,
+    type: undefined, // can be dropdown and click
+  });
 
   const numColumnActives = Object.entries(statesShowColumn).filter(
     ([nameKey, values]) => {
@@ -79,13 +82,17 @@ const DrawTable = ({
       Object.entries(buttonsTableCell).length > 0 &&
       typeof dataConfig.actionsTableCell.onClick !== 'function'
     ) {
-      setHasActionsColumn(true);
-    } else {
-      setHasActionsColumn(false);
+      setHasActionsColumn({
+        active: true,
+        type: 'dropDown',
+      });
+    } else if (typeof dataConfig.actionsTableCell.onClick === 'function') {
+      setHasActionsColumn({
+        active: true,
+        type: 'click',
+      });
     }
   }, []);
-
-
 
   return (
     <>

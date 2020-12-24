@@ -71,10 +71,10 @@ const TableHeadPxp = (props) => {
             )}
           </React.Fragment>
         ))}
-        {hasActionsColumn && (
+        {hasActionsColumn.active(
           <TableCell style={{ width: '5%' }} align="right">
             Actions
-          </TableCell>
+          </TableCell>,
         )}
       </TableRow>
     </TableHead>

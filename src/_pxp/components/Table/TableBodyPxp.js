@@ -110,9 +110,10 @@ const TableBodyPxp = ({
                 },
               )}
 
-              {hasActionsColumn && (
+              {hasActionsColumn.active && (
                 <TableCell align="right">
-                  {dataConfig.actionsTableCell &&
+                  {hasActionsColumn.type === 'click' &&
+                  dataConfig.actionsTableCell &&
                   typeof dataConfig.actionsTableCell.onClick === 'function' ? (
                     <ButtonPxp
                       icon={dataConfig.actionsTableCell.icon}
