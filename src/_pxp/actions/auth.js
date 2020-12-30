@@ -267,7 +267,7 @@ export const startSetMenu = () => {
         return resp;
       })
       .catch((err) => {
-        return err.message;
+        return err;
       });
   };
 };
