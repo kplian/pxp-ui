@@ -19,7 +19,7 @@ import {
   grayColor,
 } from '../pxp-ui';
 
-const profilePageStyle = {
+const profilePageStyle = (theme) => ({
   container,
   ...imagesStyle,
   ...tooltipsStyle,
@@ -31,6 +31,12 @@ const profilePageStyle = {
   profile: {
     textAlign: 'center',
     '& img': {
+      maxWidth: '160px',
+      width: '100%',
+      margin: '0 auto',
+      // transform: 'translate3d(0, -50%, 0)',
+    },
+    '& button': {
       maxWidth: '160px',
       width: '100%',
       margin: '0 auto',
@@ -155,7 +161,7 @@ const profilePageStyle = {
   },
   iconEmpty: {
     color: '#afafaf',
-  },
-};
+  }, 
+});
 
 export default profilePageStyle;

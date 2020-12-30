@@ -7,6 +7,21 @@ import {
 } from 'react-router-dom';
 import Pxp from '../../../Pxp';
 import moment from 'moment';
+import { Scrollbars } from 'react-custom-scrollbars';
+import useWindowSize from '../../../_pxp/hooks/useWindowSize';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles(theme => ({
+  title: {
+    marginTop: '2px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.1rem',
+      textAlign: 'center',
+      marginBottom: '2px',
+    },
+  }
+}));
 
 const columnsAddGridForm = (filters) => {
   Object.keys(filters).forEach(key => {
@@ -50,7 +65,11 @@ const ViewReport = () => {
   const [name, setName] = useState(null);
   const [load, setLoad] = useState(true);
   const [values, setValues] = useState(null);
+  const [reportId, setReportId] = useState(null);
   const params = useParams();
+  const size = useWindowSize();
+  const [heightScreen, setHeightScreen] = useState(size.height);
+  const classes = useStyles();
 
   const changeFilters = (values) => {
     setValues(JSON.stringify(values));
@@ -74,14 +93,43 @@ const ViewReport = () => {
   };
 
   useEffect(() => {
-    getReportData(params.reportId);
+    setReportId(params.reportId);
   }, [params]);
+
+  useEffect(() => {
+    if (reportId) {
+      console.log('[modificando]', params);
+      getReportData(params.reportId);
+    }
+  }, [reportId]);
+
+  useEffect(() => {
+    setHeightScreen(size.height);
+  }, [size]);
+
   return (
     <div>
       { load && <LinearProgress color="secondary" />}
       { !load && <FilterReport columns={filters} changeFilters={changeFilters} values={values} />}
-      { !load && <h2>{name}</h2>}
-      { !load && <TableReport columns={columns} filters={values} />}
+      { !load && <h2 className={classes.title}>{name}</h2>}
+
+      <Scrollbars
+        autoHide
+        renderView={(props) => (
+          <div
+            {...props}
+            style={{ ...props.style, overflowX: 'hidden', marginBottom: 0 }}
+          />
+        )}
+        style={{
+          minHeight: '250px',
+          height: `calc(${heightScreen}px - 190px)`,
+        }}
+      >
+        {!load &&
+          <TableReport columns={columns} filters={values} />
+        }
+      </Scrollbars>
     </div>
   )
 };

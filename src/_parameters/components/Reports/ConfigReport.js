@@ -41,7 +41,7 @@ const AccordionSummary = withStyles((theme) => ({
   },
   expanded: {},
 }))(MuiAccordionSummary);
-const ConfigReport = ({ columns = [] }) => {
+const ConfigReport = ({ columns = [], onRowClick }) => {
 
   const [expanded, setExpanded] = React.useState('panel0');
 
@@ -54,9 +54,9 @@ const ConfigReport = ({ columns = [] }) => {
       { columns.map((column, i) =>
         <Accordion square expanded={expanded === 'panel' + i} onChange={handleChange('panel' + i)} key={'panel-report-' + i}>
           <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-            <Typography>{column.name}</Typography>
+            <Typography>{column.title}</Typography>
           </AccordionSummary>
-          <ListReport></ListReport>
+          <ListReport groupId={column.reportGroupId} onRowClick={onRowClick}></ListReport>
         </Accordion>
       )}
     </div>

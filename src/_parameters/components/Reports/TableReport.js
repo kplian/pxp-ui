@@ -74,16 +74,16 @@ const TableReport = ({ columns, filters = null }) => {
 
 
   useEffect(() => {
+    const ac = new AbortController();
     if (columns) {
       generateData();
     }
+    return () => ac.abort();
   }, [columns, filters]);
 
   return (
     <div>
-      {
-        <TablePxp dataConfig={tableConfig} ref={refTable}></TablePxp>
-      }
+      <TablePxp dataConfig={tableConfig} ref={refTable}></TablePxp>
     </div>
   )
 }

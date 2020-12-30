@@ -82,7 +82,7 @@ const SocialLogin = forwardRef(() => {
       token: response.accessToken,
       name: response.name.split(' ', 2)[0],
       surname: response.name.split(' ', 2)[1],
-      device: 'web',
+      device: 'web', 
       type: 'facebook',
       language,
     };
@@ -122,6 +122,7 @@ const SocialLogin = forwardRef(() => {
           <FacebookLogin
             appId={process.env.REACT_APP_FACEBOOK_KEY}
             callback={responseFacebook}
+            disableMobileRedirect={true}
             render={(renderProps) => (
               <LoadButton
                 variant="contained"

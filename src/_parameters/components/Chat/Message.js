@@ -38,7 +38,9 @@ function Message({
   userNameSuplant,
   ...rest
 }) {
-  console.log(userNameFrom)
+  console.log(userNameFrom);
+  console.log('user',user);
+  console.log('idFrom',idFrom);
   const classes = useStyles();
   const dateMessage = date || new Date();
   return (
