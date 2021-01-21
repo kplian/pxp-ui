@@ -10,7 +10,7 @@ import moment from 'moment';
 import { Scrollbars } from 'react-custom-scrollbars';
 import useWindowSize from '../../../_pxp/hooks/useWindowSize';
 import { makeStyles } from '@material-ui/core/styles';
-
+import MasterDetail from './MasterDetail';
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -61,6 +61,7 @@ const getDefaultValues = (filters) => {
 
 const ViewReport = () => {
   const [columns, setColumns] = useState({});
+  const [config, setConfig] = useState({});
   const [filters, setFilters] = useState({});
   const [name, setName] = useState(null);
   const [load, setLoad] = useState(true);
@@ -84,8 +85,9 @@ const ViewReport = () => {
 
       let filters = columnsAddGridForm(JSON.parse(report.filters));
       setFilters(filters);
-      const columns = JSON.parse(report.config);
-      setColumns(columns);
+      const config = JSON.parse(report.config);
+      setConfig(config);
+      setColumns(config.columns);
       setValues(JSON.stringify(getDefaultValues(filters)));
       setName(report.name);
       setLoad(false);
@@ -98,7 +100,6 @@ const ViewReport = () => {
 
   useEffect(() => {
     if (reportId) {
-      console.log('[modificando]', params);
       getReportData(params.reportId);
     }
   }, [reportId]);
@@ -126,7 +127,14 @@ const ViewReport = () => {
           height: `calc(${heightScreen}px - 190px)`,
         }}
       >
-        {!load &&
+        {!load && config.detail &&
+          // <TableReport columns={columns} filters={values} />
+          <MasterDetail>
+            <TableReport columns={columns} filters={values} />
+            <TableReport columns={config.columnsDetail} filters={values} isDetail />
+          </MasterDetail>
+        }
+        {!load && !config.detail &&
           <TableReport columns={columns} filters={values} />
         }
       </Scrollbars>

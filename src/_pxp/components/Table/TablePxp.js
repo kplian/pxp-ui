@@ -84,7 +84,9 @@ function useWidth() {
   );
 }
 
-const TablePxp = forwardRef(({ dataConfig }, ref) => {
+const TablePxp = forwardRef(({ dataConfig, formOpen = null }, ref) => {
+  // ref form From component
+  const formRef = useRef(null);
   const isVersion2 = Pxp.apiClient.backendVersion === 'v2';
   const width = useWidth();
   const classes = useStyles();
@@ -684,6 +686,18 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     });
   }
 
+  /** 
+   * Active refFrom when dialog is open
+   */
+  useEffect(() => {
+    if (openDialog && formOpen) {
+      setTimeout(() => {
+        console.log('[REF FROM]', formRef.current);
+        formOpen(formRef.current);
+      }, 100);
+    }
+  }, [openDialog])
+
   return (
     <>
       <div className={classes.root}>
@@ -772,7 +786,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
           </Toolbar>
         </AppBar>
         <DialogContent>
-          <Form dialog data={configFormState} />
+          <Form dialog data={configFormState} ref={formRef} />
         </DialogContent>
       </Dialog>
       <Confirm

@@ -31,6 +31,7 @@ import PageviewIcon from '@material-ui/icons/Pageview';
 import HeaderSectionAccountStatus from './HeaderSectionAccountStatus';
 import { currencyFormat, formatNumber } from '../../utils/Common';
 import { useTranslation } from 'react-i18next';
+import { red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -90,15 +91,17 @@ const AccountStatus = ({ code, tableId }) => {
   const classes = useStyles();
   const format = 'YYYY-MM-DD';
   const now = moment();
-  const [startDate, setStartDate] = useState(moment(now.format('YYYY-MM-01'), format).toDate());
+  const [startDate, setStartDate] = useState(
+    moment(now.format('YYYY-MM-01'), format).toDate(),
+  );
   const [endDate, setEndDate] = useState(now.toDate());
 
   const [hasBeenRefreshed, setHasBeenRefreshed] = useState();
   const tableRef = useRef();
   const search = () => {
-    console.log(tableRef.current);
-    console.log(moment(startDate).format(format));
-    console.log(moment(endDate).format(format));
+    // console.log(tableRef.current);
+    // console.log(moment(startDate).format(format));
+    // console.log(moment(endDate).format(format));
 
     tableRef.current.jsonStore.set((prevData) => {
       if (prevData) {
@@ -113,7 +116,6 @@ const AccountStatus = ({ code, tableId }) => {
       }
     });
   };
-
 
   const config = {
     nameForm: t('account_status'),
@@ -149,14 +151,14 @@ const AccountStatus = ({ code, tableId }) => {
       typeTransaction: {
         type: 'Dropdown',
         label: t('type_transaction'),
-        initialValue: '',
+        initialValue: t('payment'),
         store: [
           { value: '', label: '' },
+          { value: 'payment', label: t('payment') },
+          { value: 'payment_in_advance', label: t('payment_in_advance') },
+          { value: 'adjusting_account', label: t('adjusting_account') },
           { value: 'account_payable', label: t('account_payable') },
           { value: 'account_receivable', label: t('account_receivable') },
-          { value: 'payment_in_advance', label: t('payment_in_advance') },
-          { value: 'payment', label: t('payment') },
-          { value: 'adjusting_account', label: t('adjusting_account') },
         ],
         gridForm: { xs: 12, sm: 6 },
         variant: 'outlined',
@@ -206,21 +208,23 @@ const AccountStatus = ({ code, tableId }) => {
             <Box display="flex" alignItems="center">
               <div>
                 <Typography variant="body2" color="inherit">
-                  <b>{t('type_transaction')} : {' '}</b>
+                  <b>{t('type_transaction')} : </b>
                   {t(row.typeTransaction)}
                 </Typography>
                 <Typography variant="body2" color="inherit">
-                  <b>{t('date')}:{' '}</b>
-                  {moment(row.date).format("DD-MM-YYYY")}
+                  <b>{t('date')}: </b>
+                  {moment(row.date).format('DD-MM-YYYY')}
                 </Typography>
                 <Typography variant="body2" color="inherit">
-                  <b>{t('description')}:{' '}</b>
+                  <b>{t('description')}: </b>
                   {row.description}
                 </Typography>
-                <Label color="success">
-                  <b>{t('amount')}:{' '}</b>
-                  {currencyFormat({value: row.amount})}
-                </Label>
+                {
+                  // <Label color="success">
+                  // <b>{t('amount')}:{' '}</b>
+                  // {currencyFormat({value: row.amount})}
+                  // </Label>
+                }
               </div>
             </Box>
           );
@@ -234,11 +238,26 @@ const AccountStatus = ({ code, tableId }) => {
         variant: 'outlined',
         validate: {
           // shape: Yup.string().required('Required'),
-          shape: Yup.string().required('Required').matches(/^(?:\d*\.\d{1,2}|\d+)$/, t('invalid_decimal_number'))
+          shape: Yup.string()
+            .required('Required')
+            .matches(/^(?:\d*\.\d{1,2}|\d+)$/, t('invalid_decimal_number')),
         },
         filters: { pfiltro: 'amount', type: 'string' },
         search: true,
-        renderColumn: (row) => currencyFormat({value: row.amount})
+        renderColumn: (row) => {
+          const formantAmount = currencyFormat({ value: row.amount });
+          return (
+            <span
+              style={{
+                color: parseFloat(row.amount) < 0 ? red[500] : null,
+                fontSize: '1rem',
+                textAlign: 'center',
+              }}
+            >
+              {formantAmount}
+            </span>
+          );
+        },
       },
     },
     getDataTable: {
@@ -248,7 +267,7 @@ const AccountStatus = ({ code, tableId }) => {
         start: '0',
         limit: '10',
         sort: 'createdAt',
-        dir: 'desc', // for seeing every time the last save
+        dir: 'ASC', // for seeing every time the last save
         tableId,
         code,
         startDate: moment(startDate).format(format),
@@ -291,6 +310,12 @@ const AccountStatus = ({ code, tableId }) => {
     } else {
       setEndDate(value);
     }
+  };
+
+  const formOpen = (formRef) => {
+
+    console.log('[ESTATESS]', formRef);
+    formRef.states.typeTransaction.setValue(t('payment'));
   };
 
   return (
@@ -355,7 +380,7 @@ const AccountStatus = ({ code, tableId }) => {
           </IconButton>
         </Box>
       </Box>
-      <TablePxp dataConfig={config} ref={tableRef} />
+      <TablePxp dataConfig={config} ref={tableRef} formOpen={formOpen} />
     </BasicContainer>
   );
 };

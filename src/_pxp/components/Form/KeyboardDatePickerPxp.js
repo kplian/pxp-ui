@@ -15,6 +15,14 @@ import {
 } from '@material-ui/pickers';
 
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import enLocale from 'date-fns/locale/en-US';
+import esLocale from 'date-fns/locale/es';
+import config from '../../../config';
+
+const localeMap = {
+  es: esLocale,
+  en: enLocale,
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -54,7 +62,7 @@ export const KeyboardDatePickerPxpComponent = ({
   };
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMap[config.translations.fallbackLng || 'en']}>
       <Grid key={`grid_${name}`} item {...gridForm}>
         <KeyboardDatePicker
           fullWidth
@@ -81,6 +89,7 @@ export const KeyboardDatePickerPxpComponent = ({
           {...minMaxDate}
           disabled={disabled}
           helperText={helperText}
+
         />
       </Grid>
     </MuiPickersUtilsProvider>

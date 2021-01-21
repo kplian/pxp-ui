@@ -5,7 +5,7 @@ import PdfIcon from '@material-ui/icons/PictureAsPdfRounded';
 import Icon from '@material-ui/core/Icon';
 import Pxp from '../../../Pxp';
 
-const TableReport = ({ columns, filters = null }) => {
+const TableReport = ({ columns, filters = null, isDetail = false }) => {
   const params = useParams();
   const refTable = useRef();
 
@@ -38,8 +38,9 @@ const TableReport = ({ columns, filters = null }) => {
   const tableConfig = {
     nameForm: 'Report',
     dataReader: {
-      dataRows: 'data',
-      total: 'count',
+      dataRows: isDetail ? 'dataDetail' : 'data',
+      total: isDetail ? 'countDetail' : 'count',
+      isDetail: isDetail
     },
     columns: columns,
     idStore: Object.keys(columns)[0] || 'id',

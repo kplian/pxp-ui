@@ -16,6 +16,7 @@ import { webSocketListener } from 'pxp-client';
 import SkeletonLoading from './SkeletonLoading';
 import TableBodyPxp from './TableBodyPxp';
 import TableHeadPxp from './TableHeadPxp';
+import TableFooterPxp from './TableFooterPxp';
 import Pxp from '../../../Pxp';
 
 const useStyles = makeStyles((theme) => ({
@@ -139,6 +140,14 @@ const DrawTable = ({
                 dataRows={dataRows}
                 hasActionsColumn={hasActionsColumn}
               />
+              <TableFooterPxp
+                colSpan={numColumnActives.length}
+                columns={dataConfig.columns}
+                data={dataRows}
+                totals={!dataConfig.dataReader.isDetail && data && data.totals ? data.totals : (dataConfig.dataReader.isDetail && data && data.totalsDetail ? data.totalsDetail : null)}
+                summary={data && data.summaryData ? data.summaryData : null}
+                dataReader={dataConfig.dataReader}
+              ></TableFooterPxp>
               {dataConfig.tableFooter && dataFooter && (
                 <TableFooter>
                   <TableRow>

@@ -34,9 +34,9 @@ const CheckListColumn = ({ statesShowColumn, setStatesShowColumn, dataConfig }) 
     });
   };
 
-  console.log('statesShowColumn',statesShowColumn)
-  console.log('statesShowColumn',setStatesShowColumn)
-  console.log('dataConfig',dataConfig)
+  // console.log('statesShowColumn',statesShowColumn)
+  // console.log('statesShowColumn',setStatesShowColumn)
+  // console.log('dataConfig',dataConfig)
 
   return (
     <>
