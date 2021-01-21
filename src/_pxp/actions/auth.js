@@ -262,12 +262,16 @@ export const startSetMenu = () => {
         },
       })
       .then((resp) => {
-        dispatch(setMenu(resp.data));
-        dispatch(setRoutes(findRoutes(resp.data)));
-        return resp;
+        if (resp.data && resp.data.length === 0) {
+          return { error: true };
+        } else {
+          dispatch(setMenu(resp.data));
+          dispatch(setRoutes(findRoutes(resp.data)));
+          return resp;
+        }
       })
       .catch((err) => {
-        return err.message;
+        return err;
       });
   };
 };
