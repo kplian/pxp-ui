@@ -7,7 +7,7 @@ import * as React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
-import { useTheme, withStyles } from '@material-ui/styles';
+import { useTheme, withStyles } from '@material-ui/core/styles';
 
 /*
 import { duration } from '../styles/transitions';

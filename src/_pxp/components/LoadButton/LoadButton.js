@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, CircularProgress } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   progress: {
@@ -12,12 +12,13 @@ const LoadButton = ({
   children,
   loading = false,
   component = null,
+  disabled = false,
   ...props
 }) => {
   const classes = useStyles();
   const Element = component || Button;
   return (
-    <Element {...props} disabled={loading}>
+    <Element {...props} disabled={disabled || loading}>
       {children}
       {loading && (
         <CircularProgress

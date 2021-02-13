@@ -88,12 +88,13 @@ const useStyles = makeStyles((theme) => ({
 const AccountStatus = ({ code, tableId }) => {
   const { t } = useTranslation();
   const classes = useStyles();
-  const [startDate, setStartDate] = useState(moment(new Date()).toDate());
-  const [endDate, setEndDate] = useState(moment(new Date()).toDate());
+  const format = 'YYYY-MM-DD';
+  const now = moment();
+  const [startDate, setStartDate] = useState(moment(now.format('YYYY-MM-01'), format).toDate());
+  const [endDate, setEndDate] = useState(now.toDate());
 
   const [hasBeenRefreshed, setHasBeenRefreshed] = useState();
   const tableRef = useRef();
-  const format = 'YYYY-MM-DD';
   const search = () => {
     console.log(tableRef.current);
     console.log(moment(startDate).format(format));
@@ -159,6 +160,9 @@ const AccountStatus = ({ code, tableId }) => {
         ],
         gridForm: { xs: 12, sm: 6 },
         variant: 'outlined',
+        validate: {
+          shape: Yup.string().required('Required'),
+        },
         /* onChange: (resObj) => {
           console.log(resObj);
           switch (resObj.value) {
@@ -184,23 +188,26 @@ const AccountStatus = ({ code, tableId }) => {
         format: 'YYYY-MM-DD',
         grid: false,
         variant: 'outlined',
+        gridForm: { xs: 12, sm: 6 },
       },
       description: {
         type: 'TextField',
         initialValue: '',
         label: t('description'),
-        gridForm: { xs: 12, sm: 4 },
+        gridForm: { xs: 12, sm: 6 },
         variant: 'outlined',
         validate: {
           shape: Yup.string().required('Required'),
         },
+        search: true,
+        filters: { pfiltro: 'description', type: 'string' },
         renderColumn: (row) => {
           return (
             <Box display="flex" alignItems="center">
               <div>
                 <Typography variant="body2" color="inherit">
                   <b>{t('type_transaction')} : {' '}</b>
-                  {row.typeTransaction}
+                  {t(row.typeTransaction)}
                 </Typography>
                 <Typography variant="body2" color="inherit">
                   <b>{t('date')}:{' '}</b>
@@ -223,12 +230,13 @@ const AccountStatus = ({ code, tableId }) => {
         type: 'TextField',
         initialValue: '',
         label: t('amount'),
-        gridForm: { xs: 12, sm: 4 },
+        gridForm: { xs: 12, sm: 6 },
         variant: 'outlined',
         validate: {
-          shape: Yup.string().required('Required'),
+          // shape: Yup.string().required('Required'),
+          shape: Yup.string().required('Required').matches(/^(?:\d*\.\d{1,2}|\d+)$/, t('invalid_decimal_number'))
         },
-        filters: { pfiltro: 'name', type: 'string' },
+        filters: { pfiltro: 'amount', type: 'string' },
         search: true,
         renderColumn: (row) => currencyFormat({value: row.amount})
       },

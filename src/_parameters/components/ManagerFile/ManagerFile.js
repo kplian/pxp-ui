@@ -113,15 +113,20 @@ const ManagerFile = ({
       })
       .then((resp) => {
         setLoadingScreen(false);
-        enqueueSnackbar(resp.detail.message, {
-          variant: !resp.error ? 'success' : 'error',
+        enqueueSnackbar('Success', {
+          variant: 'success',
           action: <Button>See all</Button>,
         });
         refManagerFileTable.current.handleRefresh();
+      })
+      .catch((err) => {
+        enqueueSnackbar(err.message, {
+          variant: 'error',
+        });
       });
   };
 
-  const openFile = () => {};
+  const openFile = () => { };
   const jsonItem = {
     tableName: 'Manager File',
     columns: {
@@ -155,21 +160,21 @@ const ManagerFile = ({
                   <CloudUploadIcon />
                 </Avatar>
               ) : (
-                <Avatar
-                  {...(row.id_archivo
-                    ? {
+                  <Avatar
+                    {...(row.id_archivo
+                      ? {
                         className: classes.avatarYellow,
                         onClick: () => window.open(getUrlForView(row)),
                       }
-                    : { className: classes.avatarRed })}
-                >
-                  {row.tipo_archivo === 'documento' ? (
-                    <InsertDriveFileIcon />
-                  ) : (
-                    <ImageIcon />
-                  )}
-                </Avatar>
-              )}
+                      : { className: classes.avatarRed })}
+                  >
+                    {row.tipo_archivo === 'documento' ? (
+                      <InsertDriveFileIcon />
+                    ) : (
+                        <ImageIcon />
+                      )}
+                  </Avatar>
+                )}
               {}
               <div>
                 <Typography variant="h6" color="inherit">
@@ -207,7 +212,7 @@ const ManagerFile = ({
         label: 'Valores',
         renderColumn: (row) => {
           let fieldTypeValue;
-          if(row.field_type_value) {
+          if (row.field_type_value) {
             fieldTypeValue = JSON.parse(row.field_type_value);
           } else {
             fieldTypeValue = [];
@@ -227,11 +232,11 @@ const ManagerFile = ({
                             display="block"
                             gutterBottom
                           >
-                            {fieldType.descripcion} : {fieldType.tipo === 'DateField' ? moment(fieldType.valor, 'DD-MM-YYYY').format('DD-MM-YYYY') : fieldType.valor }
+                            {fieldType.descripcion} : {fieldType.tipo === 'DateField' ? moment(fieldType.valor, 'DD-MM-YYYY').format('DD-MM-YYYY') : fieldType.valor}
                           </Typography>
                         ) : (
-                          <></>
-                        )}
+                            <></>
+                          )}
                       </>
                     );
                   })}
@@ -357,14 +362,19 @@ const ManagerFile = ({
       })
       .then((resp) => {
         setLoadingScreen(false);
-        enqueueSnackbar(resp.detail.message, {
-          variant: !resp.error ? 'success' : 'error',
+        enqueueSnackbar('Success', {
+          variant: 'success',
           action: <Button>See all</Button>,
         });
         refManagerFileTable.current.handleRefresh();
       })
       .catch((err) => {
-        console.log(err);
+        setLoadingScreen(false);
+        enqueueSnackbar(err.message, {
+          variant: 'error',
+          action: <Button>See all</Button>,
+        });
+        refManagerFileTable.current.handleRefresh();
       });
   };
 

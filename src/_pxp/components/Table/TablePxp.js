@@ -252,8 +252,9 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     parseInt(dataConfig.getDataTable.params.limit, 10);
 
   // init values pagination
+
   const [page, setPage] = React.useState(auxPage);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(
     parseInt(dataConfig.getDataTable.params.limit, 10),
   );
@@ -288,8 +289,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const fileExport = (type = 'pdf') => {
     const configTable = dataConfig.getDataTable;
     const params = JSON.stringify(configTable.params);
-    // const module = configTable.module;
-    // const entity = configTable.entity;
     const columns = Object.keys(dataConfig.columns).map((key) => ({
       header: dataConfig.columns[key].label,
       dataKey: key,
@@ -436,19 +435,19 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
         },
       })
       .then((resp) => {
-        if (!resp.error) {
-          enqueueSnackbar('Success', {
-            variant: 'success',
-            action: <Button>See all</Button>,
-          });
-          handleRefresh();
-        } else {
-          enqueueSnackbar(resp.detail.message, {
-            variant: 'error',
-            action: <Button>See all</Button>,
-          });
-        }
-      });
+        enqueueSnackbar('Success', {
+          variant: 'success',
+          action: <Button>See all</Button>,
+        });
+        handleRefresh();
+      })
+      .catch((err) => {
+        enqueueSnackbar(err.message, {
+          variant: 'error',
+        });
+        handleRefresh();
+      });;
+
   };
 
   // button toolbar
@@ -706,6 +705,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
             defaultFilterValue={
               dataConfig.getDataTable.params.bottom_filter_value || ''
             }
+            dataConfig={dataConfig}
           />
           {
             <DrawTable

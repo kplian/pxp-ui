@@ -83,5 +83,6 @@
   "account_receivable": "Cuenta por cobrar",
   "payment_in_advance": "Pago por adelantado",
   "payment": "Pago",
-  "adjusting_account": "Ajuste de cuenta"
+  "adjusting_account": "Ajuste de cuenta",
+  "invalid_decimal_number": "Ingrese un numero con 2 decimales. Ej. 53.26"
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import zIndex from '@material-ui/core/styles/zIndex';
 import { Scrollbars } from 'react-custom-scrollbars';
 import MobileNavigation from './components/MobileNavigation';

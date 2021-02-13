@@ -22,6 +22,7 @@ const TableHeadPxp = (props) => {
     onRequestSort,
     statesShowColumn,
     headCells,
+    hasActionsColumn,
   } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -70,9 +71,11 @@ const TableHeadPxp = (props) => {
             )}
           </React.Fragment>
         ))}
-        <TableCell style={{ width: '5%' }} align="right">
-          Actions
-        </TableCell>
+        {hasActionsColumn.active && (
+          <TableCell style={{ width: '5%' }} align="right">
+            Actions
+          </TableCell>
+        )}
       </TableRow>
     </TableHead>
   );

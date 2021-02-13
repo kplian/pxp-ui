@@ -27,6 +27,7 @@ const TableBodyPxp = ({
   selected,
   lastBookElementRef,
   dataRows,
+  hasActionsColumn,
 }) => {
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
@@ -71,7 +72,7 @@ const TableBodyPxp = ({
 
           return (
             <TableRow
-              key={`tableRow_${idStore}_${row[idStore]}`}
+              key={`tableRow_${idStore}_${row[idStore]}_${index}`}
               hover
               onClick={(event) => handleClickRow(event, row)}
               role="checkbox"
@@ -109,17 +110,20 @@ const TableBodyPxp = ({
                 },
               )}
 
-              <TableCell align="right">
-                {dataConfig.actionsTableCell &&
-                typeof dataConfig.actionsTableCell.onClick === 'function' ? (
-                  <ButtonPxp
-                    icon={dataConfig.actionsTableCell.icon}
-                    onClick={() => dataConfig.actionsTableCell.onClick(row)}
-                  />
-                ) : (
-                  <MenuTableCell buttons={buttonsTableCell} row={row} />
-                )}
-              </TableCell>
+              {hasActionsColumn.active && (
+                <TableCell align="right">
+                  {hasActionsColumn.type === 'click' &&
+                  dataConfig.actionsTableCell &&
+                  typeof dataConfig.actionsTableCell.onClick === 'function' ? (
+                    <ButtonPxp
+                      icon={dataConfig.actionsTableCell.icon}
+                      onClick={() => dataConfig.actionsTableCell.onClick(row)}
+                    />
+                  ) : (
+                    <MenuTableCell buttons={buttonsTableCell} row={row} />
+                  )}
+                </TableCell>
+              )}
             </TableRow>
           );
         })}

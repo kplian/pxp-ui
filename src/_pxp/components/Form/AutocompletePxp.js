@@ -44,7 +44,6 @@ const AutocompletePxpComponent = ({
   const { label, variant, store, isSearchable, gridForm } = configInput;
   const { dataRows } = store.dataReader; // this is the object that has the data for rendering
 
-
   // this handle has debounce for start with searching after 500 ms
   const handleInputChange = _.debounce(async (valueInput) => {
     if (
@@ -97,7 +96,7 @@ const AutocompletePxpComponent = ({
         onClose={() => {
           store.setOpen(false);
         }}
-        getOptionLabel={(option) => (option ? option[store.descDD] : '')}
+        getOptionLabel={(option) => (option ? option[store.descDD] : ' ')}
         getOptionSelected={(optionEq, valueEq) => {
           if (
             // we need to put this for not generating error when the autocomplete tries to find the value in the option
@@ -106,7 +105,7 @@ const AutocompletePxpComponent = ({
           ) {
             return true;
           }
-          return optionEq[store.idDD] === valueEq[store.idDD];
+          return valueEq && optionEq[store.idDD] === valueEq[store.idDD];
         }}
         options={
           dataStore
@@ -126,10 +125,10 @@ const AutocompletePxpComponent = ({
             InputProps={{
               ...params.InputProps,
               form: {
-                autocomplete: 'off',
                 autocomplete: 'chrome-off',
+                autoComplete: 'off',
               },
-              autocomplete: 'chrome-off',
+              //autocomplete: 'chrome-off',
               autoComplete: 'off',
               autoCorrect: 'off', // no standard, available only in safari
               endAdornment: (

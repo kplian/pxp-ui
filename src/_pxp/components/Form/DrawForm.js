@@ -286,18 +286,19 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
             if (typeof onSubmit.callback === 'function') {
               onSubmit.callback(resp, dataForSending);
             }
-          } else {
-            const messageError = resp.error ? resp.error.message : resp.detail.message;
-            enqueueSnackbar(messageError, {
-              variant: 'error',
-            });
           }
+          setLoadingScreen(false);
+        })
+        .catch((err) => {
+          enqueueSnackbar(err.message, {
+            variant: 'error',
+          });
           setLoadingScreen(false);
         });
     });
   };
 
-  //function for verify if the inputs are validated
+  // function for verify if the inputs are validated
   const formIsValidate = (e, callback) => {
     e.preventDefault();
     const values = {
@@ -308,10 +309,10 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
     getSchemaValidation(false, (schema) => {
       validateAllValues(schema, values);
       schema.isValid(values).then((valid) => {
-        callback(valid)
+        callback(valid);
       });
     });
-  }
+  };
 
   // logic for submit button
   const handleSubmitForm = (e) => {

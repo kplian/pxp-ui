@@ -141,9 +141,9 @@ const ThreadDetails = ({ eventWs, idChat, idComponent, idSuplant }) => {
           data.datos.map((i) => (
             <Message
               key={i.id_mensaje}
-              user={user}
+              user={parseInt(user, 10)}
               userNameFrom={i.user_name_from}
-              idFrom={i.id_usuario_from}
+              idFrom={parseInt(i.id_usuario_from, 10)}
               message={i.mensaje}
               date={i.fecha_reg}
               userNameSuplant={i.user_name_suplant}

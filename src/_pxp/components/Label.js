@@ -49,41 +49,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Label({ className, color, children, style, ...rest }) {
+const Label = ({
+  className = '',
+  color = 'secondary',
+  children,
+  style,
+  ...rest
+}) => {
   const classes = useStyles();
 
   return (
     <span
-      className={clsx(
-        classes.root,
-        {
-          [classes[color]]: color,
-        },
-        className,
-      )}
+      className={
+        clsx(classes.root, {
+          [classes[color]]: color
+        }, className)
+      }
       {...rest}
     >
       {children}
     </span>
   );
-}
+};
 
 Label.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   style: PropTypes.object,
-  color: PropTypes.oneOf([
-    'primary',
-    'secondary',
-    'error',
-    'warning',
-    'success',
-  ]),
-};
-
-Label.defaultProps = {
-  className: '',
-  color: 'secondary',
+  color: PropTypes.oneOf(['primary', 'secondary', 'error', 'warning', 'success'])
 };
 
 export default Label;
