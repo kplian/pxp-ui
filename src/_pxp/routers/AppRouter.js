@@ -295,7 +295,7 @@ const AppRouter = ({
                 </Suspense>
               </MainContainer>
             </Route>
-            <Route exact path={publicPaths}>
+              <Route exact={false} path={publicPaths}>
               <PublicContainer>
                 <Suspense
                   fallback={<LoadingScreen className={classes.loading} />}
@@ -306,7 +306,7 @@ const AppRouter = ({
                       key += 1;
                       return (
                         <Route
-                          exact
+                          exact={!pages[route].noExact}
                           key={key}
                           path={pages[route].path}
                           render={() => {
