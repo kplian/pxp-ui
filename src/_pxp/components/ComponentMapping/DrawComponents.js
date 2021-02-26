@@ -7,7 +7,7 @@
 import React, { useCallback, useRef } from 'react';
 import Item from './Item';
 
-const DrawComponents = ({ config, useJsonStoreRes }) => {
+const DrawComponents = ({ config, useJsonStoreRes, dataChanged = [] }) => {
   const { grid } = config;
   const { data, state, set, loading } = useJsonStoreRes;
   const { dataRows } = config.dataReader; // this is the object that has the data for rendering
@@ -51,6 +51,7 @@ const DrawComponents = ({ config, useJsonStoreRes }) => {
             {...(parseInt(data[dataRows].length, 10) === index + 1 && {
               ref: lastComponentRender,
             })}
+            dataChanged={dataChanged}
             // memoDisabled
           >
             {config.renderComponent(row, null)}

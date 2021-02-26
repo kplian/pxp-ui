@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DataBox = ({ className, title, amount, ...rest }) => {
+const DataBox = ({ className, title, amount, currencyCode, ...rest }) => {
   const classes = useStyles();
   const data = {
     value: '24,000',
@@ -53,20 +53,21 @@ const DataBox = ({ className, title, amount, ...rest }) => {
           <Typography variant="h3" color="textPrimary">
             {amount}
           </Typography>
-          {
-            false && <Label
+          {false && (
+            <Label
               className={classes.label}
               color={data.difference > 0 ? 'success' : 'error'}
             >
               {data.difference > 0 ? '+' : ''}
               {data.difference}%
-          </Label>
-          }
-
+            </Label>
+          )}
         </Box>
       </Box>
       <Avatar className={classes.avatar}>
-        <Typography variant="h4">{process.env.REACT_APP_CURRENCY || '$'}</Typography>
+        <Typography variant="h4">
+          {currencyCode || process.env.REACT_APP_CURRENCY || '$'}
+        </Typography>
       </Avatar>
     </Card>
   );
