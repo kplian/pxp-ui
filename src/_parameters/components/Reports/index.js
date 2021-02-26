@@ -121,7 +121,7 @@ const Reports = () => {
       <main className={classes.content}>
           <Switch>
             <Route exact path={path}>
-            <h3 className={classes.empty}>Please select a report.</h3>
+              <h3 className={classes.empty}>Please select a report.</h3>
             </Route>
             <Route path={`${path}/:reportId`}>
               <ViewReport></ViewReport>
