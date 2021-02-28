@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
     height:'77vh',
+    position: 'relative',
     backgroundColor: theme.palette.background.default,
   },
   backButton: {
@@ -30,12 +31,13 @@ const useStyles = makeStyles((theme) => ({
     padding: '5px',
     // position: 'absolute',
     width: '100%',
-    zIndex: 10,
+    zIndex: theme.zIndex.modal,
     bottom: '80px',
     left: '10px',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    backgroundColor: theme.palette.background.paper
   },
   content: {
     padding: '10px',
@@ -44,7 +46,8 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     height: 'calc(100% - 140px)',
-    width: '100%'
+    width: '100%',
+    overflow: 'hidden'
   },
   containerVertical: {
     width: '80%',
