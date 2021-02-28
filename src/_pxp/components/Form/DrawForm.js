@@ -88,6 +88,11 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
     {},
   );
 
+  useEffect(() => {
+    data.onLoad && data.onLoad(states)
+  }, []); // <-- empty array means 'run once'
+
+
   const getSchemaValidation = (byGroup = false, callback) => {
     const getValidations = (nameGroup) => {
       const validations = Object.entries(states)
