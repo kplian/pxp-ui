@@ -9,14 +9,14 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import StepConnector from '@material-ui/core/StepConnector';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import { Scrollbars } from 'react-custom-scrollbars';
 import clsx from 'clsx';
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    height:'77vh',
+    height: '100%',
     position: 'relative',
     backgroundColor: theme.palette.background.default,
   },
@@ -153,12 +153,22 @@ const Wizard = ({children, complete, orientation = 'horizontal'}) => {
           ))}
         </Stepper>
         <div className={ isVertical() ? classes.containerVertical: classes.container }>
-          <PerfectScrollbar options={{ suppressScrollX: true }}>
+          <Scrollbars autoHide
+            renderView={(props) => (
+              <div
+                {...props}
+                style={{ ...props.style, overflowX: 'hidden', marginBottom: 0 }}
+              />
+            )}
+            style={{
+              minHeight: '250px',
+              height: `calc(100%)`,
+            }}>
               <div className={ classes.content }>        
                   { activeStep === steps.length && <Typography className={classes.instructions}>All steps completed</Typography> }
                   { children[ activeStep ] }           
               </div>
-          </PerfectScrollbar>  
+          </Scrollbars>  
         </div>  
       </div>    
        <Paper elevation={6} className={ classes.paperButtons }>
