@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -112,14 +112,13 @@ const getSteps = children => children.map(({props}) => props);
 
 const Wizard = ({children, complete, orientation = 'horizontal'}) => {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
+  const [nextStepActive, setNextStepActive] = useState(false);
   const steps = getSteps( children );
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => {
-        children[prevActiveStep].props.onNext();
-        return prevActiveStep + 1;
-    });
+    children[activeStep].props.onNext();
+    setNextStepActive(true);
   };
 
   const handleBack = () => {
@@ -132,6 +131,15 @@ const Wizard = ({children, complete, orientation = 'horizontal'}) => {
 
   const isVertical = () => orientation === 'vertical';
 
+  useEffect(() => {
+    const isValid = children[activeStep].props.valid;
+    if (nextStepActive && isValid) {
+      setActiveStep((prevActiveStep) => {
+        return prevActiveStep + 1;
+      });
+      setNextStepActive(false);
+    }
+  }, [children, nextStepActive]);
   return (
     <Paper className={classes.root} elevation={6}>
       <div className={ isVertical() ? classes.contentV: classes.contentH }>
@@ -187,7 +195,15 @@ const Wizard = ({children, complete, orientation = 'horizontal'}) => {
                     >
                         Back
                     </Button>
-                    <Button variant="contained" color="primary" onClick={handleNext} disabled={!children[activeStep].props.valid}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleNext}
+            disabled={
+              false
+              //!children[activeStep].props.valid
+            }
+          >
                         {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                     </Button>
                 </React.Fragment>
