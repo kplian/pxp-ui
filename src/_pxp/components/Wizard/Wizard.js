@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -11,7 +11,7 @@ import Icon from '@material-ui/core/Icon';
 import StepConnector from '@material-ui/core/StepConnector';
 import { Scrollbars } from 'react-custom-scrollbars';
 import clsx from 'clsx';
-
+import LoadButton from '../LoadButton/LoadButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -110,11 +110,12 @@ const ColorlibConnector = withStyles({
 
 const getSteps = children => children.map(({props}) => props);
 
-const Wizard = ({children, complete, orientation = 'horizontal'}) => {
+const Wizard = ({ children, complete, loading = false, orientation = 'horizontal' }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [nextStepActive, setNextStepActive] = useState(false);
   const steps = getSteps( children );
+  const scrollRef = useRef(null);
 
   const handleNext = () => {
     children[activeStep].props.onNext();
@@ -138,6 +139,7 @@ const Wizard = ({children, complete, orientation = 'horizontal'}) => {
         return prevActiveStep + 1;
       });
       setNextStepActive(false);
+      scrollRef.current.scrollToTop();
     }
   }, [children, nextStepActive]);
   return (
@@ -168,6 +170,7 @@ const Wizard = ({children, complete, orientation = 'horizontal'}) => {
                 style={{ ...props.style, overflowX: 'hidden', marginBottom: 0 }}
               />
             )}
+            ref={scrollRef}
             style={{
               minHeight: '250px',
               height: `calc(100%)`,
@@ -195,17 +198,18 @@ const Wizard = ({children, complete, orientation = 'horizontal'}) => {
                     >
                         Back
                     </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleNext}
-            disabled={
-              false
-              //!children[activeStep].props.valid
-            }
-          >
-                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                    </Button>
+          <LoadButton
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+            loading={loading}
+                    disabled={
+                      false
+                      //!children[activeStep].props.valid
+                    }
+                  >
+                                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+          </LoadButton>
                 </React.Fragment>
             }              
         </Paper>  
