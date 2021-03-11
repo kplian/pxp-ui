@@ -105,5 +105,6 @@
   "payable":"cuenta por pagar",
   "wallet": "billetera",
   "Account Status": "Estado de Cuentas",
-  "interest payment": "pago de intereses"
+  "interest payment": "pago de intereses",
+  "add to debt": "adicionar a deuda"
 }
