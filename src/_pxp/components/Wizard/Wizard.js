@@ -45,7 +45,8 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '65vh',
   },
   container: {
-    height: 'calc(100% - 140px)',
+    position: 'relative',
+    height: 'calc(100% - 116px)',
     width: '100%',
     overflow: 'hidden'
   },
@@ -53,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
     width: '80%',
   },
   horizontalStepper: {
+    padding: theme.spacing(1),
     borderBottom: '1px solid ' + theme.palette.action.disabled,
   },
   verticalStepper: {
