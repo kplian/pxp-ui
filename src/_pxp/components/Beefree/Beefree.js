@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const Beefree = ({ afterSave, templateId }) => {
+  console.log(templateId)
   const classes = useStyles();
 
   const getDataTable = {
@@ -66,13 +67,16 @@ const Beefree = ({ afterSave, templateId }) => {
     console.log('useEffect data', data);
     if(data) {
       data.data && setTemplate(data.data.jsonTemplate);
+      console.log('init with template')
       setInit(true);
     }
     if(!templateId) {
+      console.log('init without template')
       setInit(true);
     }
 
   }, [data]);
+
 
   let id = templateId;
   const save = ({ jsonFile, htmlFile }) => {
@@ -84,7 +88,7 @@ const Beefree = ({ afterSave, templateId }) => {
           // name: '',
           htmlTemplate: htmlFile,
           jsonTemplate: jsonFile,
-          ...(id && { templateId: id }),
+          ...(id && { templateId: parseInt(id, 10) }),
         },
       })
       .then((resp) => {
@@ -114,7 +118,7 @@ const Beefree = ({ afterSave, templateId }) => {
         method: 'PATCH',
         params: {
           name: nameTemplate,
-          templateId: dataInsert.templateId,
+          templateId: parseInt(dataInsert.templateId, 10),
         },
       })
       .then((resp) => {
@@ -131,7 +135,7 @@ const Beefree = ({ afterSave, templateId }) => {
   };
 
   return (
-    <BasicContainer>
+    <>
       {init && <BeePage template={template} handleSave={save} />}
       <DialogPxp
         titleToolbar="name" // change your our description
@@ -168,7 +172,7 @@ const Beefree = ({ afterSave, templateId }) => {
           </Grid>
         </div>
       </DialogPxp>
-    </BasicContainer>
+    </>
   );
 };
 

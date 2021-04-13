@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, forwardRef, useImperativeHandle } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -45,7 +45,8 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '65vh',
   },
   container: {
-    height: 'calc(100% - 140px)',
+    position: 'relative',
+    height: 'calc(100% - 116px)',
     width: '100%',
     overflow: 'hidden'
   },
@@ -53,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
     width: '80%',
   },
   horizontalStepper: {
+    padding: theme.spacing(1),
     borderBottom: '1px solid ' + theme.palette.action.disabled,
   },
   verticalStepper: {
@@ -110,7 +112,7 @@ const ColorlibConnector = withStyles({
 
 const getSteps = children => children.map(({props}) => props);
 
-const Wizard = ({ children, complete, loading = false, orientation = 'horizontal' }) => {
+const Wizard = forwardRef(({ children, complete, loading = false, orientation = 'horizontal' }, ref) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [nextStepActive, setNextStepActive] = useState(false);
@@ -129,6 +131,11 @@ const Wizard = ({ children, complete, loading = false, orientation = 'horizontal
   const handleReset = () => {
     setActiveStep(0);
   };
+  useImperativeHandle(ref, () => {
+    return {
+      activeStep,
+    }
+  });
 
   const isVertical = () => orientation === 'vertical';
 
@@ -177,7 +184,15 @@ const Wizard = ({ children, complete, loading = false, orientation = 'horizontal
             }}>
               <div className={ classes.content }>        
                   { activeStep === steps.length && <Typography className={classes.instructions}>All steps completed</Typography> }
-                  { children[ activeStep ] }           
+              {
+                // children[ activeStep ] 
+              }
+              {
+                children.map((child, i) => <div key={'child_wz_' + i} style={{
+                  display: i === activeStep ? 'block' : 'none',
+                }}>{child}</div>)
+              }
+
               </div>
           </Scrollbars>  
         </div>  
@@ -215,7 +230,7 @@ const Wizard = ({ children, complete, loading = false, orientation = 'horizontal
         </Paper>  
     </Paper>
   );
-};
+});
 
 export default Wizard;
 const useColorlibStepIconStyles = makeStyles({
