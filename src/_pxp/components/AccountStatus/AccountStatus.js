@@ -316,7 +316,7 @@ const AccountStatus = ({
       },
       // todo need to add typeSend for change to send all in jsonFormat or normal pxp
     },
-    urlDelete: 'pxp/AccountStatusType/delete',
+    urlDelete: 'pxp/AccountStatus/delete',
     // paginationType: 'infiniteScrolling', // can be infiniteScrolling or pagination
   };
 
