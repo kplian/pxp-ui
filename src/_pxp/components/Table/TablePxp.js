@@ -340,12 +340,12 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   };
 
   const saveState = () => {
+    console.log('saved states', state.params);
     dispatch(
       setTableState(location.pathname, {
         ...state.params,
         sort: orderBy,
         dir: order,
-        start: '0',
       }),
     );
   };

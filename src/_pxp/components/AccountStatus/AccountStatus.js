@@ -85,12 +85,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AccountStatus = ({ code, tableId }) => {
+const AccountStatus = ({
+  code,
+  tableId,
+  typeTransactionForOptions = [],
+  currencyCode = 'Bs',
+}) => {
   const { t } = useTranslation();
   const classes = useStyles();
   const format = 'YYYY-MM-DD';
   const now = moment();
-  const [startDate, setStartDate] = useState(moment(now.format('YYYY-MM-01'), format).toDate());
+  const [startDate, setStartDate] = useState(
+    moment(now.format('YYYY-MM-01'), format).toDate(),
+  );
   const [endDate, setEndDate] = useState(now.toDate());
 
   const [hasBeenRefreshed, setHasBeenRefreshed] = useState();
@@ -114,7 +121,6 @@ const AccountStatus = ({ code, tableId }) => {
     });
   };
 
-
   const config = {
     nameForm: t('account_status'),
     dataReader: {
@@ -128,7 +134,10 @@ const AccountStatus = ({ code, tableId }) => {
       return (
         <>
           {dataHeaderSection && (
-            <HeaderSectionAccountStatus data={dataHeaderSection} />
+            <HeaderSectionAccountStatus
+              data={dataHeaderSection}
+              currencyCode={currencyCode}
+            />
           )}
         </>
       );
@@ -151,13 +160,34 @@ const AccountStatus = ({ code, tableId }) => {
         label: t('type_transaction'),
         initialValue: '',
         store: [
-          { value: '', label: '' },
-          { value: 'account_payable', label: t('account_payable') },
-          { value: 'account_receivable', label: t('account_receivable') },
-          { value: 'payment_in_advance', label: t('payment_in_advance') },
-          { value: 'payment', label: t('payment') },
-          { value: 'adjusting_account', label: t('adjusting_account') },
+          ...[{ value: '', label: '' }],
+          ...(typeTransactionForOptions.length === 0
+            ? [
+                {
+                  value: 'account_payable',
+                  label: t('Add Account'),
+                },
+                { value: 'account_receivable', label: t('account_receivable') },
+                { value: 'payment_in_advance', label: t('payment_in_advance') },
+                { value: 'payment', label: t('payment') },
+                { value: 'adjusting_account', label: t('adjusting_account') },
+              ]
+            : []),
+          ...typeTransactionForOptions,
         ],
+        /* store: [
+          { value: '', label: '' },
+          ...(typeTransactionForOptions.length === 0 && [
+            {
+              value: 'account_payable',
+              label: t('account_payable'),
+            },
+            { value: 'account_receivable', label: t('account_receivable') },
+            { value: 'payment_in_advance', label: t('payment_in_advance') },
+            { value: 'payment', label: t('payment') },
+            { value: 'adjusting_account', label: t('adjusting_account') },
+          ]),
+        ], */
         gridForm: { xs: 12, sm: 6 },
         variant: 'outlined',
         validate: {
@@ -206,20 +236,23 @@ const AccountStatus = ({ code, tableId }) => {
             <Box display="flex" alignItems="center">
               <div>
                 <Typography variant="body2" color="inherit">
-                  <b>{t('type_transaction')} : {' '}</b>
+                  <b>{t('type_transaction')} : </b>
                   {t(row.typeTransaction)}
                 </Typography>
                 <Typography variant="body2" color="inherit">
-                  <b>{t('date')}:{' '}</b>
-                  {moment(row.date).format("DD-MM-YYYY")}
+                  <b>{t('date')}: </b>
+                  {moment(row.date).format('DD-MM-YYYY')}
                 </Typography>
                 <Typography variant="body2" color="inherit">
-                  <b>{t('description')}:{' '}</b>
+                  <b>{t('description')}: </b>
                   {row.description}
                 </Typography>
                 <Label color="success">
-                  <b>{t('amount')}:{' '}</b>
-                  {currencyFormat({value: row.amount})}
+                  <b>{t('amount')}: </b>
+                  {currencyFormat({
+                    value: row.amount,
+                    currencyCode: currencyCode,
+                  })}
                 </Label>
               </div>
             </Box>
@@ -234,11 +267,13 @@ const AccountStatus = ({ code, tableId }) => {
         variant: 'outlined',
         validate: {
           // shape: Yup.string().required('Required'),
-          shape: Yup.string().required('Required').matches(/^(?:\d*\.\d{1,2}|\d+)$/, t('invalid_decimal_number'))
+          shape: Yup.string()
+            .required('Required')
+            .matches(/^(?:\d*\.\d{1,2}|\d+)$/, t('invalid_decimal_number')),
         },
         filters: { pfiltro: 'amount', type: 'string' },
         search: true,
-        renderColumn: (row) => currencyFormat({value: row.amount})
+        renderColumn: (row) => currencyFormat({ value: row.amount, currencyCode }),
       },
     },
     getDataTable: {
@@ -281,7 +316,7 @@ const AccountStatus = ({ code, tableId }) => {
       },
       // todo need to add typeSend for change to send all in jsonFormat or normal pxp
     },
-    urlDelete: 'pxp/AccountStatusType/delete',
+    urlDelete: 'pxp/AccountStatus/delete',
     // paginationType: 'infiniteScrolling', // can be infiniteScrolling or pagination
   };
 

@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(3),
   },
 }));
-const HeaderSectionAccountStatus = ({ data }) => {
+const HeaderSectionAccountStatus = ({ data, currencyCode }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -27,10 +27,10 @@ const HeaderSectionAccountStatus = ({ data }) => {
       <Container maxWidth={false}>
         <Grid container spacing={3}>
           <Grid item lg={6} sm={6} xs={12}>
-            <DataBox title={t('initial_balance')} amount={currencyFormat({value: data.initialBalance.sum_initial_balance})} />
+            <DataBox title={t('initial_balance')} amount={currencyFormat({value: data.initialBalance.sum_initial_balance, currencyCode})} currencyCode={currencyCode} />
           </Grid>
           <Grid item lg={6} sm={6} xs={12}>
-            <DataBox title={t('total_balance')} amount={currencyFormat({value:data.totalBalance})} />
+            <DataBox title={t('total_balance')} amount={currencyFormat({value:data.totalBalance, currencyCode})} currencyCode={currencyCode}/>
           </Grid>
           {/*<Grid item lg={3} sm={6} xs={12}>
             <DataBox title={"Positive"} amount={0} />

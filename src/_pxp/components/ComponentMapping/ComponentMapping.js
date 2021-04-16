@@ -10,7 +10,7 @@ import useJsonStore from '../../hooks/useJsonStore';
 import DrawComponents from './DrawComponents';
 import DrawSkeleton from './DrawSkeleton';
 
-const ComponentMapping = forwardRef(({ config }, ref) => {
+const ComponentMapping = forwardRef(({ config, dataChanged = [] }, ref) => {
   const { getDataTable, spacing = 3 } = config;
   const useJsonStoreRes = useJsonStore(getDataTable);
   const { data, state, set, loading } = useJsonStoreRes;
@@ -32,10 +32,17 @@ const ComponentMapping = forwardRef(({ config }, ref) => {
       setItemStates(aux);
     }
   }, [data]); */
+  const handleRefresh = () => {
+    set({
+      ...state,
+      refresh: true,
+    });
+  };
 
   useImperativeHandle(ref, () => {
     return {
       useJsonStoreRes,
+      handleRefresh,
     };
   });
 
@@ -43,7 +50,7 @@ const ComponentMapping = forwardRef(({ config }, ref) => {
     <>
       <Grid container spacing={spacing} key={`group_${1}`}>
         {data && (
-          <DrawComponents config={config} useJsonStoreRes={useJsonStoreRes} />
+          <DrawComponents config={config} useJsonStoreRes={useJsonStoreRes} dataChanged={dataChanged}/>
         )}
         {loading && (
           <DrawSkeleton

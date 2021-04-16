@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useRef, forwardRef, useImperativeHandle } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -9,14 +9,15 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import StepConnector from '@material-ui/core/StepConnector';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import { Scrollbars } from 'react-custom-scrollbars';
 import clsx from 'clsx';
-
+import LoadButton from '../LoadButton/LoadButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    height:'77vh',
+    height: '100%',
+    position: 'relative',
     backgroundColor: theme.palette.background.default,
   },
   backButton: {
@@ -30,12 +31,13 @@ const useStyles = makeStyles((theme) => ({
     padding: '5px',
     // position: 'absolute',
     width: '100%',
-    zIndex: 10,
+    zIndex: theme.zIndex.modal,
     bottom: '80px',
     left: '10px',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    backgroundColor: theme.palette.background.paper
   },
   content: {
     padding: '10px',
@@ -43,13 +45,16 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '65vh',
   },
   container: {
-    height: 'calc(100% - 140px)',
-    width: '100%'
+    position: 'relative',
+    height: 'calc(100% - 116px)',
+    width: '100%',
+    overflow: 'hidden'
   },
   containerVertical: {
     width: '80%',
   },
   horizontalStepper: {
+    padding: theme.spacing(1),
     borderBottom: '1px solid ' + theme.palette.action.disabled,
   },
   verticalStepper: {
@@ -107,16 +112,16 @@ const ColorlibConnector = withStyles({
 
 const getSteps = children => children.map(({props}) => props);
 
-const Wizard = ({children, complete, orientation = 'horizontal'}) => {
+const Wizard = forwardRef(({ children, complete, loading = false, orientation = 'horizontal' }, ref) => {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
+  const [nextStepActive, setNextStepActive] = useState(false);
   const steps = getSteps( children );
+  const scrollRef = useRef(null);
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => {
-        children[prevActiveStep].props.onNext();
-        return prevActiveStep + 1;
-    });
+    children[activeStep].props.onNext();
+    setNextStepActive(true);
   };
 
   const handleBack = () => {
@@ -126,9 +131,24 @@ const Wizard = ({children, complete, orientation = 'horizontal'}) => {
   const handleReset = () => {
     setActiveStep(0);
   };
+  useImperativeHandle(ref, () => {
+    return {
+      activeStep,
+    }
+  });
 
   const isVertical = () => orientation === 'vertical';
 
+  useEffect(() => {
+    const isValid = children[activeStep].props.valid;
+    if (nextStepActive && isValid) {
+      setActiveStep((prevActiveStep) => {
+        return prevActiveStep + 1;
+      });
+      setNextStepActive(false);
+      scrollRef.current.scrollToTop();
+    }
+  }, [children, nextStepActive]);
   return (
     <Paper className={classes.root} elevation={6}>
       <div className={ isVertical() ? classes.contentV: classes.contentH }>
@@ -150,12 +170,31 @@ const Wizard = ({children, complete, orientation = 'horizontal'}) => {
           ))}
         </Stepper>
         <div className={ isVertical() ? classes.containerVertical: classes.container }>
-          <PerfectScrollbar options={{ suppressScrollX: true }}>
+          <Scrollbars autoHide
+            renderView={(props) => (
+              <div
+                {...props}
+                style={{ ...props.style, overflowX: 'hidden', marginBottom: 0 }}
+              />
+            )}
+            ref={scrollRef}
+            style={{
+              minHeight: '250px',
+              height: `calc(100%)`,
+            }}>
               <div className={ classes.content }>        
                   { activeStep === steps.length && <Typography className={classes.instructions}>All steps completed</Typography> }
-                  { children[ activeStep ] }           
+              {
+                // children[ activeStep ] 
+              }
+              {
+                children.map((child, i) => <div key={'child_wz_' + i} style={{
+                  display: i === activeStep ? 'block' : 'none',
+                }}>{child}</div>)
+              }
+
               </div>
-          </PerfectScrollbar>  
+          </Scrollbars>  
         </div>  
       </div>    
        <Paper elevation={6} className={ classes.paperButtons }>
@@ -174,15 +213,24 @@ const Wizard = ({children, complete, orientation = 'horizontal'}) => {
                     >
                         Back
                     </Button>
-                    <Button variant="contained" color="primary" onClick={handleNext} disabled={!children[activeStep].props.valid}>
-                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                    </Button>
+          <LoadButton
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+            loading={loading}
+                    disabled={
+                      false
+                      //!children[activeStep].props.valid
+                    }
+                  >
+                                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+          </LoadButton>
                 </React.Fragment>
             }              
         </Paper>  
     </Paper>
   );
-};
+});
 
 export default Wizard;
 const useColorlibStepIconStyles = makeStyles({
