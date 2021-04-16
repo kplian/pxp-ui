@@ -55,9 +55,15 @@ export const formatNumber = ({ value }) => {
   return num.toLocaleString('en-US');
 };
 
-export const currencyFormat = ({ value }) => {
+export const currencyFormat = ({ value, currencyStr }) => {
   const num = parseFloat(value);
-  const currency = process.env.REACT_APP_CURRENCY || '$';
+  let currency;
+   if(currencyStr || currencyStr === '') {
+    currency = currencyStr;
+  } else {
+    currency = process.env.REACT_APP_CURRENCY || '$';
+
+  }
   return `${currency}${num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
 };
 
