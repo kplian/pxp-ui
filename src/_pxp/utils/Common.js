@@ -55,10 +55,13 @@ export const formatNumber = ({ value }) => {
   return num.toLocaleString('en-US');
 };
 
-export const currencyFormat = ({ value, currencyCode }) => {
+
+export const currencyFormat = ({ value, currencyCode, withCode = true }) => {
   const num = parseFloat(value);
   const currency = currencyCode || process.env.REACT_APP_CURRENCY || '$';
-  return `${currency}${num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
+  return `${withCode ? currency : ''}${num
+    .toFixed(2)
+    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
 };
 
 export const handleMouseTriggerComponent = (event) => event.preventDefault();

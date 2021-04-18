@@ -7,6 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import withStyles from "@material-ui/core/styles/withStyles";
+import {Typography} from "@material-ui/core";
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
@@ -16,9 +17,18 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const BasicTable = ({ columns, data }) => {
+const BasicTable = ({ tableName = '', columns, data }) => {
   return (
     <TableContainer component={Paper}>
+      <Typography
+        component="h3"
+        gutterBottom
+        variant="overline"
+        color="textSecondary"
+        align={"center"}
+      >
+        {tableName}
+      </Typography>
       <Table size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
