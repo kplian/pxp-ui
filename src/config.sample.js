@@ -101,6 +101,7 @@ export default {
   recaptchaKey: process.env.REACT_APP_RECAPTCHA_KEY,
   backendVersion: 'v1',
   backendRestVersion: '2',
+  urlLogin: 'auth/login',
   applicationName: 'ERP KPLIAN',
   privateInitRoute: '/exa/masterdetail',
   notFoundRoute: '/login',

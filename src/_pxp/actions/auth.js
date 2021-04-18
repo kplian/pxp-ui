@@ -238,7 +238,7 @@ export const startSetLanguage = ({ language }) => {
   };
 };
 
-export const startSetMenu = () => {
+export const startSetMenu = (url = 'pxp/Ui/list') => {
   console.log(Pxp.apiClient.backendVersion);
   return (dispatch) => {
     return Pxp.apiClient
@@ -246,7 +246,7 @@ export const startSetMenu = () => {
         method: Pxp.apiClient.backendVersion === 'v2' ? 'GET' : 'POST',
         url:
           Pxp.apiClient.backendVersion === 'v2'
-            ? 'pxp/Ui/list'
+            ? url
             : 'seguridad/Menu/getMenuJSON',
         params: {
           ...(Pxp.config.menu.system && {
