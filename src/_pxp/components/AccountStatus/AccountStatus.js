@@ -151,7 +151,7 @@ const AccountStatus = ({ code, tableId }) => {
       typeTransaction: {
         type: 'Dropdown',
         label: t('type_transaction'),
-        initialValue: t('payment'),
+        initialValue: 'payment',
         store: [
           { value: '', label: '' },
           { value: 'payment', label: t('payment') },
@@ -312,12 +312,6 @@ const AccountStatus = ({ code, tableId }) => {
     }
   };
 
-  const formOpen = (formRef) => {
-
-    console.log('[ESTATESS]', formRef);
-    formRef.states.typeTransaction.setValue(t('payment'));
-  };
-
   return (
     <BasicContainer>
       <Box p={2}>
@@ -380,7 +374,7 @@ const AccountStatus = ({ code, tableId }) => {
           </IconButton>
         </Box>
       </Box>
-      <TablePxp dataConfig={config} ref={tableRef} formOpen={formOpen} />
+      <TablePxp dataConfig={config} ref={tableRef} />
     </BasicContainer>
   );
 };

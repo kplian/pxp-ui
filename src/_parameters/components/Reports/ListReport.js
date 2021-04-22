@@ -24,6 +24,7 @@ const ListReport = ({ groupId, onRowClick }) => {
   const classes = useStyles();
   const [reports, setReports] = React.useState([]);
   const getReports = () => {
+    localStorage.setItem('currentFilterReport', '{}');
     Pxp.apiClient
       .doRequest({
         url: `reports/${groupId}`,

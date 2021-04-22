@@ -41,11 +41,10 @@ const FilterReport = ({ columns, changeFilters, values = null }) => {
     resetButton: false,
     submitLabel: 'Filtrar',
     onSubmit: ({ values }) => {
-      console.log('[values]', values);
       Object.keys(values).forEach(key => {
         const valueEmpty = values[key] === '' || values[key] === undefined;
         if (columns[key].type === 'AutoComplete' && valueEmpty) {
-          values[key] = '0';
+          values[key] = '%';
         } else if (valueEmpty) {
           values[key] = '%';
         }
@@ -65,11 +64,10 @@ const FilterReport = ({ columns, changeFilters, values = null }) => {
 
         switch (columns[key].type) {
           case 'AutoComplete': {
-            console.log('[ACTIVE]', valuesParse, key);
-            form[key].setValue({
-              [columns[key].store.idDD]: valuesParse[key],
-              [columns[key].store.descDD]: valuesParse[key],
-            });
+            // form[key].setValue({
+            //   // [columns[key].store.idDD]: valuesParse[key],
+            //   // [columns[key].store.descDD]: valuesParse[key],
+            // });
           } break;
           case 'DatePicker':
             form[key].setValue(moment(valuesParse[key], 'YYYY-MM-DD').toDate());
@@ -96,7 +94,7 @@ const FilterReport = ({ columns, changeFilters, values = null }) => {
       </Fab>
       <Collapse in={active} className={classes.collapse} >
         <Paper elevation={3} className={classes.paper}>
-          {active && <Form data={formFilter} ref={refForm}></Form>}
+          <Form data={formFilter} ref={refForm}></Form>
         </Paper>
       </Collapse>
     </div>

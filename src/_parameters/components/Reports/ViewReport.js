@@ -73,6 +73,7 @@ const ViewReport = () => {
   const classes = useStyles();
 
   const changeFilters = (values) => {
+    localStorage.setItem('currentFilterReport', JSON.stringify(values));
     setValues(JSON.stringify(values));
   };
 

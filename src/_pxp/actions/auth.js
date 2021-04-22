@@ -7,7 +7,7 @@ import Pxp from '../../Pxp';
 import history from '../routers/History';
 import { deleteNativeStorage } from '../utils/Common';
 
-export const findRoutes = (menu) => {
+export const findRoutes = (menu = []) => {
   let routes = [];
   menu.forEach((menuOption) => {
     const mo = menuOption;

@@ -20,7 +20,7 @@ const ListPxpData = forwardRef((props, ref) => {
     setConfigData({
       data: [],
       hasMore: true,
-      limit: 12,
+      limit: 10,
       total: 9999,
     });
   };
@@ -76,6 +76,7 @@ const ListPxpData = forwardRef((props, ref) => {
     if (configData.total > configData.data.length) {
       const resp = await Pxp.apiClient.doRequest({
         url: config.getDataTable.url,
+        method: config.getDataTable.method || 'GET',
         params: {
           // ...params,
           start,
@@ -91,19 +92,21 @@ const ListPxpData = forwardRef((props, ref) => {
 
       setRefreshActive(false);
       isRefreshActive(false);
-      console.log('[RESP]', resp);
-      if (resp && resp.datos) {
-        resp.datos.forEach((item) => configData.data.push(item));
+
+      const data = resp[config.dataReader.dataRows || 'datos'];
+      const total = resp[config.dataReader.total || 'total'];
+      if (resp && data) {
+        data.forEach((item) => configData.data.push(item));
 
         const { length } = configData.data;
-        const hasMore = !!(length < parseInt(resp.total) && resp.total !== '0');
+        const hasMore = !!(length < parseInt(total) && total !== '0');
 
         setConfigData((prev) => {
           return {
             ...prev,
-            total: parseInt(resp.total),
+            total: parseInt(total),
             hasMore,
-            data: configData.start === 0 ? resp.datos : prev.data,
+            data: configData.start === 0 ? data : prev.data,
           };
         });
       }

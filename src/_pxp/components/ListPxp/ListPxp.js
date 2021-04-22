@@ -100,6 +100,7 @@ const ListPxp = ({
   const actionsAll = [...defaultActions, ...actions];
   const columns = configAll.columns || {};
 
+  console.log('[DATA]', data);
   const classes = useStyles();
 
   const [state, setState] = React.useState({
