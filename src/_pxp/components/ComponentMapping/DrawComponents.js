@@ -5,19 +5,21 @@
  */
 
 import React, { useCallback, useRef } from 'react';
-import Grid from '@material-ui/core/Grid';
 import Item from './Item';
 
-const DrawComponents = ({ config, useJsonStoreRes }) => {
+const DrawComponents = ({ config, useJsonStoreRes, dataChanged = [] }) => {
   const { grid } = config;
   const { data, state, set, loading } = useJsonStoreRes;
+  const { dataRows } = config.dataReader; // this is the object that has the data for rendering
+  console.log('data[dataRows]', data[dataRows])
+
   const observer = useRef();
   const lastComponentRender = useCallback(
     (node) => {
       if (loading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && data.datos.length < data.total) {
+        if (entries[0].isIntersecting && data[dataRows].length < data.total) {
           // jsonStore.set(prev => ({...prev, params:{ ...prev.params, start: parseInt(prev.params.start + 10)}, infinite:true}))
           set({
             ...state,
@@ -40,15 +42,16 @@ const DrawComponents = ({ config, useJsonStoreRes }) => {
 
   return (
     <>
-      {data.datos.map((row, index) => {
+      {data[dataRows].map((row, index) => {
         return (
           <Item
             key={`${row[config.idStore]}`}
             grid={grid}
             keyId={row[config.idStore]}
-            {...(parseInt(data.datos.length, 10) === index + 1 && {
+            {...(parseInt(data[dataRows].length, 10) === index + 1 && {
               ref: lastComponentRender,
             })}
+            dataChanged={dataChanged}
             // memoDisabled
           >
             {config.renderComponent(row, null)}

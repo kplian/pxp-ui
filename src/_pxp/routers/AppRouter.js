@@ -70,100 +70,104 @@ const AppRouter = ({
       <div>
         {inMaintenance ? (
           <Switch>
-            <Route
-              path="/"
-              render={() => (<MaintenanceContainer />)}
-            />
+            <Route path="/" render={() => <MaintenanceContainer />} />
           </Switch>
         ) : (
-            <Switch>
-              <Route
-                path="/"
-                exact
-                component={() => (<Redirect to={Pxp.config.publicInitRoute || '/login'} />)}
-              />
-              <Route
-                path="/login"
-                exact
-                render={() => {
-                  const Component =
-                    Pxp.config.accountManagement &&
-                    Pxp.config.accountManagement.loginDialog &&
-                    pages[Pxp.config.accountManagement.loginDialog];
-                  return (
-                    <LoginContainer>
-                      <AuthPublic>
-                        {!Component ? <LoginDialog open /> : <Component open />}
-                      </AuthPublic>
-                    </LoginContainer>
-                  );
-                }}
-              />
+          <Switch>
+            <Route
+              path="/"
+              exact
+              component={() => (
+                <Redirect to={Pxp.config.publicInitRoute || '/login'} />
+              )}
+            />
+            <Route
+              path="/login"
+              exact
+              render={() => {
+                const Component =
+                  Pxp.config.accountManagement &&
+                  Pxp.config.accountManagement.loginDialog &&
+                  pages[Pxp.config.accountManagement.loginDialog];
+                return (
+                  <LoginContainer>
+                    <AuthPublic>
+                      {!Component ? <LoginDialog open /> : <Component open />}
+                    </AuthPublic>
+                  </LoginContainer>
+                );
+              }}
+            />
 
-              {Pxp.config.accountManagement &&
-                Pxp.config.accountManagement.recoverPassword && (
-                  <Route
-                    path="/forgot"
-                    exact
-                    render={() => {
-                      const Component =
-                        Pxp.config.accountManagement &&
-                        Pxp.config.accountManagement.forgotDialog &&
-                        pages[Pxp.config.accountManagement.forgotDialog];
-                      return (
-                        <LoginContainer>
-                          <AuthPublic>
-                            {!Component ? <ForgotDialog /> : <Component />}
-                          </AuthPublic>
-                        </LoginContainer>
-                      );
-                    }}
-                  />
-                )}
+            {Pxp.config.accountManagement &&
+              Pxp.config.accountManagement.recoverPassword && (
+                <Route
+                  path="/forgot"
+                  exact
+                  render={() => {
+                    const Component =
+                      Pxp.config.accountManagement &&
+                      Pxp.config.accountManagement.forgotDialog &&
+                      pages[Pxp.config.accountManagement.forgotDialog];
+                    return (
+                      <LoginContainer>
+                        <AuthPublic>
+                          {!Component ? <ForgotDialog /> : <Component />}
+                        </AuthPublic>
+                      </LoginContainer>
+                    );
+                  }}
+                />
+              )}
 
-              {Pxp.config.accountManagement &&
-                Pxp.config.accountManagement.recoverPassword && (
-                  <Route
-                    path="/forgot/confirm"
-                    exact
-                    render={() => {
-                      const Component =
-                        Pxp.config.accountManagement &&
-                        Pxp.config.accountManagement.forgotConfirmDialog &&
-                        pages[Pxp.config.accountManagement.forgotConfirmDialog];
-                      return (
-                        <LoginContainer>
-                          <AuthPublic>
-                            {!Component ? <ConfirmDialog /> : <Component />}
-                          </AuthPublic>
-                        </LoginContainer>
-                      );
-                    }}
-                  />
-                )}
+            {Pxp.config.accountManagement &&
+              Pxp.config.accountManagement.recoverPassword && (
+                <Route
+                  path="/forgot/confirm"
+                  exact
+                  render={() => {
+                    const Component =
+                      Pxp.config.accountManagement &&
+                      Pxp.config.accountManagement.forgotConfirmDialog &&
+                      pages[Pxp.config.accountManagement.forgotConfirmDialog];
+                    return (
+                      <LoginContainer>
+                        <AuthPublic>
+                          {!Component ? <ConfirmDialog /> : <Component />}
+                        </AuthPublic>
+                      </LoginContainer>
+                    );
+                  }}
+                />
+              )}
 
-              {Pxp.config.accountManagement &&
-                Pxp.config.accountManagement.recoverPassword && (
-                  <Route
-                    path="/forgot/update/:token"
-                    exact
-                    render={() => {
-                      const Component =
-                        Pxp.config.accountManagement &&
-                        Pxp.config.accountManagement.updatePasswordDialog &&
-                        pages[Pxp.config.accountManagement.updatePasswordDialog];
-                      return (
-                        <LoginContainer>
-                          <AuthPublic>
-                            {!Component ? <UpdatePasswordDialog /> : <Component />}
-                          </AuthPublic>
-                        </LoginContainer>
-                      );
-                    }}
-                  />
-                )}
+            {Pxp.config.accountManagement &&
+              Pxp.config.accountManagement.recoverPassword && (
+                <Route
+                  path="/forgot/update/:token"
+                  exact
+                  render={() => {
+                    const Component =
+                      Pxp.config.accountManagement &&
+                      Pxp.config.accountManagement.updatePasswordDialog &&
+                      pages[Pxp.config.accountManagement.updatePasswordDialog];
+                    return (
+                      <LoginContainer>
+                        <AuthPublic>
+                          {!Component ? (
+                            <UpdatePasswordDialog />
+                          ) : (
+                            <Component />
+                          )}
+                        </AuthPublic>
+                      </LoginContainer>
+                    );
+                  }}
+                />
+              )}
 
-              {Pxp.config.accountManagement && Pxp.config.accountManagement.signup && (
+            {Pxp.config.accountManagement &&
+              Pxp.config.accountManagement.signup && (
                 <Route
                   path="/signup"
                   exact
@@ -183,7 +187,8 @@ const AppRouter = ({
                 />
               )}
 
-              {Pxp.config.accountManagement && Pxp.config.accountManagement.signup && (
+            {Pxp.config.accountManagement &&
+              Pxp.config.accountManagement.signup && (
                 <Route
                   path="/signup/mail/:email"
                   exact
@@ -203,7 +208,8 @@ const AppRouter = ({
                 />
               )}
 
-              {Pxp.config.accountManagement && Pxp.config.accountManagement.signup && (
+            {Pxp.config.accountManagement &&
+              Pxp.config.accountManagement.signup && (
                 <Route
                   path="/signup/confirm/:token"
                   exact
@@ -223,112 +229,111 @@ const AppRouter = ({
                 />
               )}
 
-              <Route path={privatePaths}>
-                <MainContainer>
-                  <Suspense
-                    fallback={<LoadingScreen className={classes.loading} />}
-                  >
-                    <Switch>
-                      {filteredRoutes.map((route) => {
-                        const Component = pages[route.component].component;
-                        key += 1;
-                        return (
-                          <Route
-                            exact={pages[route.component].noExact ? false : true}
-                            key={key}
-                            path={pages[route.component].path}
-                            render={() => {
-                              // this is only to lazy loading page translations
-                              if (pages[route.component].translationsNS) {
-                                i18n.loadNamespaces(
-                                  pages[route.component].translationsNS,
-                                );
-                              }
-                              return (
-                                <AuthPrivate>
-                                  <Component />
-                                </AuthPrivate>
+            <Route path={privatePaths}>
+              <MainContainer>
+                <Suspense
+                  fallback={<LoadingScreen className={classes.loading} />}
+                >
+                  <Switch>
+                    {filteredRoutes.map((route) => {
+                      const Component = pages[route.component].component;
+                      key += 1;
+                      return (
+                        <Route
+                          exact={!pages[route.component].noExact}
+                          key={key}
+                          path={pages[route.component].path}
+                          render={() => {
+                            // this is only to lazy loading page translations
+                            if (pages[route.component].translationsNS) {
+                              i18n.loadNamespaces(
+                                pages[route.component].translationsNS,
                               );
-                            }}
-                          />
-                        );
-                      })}
-                      {
-                        // this will create detailPages for a page only if main page was created from menu
-                        filteredRoutes.reduce((subroutes, route) => {
-                          if (pages[route.component].detailPages) {
-                            pages[route.component].detailPages.forEach((page) => {
-                              const Component = page.component;
-                              key += 1;
-                              // this is only to lazy loading page translations
-                              if (pages[route.component].translationsNS) {
-                                i18n.loadNamespaces(
-                                  pages[route.component].translationsNS,
-                                );
-                              }
-                              subroutes.push(
-                                <Route
-                                  exact
-                                  key={key}
-                                  path={pages[route.component].path + page.path}
-                                  render={() => (
-                                    <AuthPrivate>
-                                      <Component />
-                                    </AuthPrivate>
-                                  )}
-                                />,
+                            }
+                            return (
+                              <AuthPrivate>
+                                <Component />
+                              </AuthPrivate>
+                            );
+                          }}
+                        />
+                      );
+                    })}
+                    {
+                      // this will create detailPages for a page only if main page was created from menu
+                      filteredRoutes.reduce((subroutes, route) => {
+                        if (pages[route.component].detailPages) {
+                          pages[route.component].detailPages.forEach((page) => {
+                            const Component = page.component;
+                            key += 1;
+                            // this is only to lazy loading page translations
+                            if (pages[route.component].translationsNS) {
+                              i18n.loadNamespaces(
+                                pages[route.component].translationsNS,
                               );
-                            });
-                          }
-                          return subroutes;
-                        }, [])
-                      }
-                    </Switch>
-                  </Suspense>
-                </MainContainer>
-              </Route>
-              <Route exact path={publicPaths}>
-                <PublicContainer>
-                  <Suspense
-                    fallback={<LoadingScreen className={classes.loading} />}
-                  >
-                    <Switch>
-                      {publicRoutes.map((route) => {
-                        const Component = pages[route].component;
-                        key += 1;
-                        return (
-                          <Route
-                            exact
-                            key={key}
-                            path={pages[route].path}
-                            render={() => {
-                              // this is only to lazy loading page translations
-                              if (pages[route].translationsNS) {
-                                i18n.loadNamespaces(pages[route].translationsNS);
-                              }
-                              return (
-                                <AuthPublic>
-                                  <Component />
-                                </AuthPublic>
-                              );
-                            }}
-                          />
-                        );
-                      })}
-                    </Switch>
-                  </Suspense>
-                </PublicContainer>
-              </Route>
-              <Route>
-                {Pxp.config.notFoundRoute ? (
-                  <Redirect to={Pxp.config.notFoundRoute} />
-                ) : (
-                    <NotFoundPage />
-                  )}
-              </Route>
-            </Switch>
-          )}
-
+                            }
+                            subroutes.push(
+                              <Route
+                                exact
+                                key={key}
+                                path={pages[route.component].path + page.path}
+                                render={() => (
+                                  <AuthPrivate>
+                                    <Component />
+                                  </AuthPrivate>
+                                )}
+                              />,
+                            );
+                          });
+                        }
+                        return subroutes;
+                      }, [])
+                    }
+                  </Switch>
+                </Suspense>
+              </MainContainer>
+            </Route>
+              <Route exact={false} path={publicPaths}>
+              <PublicContainer>
+                <Suspense
+                  fallback={<LoadingScreen className={classes.loading} />}
+                >
+                  <Switch>
+                    {publicRoutes.map((route) => {
+                      const Component = pages[route].component;
+                      key += 1;
+                      return (
+                        <Route
+                          exact={!pages[route].noExact}
+                          key={key}
+                          path={pages[route].path}
+                          render={() => {
+                            // this is only to lazy loading page translations
+                            if (pages[route].translationsNS) {
+                              i18n.loadNamespaces(pages[route].translationsNS);
+                            }
+                            return (
+                              <AuthPublic>
+                                <Component />
+                              </AuthPublic>
+                            );
+                          }}
+                        />
+                      );
+                    })}
+                  </Switch>
+                </Suspense>
+              </PublicContainer>
+            </Route>
+            <Route>
+              {Pxp.config.notFoundRoute ? (
+                <Redirect to={Pxp.config.notFoundRoute} />
+              ) : (
+                <NotFoundPage />
+              )}
+            </Route>
+          </Switch>
+        )}
       </div>
     </Router>
   );

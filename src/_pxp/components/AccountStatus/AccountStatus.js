@@ -86,7 +86,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AccountStatus = ({ code, tableId }) => {
+const AccountStatus = ({
+  code,
+  tableId,
+  typeTransactionForOptions = [],
+  currencyCode = 'Bs',
+}) => {
   const { t } = useTranslation();
   const classes = useStyles();
   const format = 'YYYY-MM-DD';
@@ -130,7 +135,10 @@ const AccountStatus = ({ code, tableId }) => {
       return (
         <>
           {dataHeaderSection && (
-            <HeaderSectionAccountStatus data={dataHeaderSection} />
+            <HeaderSectionAccountStatus
+              data={dataHeaderSection}
+              currencyCode={currencyCode}
+            />
           )}
         </>
       );
@@ -153,13 +161,31 @@ const AccountStatus = ({ code, tableId }) => {
         label: t('type_transaction'),
         initialValue: 'payment',
         store: [
-          { value: '', label: '' },
-          { value: 'payment', label: t('payment') },
-          { value: 'payment_in_advance', label: t('payment_in_advance') },
-          { value: 'adjusting_account', label: t('adjusting_account') },
-          { value: 'account_payable', label: t('account_payable') },
-          { value: 'account_receivable', label: t('account_receivable') },
+          ...[{ value: '', label: '' }],
+          ...(typeTransactionForOptions.length === 0
+            ? [
+              { value: 'payment', label: t('payment') },
+              { value: 'payment_in_advance', label: t('payment_in_advance') },
+              { value: 'adjusting_account', label: t('adjusting_account') },
+              { value: 'account_payable', label: t('account_payable') },
+              { value: 'account_receivable', label: t('account_receivable') },
+            ]
+            : []),
+          ...typeTransactionForOptions,
         ],
+        /* store: [
+          { value: '', label: '' },
+          ...(typeTransactionForOptions.length === 0 && [
+            {
+              value: 'account_payable',
+              label: t('account_payable'),
+            },
+            { value: 'account_receivable', label: t('account_receivable') },
+            { value: 'payment_in_advance', label: t('payment_in_advance') },
+            { value: 'payment', label: t('payment') },
+            { value: 'adjusting_account', label: t('adjusting_account') },
+          ]),
+        ], */
         gridForm: { xs: 12, sm: 6 },
         variant: 'outlined',
         validate: {
@@ -219,12 +245,13 @@ const AccountStatus = ({ code, tableId }) => {
                   <b>{t('description')}: </b>
                   {row.description}
                 </Typography>
-                {
-                  // <Label color="success">
-                  // <b>{t('amount')}:{' '}</b>
-                  // {currencyFormat({value: row.amount})}
-                  // </Label>
-                }
+                <Label color="success">
+                  <b>{t('amount')}: </b>
+                  {currencyFormat({
+                    value: row.amount,
+                    currencyCode: currencyCode,
+                  })}
+                </Label>
               </div>
             </Box>
           );
@@ -244,8 +271,9 @@ const AccountStatus = ({ code, tableId }) => {
         },
         filters: { pfiltro: 'amount', type: 'string' },
         search: true,
+
         renderColumn: (row) => {
-          const formantAmount = currencyFormat({ value: row.amount });
+          const formantAmount = currencyFormat({ value: row.amount, currencyCode });
           return (
             <span
               style={{
@@ -300,7 +328,7 @@ const AccountStatus = ({ code, tableId }) => {
       },
       // todo need to add typeSend for change to send all in jsonFormat or normal pxp
     },
-    urlDelete: 'pxp/AccountStatusType/delete',
+    urlDelete: 'pxp/AccountStatus/delete',
     // paginationType: 'infiniteScrolling', // can be infiniteScrolling or pagination
   };
 

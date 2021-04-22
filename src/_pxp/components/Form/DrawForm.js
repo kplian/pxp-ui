@@ -88,6 +88,11 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
     {},
   );
 
+  useEffect(() => {
+    data.onLoad && data.onLoad(states)
+  }, []); // <-- empty array means 'run once'
+
+
   const getSchemaValidation = (byGroup = false, callback) => {
     const getValidations = (nameGroup) => {
       const validations = Object.entries(states)
@@ -198,22 +203,26 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
     const values = Object.entries(states).reduce(
       (t, [nameKey, state]) => ({
         ...t,
-        ...(state.type === 'DatePicker' && {
-          [nameKey]: moment(state.value).format(state.format),
-        }),
-        ...(state.type === 'TimePicker' && {
-          [nameKey]: moment(state.value).format(state.format),
-        }),
-        ...(state.type === 'AutoComplete' && {
-          [nameKey]: (state.value && state.value[state.store.idDD]) || '',
-        }),
-        ...((state.type === 'Dropdown' ||
-          state.type === 'TextField' ||
-          state.type === 'DropzoneArea' ||
-          state.type === 'GoogleReCaptcha' ||
-          state.type === 'Switch') && {
-          [nameKey]: state.value,
-        }),
+        ...(!state.isHide && {
+          // only send the inputs showed
+          ...(state.type === 'DatePicker' && {
+            [nameKey]: moment(state.value).format(state.format),
+          }),
+          ...(state.type === 'TimePicker' && {
+            [nameKey]: moment(state.value).format(state.format),
+          }),
+          ...(state.type === 'AutoComplete' && {
+            [nameKey]: (state.value && state.value[state.store.idDD]) || '',
+          }),
+          ...((state.type === 'Dropdown' ||
+            state.type === 'TextField' ||
+            state.type === 'DropzoneArea' ||
+            state.type === 'GoogleReCaptcha' ||
+            state.type === 'Switch') && {
+            [nameKey]: state.value,
+          }),
+        } )
+
       }),
       {},
     );

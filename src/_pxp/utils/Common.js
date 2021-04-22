@@ -25,8 +25,8 @@ export const capitalizeFirst = (cad, separator = ' ') => {
     string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   return cad
     ? cad
-        .split(separator)
-        .reduce((acc, curr) => acc + capilatizeWord(curr) + separator, '')
+      .split(separator)
+      .reduce((acc, curr) => acc + capilatizeWord(curr) + separator, '')
     : null;
 };
 
@@ -55,10 +55,13 @@ export const formatNumber = ({ value }) => {
   return num.toLocaleString('en-US');
 };
 
-export const currencyFormat = ({ value }) => {
+
+export const currencyFormat = ({ value, currencyCode, withCode = true }) => {
   const num = parseFloat(value);
-  const currency = process.env.REACT_APP_CURRENCY || '$';
-  return `${currency} ${num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
+  const currency = currencyCode || process.env.REACT_APP_CURRENCY || '$';
+  return `${withCode ? currency : ''}${num
+    .toFixed(2)
+    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
 };
 
 export const handleMouseTriggerComponent = (event) => event.preventDefault();
