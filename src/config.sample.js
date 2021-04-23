@@ -109,11 +109,9 @@ export default {
     defaultNS: 'common',
     fallbackLng: 'en',
   },
-  menu: {
-    system: 'EXA',
+  menu: {    
     mobile: 0,
-    includeSystemRoot: true,
-    folder: 'NTA',
+    includeSystemRoot: true,    
   },
   date: {
     backendGetFormat: 'YYYY-MM-DD',
