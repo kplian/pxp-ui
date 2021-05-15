@@ -20,3 +20,9 @@ export const setTableState = (route, state) => ({
   route,
   state,
 });
+
+export const setPxpTableState = (route, state) => ({
+  type: 'SET_PXP_TABLE_STATE',
+  route,
+  state,
+});

@@ -34,6 +34,12 @@ export default (state = defaultState, action) => {
           [action.route]: { table: action.state },
         },
       });
+    case 'SET_PXP_TABLE_STATE':
+      return _.merge(state, {
+        pages: {
+          [action.route]: { pxpTable: action.state },
+        },
+      });
     default:
       return state;
   }
