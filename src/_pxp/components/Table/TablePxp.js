@@ -131,6 +131,8 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       : null,
   );
 
+  console.log('statePxpTable', statePxpTable);
+  console.log('dataConfig.getDataTable', dataConfig.getDataTable);
 
   const [statesShowColumn, setStatesShowColumn] = useState(
     statePxpTable ? statePxpTable.statesShowColumn : {},
@@ -138,7 +140,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
   // get the menu that we will use in the table cell for each one.
   const jsonStore = useJsonStore(
-    statePxpTable ? statePxpTable.state : dataConfig.getDataTable,
+    statePxpTable ? statePxpTable.getDataTable : dataConfig.getDataTable,
   );
   const { state, set, data, loading, error } = jsonStore;
 
@@ -248,13 +250,13 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     };
     // logic for show columns, create states for column.
     setStatesShowColumn(
-      Object.entries(columnsForDrawing).reduce(
+      statePxpTable ? statePxpTable.statesShowColumn : (Object.entries(columnsForDrawing).reduce(
         (t, [nameKey], index) => ({
           ...t,
           ...columnsForWidth(nameKey, index),
         }),
         { checkbox_: false },
-      ),
+      ))
     );
   }, [width]);
 
@@ -370,6 +372,12 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       setPxpTableState(location.pathname, {
         state: {
           ...state.params,
+          sort: orderBy,
+          dir: order,
+        },
+        getDataTable: {
+          ...dataConfig.getDataTable,
+          ...state,
           sort: orderBy,
           dir: order,
         },
