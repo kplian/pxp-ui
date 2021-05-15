@@ -131,8 +131,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       : null,
   );
 
-  console.log('statePxpTable', statePxpTable);
-  console.log('dataConfig.getDataTable', dataConfig.getDataTable);
 
   const [statesShowColumn, setStatesShowColumn] = useState(
     statePxpTable ? statePxpTable.statesShowColumn : {},
