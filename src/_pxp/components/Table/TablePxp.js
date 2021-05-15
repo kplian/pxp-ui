@@ -273,9 +273,11 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   );
 
   // order
-  const [order, setOrder] = React.useState(dataConfig.getDataTable.params.dir);
+  const [order, setOrder] = React.useState(
+    statePxpTable ? statePxpTable.order : dataConfig.getDataTable.params.dir,
+  );
   const [orderBy, setOrderBy] = React.useState(
-    dataConfig.getDataTable.params.sort,
+    statePxpTable ? statePxpTable.orderBy : dataConfig.getDataTable.params.sort,
   );
 
   // logic for new
@@ -386,6 +388,8 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
           page,
           rowsPerPage,
         },
+        order,
+        orderBy,
       }),
     );
   };
@@ -393,7 +397,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   useEffect(() => {
     // we need to save for each change of state and statesShowColumn for drawing the same
     saveStateTable();
-  }, [state, statesShowColumn, page]);
+  }, [state, statesShowColumn, page, order, orderBy]);
 
   let dataConfigForEdit = { ...dataConfig };
 
