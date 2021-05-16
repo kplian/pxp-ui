@@ -11,6 +11,7 @@ const defaultState = {
     masterDetailId: undefined,
   },
   pages: {},
+  pagesPxpTable: {},
 };
 export default (state = defaultState, action) => {
   switch (action.type) {
@@ -36,7 +37,7 @@ export default (state = defaultState, action) => {
       });
     case 'SET_PXP_TABLE_STATE':
       return _.merge(state, {
-        pages: {
+        pagesPxpTable: {
           [action.route]: { pxpTable: action.state },
         },
       });

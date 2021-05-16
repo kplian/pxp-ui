@@ -9,7 +9,7 @@ import React, {
   forwardRef,
   useCallback,
   useEffect,
-  useImperativeHandle,
+  useImperativeHandle, useLayoutEffect,
   useRef,
   useState,
 } from 'react';
@@ -103,7 +103,26 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     buttonsToolbar: addButtonsToolbar,
     afterRefresh,
     dataReader, // this is for map the data for render and the total
+    saveLocalStorage = false,
   } = dataConfig;
+
+  // mount the table fist time
+  useLayoutEffect(() => {
+    console.log('mounttttt')
+    if (saveLocalStorage) { // todo change to allow only in true
+      const routesInLocalStorage = JSON.parse(localStorage.getItem('routesPxpTable')) || [];
+      console.log('routesInLocalStorage',routesInLocalStorage)
+      if (routesInLocalStorage.includes(location.pathname) === false) {
+        routesInLocalStorage.push(location.pathname);
+        localStorage.setItem(
+          'routesPxpTable',
+          JSON.stringify(routesInLocalStorage),
+        );
+      }
+    }
+  }, []);
+
+
   const columnsForDrawing = Object.entries(dataConfig.columns)
     .filter(([, value]) => value.grid === true || value.grid === undefined)
     .reduce(
@@ -126,11 +145,12 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   });
 
   const statePxpTable = useSelector((state) =>
-    state.app.pages[location.pathname]
-      ? state.app.pages[location.pathname].pxpTable
+    state.app.pagesPxpTable[location.pathname]
+      ? state.app.pagesPxpTable[location.pathname].pxpTable
       : null,
   );
-
+  useSelector((state) => console.log('statatataa',state))
+  console.log('statePxpTablestatePxpTablestatePxpTablestatePxpTable',statePxpTable)
 
   const [statesShowColumn, setStatesShowColumn] = useState(
     statePxpTable ? statePxpTable.statesShowColumn : {},
@@ -248,13 +268,15 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     };
     // logic for show columns, create states for column.
     setStatesShowColumn(
-      statePxpTable ? statePxpTable.statesShowColumn : (Object.entries(columnsForDrawing).reduce(
-        (t, [nameKey], index) => ({
-          ...t,
-          ...columnsForWidth(nameKey, index),
-        }),
-        { checkbox_: false },
-      ))
+      statePxpTable
+        ? statePxpTable.statesShowColumn
+        : Object.entries(columnsForDrawing).reduce(
+            (t, [nameKey], index) => ({
+              ...t,
+              ...columnsForWidth(nameKey, index),
+            }),
+            { checkbox_: false },
+          ),
     );
   }, [width]);
 
@@ -368,30 +390,36 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   };
 
   const saveStateTable = () => {
-    dispatch(
-      setPxpTableState(location.pathname, {
-        state: {
-          ...state.params,
-          sort: orderBy,
-          dir: order,
-        },
-        getDataTable: {
-          ...dataConfig.getDataTable,
-          ...state,
-          sort: orderBy,
-          dir: order,
-        },
-        statesShowColumn: {
-          ...statesShowColumn,
-        },
-        pagination: {
-          page,
-          rowsPerPage,
-        },
-        order,
-        orderBy,
-      }),
-    );
+    const configToSave = {
+      state: {
+        ...state.params,
+        sort: orderBy,
+        dir: order,
+      },
+      getDataTable: {
+        ...dataConfig.getDataTable,
+        ...state,
+        sort: orderBy,
+        dir: order,
+      },
+      statesShowColumn: {
+        ...statesShowColumn,
+      },
+      pagination: {
+        page,
+        rowsPerPage,
+      },
+      order,
+      orderBy,
+    };
+    console.log('configToSave', configToSave)
+    dispatch(setPxpTableState(location.pathname, configToSave));
+    if(saveLocalStorage) {
+      localStorage.setItem(
+        location.pathname,
+        JSON.stringify(configToSave),
+      );
+    }
   };
 
   useEffect(() => {

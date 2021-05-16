@@ -9,6 +9,18 @@ import authReducer from './reducers/auth';
 import appReducer from './reducers/app';
 import notifyReducer from './reducers/notify';
 
+const pagesPxpTableFromLocalStorage = () => {
+  const data = JSON.parse(localStorage.getItem('routesPxpTable')) || [];
+  const res = { app: { pagesPxpTable: {} } };
+  data.forEach((i) => {
+    res.app.pagesPxpTable = {
+      ...res.app.pagesPxpTable,
+      [i]: { pxpTable: JSON.parse(localStorage.getItem(i)) },
+    };
+  });
+  return res;
+};
+
 export default () =>
   createStore(
     combineReducers({
@@ -16,5 +28,6 @@ export default () =>
       auth: authReducer,
       notify: notifyReducer,
     }),
+    pagesPxpTableFromLocalStorage(),
     applyMiddleware(thunk),
   );
