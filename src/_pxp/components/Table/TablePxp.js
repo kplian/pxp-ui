@@ -9,7 +9,8 @@ import React, {
   forwardRef,
   useCallback,
   useEffect,
-  useImperativeHandle, useLayoutEffect,
+  useImperativeHandle,
+  useLayoutEffect,
   useRef,
   useState,
 } from 'react';
@@ -108,10 +109,9 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
   // mount the table fist time
   useLayoutEffect(() => {
-    console.log('mounttttt')
-    if (saveLocalStorage) { // todo change to allow only in true
-      const routesInLocalStorage = JSON.parse(localStorage.getItem('routesPxpTable')) || [];
-      console.log('routesInLocalStorage',routesInLocalStorage)
+    if (saveLocalStorage) {
+      const routesInLocalStorage =
+        JSON.parse(localStorage.getItem('routesPxpTable')) || [];
       if (routesInLocalStorage.includes(location.pathname) === false) {
         routesInLocalStorage.push(location.pathname);
         localStorage.setItem(
@@ -121,7 +121,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       }
     }
   }, []);
-
 
   const columnsForDrawing = Object.entries(dataConfig.columns)
     .filter(([, value]) => value.grid === true || value.grid === undefined)
@@ -149,8 +148,6 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       ? state.app.pagesPxpTable[location.pathname].pxpTable
       : null,
   );
-  useSelector((state) => console.log('statatataa',state))
-  console.log('statePxpTablestatePxpTablestatePxpTablestatePxpTable',statePxpTable)
 
   const [statesShowColumn, setStatesShowColumn] = useState(
     statePxpTable ? statePxpTable.statesShowColumn : {},
@@ -412,13 +409,9 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       order,
       orderBy,
     };
-    console.log('configToSave', configToSave)
     dispatch(setPxpTableState(location.pathname, configToSave));
-    if(saveLocalStorage) {
-      localStorage.setItem(
-        location.pathname,
-        JSON.stringify(configToSave),
-      );
+    if (saveLocalStorage) {
+      localStorage.setItem(location.pathname, JSON.stringify(configToSave));
     }
   };
 
