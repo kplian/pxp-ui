@@ -104,7 +104,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     buttonsToolbar: addButtonsToolbar,
     afterRefresh,
     dataReader, // this is for map the data for render and the total
-    saveLocalStorage = false,
+    saveLocalStorage = true,
   } = dataConfig;
 
   // mount the table fist time

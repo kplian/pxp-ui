@@ -5,13 +5,25 @@
  */
 import _ from 'lodash';
 
+const pagesPxpTableFromLocalStorage = () => {
+  const data = JSON.parse(localStorage.getItem('routesPxpTable')) || [];
+  let res = {};
+  data.forEach((i) => {
+    res = {
+      ...res,
+      [i]: { pxpTable: JSON.parse(localStorage.getItem(i)) },
+    };
+  });
+  return res;
+};
+
 const defaultState = {
   detailPage: {
     isDetail: false,
     masterDetailId: undefined,
   },
   pages: {},
-  pagesPxpTable: {},
+  pagesPxpTable: pagesPxpTableFromLocalStorage(),
 };
 export default (state = defaultState, action) => {
   switch (action.type) {
