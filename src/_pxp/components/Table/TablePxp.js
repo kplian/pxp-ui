@@ -94,6 +94,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const { enqueueSnackbar } = useSnackbar();
   const {
     tableName,
+    tableLabel,
     idStore,
     buttonNew,
     buttonPdf, //  show btn pdf
@@ -112,8 +113,10 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     if (saveLocalStorage) {
       const routesInLocalStorage =
         JSON.parse(localStorage.getItem('routesPxpTable')) || [];
-      if (routesInLocalStorage.includes(location.pathname) === false) {
-        routesInLocalStorage.push(location.pathname);
+      if (
+        routesInLocalStorage.includes(`${location.pathname}_${tableName}`) === false
+      ) {
+        routesInLocalStorage.push(`${location.pathname}_${tableName}`);
         localStorage.setItem(
           'routesPxpTable',
           JSON.stringify(routesInLocalStorage),
@@ -143,9 +146,12 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     dataRow: undefined,
   });
 
+  useSelector((state)=>{
+    console.log('stateeeeeeee',state)
+  })
   const statePxpTable = useSelector((state) =>
     state.app.pagesPxpTable[location.pathname]
-      ? state.app.pagesPxpTable[location.pathname].pxpTable
+      ? state.app.pagesPxpTable[location.pathname][tableName]
       : null,
   );
 
@@ -409,9 +415,12 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       order,
       orderBy,
     };
-    dispatch(setPxpTableState(location.pathname, configToSave));
+    dispatch(setPxpTableState(location.pathname, tableName, configToSave));
     if (saveLocalStorage) {
-      localStorage.setItem(location.pathname, JSON.stringify(configToSave));
+      localStorage.setItem(
+        `${location.pathname}_${tableName}`,
+        JSON.stringify({ [location.pathname]: { [tableName]: configToSave } }),
+      );
     }
   };
 
@@ -761,7 +770,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
         )}
         <Paper className={classes.paper}>
           <TableToolbarPxp
-            tableName={tableName}
+            tableLabel={tableLabel}
             numSelected={selected.length}
             buttonsToolbar={statesButtonsToolbar}
             buttonsToolbarBySelections={statesButtonsToolbarBySelections}

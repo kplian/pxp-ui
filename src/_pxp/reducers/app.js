@@ -9,10 +9,8 @@ const pagesPxpTableFromLocalStorage = () => {
   const data = JSON.parse(localStorage.getItem('routesPxpTable')) || [];
   let res = {};
   data.forEach((i) => {
-    res = {
-      ...res,
-      [i]: { pxpTable: JSON.parse(localStorage.getItem(i)) },
-    };
+    const json = JSON.parse(localStorage.getItem(i));
+    res = _.merge(res, json);
   });
   return res;
 };
@@ -50,7 +48,7 @@ export default (state = defaultState, action) => {
     case 'SET_PXP_TABLE_STATE':
       return _.merge(state, {
         pagesPxpTable: {
-          [action.route]: { pxpTable: action.state },
+          [action.route]: { [action.tableName]: action.state },
         },
       });
     default:
