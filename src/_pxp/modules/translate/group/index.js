@@ -1,14 +1,13 @@
 import React from 'react';
 import * as Yup from 'yup';
-import Box from '@material-ui/core/Box';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import WcIcon from '@material-ui/icons/Wc';
+import Icon from '@material-ui/core/Icon';
+
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import Label from '../../../components/Label';
-import imgAvatar from '../../../components/Table/avatar.jpeg';
-import TablePxp from "../../../components/Table/TablePxp";
+import { green, yellow } from '@material-ui/core/colors';
+import TablePxp from '../../../components/Table/TablePxp';
+import Pxp from '../../../../Pxp';
+import UploadModal from './UploadModal';
+import ExportModal from './ExportModal';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -18,10 +17,25 @@ const useStyles = makeStyles((theme) => ({
     width: 42,
     marginRight: theme.spacing(1),
   },
+  input: {
+    display: 'none',
+  },
 }));
 
 const Group = () => {
   const classes = useStyles();
+  const [openModalUpload, setOpenModalUpload] = React.useState(false);
+  const [openModalExport, setOpenModalExport] = React.useState(false);
+
+  const server = `${Pxp.apiClient.protocol}://${Pxp.apiClient.host}:${Pxp.apiClient.port}/${Pxp.apiClient.baseUrl}`;
+
+  const generateJson = () => {
+    window.open(`${server}/pxp/translate/groups/json`, '_blank');
+  };
+
+  const generateCsv = () => {
+    window.open(`${server}/pxp/translate/groups/csv`, '_blank');
+  };
 
   const jsonGroup = {
     nameForm: 'Formulario Persona',
@@ -71,8 +85,12 @@ const Group = () => {
         search: true,
       },
       type: {
-        type: 'TextField',
-        initialValue: '',
+        type: 'Dropdown',
+        store: [
+          { value: '', label: '' },
+          { value: 'interface', label: 'interface' },
+          { value: 'table', label: 'table' },
+        ],
         label: 'Tipo',
         gridForm: { xs: 12, sm: 4 },
         variant: 'outlined',
@@ -81,16 +99,21 @@ const Group = () => {
         },
         filters: { pfiltro: 'isDefault', type: 'string' },
         search: true,
+        onChange: ({ value, states }) => {
+          const hidden = value === 'interface';
+          states.tableName.setIsHide(hidden);
+          states.columnTranslate.setIsHide(hidden);
+          states.module.setIsHide(hidden);
+        },
       },
-
-      tableName: {
+      module: {
         type: 'AutoComplete',
         store: {
           dataReader: {
             dataRows: 'data',
           },
           method: 'GET',
-          url: `pxp/translate/groups/entities`,
+          url: `pxp/translate/groups/modules`,
           idDD: 'name',
           descDD: 'name',
           parFilters: 'name',
@@ -99,26 +122,27 @@ const Group = () => {
             start: 0,
             limit: 10,
             dir: 'DES',
-          }
+          },
         },
-        label: 'Nombre Tabla',
         gridForm: { xs: 12, sm: 4 },
         variant: 'outlined',
-        validate: {
-          shape: Yup.string().required('Required'),
+        hide: true,
+        onChange: ({ value, states }) => {
+          states.tableName.store.set({
+            ...states.tableName.store.state,
+            url: `pxp/translate/groups/modules/${value}/entities`,
+          });
         },
-        filters: { pfiltro: 'isDefault', type: 'string' },
-        search: true,
       },
-      columnKey: {
+      tableName: {
         type: 'AutoComplete',
         store: {
           dataReader: {
             dataRows: 'data',
           },
           method: 'GET',
-          url: `pxp/translate/groups/entities/Person/fields`,
-          idDD: 'translationGroupId',
+          url: `pxp/translate/groups/modules/pxp/entities`,
+          idDD: 'name',
           descDD: 'name',
           parFilters: 'name',
           params: {
@@ -126,16 +150,52 @@ const Group = () => {
             start: 0,
             limit: 10,
             dir: 'DES',
-          }
+          },
         },
-        label: 'Columna Clave',
+        label: 'Nombre Tabla',
         gridForm: { xs: 12, sm: 4 },
         variant: 'outlined',
         validate: {
-          shape: Yup.string().required('Required'),
+          // shape: Yup.string().required('Required'),
         },
         filters: { pfiltro: 'isDefault', type: 'string' },
         search: true,
+        hide: true,
+        onChange: ({ value, states }) => {
+          console.log(states.columnTranslate);
+          states.columnTranslate.store.set({
+            ...states.columnTranslate.store.state,
+            url: `pxp/translate/groups/entities/${value}/fields`,
+          });
+        },
+      },
+      columnTranslate: {
+        type: 'AutoComplete',
+        store: {
+          dataReader: {
+            dataRows: 'data',
+          },
+          method: 'GET',
+          url: `pxp/translate/groups/entities/Person/fields`,
+          idDD: 'name',
+          descDD: 'name',
+          parFilters: 'name',
+          params: {
+            sort: 'name',
+            start: 0,
+            limit: 10,
+            dir: 'DES',
+          },
+        },
+        label: 'Columna a Traducir',
+        gridForm: { xs: 12, sm: 4 },
+        variant: 'outlined',
+        validate: {
+          // shape: Yup.string().required('Required'),
+        },
+        filters: { pfiltro: 'isDefault', type: 'string' },
+        search: true,
+        hide: true,
       },
     },
     getDataTable: {
@@ -164,16 +224,47 @@ const Group = () => {
     },
     resetButton: true,
     onSubmit: {
-      urlAdd: 'pxp/translate/groups/add',
+      urlAdd: 'pxp/translate/groups/',
       urlEdit: 'pxp/translate/groups/edit',
-      extraParams: {
-
-      },
+      extraParams: {},
     },
     urlDelete: 'pxp/translate/groups/delete',
+    buttonsToolbar: {
+      generateJsonFiles: {
+        onClick: (e) => generateJson(),
+        icon: <Icon style={{ color: yellow[800] }}>source</Icon>,
+        title: 'Generar JSON files',
+      },
+      generateCsvFiles: {
+        onClick: (e) => {
+          setOpenModalExport(true);
+          // generateCsv()
+        },
+        icon: <Icon style={{ color: green[500] }}>format_list_numbered</Icon>,
+        title: 'Generar Csv File',
+      },
+      modalUploadCsv: {
+        onClick: (e) => setOpenModalUpload(true),
+        icon: <Icon style={{ color: yellow[900] }}>upload_file</Icon>,
+        title: 'Upload Csv File',
+      },
+    },
   };
 
-  return <TablePxp dataConfig={jsonGroup} />;
-}
+  return (
+    <div>
+      <TablePxp dataConfig={jsonGroup} />
+      {
+        openModalUpload &&
+        <UploadModal
+          open={openModalUpload}
+          handleClose={() => setOpenModalUpload(false)}
+        />
+      }
+      <ExportModal open={openModalExport}
+        handleClose={() => setOpenModalExport(false)} />
+    </div>
+  );
+};
 
 export default Group;

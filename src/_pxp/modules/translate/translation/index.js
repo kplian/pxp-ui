@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import * as Yup from 'yup';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import WcIcon from '@material-ui/icons/Wc';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Label from '../../../components/Label';
 import TablePxp from '../../../components/Table/TablePxp';
 import MasterDetail from '../../../components/MasterDetail';
+import Pxp from '../../../../Pxp';
+import TranslateSelect from './TranslateSelect';
 // import SplitPane, { Pane } from 'react-split-pane';
 import Split from 'react-split';
 
@@ -32,6 +35,48 @@ const useStyles = makeStyles((theme) => ({
 const Translation = () => {
   const classes = useStyles();
   const [showDetail, setShowDetail] = useState(false);
+  const [groups, setGroups] = useState([]);
+  const [currentWord, setCurrentWord] = useState(null);
+  const [currentGroup, setCurrentGroup] = useState(null);
+  const [lang, setLang] = useState(null);
+  const refWord = useRef(null);
+  const refTranslates = useRef(null);
+  const loadGroups = () => {
+    Pxp.apiClient.doRequest({
+      url: `pxp/translate/groups/list`,
+      method: 'GET',
+      params: {
+        limit: 10,
+        start: 0,
+        sort: 'code',
+        dir: 'ASC'
+      }
+    }).then(resp => setGroups(resp.data.map(item => ({ label: item.name, value: item.translationGroupId }))));
+  };
+
+  const reloadTableWords = () => {
+    console.log(refWord);
+    const { set } = refWord.current.jsonStore;
+    set((prevData) => ({
+      ...prevData,
+      load: true,
+      url: 'pxp/translate/words/group/' + currentGroup,
+    }));
+  };
+
+  const reloadTabletranslates = () => {
+    console.log(refTranslates);
+    const { set } = refTranslates.current.jsonStore;
+    set((prevData) => ({
+      ...prevData,
+      load: true,
+      url: 'pxp/translate/translations/word/' + currentWord,
+    }));
+  };
+  const handleChangeGroup = (groupId) => {
+    setCurrentGroup(groupId);
+  }
+
   const jsonWord = {
     nameForm: 'Word Key',
     dataReader: {
@@ -56,10 +101,9 @@ const Translation = () => {
                   {row.code}
                 </Typography>
                 <Typography variant="body2" color="inherit">
-                  <b>Predeterminado: </b>{row.defaultText}
+                  <b style={{ fontSize: '0.7rem' }}>Predeterminado: </b>{row.defaultText}
                 </Typography>
                 <Label color="success">
-                  <b>Grupo:</b>
                   {row.group?.name}
                 </Label>
               </div>
@@ -67,32 +111,32 @@ const Translation = () => {
           );
         },
       },
-      groupName: {
-        type: 'AutoComplete',
-        label: 'Grupo',
-        store: {
-          dataReader: {
-            dataRows: 'data',
-          },
-          method: 'GET',
-          url: `pxp/translate/groups/list`,
-          idDD: 'translationGroupId',
-          descDD: 'name',
-          parFilters: 'name',
-          params: {
-            sort: 'name',
-            start: 0,
-            limit: 10,
-            dir: 'DES',
-          }
-        },
-        gridForm: { xs: 12, sm: 4 },
-        variant: 'outlined',
-        validate: {
-          shape: Yup.string().required('Required'),
-        },
-        grid: false,
-      },
+      // translationGroupId: {
+      //   type: 'AutoComplete',
+      //   label: 'Grupo',
+      //   store: {
+      //     dataReader: {
+      //       dataRows: 'data',
+      //     },
+      //     method: 'GET',
+      //     url: `pxp/translate/groups/list`,
+      //     idDD: 'translationGroupId',
+      //     descDD: 'name',
+      //     parFilters: 'name',
+      //     params: {
+      //       sort: 'name',
+      //       start: 0,
+      //       limit: 10,
+      //       dir: 'DES',
+      //     }
+      //   },
+      // gridForm: { xs: 12, sm: 4 },
+      // variant: 'outlined',
+      // validate: {
+      //   shape: Yup.string().required('Required'),
+      // },
+      // grid: false,
+      // },
       defaultText: {
         type: 'TextField',
         initialValue: '',
@@ -108,7 +152,7 @@ const Translation = () => {
       },
     },
     getDataTable: {
-      url: 'pxp/translate/words/list',
+      url: 'pxp/translate/words/group/' + currentGroup,
       method: 'GET',
       params: {
         start: '0',
@@ -128,13 +172,17 @@ const Translation = () => {
       buttonEdit: true,
     },
     onClickRow: ({ row }) => {
+      console.log('WORD', row.wordKeyId)
       setShowDetail(true);
-      console.log(row);
+      setCurrentWord(row.wordKeyId);
     },
     resetButton: true,
     onSubmit: {
       urlAdd: 'pxp/translate/words/add',
       urlEdit: 'pxp/translate/words/edit',
+      extraParams: {
+        translationGroupId: currentGroup,
+      },
     },
     urlDelete: 'pxp/translate/words/delete',
   };
@@ -182,10 +230,11 @@ const Translation = () => {
         },
         filters: { pfiltro: 'name', type: 'string' },
         search: true,
+        renderColumn: (row) => (row.language.name)
       },
     },
     getDataTable: {
-      url: 'pxp/translate/translations/list',
+      url: 'pxp/translate/translations/word/' + currentWord,
       method: 'GET',
       params: {
         start: '0',
@@ -193,7 +242,7 @@ const Translation = () => {
         sort: 'translateId',
         dir: 'DESC',
       },
-      load: true,
+      load: false,
     },
     idStore: 'translateId',
     buttonDel: true,
@@ -207,9 +256,25 @@ const Translation = () => {
     onSubmit: {
       urlAdd: 'pxp/translate/translations/add',
       urlEdit: 'pxp/translate/translations/edit',
+      extraParams: {
+        wordId: currentWord,
+      },
     },
     urlDelete: 'pxp/translate/translations/delete',
+
   };
+
+  useEffect(() => {
+    if (currentGroup) reloadTableWords();
+  }, [currentGroup]);
+
+  useEffect(() => {
+    if (currentWord) reloadTabletranslates();
+  }, [lang, currentWord]);
+
+  useEffect(() => {
+    loadGroups();
+  }, []);
 
   // return <TablePxp dataConfig={jsonTranslation} />;
   return (
@@ -219,8 +284,15 @@ const Translation = () => {
       showDetail={showDetail}
       setShowDetail={setShowDetail}
     >
-      <TablePxp dataConfig={jsonWord} />
-      <TablePxp dataConfig={jsonTranslation} />
+      <div>
+        <h2>Grupo</h2>
+        <TranslateSelect options={groups} title="Grupo" handleChange={handleChangeGroup} />
+        {currentGroup && <TablePxp dataConfig={jsonWord} ref={refWord} />}
+      </div>
+      <div>
+        <h2>Traducciones</h2>
+        {currentWord && <TablePxp dataConfig={jsonTranslation} ref={refTranslates} />}
+      </div>
     </MasterDetail>
   );
 }

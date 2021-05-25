@@ -91,8 +91,7 @@ const useStyles = makeStyles((theme)=>({
 }));
 
 export default function Tree(props) {
-   const { config, data } = props;
-   
+  const { config, data = [] } = props;
   const classes = useStyles();
 
   return (
@@ -130,11 +129,12 @@ const RecursiveMap = ({data, level = 0} ) => {
 
     const recursiveChecked = ( data, value = null ) => {
       data.checked = value == null ? !data.checked : value;
-      if( data.childrens.length > 0 ) {
-        data.childrens.forEach(child => recursiveChecked( child, data.checked ));
+      if (data.children && data.children.length > 0) {
+        data.children.forEach(child => recursiveChecked(child, data.checked));
       }
     }
 
+  console.log('AUX', data);
     return (
         <React.Fragment>
         { auxData.map( (item, i) => 
@@ -154,7 +154,7 @@ const RecursiveMap = ({data, level = 0} ) => {
                         </Typography>
                         
                         {
-                            item.childrens.length === 0 && 
+                      item.children && item.children.length === 0 &&
                             <Typography variant="caption" color="inherit">
                                 <IconButton color="primary" aria-label="options" component="span"  onClick={actionClick} className={classes.iconOption}>
                                     <Icon>more_vert</Icon>
@@ -185,8 +185,8 @@ const RecursiveMap = ({data, level = 0} ) => {
                 }  
                 key={level + i  * 10 }
             >
-                { item.childrens.length > 0 && 
-                    <RecursiveMap data={item.childrens} level={ level + 1 }/>
+            {item.children && item.children.length > 0 &&
+              <RecursiveMap data={item.children} level={level + 1} />
                 }
             </StyledTreeItem>
         )}

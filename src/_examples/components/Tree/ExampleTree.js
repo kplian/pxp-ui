@@ -1,7 +1,7 @@
 import React from 'react';
-import Tree from './Tree';
+import Tree from '../../../_pxp/components/Tree';
 import { useSelector } from 'react-redux';
-import useJsonStore from '../hooks/useJsonStore';
+import useJsonStore from '../../../_pxp/hooks/useJsonStore';
 const ExampleTree = () => {
     const config = {
         icons: {
@@ -17,6 +17,7 @@ const ExampleTree = () => {
     };
     const { data } = useJsonStore(params); 
 
+    console.log('menu', console.log(menu));
     return (
         <div>
             <Tree config={ config } data={ menu }/>
