@@ -10,11 +10,12 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useLayoutEffect,
   useRef,
   useState,
 } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination';
@@ -45,7 +46,7 @@ import Form from '../Form/Form';
 import DrawTable from './DrawTable';
 import useJsonStore from '../../hooks/useJsonStore';
 import InitButton from '../../hooks/InitButton';
-import { setTableState } from '../../actions/app';
+import { setTableState, setPxpTableState } from '../../actions/app';
 import Confirm from '../Alert/Confirm';
 
 const useStyles = makeStyles((theme) => ({
@@ -93,6 +94,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const { enqueueSnackbar } = useSnackbar();
   const {
     tableName,
+    tableLabel,
     idStore,
     buttonNew,
     buttonPdf, //  show btn pdf
@@ -103,7 +105,26 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     buttonsToolbar: addButtonsToolbar,
     afterRefresh,
     dataReader, // this is for map the data for render and the total
+    saveLocalStorage = true,
   } = dataConfig;
+
+  // mount the table fist time
+  useLayoutEffect(() => {
+    if (saveLocalStorage) {
+      const routesInLocalStorage =
+        JSON.parse(localStorage.getItem('routesPxpTable')) || [];
+      if (
+        routesInLocalStorage.includes(`${location.pathname}_${tableName}`) === false
+      ) {
+        routesInLocalStorage.push(`${location.pathname}_${tableName}`);
+        localStorage.setItem(
+          'routesPxpTable',
+          JSON.stringify(routesInLocalStorage),
+        );
+      }
+    }
+  }, []);
+
   const columnsForDrawing = Object.entries(dataConfig.columns)
     .filter(([, value]) => value.grid === true || value.grid === undefined)
     .reduce(
@@ -125,10 +146,23 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     dataRow: undefined,
   });
 
-  const [statesShowColumn, setStatesShowColumn] = useState({});
+  useSelector((state)=>{
+    console.log('stateeeeeeee',state)
+  })
+  const statePxpTable = useSelector((state) =>
+    state.app.pagesPxpTable[location.pathname]
+      ? state.app.pagesPxpTable[location.pathname][tableName]
+      : null,
+  );
+
+  const [statesShowColumn, setStatesShowColumn] = useState(
+    statePxpTable ? statePxpTable.statesShowColumn : {},
+  );
 
   // get the menu that we will use in the table cell for each one.
-  const jsonStore = useJsonStore(dataConfig.getDataTable);
+  const jsonStore = useJsonStore(
+    statePxpTable ? statePxpTable.getDataTable : dataConfig.getDataTable,
+  );
   const { state, set, data, loading, error } = jsonStore;
 
   const [dataRows, setDataRows] = useState([]);
@@ -237,13 +271,15 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     };
     // logic for show columns, create states for column.
     setStatesShowColumn(
-      Object.entries(columnsForDrawing).reduce(
-        (t, [nameKey], index) => ({
-          ...t,
-          ...columnsForWidth(nameKey, index),
-        }),
-        { checkbox_: false },
-      ),
+      statePxpTable
+        ? statePxpTable.statesShowColumn
+        : Object.entries(columnsForDrawing).reduce(
+            (t, [nameKey], index) => ({
+              ...t,
+              ...columnsForWidth(nameKey, index),
+            }),
+            { checkbox_: false },
+          ),
     );
   }, [width]);
 
@@ -253,16 +289,20 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
 
   // init values pagination
 
-  const [page, setPage] = React.useState(auxPage);
+  const [page, setPage] = React.useState(
+    statePxpTable ? statePxpTable.pagination.page : auxPage,
+  );
   const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(
     parseInt(dataConfig.getDataTable.params.limit, 10),
   );
 
   // order
-  const [order, setOrder] = React.useState(dataConfig.getDataTable.params.dir);
+  const [order, setOrder] = React.useState(
+    statePxpTable ? statePxpTable.order : dataConfig.getDataTable.params.dir,
+  );
   const [orderBy, setOrderBy] = React.useState(
-    dataConfig.getDataTable.params.sort,
+    statePxpTable ? statePxpTable.orderBy : dataConfig.getDataTable.params.sort,
   );
 
   // logic for new
@@ -312,9 +352,9 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     window.open(`
     ${Pxp.apiClient.protocol}://${Pxp.apiClient.host}:${Pxp.apiClient.port}/${
       Pxp.apiClient.baseUrl
-      }/${configTable.url}?${encodeFormData(
-        configTable.params,
-      )}&report=${report}`);
+    }/${configTable.url}?${encodeFormData(
+      configTable.params,
+    )}&report=${report}`);
 
     // window.open(`${Pxp.apiClient.protocol}://${Pxp.apiClient.host}:${Pxp.apiClient.port}/${Pxp.apiClient.baseUrl}/${type}?params=${params}&module=${module}&entity=${entity}&columns=${columns}&filename=${filename}`);
   };
@@ -340,15 +380,54 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   };
 
   const saveState = () => {
-    console.log('saved states', state.params);
     dispatch(
       setTableState(location.pathname, {
         ...state.params,
         sort: orderBy,
         dir: order,
+        statesShowColumn: {
+          ...statesShowColumn,
+        },
       }),
     );
   };
+
+  const saveStateTable = () => {
+    const configToSave = {
+      state: {
+        ...state.params,
+        sort: orderBy,
+        dir: order,
+      },
+      getDataTable: {
+        ...dataConfig.getDataTable,
+        ...state,
+        sort: orderBy,
+        dir: order,
+      },
+      statesShowColumn: {
+        ...statesShowColumn,
+      },
+      pagination: {
+        page,
+        rowsPerPage,
+      },
+      order,
+      orderBy,
+    };
+    dispatch(setPxpTableState(location.pathname, tableName, configToSave));
+    if (saveLocalStorage) {
+      localStorage.setItem(
+        `${location.pathname}_${tableName}`,
+        JSON.stringify({ [location.pathname]: { [tableName]: configToSave } }),
+      );
+    }
+  };
+
+  useEffect(() => {
+    // we need to save for each change of state and statesShowColumn for drawing the same
+    saveStateTable();
+  }, [state, statesShowColumn, page, order, orderBy]);
 
   let dataConfigForEdit = { ...dataConfig };
 
@@ -362,9 +441,9 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
             initialValue:
               row[column.store.idDD] !== ''
                 ? {
-                  [column.store.idDD]: row[column.store.idDD],
-                  [column.store.descDD]: row[column.gridDisplayField],
-                }
+                    [column.store.idDD]: row[column.store.idDD],
+                    [column.store.descDD]: row[column.gridDisplayField],
+                  }
                 : row[column.store.idDD],
           }),
           ...(column.type !== 'AutoComplete' && { initialValue: row[nameKey] }),
@@ -446,8 +525,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
           variant: 'error',
         });
         handleRefresh();
-      });;
-
+      });
   };
 
   // button toolbar
@@ -455,20 +533,20 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     /** * add buttons export PDF XLSX */
     ...(buttonPdf &&
       isVersion2 && {
-      buttonPdf: {
-        onClick: () => fileExport(),
-        icon: <PictureAsPdfIcon />,
-        title: 'Export PDF',
-      },
-    }),
+        buttonPdf: {
+          onClick: () => fileExport(),
+          icon: <PictureAsPdfIcon />,
+          title: 'Export PDF',
+        },
+      }),
     ...(buttonXlsx &&
       isVersion2 && {
-      buttonXlsx: {
-        onClick: () => fileExport('xlsx'),
-        icon: <DescriptionIcon />,
-        title: 'Export XLSX',
-      },
-    }),
+        buttonXlsx: {
+          onClick: () => fileExport('xlsx'),
+          icon: <DescriptionIcon />,
+          title: 'Export XLSX',
+        },
+      }),
     /** ******************************* */
     ...(buttonNew && {
       buttonNew: { onClick: handleNew, icon: <AddIcon />, title: 'new' },
@@ -641,7 +719,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
   const emptyRows =
     data && !data.error
       ? rowsPerPage -
-      Math.min(rowsPerPage, dataRows.lenght - page * rowsPerPage)
+        Math.min(rowsPerPage, dataRows.lenght - page * rowsPerPage)
       : null;
 
   const observer = useRef();
@@ -692,7 +770,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
         )}
         <Paper className={classes.paper}>
           <TableToolbarPxp
-            tableName={tableName}
+            tableLabel={tableLabel}
             numSelected={selected.length}
             buttonsToolbar={statesButtonsToolbar}
             buttonsToolbarBySelections={statesButtonsToolbarBySelections}
@@ -703,7 +781,7 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
             buttonCheckList={buttonCheckList}
             columnForSearchCount={columnForSearchCount}
             defaultFilterValue={
-              dataConfig.getDataTable.params.bottom_filter_value || ''
+              statePxpTable ? statePxpTable.state.genericFilterValue : ''
             }
             dataConfig={dataConfig}
           />

@@ -79,7 +79,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 const TableToolbarPxp = (props) => {
   const classes = useToolbarStyles();
   const {
-    tableName,
+    tableLabel,
     numSelected,
     buttonsToolbar,
     buttonsToolbarBySelections,
@@ -116,7 +116,7 @@ const TableToolbarPxp = (props) => {
             id="tableTitle"
             component="div"
           >
-            {tableName && tableName}
+            {tableLabel && tableLabel}
           </Typography>
           {columnForSearchCount > 0 && (
             <Tooltip title="This filter only applies for columns: ">
