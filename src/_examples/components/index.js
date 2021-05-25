@@ -81,4 +81,14 @@ pages.EXA__ProfilePage = {
   //component: lazy(() => import('./../../_examples/components/form/AutoCompleteTriggerInForm')),
 };*/
 
+pages.EXA_Subsystem= {
+  path: '/exa/subsystem',
+  component: lazy(() => import('../../_pxp/modules/translate/subsystem/Subsystem')),
+};
+
+pages.EXA_Role= {
+  path: '/exa/role',
+  component: lazy(() => import('../../_pxp/modules/translate/role/Role')),
+};
+
 export default pages;
