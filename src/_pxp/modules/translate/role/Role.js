@@ -4,6 +4,7 @@ import TablePxp from '../../../../_pxp/components/Table/TablePxp';
 
 const Role = () => {
 	const jsonRole = {
+		tableName:'Roles',
 		idStore: 'roleId',
 		buttonDel: true,
 		buttonNew: true,

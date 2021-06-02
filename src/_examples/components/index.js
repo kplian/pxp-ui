@@ -83,7 +83,7 @@ pages.EXA__ProfilePage = {
 
 pages.EXA_Subsystem= {
   path: '/exa/subsystem',
-  component: lazy(() => import('../../_pxp/modules/translate/subsystem/Subsystem')),
+  component: lazy(() => import('../../_pxp/modules/subsystem/Subsystem')),
 };
 
 pages.EXA_Role= {
