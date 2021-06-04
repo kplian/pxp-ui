@@ -13,8 +13,12 @@ import { createTheme } from '../themes';
 import config from '../../config';
 import { THEMES } from '../utils/themes';
 
-const activeDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-const themeDefault = activeDark ? config.darkTheme || THEMES.ONE_DARK : config.defaultTheme || THEMES.LIGHT;
+const activeDark =
+  window.matchMedia &&
+  window.matchMedia('(prefers-color-scheme: dark)').matches;
+const themeDefault = activeDark
+  ? config.darkTheme || THEMES.ONE_DARK
+  : config.defaultTheme || THEMES.LIGHT;
 
 const defaultSettings = {
   direction: 'ltr',

@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable consistent-return */
 /**
  * Component for rendering a table from config json for any pxp-ui project
  * @copyright Kplian Ltda 2020
@@ -71,9 +73,7 @@ const DrawTable = ({
 
   const numColumnActives = Object.entries(statesShowColumn).filter(
     ([nameKey, values]) => {
-      if (values === true) {
-        return values;
-      }
+      return values === true;
     },
   );
 
@@ -144,10 +144,18 @@ const DrawTable = ({
                 colSpan={numColumnActives.length}
                 columns={dataConfig.columns}
                 data={dataRows}
-                totals={!dataConfig.dataReader.isDetail && data && data.totals ? data.totals : (dataConfig.dataReader.isDetail && data && data.totalsDetail ? data.totalsDetail : null)}
+                totals={
+                  !dataConfig.dataReader.isDetail && data && data.totals
+                    ? data.totals
+                    : dataConfig.dataReader.isDetail &&
+                      data &&
+                      data.totalsDetail
+                    ? data.totalsDetail
+                    : null
+                }
                 summary={data && data.summaryData ? data.summaryData : null}
                 dataReader={dataConfig.dataReader}
-              ></TableFooterPxp>
+              />
               {dataConfig.tableFooter && dataFooter && (
                 <TableFooter>
                   <TableRow>

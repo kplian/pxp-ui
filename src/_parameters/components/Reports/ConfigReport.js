@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import MuiAccordion from '@material-ui/core/Accordion';
@@ -42,7 +43,6 @@ const AccordionSummary = withStyles((theme) => ({
   expanded: {},
 }))(MuiAccordionSummary);
 const ConfigReport = ({ columns = [], onRowClick }) => {
-
   const [expanded, setExpanded] = React.useState('panel0');
 
   const handleChange = (panel) => (event, newExpanded) => {
@@ -51,16 +51,21 @@ const ConfigReport = ({ columns = [], onRowClick }) => {
 
   return (
     <div>
-      { columns.map((column, i) =>
-        <Accordion square expanded={expanded === 'panel' + i} onChange={handleChange('panel' + i)} key={'panel-report-' + i}>
+      {columns.map((column, i) => (
+        <Accordion
+          square
+          expanded={expanded === `panel${i}`}
+          onChange={handleChange(`panel${i}`)}
+          key={`panel-report-${i}`}
+        >
           <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
             <Typography>{column.title}</Typography>
           </AccordionSummary>
-          <ListReport groupId={column.reportGroupId} onRowClick={onRowClick}></ListReport>
+          <ListReport groupId={column.reportGroupId} onRowClick={onRowClick} />
         </Accordion>
-      )}
+      ))}
     </div>
-  )
-}
+  );
+};
 
 export default ConfigReport;

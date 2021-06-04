@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 
-const useObserver = options => {
+const useObserver = (options) => {
   const [element, setElement] = useState(null);
   const [entry, setEntry] = useState(null);
 
-  const observer = useRef(new IntersectionObserver(observedEntries => {   
-    setEntry(observedEntries[0]);
-  }, options));
+  const observer = useRef(
+    new IntersectionObserver((observedEntries) => {
+      setEntry(observedEntries[0]);
+    }, options),
+  );
 
   useEffect(() => {
     const { current: currentObserver } = observer;

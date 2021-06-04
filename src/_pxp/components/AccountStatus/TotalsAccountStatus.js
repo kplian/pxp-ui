@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /**
  * Label
  * @copyright Kplian Ltda 2020
@@ -36,11 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TotalsAccountStatus = ({
-  data,
-  className,
-  ...rest
-}) => {
+const TotalsAccountStatus = ({ data, className, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -91,6 +88,5 @@ const TotalsAccountStatus = ({
 TotalsAccountStatus.propTypes = {
   className: PropTypes.string,
 };
-
 
 export default TotalsAccountStatus;

@@ -25,8 +25,8 @@ export const capitalizeFirst = (cad, separator = ' ') => {
     string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   return cad
     ? cad
-      .split(separator)
-      .reduce((acc, curr) => acc + capilatizeWord(curr) + separator, '')
+        .split(separator)
+        .reduce((acc, curr) => acc + capilatizeWord(curr) + separator, '')
     : null;
 };
 
@@ -54,7 +54,6 @@ export const formatNumber = ({ value }) => {
   const num = parseFloat(value);
   return num.toLocaleString('en-US');
 };
-
 
 export const currencyFormat = ({ value, currencyCode, withCode = true }) => {
   const num = parseFloat(value);

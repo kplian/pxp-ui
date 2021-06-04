@@ -8,8 +8,7 @@ import WcIcon from '@material-ui/icons/Wc';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Label from '../../../components/Label';
 import imgAvatar from '../../../components/Table/avatar.jpeg';
-import TablePxp from "../../../components/Table/TablePxp";
-
+import TablePxp from '../../../components/Table/TablePxp';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -108,14 +107,12 @@ const Language = () => {
     onSubmit: {
       urlAdd: 'pxp/languages/add',
       urlEdit: 'pxp/languages/edit',
-      extraParams: {
-
-      },
+      extraParams: {},
     },
     urlDelete: 'pxp/languages/delete',
   };
 
   return <TablePxp dataConfig={jsonLanguage} />;
-}
+};
 
 export default Language;

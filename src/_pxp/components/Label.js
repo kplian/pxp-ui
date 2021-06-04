@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /**
  * Label
  * @copyright Kplian Ltda 2020
@@ -60,11 +61,13 @@ const Label = ({
 
   return (
     <span
-      className={
-        clsx(classes.root, {
-          [classes[color]]: color
-        }, className)
-      }
+      className={clsx(
+        classes.root,
+        {
+          [classes[color]]: color,
+        },
+        className,
+      )}
       {...rest}
     >
       {children}
@@ -76,7 +79,13 @@ Label.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   style: PropTypes.object,
-  color: PropTypes.oneOf(['primary', 'secondary', 'error', 'warning', 'success'])
+  color: PropTypes.oneOf([
+    'primary',
+    'secondary',
+    'error',
+    'warning',
+    'success',
+  ]),
 };
 
 export default Label;

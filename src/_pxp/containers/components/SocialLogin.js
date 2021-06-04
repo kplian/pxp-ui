@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { forwardRef, useState } from 'react';
 import { Button } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
@@ -82,7 +83,7 @@ const SocialLogin = forwardRef(() => {
       token: response.accessToken,
       name: response.name.split(' ', 2)[0],
       surname: response.name.split(' ', 2)[1],
-      device: 'web', 
+      device: 'web',
       type: 'facebook',
       language,
     };
@@ -122,7 +123,7 @@ const SocialLogin = forwardRef(() => {
           <FacebookLogin
             appId={process.env.REACT_APP_FACEBOOK_KEY}
             callback={responseFacebook}
-            disableMobileRedirect={true}
+            disableMobileRedirect
             render={(renderProps) => (
               <LoadButton
                 variant="contained"
@@ -164,7 +165,7 @@ const SocialLogin = forwardRef(() => {
                 }
                 loading={loadingScreen}
               >
-                <label htmlFor="">Google</label>
+                <label>Google</label>
               </LoadButton>
             )}
             buttonText="Login"
@@ -178,9 +179,9 @@ const SocialLogin = forwardRef(() => {
         }
       </>
     );
-  } else {
-    return (
-      <>
+  }
+  return (
+    <>
       <div
         className="social-login-button-container"
         style={{ display: 'inline-flex', width: '104%' }}
@@ -203,7 +204,7 @@ const SocialLogin = forwardRef(() => {
         >
           Facebook
         </LoadButton>
-  
+
         <LoadButton
           variant="contained"
           color="secondary"
@@ -218,13 +219,11 @@ const SocialLogin = forwardRef(() => {
           }
           loading={loadingScreen}
         >
-          <label htmlFor="">Google</label>
+          <label>Google</label>
         </LoadButton>
       </div>
-      </>
-    );
-  }
-  return <></>;
+    </>
+  );
 });
 
 export default SocialLogin;

@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Rating from '@material-ui/lab/Rating';
@@ -9,26 +10,24 @@ const useStylesRating = makeStyles((theme) => ({
     top: 0,
     right: 0,
   },
-  iconFilled: {
-
-  },
+  iconFilled: {},
   iconEmpty: {
-    color: 'white'
+    color: 'white',
   },
 }));
 
 const ItemRating = ({ rating, className }) => {
   return (
     <Rating
-        className={ clsx(className) }
-        name="rating"
-        value={ parseInt(rating) || 0 }
-        classes={useStylesRating()}
-        precision={0.5}
-        size="small"
-        readOnly
-      />
-  )
+      className={clsx(className)}
+      name="rating"
+      value={parseInt(rating) || 0}
+      classes={useStylesRating()}
+      precision={0.5}
+      size="small"
+      readOnly
+    />
+  );
 };
 
 export default ItemRating;

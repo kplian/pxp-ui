@@ -51,8 +51,6 @@ import DrawForm from './DrawForm';
 const Form = forwardRef((props, ref) => {
   const { data, dialog = false, loading } = props;
 
-
-
   let mergedDataConfig = _.merge({}, defaultConfig, data);
   if (typeof data.groups === 'object') {
     mergedDataConfig = {

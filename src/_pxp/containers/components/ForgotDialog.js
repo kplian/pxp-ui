@@ -63,7 +63,7 @@ const Forgot = () => {
       handleForgot(values.username, values.captcha, states);
     },
   };
-  const handleClose = () => { };
+  const handleClose = () => {};
   return (
     <>
       <Dialog open onClose={handleClose} aria-labelledby="form-dialog-title">

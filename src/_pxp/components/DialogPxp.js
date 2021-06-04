@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     width: '100%',
-    //marginBottom: theme.spacing(2),
-    //marginBottom: theme.spacing(2),
+    // marginBottom: theme.spacing(2),
+    // marginBottom: theme.spacing(2),
   },
   table: {
     minWidth: 750,
@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
       padding: '0px 0px 16px 0px',
     },
     backgroundColor: theme.palette.background.default,
-
   },
 }));
 
@@ -87,7 +86,6 @@ const DialogPxp = ({
         </Toolbar>
       </AppBar>
       <main className={classes.content}>{children}</main>
-
     </Dialog>
   );
 };

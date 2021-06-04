@@ -1,26 +1,20 @@
-import React, { useEffect } from 'react'
-import {
-  Grid,
-  Hidden,
-  IconButton,
-  Fab,
-  Drawer
-} from '@material-ui/core';
-import ConfigReport from './ConfigReport';
+/* eslint-disable import/no-cycle */
+import React, { useEffect } from 'react';
+import { Grid, Hidden, IconButton, Fab, Drawer } from '@material-ui/core';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  useRouteMatch
+  useRouteMatch,
 } from 'react-router-dom';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import { makeStyles } from '@material-ui/core/styles';
 import ViewReport from './ViewReport';
 import Pxp from '../../../Pxp';
-
-import { makeStyles } from '@material-ui/core/styles';
+import ConfigReport from './ConfigReport';
 
 const drawerWidth = 240;
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     position: 'relative',
@@ -51,7 +45,7 @@ const useStyles = makeStyles(theme => ({
   // necessary for content to be below app bar
   drawerPaper: {
     width: drawerWidth,
-    position: 'relative'
+    position: 'relative',
   },
   content: {
     flexGrow: 1,
@@ -63,7 +57,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Reports = () => {
-  let { path, url } = useRouteMatch();
+  const { path, url } = useRouteMatch();
   const [columns, setColumns] = React.useState([]);
   const classes = useStyles();
 
@@ -74,10 +68,12 @@ const Reports = () => {
   };
 
   useEffect(() => {
-    Pxp.apiClient.doRequest({
-      url: `reports/groups`,
-      method: 'GET',
-    }).then(setColumns);
+    Pxp.apiClient
+      .doRequest({
+        url: `reports/groups`,
+        method: 'GET',
+      })
+      .then(setColumns);
   }, []);
 
   return (
@@ -103,7 +99,7 @@ const Reports = () => {
               paper: classes.drawerPaper,
             }}
           >
-            <ConfigReport columns={columns} onRowClick={handleDrawerToggle}></ConfigReport>
+            <ConfigReport columns={columns} onRowClick={handleDrawerToggle} />
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="css">
@@ -114,23 +110,22 @@ const Reports = () => {
             variant="permanent"
             open
           >
-            <ConfigReport columns={columns} ></ConfigReport>
+            <ConfigReport columns={columns} />
           </Drawer>
         </Hidden>
       </nav>
       <main className={classes.content}>
-          <Switch>
-            <Route exact path={path}>
-              <h3 className={classes.empty}>Please select a report.</h3>
-            </Route>
-            <Route path={`${path}/:reportId`}>
-              <ViewReport></ViewReport>
-            </Route>
-          </Switch>
+        <Switch>
+          <Route exact path={path}>
+            <h3 className={classes.empty}>Please select a report.</h3>
+          </Route>
+          <Route path={`${path}/:reportId`}>
+            <ViewReport />
+          </Route>
+        </Switch>
       </main>
     </div>
-  )
-}
+  );
+};
 
 export default Reports;
-

@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /**
  * DataBox
  * @copyright Kplian Ltda 2020

@@ -1,7 +1,4 @@
-import {
-  NEW_NOTIFY,
-  RECEIVED_NOTIFY
-} from '../actions/notify';
+import { NEW_NOTIFY, RECEIVED_NOTIFY } from '../actions/notify';
 
 const initialState = {
   data: null,
@@ -15,16 +12,17 @@ const notifyReducer = (state = initialState, action) => {
         ...state,
         data: { ...action.payload },
         newNotify: true,
-      }
+      };
     }
     case RECEIVED_NOTIFY: {
       return {
         ...state,
         data: null,
         newNotify: false,
-      }
+      };
     }
-    default: return { ...state };
+    default:
+      return { ...state };
   }
 };
 

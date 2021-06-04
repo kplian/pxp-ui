@@ -63,9 +63,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   icon: {
-    fontFamily: 'Material Icons'
-  }
-
+    fontFamily: 'Material Icons',
+  },
 }));
 
 const Item = ({ item, config }) => {
@@ -115,16 +114,16 @@ const Item = ({ item, config }) => {
         {typeof item[columns.title] === 'function' ? (
           item[columns.title]()
         ) : (
-            <ItemTitle
-              title={item[columns.title]}
-              subtitle={item[columns.subtitle]}
-              active={
-                typeof columns.active === 'function'
-                  ? columns.active(item)
-                  : item[columns.active]
-              }
-            />
-          )}
+          <ItemTitle
+            title={item[columns.title]}
+            subtitle={item[columns.subtitle]}
+            active={
+              typeof columns.active === 'function'
+                ? columns.active(item)
+                : item[columns.active]
+            }
+          />
+        )}
         <ItemDescription description={item[columns.description]} />
       </CardContent>
       <Features item={item} features={config.features} />

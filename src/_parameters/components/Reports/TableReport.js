@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
-import TablePxp from '../../../_pxp/components/Table/TablePxp';
 import { useParams } from 'react-router-dom';
 import PdfIcon from '@material-ui/icons/PictureAsPdfRounded';
 import Icon from '@material-ui/core/Icon';
+import TablePxp from '../../../_pxp/components/Table/TablePxp';
 import Pxp from '../../../Pxp';
 
 const TableReport = ({ columns, filters = null, isDetail = false }) => {
@@ -31,22 +31,25 @@ const TableReport = ({ columns, filters = null, isDetail = false }) => {
 
     // });
     window.open(`
-    ${Pxp.apiClient.protocol}://${Pxp.apiClient.host}:${Pxp.apiClient.port}/${Pxp.apiClient.baseUrl}/reports/${params.reportId}/generate/${type}?filters=${encodeURIComponent(filters)}`);
-  }
-
+    ${Pxp.apiClient.protocol}://${Pxp.apiClient.host}:${Pxp.apiClient.port}/${
+      Pxp.apiClient.baseUrl
+    }/reports/${params.reportId}/generate/${type}?filters=${encodeURIComponent(
+      filters,
+    )}`);
+  };
 
   const tableConfig = {
     nameForm: 'Report',
     dataReader: {
       dataRows: isDetail ? 'dataDetail' : 'data',
       total: isDetail ? 'countDetail' : 'count',
-      isDetail: isDetail
+      isDetail,
     },
-    columns: columns,
+    columns,
     idStore: Object.keys(columns)[0] || 'id',
     buttonNew: false,
     getDataTable: {
-      url: 'reports/' + params.reportId + '/generate',
+      url: `reports/${params.reportId}/generate`,
       method: 'GET',
       params: {
         start: '0',
@@ -72,8 +75,6 @@ const TableReport = ({ columns, filters = null, isDetail = false }) => {
     },
   };
 
-
-
   useEffect(() => {
     const ac = new AbortController();
     if (columns) {
@@ -84,9 +85,9 @@ const TableReport = ({ columns, filters = null, isDetail = false }) => {
 
   return (
     <div>
-      <TablePxp dataConfig={tableConfig} ref={refTable}></TablePxp>
+      <TablePxp dataConfig={tableConfig} ref={refTable} />
     </div>
-  )
-}
+  );
+};
 
 export default TableReport;

@@ -10,15 +10,15 @@ import { useTheme, makeStyles } from '@material-ui/core/styles';
 import { DropzoneArea } from 'material-ui-dropzone';
 import axios from 'axios';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { Typography } from '@material-ui/core';
 import Pxp from '../../../../Pxp';
 import LoadButton from '../../../components/LoadButton/LoadButton';
-import { Typography } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   drop: {
     minWidth: '300px',
     minHeight: '200px',
-  }
+  },
 }));
 
 const UploadModal = ({ handleClose, open }) => {
@@ -67,28 +67,30 @@ const UploadModal = ({ handleClose, open }) => {
       onClose={handleClose}
       aria-labelledby="responsive-dialog-title"
     >
-      <DialogTitle id="responsive-dialog-title">
-        Import Translates
-      </DialogTitle>
+      <DialogTitle id="responsive-dialog-title">Import Translates</DialogTitle>
       <DialogContent>
-        {loading && <LinearProgress
-          variant="buffer"
-          value={progress}
-          valueBuffer={buffer}
-        />}
-        {!result && <DropzoneArea
-          id="drop-files"
-          dropzoneClass={classes.drop}
-          dropzoneText="Drag and drop a file XLSX here or click"
-          onChange={setFiles}
-        />}
-        {result &&
+        {loading && (
+          <LinearProgress
+            variant="buffer"
+            value={progress}
+            valueBuffer={buffer}
+          />
+        )}
+        {!result && (
+          <DropzoneArea
+            id="drop-files"
+            dropzoneClass={classes.drop}
+            dropzoneText="Drag and drop a file XLSX here or click"
+            onChange={setFiles}
+          />
+        )}
+        {result && (
           <div>
             <p>{result?.message}</p>
-            <p>{'Grupos modificados: ' + result?.groups}</p>
-            <p>{'Registros modificados: ' + result?.records}</p>
+            <p>{`Grupos modificados: ${result?.groups}`}</p>
+            <p>{`Registros modificados: ${result?.records}`}</p>
           </div>
-        }
+        )}
       </DialogContent>
       <DialogActions>
         <Button

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /**
  * Component for rendering the options for showing or hide columns from config json for any pxp-ui project
  * @copyright Kplian Ltda 2020
@@ -24,7 +25,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CheckListColumn = ({ statesShowColumn, setStatesShowColumn, dataConfig }) => {
+const CheckListColumn = ({
+  statesShowColumn,
+  setStatesShowColumn,
+  dataConfig,
+}) => {
   const classes = useStyles();
 
   const handleChange = (event) => {

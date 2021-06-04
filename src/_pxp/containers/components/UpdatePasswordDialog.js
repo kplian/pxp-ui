@@ -78,7 +78,7 @@ const UpdatePassword = () => {
       }
     },
   };
-  const handleClose = () => { };
+  const handleClose = () => {};
   return (
     <>
       <Dialog open onClose={handleClose} aria-labelledby="form-dialog-title">

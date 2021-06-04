@@ -9,10 +9,7 @@ import authReducer from './reducers/auth';
 import appReducer from './reducers/app';
 import notifyReducer from './reducers/notify';
 
-
-
 export default () => {
-
   return createStore(
     combineReducers({
       app: appReducer,
@@ -21,4 +18,4 @@ export default () => {
     }),
     applyMiddleware(thunk),
   );
-}
+};

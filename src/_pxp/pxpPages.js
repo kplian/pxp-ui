@@ -13,7 +13,6 @@ pages.SEGU_User = {
   component: lazy(() => import('../_security/components/user/User')),
 };
 
-
 pages.i18n_Languages = {
   path: '/translate/languages',
   translationsNS: ['segu'],

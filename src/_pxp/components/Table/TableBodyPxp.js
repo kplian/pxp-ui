@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /**
  * Component for rendering the body table from config json for any pxp-ui project
  * @copyright Kplian Ltda 2020

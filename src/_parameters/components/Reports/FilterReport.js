@@ -1,12 +1,12 @@
+/* eslint-disable no-lone-blocks */
 import React from 'react';
 import Fab from '@material-ui/core/Fab';
 import Collapse from '@material-ui/core/Collapse';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
-import Form from '../../../_pxp/components/Form/Form';
 import moment from 'moment';
-
+import Form from '../../../_pxp/components/Form/Form';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(0),
     left: theme.spacing(0),
     zIndex: theme.zIndex.modal,
-    width: 'calc(100% - 56px)'
+    width: 'calc(100% - 56px)',
   },
   paper: {
-    border: `solid 1px ${theme.palette.secondary.main}`
+    border: `solid 1px ${theme.palette.secondary.main}`,
   },
 }));
 
@@ -41,7 +41,7 @@ const FilterReport = ({ columns, changeFilters, values = null }) => {
     resetButton: false,
     submitLabel: 'Filtrar',
     onSubmit: ({ values }) => {
-      Object.keys(values).forEach(key => {
+      Object.keys(values).forEach((key) => {
         const valueEmpty = values[key] === '' || values[key] === undefined;
         if (columns[key].type === 'AutoComplete' && valueEmpty) {
           values[key] = '%';
@@ -60,31 +60,33 @@ const FilterReport = ({ columns, changeFilters, values = null }) => {
       const form = refForm.current.states;
       const valuesParse = JSON.parse(values);
 
-      Object.keys(columns).forEach(key => {
-
+      Object.keys(columns).forEach((key) => {
         switch (columns[key].type) {
-          case 'AutoComplete': {
-            // form[key].setValue({
-            //   // [columns[key].store.idDD]: valuesParse[key],
-            //   // [columns[key].store.descDD]: valuesParse[key],
-            // });
-          } break;
+          case 'AutoComplete':
+            {
+              // form[key].setValue({
+              //   // [columns[key].store.idDD]: valuesParse[key],
+              //   // [columns[key].store.descDD]: valuesParse[key],
+              // });
+            }
+            break;
           case 'DatePicker':
             form[key].setValue(moment(valuesParse[key], 'YYYY-MM-DD').toDate());
             break;
-          default: {
+          default:
             if (valuesParse[key] !== '%') {
               form[key].setValue(valuesParse[key]);
-            };
-          } break;
+            }
+            break;
         }
       });
     }
-  }, [active])
+  }, [active]);
 
   return (
     <div className={classes.root}>
-      <Fab size="small"
+      <Fab
+        size="small"
         color="secondary"
         aria-label="filter"
         className={classes.fab}
@@ -92,13 +94,13 @@ const FilterReport = ({ columns, changeFilters, values = null }) => {
       >
         <Icon>{active ? 'close' : 'filter_alt'}</Icon>
       </Fab>
-      <Collapse in={active} className={classes.collapse} >
+      <Collapse in={active} className={classes.collapse}>
         <Paper elevation={3} className={classes.paper}>
-          <Form data={formFilter} ref={refForm}></Form>
+          <Form data={formFilter} ref={refForm} />
         </Paper>
       </Collapse>
     </div>
-  )
+  );
 };
 
 export default FilterReport;

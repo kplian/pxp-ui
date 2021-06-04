@@ -75,8 +75,7 @@ const InitValues = (values) => {
         setValue([]);
         break;
       case 'GoogleReCaptcha':
-        ref.current && ref.current.reset();
-        setValue(null);
+        if (ref.current && ref.current.reset()) setValue(null);
         break;
       default:
         setValue('');
@@ -105,7 +104,6 @@ const InitValues = (values) => {
   if (type === 'AutoComplete' && store) {
     config = {
       ...config,
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       store: useJsonStore(store),
     };
   }

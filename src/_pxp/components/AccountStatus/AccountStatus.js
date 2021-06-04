@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /**
  * Account Status
  * @copyright Kplian Ltda 2020
@@ -19,19 +20,19 @@ import {
 } from '@material-ui/pickers';
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
+
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import PageviewIcon from '@material-ui/icons/Pageview';
+import { red } from '@material-ui/core/colors';
+import { useTranslation } from 'react-i18next';
+import HeaderSectionAccountStatus from './HeaderSectionAccountStatus';
+import { currencyFormat, formatNumber } from '../../utils/Common';
 import TotalsAccountStatus from './TotalsAccountStatus';
 import Label from '../Label';
 import TablePxp from '../Table/TablePxp';
 import BasicContainer from '../../containers/BasicContainer';
-
 import 'date-fns';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import PageviewIcon from '@material-ui/icons/Pageview';
-import HeaderSectionAccountStatus from './HeaderSectionAccountStatus';
-import { currencyFormat, formatNumber } from '../../utils/Common';
-import { useTranslation } from 'react-i18next';
-import { red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -164,12 +165,12 @@ const AccountStatus = ({
           ...[{ value: '', label: '' }],
           ...(typeTransactionForOptions.length === 0
             ? [
-              { value: 'payment', label: t('payment') },
-              { value: 'payment_in_advance', label: t('payment_in_advance') },
-              { value: 'adjusting_account', label: t('adjusting_account') },
-              { value: 'account_payable', label: t('account_payable') },
-              { value: 'account_receivable', label: t('account_receivable') },
-            ]
+                { value: 'payment', label: t('payment') },
+                { value: 'payment_in_advance', label: t('payment_in_advance') },
+                { value: 'adjusting_account', label: t('adjusting_account') },
+                { value: 'account_payable', label: t('account_payable') },
+                { value: 'account_receivable', label: t('account_receivable') },
+              ]
             : []),
           ...typeTransactionForOptions,
         ],
@@ -249,7 +250,7 @@ const AccountStatus = ({
                   <b>{t('amount')}: </b>
                   {currencyFormat({
                     value: row.amount,
-                    currencyCode: currencyCode,
+                    currencyCode,
                   })}
                 </Label>
               </div>
@@ -273,7 +274,10 @@ const AccountStatus = ({
         search: true,
 
         renderColumn: (row) => {
-          const formantAmount = currencyFormat({ value: row.amount, currencyCode });
+          const formantAmount = currencyFormat({
+            value: row.amount,
+            currencyCode,
+          });
           return (
             <span
               style={{

@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /**
  * Menu Item
  * @copyright Kplian Ltda 2020

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -48,7 +49,9 @@ const TransferList = ({ data = [], field, handleChange }) => {
     if (!currentItem) {
       newChecked.push(item);
     } else {
-      newChecked = newChecked.filter((item) => item[field] !== currentItem[field] );
+      newChecked = newChecked.filter(
+        (item) => item[field] !== currentItem[field],
+      );
     }
 
     setChecked(newChecked);
@@ -76,11 +79,11 @@ const TransferList = ({ data = [], field, handleChange }) => {
     setRight([]);
   };
 
-  useEffect(()=>{
-    if(right.length > 0) {
+  useEffect(() => {
+    if (right.length > 0) {
       handleChange(right);
     }
-  }, [right])
+  }, [right]);
   const customList = (items) => (
     <Paper className={classes.paper}>
       <List dense component="div" role="list">
@@ -88,10 +91,15 @@ const TransferList = ({ data = [], field, handleChange }) => {
           const labelId = `transfer-list-item-${value}-label`;
 
           return (
-            <ListItem key={labelId + '-' +value} role="listitem" button onClick={handleToggle(item)}>
+            <ListItem
+              key={`${labelId}-${value}`}
+              role="listitem"
+              button
+              onClick={handleToggle(item)}
+            >
               <ListItemIcon>
                 <Checkbox
-                  checked={!!_.find(checked, {[field]:item[field]})}
+                  checked={!!_.find(checked, { [field]: item[field] })}
                   tabIndex={-1}
                   disableRipple
                   inputProps={{ 'aria-labelledby': labelId }}
@@ -107,7 +115,13 @@ const TransferList = ({ data = [], field, handleChange }) => {
   );
 
   return (
-    <Grid container spacing={2} justify="center" alignItems="center" className={classes.root}>
+    <Grid
+      container
+      spacing={2}
+      justify="center"
+      alignItems="center"
+      className={classes.root}
+    >
       <Grid item>{customList(left)}</Grid>
       <Grid item>
         <Grid container direction="column" alignItems="center">
@@ -156,6 +170,6 @@ const TransferList = ({ data = [], field, handleChange }) => {
       <Grid item>{customList(right)}</Grid>
     </Grid>
   );
-}
+};
 
 export default TransferList;

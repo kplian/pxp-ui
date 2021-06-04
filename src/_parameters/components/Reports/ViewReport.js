@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import FilterReport from './FilterReport';
-import TableReport from './TableReport';
-import {
-  useParams
-} from 'react-router-dom';
-import Pxp from '../../../Pxp';
+import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import { Scrollbars } from 'react-custom-scrollbars';
-import useWindowSize from '../../../_pxp/hooks/useWindowSize';
 import { makeStyles } from '@material-ui/core/styles';
+import FilterReport from './FilterReport';
+import TableReport from './TableReport';
+import Pxp from '../../../Pxp';
+import useWindowSize from '../../../_pxp/hooks/useWindowSize';
 import MasterDetail from './MasterDetail';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   title: {
     marginTop: '2px',
     [theme.breakpoints.down('sm')]: {
@@ -20,35 +18,42 @@ const useStyles = makeStyles(theme => ({
       textAlign: 'center',
       marginBottom: '2px',
     },
-  }
+  },
 }));
 
 const columnsAddGridForm = (filters) => {
-  Object.keys(filters).forEach(key => {
-    filters[key] = { ...filters[key], gridForm: { xs: 12, sm: 6, md: 6, lg: 4 } };
+  Object.keys(filters).forEach((key) => {
+    filters[key] = {
+      ...filters[key],
+      gridForm: { xs: 12, sm: 6, md: 6, lg: 4 },
+    };
   });
   return filters;
 };
 
 const getDefaultValues = (filters) => {
-  let vals = {};
+  const vals = {};
 
-  Object.keys(filters).forEach(key => {
+  Object.keys(filters).forEach((key) => {
     if (key.includes('date') || key.includes('fecha')) {
-
-      // especial filters 
+      // especial filters
       if (key === 'date_from' && !filters[key].default) {
         vals[key] = moment().format('YYYY-MM-01');
       } else if (key === 'date_to' && !filters[key].default) {
         vals[key] = moment().format('YYYY-MM-DD');
       } else {
         switch (filters[key].default) {
-          case 'NOW': vals[key] = moment().format('YYYY-MM-DD'); break;
-          case 'FIRST': vals[key] = moment().format('YYYY-MM-01'); break;
-          default: vals[key] = moment().format('YYYY-MM-DD'); break;
+          case 'NOW':
+            vals[key] = moment().format('YYYY-MM-DD');
+            break;
+          case 'FIRST':
+            vals[key] = moment().format('YYYY-MM-01');
+            break;
+          default:
+            vals[key] = moment().format('YYYY-MM-DD');
+            break;
         }
       }
-
     } else if (key.includes('id')) {
       vals[key] = '%';
     } else {
@@ -57,7 +62,7 @@ const getDefaultValues = (filters) => {
   });
 
   return vals;
-}
+};
 
 const ViewReport = () => {
   const [columns, setColumns] = useState({});
@@ -79,20 +84,22 @@ const ViewReport = () => {
 
   const getReportData = (reportId) => {
     setLoad(true);
-    Pxp.apiClient.doRequest({
-      url: `reports/${reportId}/data`,
-      method: 'GET',
-    }).then(report => {
-
-      let filters = columnsAddGridForm(JSON.parse(report.filters));
-      setFilters(filters);
-      const config = JSON.parse(report.config);
-      setConfig(config);
-      setColumns(config.columns);
-      setValues(JSON.stringify(getDefaultValues(filters)));
-      setName(report.name);
-      setLoad(false);
-    }).catch(err => { });
+    Pxp.apiClient
+      .doRequest({
+        url: `reports/${reportId}/data`,
+        method: 'GET',
+      })
+      .then((report) => {
+        const filters = columnsAddGridForm(JSON.parse(report.filters));
+        setFilters(filters);
+        const config = JSON.parse(report.config);
+        setConfig(config);
+        setColumns(config.columns);
+        setValues(JSON.stringify(getDefaultValues(filters)));
+        setName(report.name);
+        setLoad(false);
+      })
+      .catch((err) => {});
   };
 
   useEffect(() => {
@@ -111,9 +118,15 @@ const ViewReport = () => {
 
   return (
     <div>
-      { load && <LinearProgress color="secondary" />}
-      { !load && <FilterReport columns={filters} changeFilters={changeFilters} values={values} />}
-      { !load && <h2 className={classes.title}>{name}</h2>}
+      {load && <LinearProgress color="secondary" />}
+      {!load && (
+        <FilterReport
+          columns={filters}
+          changeFilters={changeFilters}
+          values={values}
+        />
+      )}
+      {!load && <h2 className={classes.title}>{name}</h2>}
 
       <Scrollbars
         autoHide
@@ -128,19 +141,23 @@ const ViewReport = () => {
           height: `calc(${heightScreen}px - 190px)`,
         }}
       >
-        {!load && config.detail &&
+        {!load && config.detail && (
           // <TableReport columns={columns} filters={values} />
           <MasterDetail>
             <TableReport columns={columns} filters={values} />
-            <TableReport columns={config.columnsDetail} filters={values} isDetail />
+            <TableReport
+              columns={config.columnsDetail}
+              filters={values}
+              isDetail
+            />
           </MasterDetail>
-        }
-        {!load && !config.detail &&
+        )}
+        {!load && !config.detail && (
           <TableReport columns={columns} filters={values} />
-        }
+        )}
       </Scrollbars>
     </div>
-  )
+  );
 };
 
 export default ViewReport;

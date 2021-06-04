@@ -7,23 +7,23 @@ import Typography from '@material-ui/core/Typography';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import WcIcon from '@material-ui/icons/Wc';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import Split from 'react-split';
 import Label from '../../../components/Label';
 import TablePxp from '../../../components/Table/TablePxp';
 import MasterDetail from '../../../components/MasterDetail';
 import Pxp from '../../../../Pxp';
 import TranslateSelect from './TranslateSelect';
 // import SplitPane, { Pane } from 'react-split-pane';
-import Split from 'react-split';
 
 const useStyles = makeStyles((theme) => ({
   content: {
     display: 'flex',
     height: '100%',
     '& .gutter': {
-      border: theme.palette.action.disabled + ' 1px solid',
+      border: `${theme.palette.action.disabled} 1px solid`,
       backgroundColor: theme.palette.action.disabledBackground,
       width: '4px !important',
-    }
+    },
   },
   avatar: {
     height: 42,
@@ -42,16 +42,25 @@ const Translation = () => {
   const refWord = useRef(null);
   const refTranslates = useRef(null);
   const loadGroups = () => {
-    Pxp.apiClient.doRequest({
-      url: `pxp/translate/groups/list`,
-      method: 'GET',
-      params: {
-        limit: 10,
-        start: 0,
-        sort: 'code',
-        dir: 'ASC'
-      }
-    }).then(resp => setGroups(resp.data.map(item => ({ label: item.name, value: item.translationGroupId }))));
+    Pxp.apiClient
+      .doRequest({
+        url: `pxp/translate/groups/list`,
+        method: 'GET',
+        params: {
+          limit: 10,
+          start: 0,
+          sort: 'code',
+          dir: 'ASC',
+        },
+      })
+      .then((resp) =>
+        setGroups(
+          resp.data.map((item) => ({
+            label: item.name,
+            value: item.translationGroupId,
+          })),
+        ),
+      );
   };
 
   const reloadTableWords = () => {
@@ -60,7 +69,7 @@ const Translation = () => {
     set((prevData) => ({
       ...prevData,
       load: true,
-      url: 'pxp/translate/words/group/' + currentGroup,
+      url: `pxp/translate/words/group/${currentGroup}`,
     }));
   };
 
@@ -70,12 +79,12 @@ const Translation = () => {
     set((prevData) => ({
       ...prevData,
       load: true,
-      url: 'pxp/translate/translations/word/' + currentWord,
+      url: `pxp/translate/translations/word/${currentWord}`,
     }));
   };
   const handleChangeGroup = (groupId) => {
     setCurrentGroup(groupId);
-  }
+  };
 
   const jsonWord = {
     nameForm: 'Word Key',
@@ -101,11 +110,10 @@ const Translation = () => {
                   {row.code}
                 </Typography>
                 <Typography variant="body2" color="inherit">
-                  <b style={{ fontSize: '0.7rem' }}>Predeterminado: </b>{row.defaultText}
+                  <b style={{ fontSize: '0.7rem' }}>Predeterminado: </b>
+                  {row.defaultText}
                 </Typography>
-                <Label color="success">
-                  {row.group?.name}
-                </Label>
+                <Label color="success">{row.group?.name}</Label>
               </div>
             </Box>
           );
@@ -152,14 +160,14 @@ const Translation = () => {
       },
     },
     getDataTable: {
-      url: 'pxp/translate/words/group/' + currentGroup,
+      url: `pxp/translate/words/group/${currentGroup}`,
       method: 'GET',
       params: {
         start: '0',
         limit: '10',
         sort: 'wordKeyId',
         dir: 'DESC',
-        relations: ['group']
+        relations: ['group'],
       },
       load: true,
     },
@@ -172,7 +180,7 @@ const Translation = () => {
       buttonEdit: true,
     },
     onClickRow: ({ row }) => {
-      console.log('WORD', row.wordKeyId)
+      console.log('WORD', row.wordKeyId);
       setShowDetail(true);
       setCurrentWord(row.wordKeyId);
     },
@@ -221,7 +229,7 @@ const Translation = () => {
             start: 0,
             limit: 10,
             dir: 'DES',
-          }
+          },
         },
         gridForm: { xs: 12, sm: 4 },
         variant: 'outlined',
@@ -230,11 +238,11 @@ const Translation = () => {
         },
         filters: { pfiltro: 'name', type: 'string' },
         search: true,
-        renderColumn: (row) => (row.language.name)
+        renderColumn: (row) => row.language.name,
       },
     },
     getDataTable: {
-      url: 'pxp/translate/translations/word/' + currentWord,
+      url: `pxp/translate/translations/word/${currentWord}`,
       method: 'GET',
       params: {
         start: '0',
@@ -261,7 +269,6 @@ const Translation = () => {
       },
     },
     urlDelete: 'pxp/translate/translations/delete',
-
   };
 
   useEffect(() => {
@@ -286,15 +293,21 @@ const Translation = () => {
     >
       <div>
         <h2>Grupo</h2>
-        <TranslateSelect options={groups} title="Grupo" handleChange={handleChangeGroup} />
+        <TranslateSelect
+          options={groups}
+          title="Grupo"
+          handleChange={handleChangeGroup}
+        />
         {currentGroup && <TablePxp dataConfig={jsonWord} ref={refWord} />}
       </div>
       <div>
         <h2>Traducciones</h2>
-        {currentWord && <TablePxp dataConfig={jsonTranslation} ref={refTranslates} />}
+        {currentWord && (
+          <TablePxp dataConfig={jsonTranslation} ref={refTranslates} />
+        )}
       </div>
     </MasterDetail>
   );
-}
+};
 
 export default Translation;

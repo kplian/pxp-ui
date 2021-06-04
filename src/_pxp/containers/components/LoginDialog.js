@@ -86,7 +86,7 @@ export default ({ open: popen, username }) => {
     }
   }, [sessionDied, loadingScreen, username]);
 
-  const handleClose = () => { };
+  const handleClose = () => {};
 
   const isWebView = navigator.userAgent.includes('wv');
 
@@ -94,7 +94,7 @@ export default ({ open: popen, username }) => {
   const safari = /safari/.test(userAgent);
   const ios = /iphone|ipod|ipad/.test(userAgent);
 
-  const handleDownloadApk = (e) => { };
+  const handleDownloadApk = (e) => {};
 
   const iOSWebView = ios && !safari;
 
@@ -166,8 +166,8 @@ export default ({ open: popen, username }) => {
                       </span>
                     </p>
                   ) : (
-                      <></>
-                    )}
+                    <></>
+                  )}
                   <SocialLogin />
                 </>
               )}
@@ -185,8 +185,8 @@ export default ({ open: popen, username }) => {
                       Descarga nuestra app para android.
                     </Link>
                   ) : (
-                      <></>
-                    )}
+                    <></>
+                  )}
 
                   <br />
                   <br />

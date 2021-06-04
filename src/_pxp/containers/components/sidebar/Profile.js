@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /**
  * Profile section for logged in users
  * @copyright Kplian Ltda 2020

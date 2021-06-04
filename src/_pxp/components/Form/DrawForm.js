@@ -1,3 +1,6 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable no-plusplus */
+/* eslint-disable import/no-named-as-default */
 /**
  * DrawForm Component for rendering the inputs from jsonConfig
  * @copyright Kplian Ltda 2020
@@ -89,9 +92,8 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
   );
 
   useEffect(() => {
-    data.onLoad && data.onLoad(states)
+    if (data.onLoad) data.onLoad(states);
   }, []); // <-- empty array means 'run once'
-
 
   const getSchemaValidation = (byGroup = false, callback) => {
     const getValidations = (nameGroup) => {
@@ -221,8 +223,7 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
             state.type === 'Switch') && {
             [nameKey]: state.value,
           }),
-        } )
-
+        }),
       }),
       {},
     );
@@ -695,7 +696,7 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
                             className={classes.button}
                           >
                             {data.steppersConfig &&
-                              data.steppersConfig.backButton
+                            data.steppersConfig.backButton
                               ? data.steppersConfig.backButton
                               : 'Back'}
                           </Button>
@@ -706,15 +707,15 @@ const DrawForm = forwardRef(({ data, dialog, loading = false }, ref) => {
                             className={classes.button}
                           >
                             {activeStep ===
-                              Object.values(groupsConfig).length - 1
+                            Object.values(groupsConfig).length - 1
                               ? data.steppersConfig &&
                                 data.steppersConfig.finishButton
                                 ? data.steppersConfig.finishButton
                                 : 'Finish'
                               : data.steppersConfig &&
                                 data.steppersConfig.nextButton
-                                ? data.steppersConfig.nextButton
-                                : 'Next'}
+                              ? data.steppersConfig.nextButton
+                              : 'Next'}
                           </Button>
                         </div>
                       </div>

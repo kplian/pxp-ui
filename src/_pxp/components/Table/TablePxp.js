@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /**
  * Component for rendering a table from config json for any pxp-ui project
  * @copyright Kplian Ltda 2020
@@ -78,7 +79,6 @@ function useWidth() {
   const keys = [...theme.breakpoints.keys].reverse();
   return (
     keys.reduce((output, key) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       const matches = useMediaQuery(theme.breakpoints.up(key));
       return !output && matches ? key : output;
     }, null) || 'xs'
@@ -114,7 +114,8 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
       const routesInLocalStorage =
         JSON.parse(localStorage.getItem('routesPxpTable')) || [];
       if (
-        routesInLocalStorage.includes(`${location.pathname}_${tableName}`) === false
+        routesInLocalStorage.includes(`${location.pathname}_${tableName}`) ===
+        false
       ) {
         routesInLocalStorage.push(`${location.pathname}_${tableName}`);
         localStorage.setItem(
@@ -146,9 +147,9 @@ const TablePxp = forwardRef(({ dataConfig }, ref) => {
     dataRow: undefined,
   });
 
-  useSelector((state)=>{
-    console.log('stateeeeeeee',state)
-  })
+  useSelector((state) => {
+    console.log('stateeeeeeee', state);
+  });
   const statePxpTable = useSelector((state) =>
     state.app.pagesPxpTable[location.pathname]
       ? state.app.pagesPxpTable[location.pathname][tableName]

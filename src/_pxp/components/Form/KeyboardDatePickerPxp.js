@@ -62,7 +62,10 @@ export const KeyboardDatePickerPxpComponent = ({
   };
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMap[config.translations.fallbackLng || 'en']}>
+    <MuiPickersUtilsProvider
+      utils={DateFnsUtils}
+      locale={localeMap[config.translations.fallbackLng || 'en']}
+    >
       <Grid key={`grid_${name}`} item {...gridForm}>
         <KeyboardDatePicker
           fullWidth
@@ -70,7 +73,7 @@ export const KeyboardDatePickerPxpComponent = ({
           autoOk
           size={size}
           // disableToolbar
-          //variant={variant}
+          // variant={variant}
           format="dd/MM/yyyy"
           margin="normal"
           id={name}
@@ -89,7 +92,6 @@ export const KeyboardDatePickerPxpComponent = ({
           {...minMaxDate}
           disabled={disabled}
           helperText={helperText}
-
         />
       </Grid>
     </MuiPickersUtilsProvider>

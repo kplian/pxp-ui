@@ -18,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
   },
   master: {
     maxHeight: '60px !important',
-    minHeight: '60px !important'
-  }
+    minHeight: '60px !important',
+  },
 }));
 
 const MasterDetail = ({ children }) => {
@@ -78,14 +78,11 @@ const MasterDetail = ({ children }) => {
         //     {detail}
         //   </AccordionDetails>
         // </Accordion>
-
       }
     </div>
-  )
-}
+  );
+};
 
-MasterDetail.propTypes = {
-
-}
+MasterDetail.propTypes = {};
 
 export default MasterDetail;

@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /**
  * Collapse with horizontal collapse
  * @copyright Kplian Ltda 2020

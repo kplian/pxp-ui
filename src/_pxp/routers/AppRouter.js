@@ -293,7 +293,7 @@ const AppRouter = ({
                 </Suspense>
               </MainContainer>
             </Route>
-              <Route exact={false} path={publicPaths}>
+            <Route exact={false} path={publicPaths}>
               <PublicContainer>
                 <Suspense
                   fallback={<LoadingScreen className={classes.loading} />}

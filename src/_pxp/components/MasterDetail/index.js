@@ -10,10 +10,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     height: '100%',
     '& .gutter': {
-      border: theme.palette.action.disabled + ' 1px solid',
+      border: `${theme.palette.action.disabled} 1px solid`,
       backgroundColor: theme.palette.action.disabledBackground,
       width: '4px !important',
-    }
+    },
   },
   backButton: {
     marginLeft: theme.spacing(1),
@@ -23,7 +23,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MasterDetail = ({ children, sizes = [25, 75], showDetail = false, setShowDetail = () => { } }) => {
+const MasterDetail = ({
+  children,
+  sizes = [25, 75],
+  showDetail = false,
+  setShowDetail = () => {},
+}) => {
   const classes = useStyles();
   const master = children[0];
   const detail = children[1];
@@ -31,45 +36,42 @@ const MasterDetail = ({ children, sizes = [25, 75], showDetail = false, setShowD
   console.log('[SHOW]', showDetail);
 
   return (
-    <React.Fragment>
+    <>
       <Hidden smDown>
-        <Split
-          sizes={sizes}
-          className={classes.root}
-        >
+        <Split sizes={sizes} className={classes.root}>
           <div>{master}</div>
           <div>{detail}</div>
         </Split>
       </Hidden>
       <Hidden mdUp>
         <Box>
-          {showDetail &&
+          {showDetail && (
             <Fab
               color="primary"
               size="small"
               className={classes.backButton}
               onClick={() => {
                 console.log('[CLCI]');
-                setShowDetail(false)
+                setShowDetail(false);
               }}
             >
-              <ArrowBack></ArrowBack>
+              <ArrowBack />
             </Fab>
-          }
-          <div style={{
-            display: !showDetail ? 'block' : 'none',
-            opacity: !showDetail ? 1 : 0,
-            transition: 'display 2s, opacity 5s linear',
-          }}>
+          )}
+          <div
+            style={{
+              display: !showDetail ? 'block' : 'none',
+              opacity: !showDetail ? 1 : 0,
+              transition: 'display 2s, opacity 5s linear',
+            }}
+          >
             {master}
           </div>
           {showDetail && <div>{detail}</div>}
         </Box>
       </Hidden>
-
-    </React.Fragment>
-
-  )
-}
+    </>
+  );
+};
 
 export default MasterDetail;

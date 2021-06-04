@@ -14,35 +14,35 @@ import LoginDialog from './components/LoginDialog';
 
 const useStyles = makeStyles((theme) => {
   console.log('[theme]', theme);
-  return ({
-  root: {
-    paddingTop: 56,
-    height: '100%',
-    [theme.breakpoints.up('sm')]: {
-      paddingTop: 64,
+  return {
+    root: {
+      paddingTop: 56,
+      height: '100%',
+      [theme.breakpoints.up('sm')]: {
+        paddingTop: 64,
+      },
     },
-  },
-  shiftContent: {
-    paddingLeft: 256,
-  },
-  breadcrumbs: {
-    padding: '16px 0px 16px 0px',
-  },
-  content: {
-    flex: '1 1 auto',
-    height: 'calc( 100vh - 64px)',
-    width: '100%',
-    padding: '0px 16px 16px 16px',
-    overflow: 'hidden',
-    [theme.breakpoints.down('sm')]: {
-      padding: '0px 0px 16px 0px',
-      paddingBottom: 0,
+    shiftContent: {
+      paddingLeft: 256,
     },
-    [theme.breakpoints.down('xs')]: {
-      paddingBottom: 0,
+    breadcrumbs: {
+      padding: '16px 0px 16px 0px',
     },
-  },
-  })
+    content: {
+      flex: '1 1 auto',
+      height: 'calc( 100vh - 64px)',
+      width: '100%',
+      padding: '0px 16px 16px 16px',
+      overflow: 'hidden',
+      [theme.breakpoints.down('sm')]: {
+        padding: '0px 0px 16px 0px',
+        paddingBottom: 0,
+      },
+      [theme.breakpoints.down('xs')]: {
+        paddingBottom: 0,
+      },
+    },
+  };
 });
 
 const MainContainer = ({ children }) => {

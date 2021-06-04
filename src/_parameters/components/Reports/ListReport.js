@@ -1,9 +1,9 @@
+/* eslint-disable react/no-array-index-key */
 import { List, ListItem } from '@material-ui/core';
 import { GitHub } from '@material-ui/icons';
 import React from 'react';
 import { NavLink, useRouteMatch } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import Reports from '.';
 import Pxp from '../../../Pxp';
 
 const useStyles = makeStyles((theme) => ({

@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 /**
  * Themes index file
  * @copyright Kplian Ltda 2020
@@ -13,7 +14,6 @@ import { THEMES } from '../utils/themes';
 import config from '../../config';
 
 const CUSTOM_THEMES = config.customThemesList || [];
-
 
 const baseConfig = {
   direction: 'ltr',
@@ -38,7 +38,7 @@ const baseConfig = {
   },
 };
 
-const themeConfigs = [LIGHT, ONE_DARK, KPLIAN, ...CUSTOM_THEMES ];
+const themeConfigs = [LIGHT, ONE_DARK, KPLIAN, ...CUSTOM_THEMES];
 
 export function createTheme(settings = {}) {
   let themeConfig = themeConfigs.find((theme) => theme.name === settings.theme);

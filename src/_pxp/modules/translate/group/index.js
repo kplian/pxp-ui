@@ -9,7 +9,6 @@ import Pxp from '../../../../Pxp';
 import UploadModal from './UploadModal';
 import ExportModal from './ExportModal';
 
-
 const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
@@ -254,15 +253,16 @@ const Group = () => {
   return (
     <div>
       <TablePxp dataConfig={jsonGroup} />
-      {
-        openModalUpload &&
+      {openModalUpload && (
         <UploadModal
           open={openModalUpload}
           handleClose={() => setOpenModalUpload(false)}
         />
-      }
-      <ExportModal open={openModalExport}
-        handleClose={() => setOpenModalExport(false)} />
+      )}
+      <ExportModal
+        open={openModalExport}
+        handleClose={() => setOpenModalExport(false)}
+      />
     </div>
   );
 };

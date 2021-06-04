@@ -128,7 +128,7 @@ const AutocompletePxpComponent = ({
                 autocomplete: 'chrome-off',
                 autoComplete: 'off',
               },
-              //autocomplete: 'chrome-off',
+              // autocomplete: 'chrome-off',
               autoComplete: 'off',
               autoCorrect: 'off', // no standard, available only in safari
               endAdornment: (

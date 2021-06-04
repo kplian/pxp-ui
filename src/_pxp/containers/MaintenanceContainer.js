@@ -4,8 +4,14 @@
  * @uthor Jaime Rivera
  */
 import React from 'react';
-import { makeStyles, Container, Box, Typography, useMediaQuery, useTheme } from '@material-ui/core';
-
+import {
+  makeStyles,
+  Container,
+  Box,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,13 +22,13 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     padding: theme.spacing(3),
     paddingTop: 80,
-    paddingBottom: 80
+    paddingBottom: 80,
   },
   image: {
     maxWidth: '100%',
     width: 560,
     maxHeight: 300,
-    height: 'auto'
+    height: 'auto',
   },
   content: {
     flex: '1 1 auto',
@@ -51,18 +57,11 @@ const MaintenanceContainer = ({ children }) => {
         >
           We are under maintenance
         </Typography>
-        <Typography
-          align="center"
-          variant="subtitle2"
-          color="textSecondary"
-        >
-          We are deploying new changes to the website, it will available as soon as possible.
+        <Typography align="center" variant="subtitle2" color="textSecondary">
+          We are deploying new changes to the website, it will available as soon
+          as possible.
         </Typography>
-        <Box
-          mt={6}
-          display="flex"
-          justifyContent="center"
-        >
+        <Box mt={6} display="flex" justifyContent="center">
           <img
             alt="Under development"
             className={classes.image}

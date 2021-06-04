@@ -5,10 +5,10 @@ import InputLabel from '@material-ui/core/InputLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   formControl: {
     width: '100%',
-  }
+  },
 }));
 
 const TranslateSelect = ({ title, options = [], handleChange }) => {
@@ -27,10 +27,14 @@ const TranslateSelect = ({ title, options = [], handleChange }) => {
         }}
       >
         <option aria-label="None" value="" />
-        {options.map(opt => <option key={'translate-id-' + opt.value} value={opt.value}>{opt.label}</option>)}
+        {options.map((opt) => (
+          <option key={`translate-id-${opt.value}`} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
       </NativeSelect>
     </FormControl>
-  )
+  );
 };
 
 export default TranslateSelect;

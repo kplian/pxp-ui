@@ -16,7 +16,7 @@ const PagesContext = createContext({
 
 export function PagesProvider({ pages, icons, children }) {
   const [currentPages, setCurrentPages] = useState(pages || {});
-  const currentIcons = {...iconsPxp, ...icons };
+  const currentIcons = { ...iconsPxp, ...icons };
 
   const handleSavePages = (updatedPages = {}) => {
     const mergedPages = { ...currentPages, ...updatedPages };
@@ -27,7 +27,7 @@ export function PagesProvider({ pages, icons, children }) {
     <PagesContext.Provider
       value={{
         pages: currentPages,
-        savePages:handleSavePages,
+        savePages: handleSavePages,
         icons: currentIcons,
       }}
     >

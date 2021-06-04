@@ -11,7 +11,7 @@ const UseWindowSize = () => {
 
   function getSize() {
     if (isClient) {
-      let vh = window.innerHeight;
+      const vh = window.innerHeight;
       document.documentElement.style.setProperty('--vh', `${vh}px`);
     }
     return {

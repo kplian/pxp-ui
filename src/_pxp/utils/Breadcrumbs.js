@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /**
  * BreadCrumbs component to navigate forward and back
  * @copyright Kplian Ltda 2020

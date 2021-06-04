@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable guard-for-in */
 /**
  * Hooks for getting data from hooks state of for any pxp-ui project
  * @copyright Kplian Ltda 2020
@@ -117,7 +119,6 @@ const useFetch = (options) => {
                     },
                   );
                 }
-
               }
             }
           })
