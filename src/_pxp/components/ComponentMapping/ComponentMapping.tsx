@@ -4,13 +4,18 @@
  * @author Favio Figueroa
  */
 
-import React, { forwardRef, useImperativeHandle } from 'react';
+import React, { forwardRef, useImperativeHandle, FC } from 'react';
 import Grid from '@material-ui/core/Grid';
 import useJsonStore from '../../hooks/useJsonStore';
 import DrawComponents from './DrawComponents';
 import DrawSkeleton from './DrawSkeleton';
 
-const ComponentMapping = forwardRef(({ config, dataChanged = [] }, ref) => {
+interface MappingInterface {
+  config: any;
+  dataChanged?: any[];
+}
+
+const ComponentMapping: FC<MappingInterface> = forwardRef(({ config, dataChanged = [] }, ref) => {
   const { getDataTable, spacing = 3 } = config;
   const useJsonStoreRes = useJsonStore(getDataTable);
   const { data, state, set, loading } = useJsonStoreRes;

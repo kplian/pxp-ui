@@ -14,7 +14,7 @@ import IconPxp from '../../../_pxp/icons/IconPxp';
 import BasicContainer from '../../../_pxp/containers/BasicContainer';
 
 const ExampleForm = () => {
-  const ref = useRef();
+  const ref: any = useRef();
   const jsonExample1 = {
     columns: {
       nombre: { type: 'TextField', group: 'groupUser' },

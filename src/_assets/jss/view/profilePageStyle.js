@@ -19,7 +19,7 @@ import {
   grayColor,
 } from '../pxp-ui';
 
-const profilePageStyle = (theme) => ({
+const profilePageStyle: any = (theme) => ({
   container,
   ...imagesStyle,
   ...tooltipsStyle,

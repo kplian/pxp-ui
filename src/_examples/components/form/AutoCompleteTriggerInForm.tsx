@@ -21,7 +21,7 @@ import DialogPxp from '../../../_pxp/components/DialogPxp';
 const AutoCompleteTriggerInForm = () => {
   const [openDialog, setOpenDialog] = useState(false);
 
-  const accountStatusTypeRef = useRef();
+  const accountStatusTypeRef: any = useRef();
   const config = {
     nameForm: 'Form Example',
     columns: {
@@ -103,9 +103,15 @@ const AutoCompleteTriggerInForm = () => {
           code: resp.code,
         };
         console.log(values);
-        accountStatusTypeRef.current.states.accountStatusTypeId.setValue(
-          values,
-        );
+        if (
+          accountStatusTypeRef &&
+          accountStatusTypeRef.current &&
+          accountStatusTypeRef.current.states
+        ) {
+          accountStatusTypeRef.current.states.accountStatusTypeId.setValue(
+            values,
+          );
+        }
 
         setOpenDialog(false);
       },

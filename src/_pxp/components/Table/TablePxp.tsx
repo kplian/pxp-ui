@@ -14,6 +14,7 @@ import React, {
   useLayoutEffect,
   useRef,
   useState,
+  FC,
 } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -85,7 +86,7 @@ function useWidth() {
   );
 }
 
-const TablePxp = forwardRef(({ dataConfig }, ref) => {
+const TablePxp: FC<any> = forwardRef(({ dataConfig }, ref) => {
   const isVersion2 = Pxp.apiClient.backendVersion === 'v2';
   const width = useWidth();
   const classes = useStyles();

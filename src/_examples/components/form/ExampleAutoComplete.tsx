@@ -105,7 +105,7 @@ const ExampleAutoComplete = () => {
                   <b>Nombre:</b>
                   {option.nombre_completo2}
                 </Typography>
-                <Label color="success">
+                <Label color="success" style={{}}>
                   <b>Ci:</b>
                   {option.ci}
                 </Label>

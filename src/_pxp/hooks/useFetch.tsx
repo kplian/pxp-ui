@@ -67,7 +67,7 @@ const useFetch = (options) => {
                 if (resp.error) {
                   enqueueSnackbar(
                     <div>
-                      url: ${options.url} -> ${resp.detail.message}
+                      url: ${options.url} -&gt; ${resp.detail.message}
                       <pre
                         style={{
                           whiteSpace: 'pre-wrap',
@@ -103,7 +103,7 @@ const useFetch = (options) => {
                 if (resp.error) {
                   enqueueSnackbar(
                     <div>
-                      url: ${options.url} -> ${resp.error.message}
+                      url: ${options.url} -&gt; ${resp.error.message}
                       <pre
                         style={{
                           whiteSpace: 'pre-wrap',
@@ -128,7 +128,7 @@ const useFetch = (options) => {
             setLoading(false);
             enqueueSnackbar(
               <div>
-                url: ${options.url} -> ${err.message}
+                url: ${options.url} -&gt; ${err.message}
                 <pre
                   style={{
                     whiteSpace: 'pre-wrap',

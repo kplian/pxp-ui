@@ -198,5 +198,5 @@ class Pxp {
   }
 }
 
-const pxp = new Pxp();
+const pxp: any = new Pxp();
 export default pxp;

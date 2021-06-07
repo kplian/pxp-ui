@@ -4,17 +4,17 @@
  * @author Favio Figueroa
  */
 
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import { Box, Button, Card, Divider, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
-import Marker from '../../../boa-manager-file/assets/icons/Marker';
+// import Marker from '../../../boa-manager-file/assets/icons/Marker';
 import Label from '../../../_pxp/components/Label';
-import OfficeChair2 from '../../../boa-manager-file/assets/icons/OfficeChair2';
-import Email from '../../../boa-manager-file/assets/icons/Email';
+// import OfficeChair2 from '../../../boa-manager-file/assets/icons/OfficeChair2';
+// import Email from '../../../boa-manager-file/assets/icons/Email';
 import { getUrlForView } from '../../../_pxp/utils/Common';
-import ProductDocuments from '../../../boa-manager-file/assets/icons/ProductDocuments';
+// import ProductDocuments from '../../../boa-manager-file/assets/icons/ProductDocuments';
 import ComponentMapping from '../../../_pxp/components/ComponentMapping/ComponentMapping';
 
 const useStylesComponent = makeStyles((theme) => ({
@@ -35,10 +35,10 @@ const useStylesComponent = makeStyles((theme) => ({
   },
 }));
 
-const ExampleMapping = ({ rest }) => {
+const ExampleMapping: FC<any> = (props: any): ReactElement => {
   const classesComponent = useStylesComponent();
 
-  const handleTest = (row, statesFromMappging) => {
+  const handleTest = (row: any, statesFromMappging: any) => {
     console.log(row);
     console.log(statesFromMappging[row.id_persona]);
     alert('assdas');
@@ -57,10 +57,10 @@ const ExampleMapping = ({ rest }) => {
       },
       load: true,
     },
-    renderComponent: (row, statesFromMappging) => {
+    renderComponent: (row: any, statesFromMappging: any) => {
       return (
         <>
-          <Card className={clsx(classesComponent.root)} {...rest}>
+          <Card className={clsx(classesComponent.root)} {...props}>
             <Box flexGrow={1}>
               <Typography
                 component="h3"
@@ -81,19 +81,19 @@ const ExampleMapping = ({ rest }) => {
                 </Typography>
               </Box>
               <Box display="flex" alignItems="center" flexWrap="wrap" pt="20px">
-                <Marker />
-                <Label className={classesComponent.label} color="success">
+                {/* <Marker /> */}
+                <Label className={classesComponent.label} color="success" style={{}}>
                   {row.nombre_lugar_ofi}
                 </Label>
               </Box>
               <Box display="flex" alignItems="center" flexWrap="wrap">
-                <OfficeChair2 />
-                <Label className={classesComponent.label}>
+                {/* <OfficeChair2 /> */}
+                <Label className={classesComponent.label} style={{}}>
                   {row.nombre_oficina}
                 </Label>
               </Box>
               <Box display="flex" alignItems="center" flexWrap="wrap" m={1}>
-                <Email />
+                {/* <Email /> */}
                 <Typography color="textSecondary">
                   {row.email_empresa}
                 </Typography>
@@ -114,13 +114,13 @@ const ExampleMapping = ({ rest }) => {
             <Divider />
             <Box py={2} pl={2} pr={3} display="flex" alignItems="center">
               <Box flexGrow={1} />
-              <Button
+              {/* <Button
                 color="primary"
                 variant="contained"
                 startIcon={<ProductDocuments />}
               >
                 Archivos
-              </Button>
+              </Button> */}
             </Box>
           </Card>
         </>

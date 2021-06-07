@@ -11,7 +11,7 @@
  */
 /* eslint-disable react/jsx-props-no-spreading */
 
-import React from 'react';
+import React, { FC } from 'react';
 import { CircularProgress, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Grid from '@material-ui/core/Grid';
@@ -169,7 +169,7 @@ const AutocompletePxpComponent = ({
 /**
  * A memoized component that will re-render only one of props described in areEqual change.
  */
-const AutocompletePxp = React.memo(
+const AutocompletePxp: FC<any> = React.memo(
   (props) => <AutocompletePxpComponent {...props} />,
   areEqual,
 );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Products from './index';
 import useJsonStore from '../../hooks/useJsonStore';
 
@@ -8,7 +8,7 @@ const defaultParams = {
   dir: 'desc',
 };
 
-const ProductsPxp = ({ config, filters }) => {
+const ProductsPxp: FC<any> = ({ config, filters }) => {
   const jsonStore = useJsonStore({
     ...config.getDataTable,
     params: { ...defaultParams, ...config.getDataTable.params },

@@ -5,7 +5,7 @@ import moment from 'moment';
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  * */
-export const getUrlForView = ({ nameFile, folder, extension, size }) => {
+export const getUrlForView = ({ nameFile, folder, extension, size = null }) => {
   let urlFile = '';
   if (nameFile) {
     urlFile = folder;

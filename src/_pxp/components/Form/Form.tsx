@@ -33,7 +33,7 @@
  */
 
 /* eslint-disable no-underscore-dangle */
-import React, { forwardRef, useEffect } from 'react';
+import React, { forwardRef, useEffect, FC } from 'react';
 import _ from 'lodash';
 import {
   defaultConfig,
@@ -48,7 +48,7 @@ import {
 } from './defaultValues';
 import DrawForm from './DrawForm';
 
-const Form = forwardRef((props, ref) => {
+const Form: FC<any> = forwardRef((props, ref) => {
   const { data, dialog = false, loading } = props;
 
   let mergedDataConfig = _.merge({}, defaultConfig, data);

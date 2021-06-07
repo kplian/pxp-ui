@@ -18,7 +18,7 @@ import LoadingScreen from '../../../_pxp/components/LoadingScreen';
 const ExampleChat = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [loadingScreen, setLoadingScreen] = useState(false);
-  const refTable = useRef();
+  const refTable: any = useRef();
 
   // begin code for open chat view, we need copy that for another tables
   const [chatView, setChatView] = useState({
@@ -28,6 +28,7 @@ const ExampleChat = () => {
     idTable: undefined,
     typeChat: 'CHAT_DATA_EXAMPLE', // Code of tipo_chat
     idChat: undefined,
+    idComponent: null,
   });
   const openChatView = ({ idTable, idChat }) => {
     setChatView((prev) => ({
@@ -148,7 +149,7 @@ const ExampleChat = () => {
           typeChat={chatView.typeChat}
           idComponent={chatView.idComponent}
           idChat={chatView.idChat}
-          idSuplant={1582}/*we can add id suplant for change the from mensajes*/
+          idSuplant={1582} // we can add id suplant for change the from mensajes
         />
       </DialogPxp>
       {loadingScreen && <LoadingScreen />}

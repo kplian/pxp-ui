@@ -3,7 +3,7 @@
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  */
-import React from 'react';
+import React, { FC } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CircularProgress = ({ className, value, ...rest }) => {
+const CircularProgress: FC<any> = ({ className, value, ...rest }) => {
   const classes = useStyles();
 
   return (

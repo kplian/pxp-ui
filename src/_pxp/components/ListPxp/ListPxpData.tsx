@@ -3,11 +3,12 @@ import React, {
   useEffect,
   forwardRef,
   useImperativeHandle,
+  FC,
 } from 'react';
 import ListPxp from './ListPxp';
 import Pxp from '../../../Pxp';
 
-const ListPxpData = forwardRef((props, ref) => {
+const ListPxpData: FC<any> = forwardRef((props, ref) => {
   const { config, FilterComponent, heightFilter, refresh, isRefreshActive = ()=>{} } = props;
   const [configData, setConfigData] = useState({
     data: [],

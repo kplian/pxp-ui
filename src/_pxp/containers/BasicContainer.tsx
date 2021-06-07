@@ -3,7 +3,7 @@
  * @copyright Kplian Ltda 2020
  * @uthor Jaime Rivera
  */
-import React, { useRef } from 'react';
+import React, { useRef, FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Toolbar, IconButton } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
@@ -33,7 +33,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BasicContainer = ({ scrollBarRef, children }) => {
+interface ContainerInterface {
+  scrollBarRef?: any;
+  children: any;
+}
+
+const BasicContainer: FC<ContainerInterface> = ({ scrollBarRef, children }) => {
   const classes = useStyles();
   const detail = useSelector((state) => state.app.detailPage);
   const myScrollBarRef = useRef();

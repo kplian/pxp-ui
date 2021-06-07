@@ -3,7 +3,7 @@
  * @copyright Kplian Ltda 2020
  * @uthor Favio Figueroa
  */
-import React from 'react';
+import React, { FC } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -51,7 +51,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />;
 });
 
-const DialogPxp = ({
+const DialogPxp: FC<any> = ({
   children,
   transition,
   fullScreen = true,

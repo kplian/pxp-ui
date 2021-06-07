@@ -5,7 +5,7 @@
  */
 import { lazy } from 'react';
 
-const pages = {};
+const pages: any = {};
 
 pages.EXA_FormExample = {
   path: '/exa/form',
