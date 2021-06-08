@@ -54,8 +54,8 @@ const SearchFab = ({ handleSearch }) => {
     return (
         <>
             <Zoom
-                key={'inherit'}
-                in={true}
+                key="inherit"
+                in
                 timeout={transitionDuration}
                 style={{
                 transitionDelay: `${transitionDuration.exit }ms`,

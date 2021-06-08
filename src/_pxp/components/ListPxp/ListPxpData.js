@@ -99,12 +99,12 @@ const ListPxpData = forwardRef((props, ref) => {
         data.forEach((item) => configData.data.push(item));
 
         const { length } = configData.data;
-        const hasMore = !!(length < parseInt(total) && total !== '0');
+        const hasMore = !!(length < parseInt(total, 10) && total !== '0');
 
         setConfigData((prev) => {
           return {
             ...prev,
-            total: parseInt(total),
+            total: parseInt(total, 10),
             hasMore,
             data: configData.start === 0 ? data : prev.data,
           };

@@ -7,12 +7,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import Box from '@material-ui/core/Box';
 
-const SkeletonItems = ({ length=4 }) => {
-    const skeletonArray = Array.from({length}, (_, i) => i);
-  
+const SkeletonItems = ({ length = 4 }) => {
+    const skeletonArray = Array.from({ length }, (_, i) => i);
+
     return (
-      <React.Fragment>
-      { skeletonArray.map((val, i) => 
+      <>
+      { skeletonArray.map((val, i) =>
           <div  key={ i }>
             <ListItem>
               <ListItemIcon>
@@ -20,17 +20,17 @@ const SkeletonItems = ({ length=4 }) => {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  <React.Fragment>
+                  <>
                     <Box display="flex"
                           flexWrap="wrap">
                         <Box flexGrow={1}>
-                          <Skeleton variant="text" width="80%" animation="wave"/>                                  
+                          <Skeleton variant="text" width="80%" animation="wave"/>
                         </Box>
                         <Box>
                           <Skeleton variant="rect" width={100} height={10} animation="wave"/>                                     
                         </Box>
                     </Box>
-                  </React.Fragment> 
+                  </> 
                 }
                 secondary={<Skeleton variant="text" width="30%" animation="wave"/>  }
               />
@@ -41,7 +41,7 @@ const SkeletonItems = ({ length=4 }) => {
           <Divider/>
           </div>
       )}
-      </React.Fragment>
+      </>
       );
   };
 

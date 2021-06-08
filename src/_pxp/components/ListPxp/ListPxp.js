@@ -202,7 +202,7 @@ const ListPxp = ({
             {data &&
               data.length > 0 &&
               data.map((item, index) => (
-                <div key={index}>
+                <div key={`list-pxp-${index}`}>
                   {configAll.columns.render && configAll.columns.render(item)}
                   {!configAll.columns.render && (
                     <ListItem button onClick={() => handleClick(index, item)}>
@@ -282,7 +282,7 @@ const ListPxp = ({
                       {!columns.detailRender &&
                         columns.detail &&
                         columns.detail.map((option, index) => (
-                          <React.Fragment key={index}>
+                          <React.Fragment key={`sub-list-pxp-${index}`}>
                             <Grid
                               item
                               xs={4}

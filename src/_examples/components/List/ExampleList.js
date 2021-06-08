@@ -59,7 +59,7 @@ const ExampleList = () => {
       primary: {
         field: 'desc_person',
         renderOption: (row) => {
-          return <div>{'SOY ' + row.desc_person}</div>
+          return <div>{ `Soy ${row.desc_person}` }</div>
         }
       },
       secondary: {

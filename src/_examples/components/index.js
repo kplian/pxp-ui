@@ -75,10 +75,10 @@ pages.EXA__ProfilePage = {
   component: lazy(() => import('./ProfilePage')),
 };
 
-/*pages.EXA_MasterDetailExample = {
-  path: '/exa/test',
-  component: lazy(() => import('./../../_pxp/components/AccountStatus/accountStatusType')),
-  //component: lazy(() => import('./../../_examples/components/form/AutoCompleteTriggerInForm')),
-};*/
+/* pages.EXA_MasterDetailExample = {
+   path: '/exa/test',
+   component: lazy(() => import('./../../_pxp/components/AccountStatus/accountStatusType')),
+   //component: lazy(() => import('./../../_examples/components/form/AutoCompleteTriggerInForm')),
+}; */
 
 export default pages;

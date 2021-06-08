@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 const WizardStep = ({ children }) => {
     return (
-        <React.Fragment>
+        <>
             {children}
-        </React.Fragment>
+        </>
     )
 };
 
@@ -19,8 +19,8 @@ WizardStep.propTypes = {
     children: PropTypes.node,
   };
   
-  WizardStep.defaultProps = {
-    valid: true,
-  };
+  // WizardStep.defaultProps = {
+  //   valid: true,
+  // };
 
 export default WizardStep;

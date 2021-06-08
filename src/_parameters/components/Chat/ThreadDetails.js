@@ -49,20 +49,18 @@ const ThreadDetails = ({ eventWs, idChat, idComponent, idSuplant }) => {
   const listenerMessage = (e) => {
     console.log('listenerMessage', e);
     setData((prevData) => {
-      if (prevData) {
-        return {
-          ...prevData,
-          datos: prevData.datos.concat([
-            {
-              id_mensaje: uuIdV4(),
-              id_usuario_from: e.from.idUser,
-              user_name_from: e.from.user,
-              user_name_suplant: e.from.UserSuplant,
-              mensaje: e.mensaje,
-            },
-          ]),
-        };
-      }
+      return {
+        ...prevData,
+        datos: prevData.datos.concat([
+          {
+            id_mensaje: uuIdV4(),
+            id_usuario_from: e.from.idUser,
+            user_name_from: e.from.user,
+            user_name_suplant: e.from.UserSuplant,
+            mensaje: e.mensaje,
+          },
+        ]),
+      };
     });
     messagesRef.current.scrollToBottom(0);
   };

@@ -13,6 +13,45 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import clsx from 'clsx';
 import LoadButton from '../LoadButton/LoadButton';
 
+const useColorlibStepIconStyles = makeStyles({
+  root: {
+    backgroundColor: '#ccc',
+    zIndex: 1,
+    color: '#fff',
+    width: 50,
+    height: 50,
+    display: 'flex',
+    borderRadius: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  active: {
+    backgroundImage:
+      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
+  },
+  completed: {
+    backgroundImage:
+      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+  },
+});
+
+function ColorlibStepIcon(props) {
+  const classes = useColorlibStepIconStyles();
+  const { active, completed } = props;
+  
+  return (
+    <div
+      className={clsx(classes.root, {
+        [classes.active]: active,
+        [classes.completed]: completed,
+      })}
+    >
+      <Icon>{ props.icon }</Icon>
+    </div>
+  );
+}
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -199,13 +238,13 @@ const Wizard = forwardRef(({ children, complete, loading = false, orientation = 
       </div>    
        <Paper elevation={6} className={ classes.paperButtons }>
             { activeStep === steps.length && 
-                <React.Fragment>
+                <>
                     <Button onClick={handleReset}>Reset</Button>
                     <Button variant="contained" color="primary" onClick={complete}>Complete</Button>
-                </React.Fragment>
+                </>
             }
             { activeStep !== steps.length &&
-                <React.Fragment>
+                <>
                     <Button
                         disabled={activeStep === 0}
                         onClick={handleBack}
@@ -220,12 +259,12 @@ const Wizard = forwardRef(({ children, complete, loading = false, orientation = 
             loading={loading}
                     disabled={
                       false
-                      //!children[activeStep].props.valid
+                      // !children[activeStep].props.valid
                     }
                   >
                                 {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
           </LoadButton>
-                </React.Fragment>
+                </>
             }              
         </Paper>  
     </Paper>
@@ -233,41 +272,3 @@ const Wizard = forwardRef(({ children, complete, loading = false, orientation = 
 });
 
 export default Wizard;
-const useColorlibStepIconStyles = makeStyles({
-  root: {
-    backgroundColor: '#ccc',
-    zIndex: 1,
-    color: '#fff',
-    width: 50,
-    height: 50,
-    display: 'flex',
-    borderRadius: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  active: {
-    backgroundImage:
-      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
-    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
-  },
-  completed: {
-    backgroundImage:
-      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
-  },
-});
-
-function ColorlibStepIcon(props) {
-  const classes = useColorlibStepIconStyles();
-  const { active, completed } = props;
-  
-  return (
-    <div
-      className={clsx(classes.root, {
-        [classes.active]: active,
-        [classes.completed]: completed,
-      })}
-    >
-      <Icon>{ props.icon }</Icon>
-    </div>
-  );
-}

@@ -9,31 +9,25 @@ import {
 import Form from '../Form/Form';
 
 class Map extends React.Component {
-  state = {
-    progress: [],
-    isOpen: false,
-    points: [
-      { lat: 18.566516, lng: -68.435996 },
-      { lat: 18.596516, lng: -68.435996 },
-      { lat: 18.579046, lng: -68.387887 },
-      { lat: 18.659308, lng: -68.387922 },
-    ],
-  };
-
-  componentDidMount = () => {};
-
-  componentWillUnmount = () => {
-    window.clearInterval(this.interval);
-  };
-
-  componentWillMount = () => {};
-
-  componentDidUpdate = () => {};
+  constructor() {
+    super();
+    this.state = {
+      progress: [],
+      isOpen: false,
+      points: [
+        { lat: 18.566516, lng: -68.435996 },
+        { lat: 18.596516, lng: -68.435996 },
+        { lat: 18.579046, lng: -68.387887 },
+        { lat: 18.659308, lng: -68.387922 },
+      ],
+    };
+  }
 
   handleToggleClick = () => {
-    this.setState({
-      isOpen: !this.state.isOpen,
-    });
+    this.setState(prev => ({
+      ...prev,
+      isOpen: !prev.isOpen,
+    }));
   };
 
   showToast = (value) => {
@@ -46,7 +40,8 @@ class Map extends React.Component {
       console.log('****************');
       window.Mobile.makeToast(message, lengthLong);
       return false;
-    }
+    } 
+    return true;    
   };
 
   render = () => {

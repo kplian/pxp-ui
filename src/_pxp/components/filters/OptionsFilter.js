@@ -57,18 +57,19 @@ const OptionsFilter = ({ filters, handleFilter }) => {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-        handleFilter(tabs[newValue]);
-    };
-
     const tabs = [
         {
             value: '',
             icon: 'format_list_bulleted',
             label: 'Todo'
-        }
-        , ...filters];
+        }, 
+        ...filters
+    ];
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+        handleFilter(tabs[newValue]);
+    };
 
     return (
         <AppBar position="static" color="default" className={classes.root}>
@@ -83,7 +84,7 @@ const OptionsFilter = ({ filters, handleFilter }) => {
                     <Tab key={i} value={i}
                         className={value === i ? classes.active : classes.tabOption}
                         label={
-                            <React.Fragment>
+                            <>
                                 <div className={classes.circle}>
                                     {item.image &&
                                         <img src={item.image} className={classes.image} alt="filter option" />
@@ -93,7 +94,7 @@ const OptionsFilter = ({ filters, handleFilter }) => {
                                     }
                                 </div>
                                 <span>{item.label}</span>
-                            </React.Fragment>
+                            </>
                         }
                     />
                 )}

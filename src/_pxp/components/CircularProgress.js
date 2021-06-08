@@ -54,7 +54,7 @@ const CircularProgress = ({ className, value, ...rest }) => {
 };
 
 CircularProgress.propTypes = {
-  className: PropTypes.string,
+  // className: PropTypes.string,
   value: PropTypes.number.isRequired,
 };
 

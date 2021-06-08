@@ -202,7 +202,7 @@ const ExampleTable = () => {
       // todo need to add typeSend for change to send all in jsonFormat or normal pxp
     },
     urlDelete: 'seguridad/Persona/eliminarPersona',
-    //paginationType: 'infiniteScrolling', // can be infiniteScrolling or pagination
+    // paginationType: 'infiniteScrolling', // can be infiniteScrolling or pagination
   };
 
   // example how you can refresh the table from another component

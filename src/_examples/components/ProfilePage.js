@@ -22,6 +22,7 @@ import CustomButton from '../../_pxp/components/CustomButtons/Button';
 import ImageGallery from '../../_assets/icons/ImageGallery';
 import GoogleMaps from '../../_assets/icons/GoogleMaps';
 import HealthCalendar from '../../_assets/icons/HealthCalendar';
+import cover from '../../_assets/img/cover.jpg';
 
 const useStyles = makeStyles(profilePageStyle);
 
@@ -38,7 +39,7 @@ const ProfilePage = () => {
     <Scrollbars>
       <div>
         <Parallax
-          image={require('../../_assets/img/cover.jpg')}
+          image={cover}
           filter="dark"
           className={classes.parallax}
         >

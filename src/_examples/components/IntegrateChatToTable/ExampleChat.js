@@ -63,7 +63,7 @@ const ExampleChat = () => {
           variant: 'error',
         });
         refTable.current.handleRefresh();
-      });;
+      });
   };
 
   const jsonTypeChat = {
@@ -148,7 +148,7 @@ const ExampleChat = () => {
           typeChat={chatView.typeChat}
           idComponent={chatView.idComponent}
           idChat={chatView.idChat}
-          idSuplant={1582}/*we can add id suplant for change the from mensajes*/
+          idSuplant={1582} // we can add id suplant for change the from mensajes
         />
       </DialogPxp>
       {loadingScreen && <LoadingScreen />}
