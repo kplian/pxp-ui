@@ -1,0 +1,50 @@
+{
+  "name": "@pxp-ui/common",
+  "version": "1.0.1",
+  "description": "common for pxp-ui",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "prepublish": "tsc",
+  "scripts": {
+    "build": "rimraf ./dist && tsc && npm run build:copy-files",
+    "build:copy-files": "node ../../scripts/copy-files.js",
+    "start": "npm run build && node dist/index.js",
+    "dev": "tsc-watch --target es2017 --outDir ./dist --onSuccess \"node .\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pxp-ui",
+    "pxp"
+  ],
+  "author": "Kplian",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^15.12.2",
+    "@types/react-router-dom": "^5.1.7",
+    "eslint": "^7.28.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
+    "prettier": "^2.3.1",
+    "rimraf": "^3.0.2",
+    "tsc-watch": "^4.4.0",
+    "typescript": "^4.3.2"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
+    "@pxp-ui/components": "^1.0.0",
+    "@pxp-ui/core": "^1.0.0",
+    "@pxp-ui/hooks": "^1.0.0",
+    "axios": "^0.21.1",
+    "material-ui-dropzone": "^3.5.0",
+    "moment": "^2.29.1",
+    "react-custom-scrollbars": "^4.2.1",
+    "uuid": "^8.3.2"
+  }, 
+  "peerDependencies": {
+    "react": "^17.0.2"
+  }
+}

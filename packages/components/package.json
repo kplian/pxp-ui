@@ -1,0 +1,71 @@
+{
+  "name": "@pxp-ui/components",
+  "version": "1.1.2",
+  "description": "Components for pxp-ui",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "./dist/index.js",
+  "typings": "./index.d.ts",
+  "prepublish": "tsc",
+  "scripts": {
+    "build": "rimraf ./dist && tsc && npm run build:copy-files",
+    "build:copy-files": "node ../../scripts/copy-files.js",
+    "dev:publish": "cd ./dist && yalc publish",
+    "prod:publish": "cd ./dist && npm publish",
+    "start": "npm run build && node dist/index.js",
+    "dev": "tsc-watch --target es2017 --outDir ./dist --onSuccess \"node .\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pxp-ui",
+    "pxp",
+    "react",
+    "react-component"
+  ],
+  "author": "Kplian",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^15.12.2",
+    "eslint": "^7.28.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
+    "prettier": "^2.3.1",
+    "rimraf": "^3.0.2",
+    "tsc-watch": "^4.4.0",
+    "typescript": "^4.3.2"
+  },
+  "dependencies": {
+    "@date-io/date-fns": "^2.11.0",
+    "@mui/icons-material": "^5.0.1",
+    "@mui/lab": "^5.0.0-alpha.49",
+    "@mui/material": "^5.0.2",
+    "@mui/styles": "^5.0.1",
+    "@pxp-ui/hooks": "^1.0.2",
+    "classnames": "^2.3.1",
+    "clipboard-copy": "^4.0.1",
+    "date-fns": "^2.24.0",
+    "lodash": "^4.17.21",
+    "material-ui-dropzone": "^3.5.0",
+    "moment": "^2.29.1",
+    "notistack": "^2.0.2",
+    "prop-types": "^15.7.2",
+    "react-awesome-slider": "^4.1.0",
+    "react-custom-scrollbars-2": "^4.4.0",
+    "react-google-maps": "^9.4.5",
+    "react-google-recaptcha": "^2.1.0",
+    "react-i18next": "^11.12.0",
+    "react-infinite-scroller": "^1.2.4",
+    "react-redux": "^7.2.5",
+    "react-router-dom": "^5.3.0",
+    "react-split": "^2.0.13",
+    "react-spring": "^9.2.4",
+    "yup": "^0.32.9"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "@pxp-ui/core": "^1.1.1"
+  }
+}
