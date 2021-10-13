@@ -1,0 +1,15 @@
+{
+  "name": "pxp-ui",
+  "version": "1.0.0",
+  "description": "pxp-ui lib",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fast-glob": "^3.2.5",
+    "fs-extra": "^10.0.0"
+  }
+}
